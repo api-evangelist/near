@@ -1,0 +1,48 @@
+name: FASTNEAR Indexed REST API Plans
+description: Access plans for the FASTNEAR indexed REST API, providing low-latency account-centric blockchain data including tokens, NFTs, and staking. Offers free and paid tiers via the FASTNEAR dashboard.
+url: https://docs.fastnear.com/
+plans:
+
+  - name: Free Tier
+    description: Free access to FASTNEAR indexed REST endpoints. Suitable for development, prototyping, and low-traffic applications.
+    url: https://docs.fastnear.com/
+    auth: api_key
+    auth_details:
+      header: Authorization
+      format: Bearer {api_key}
+      query_param: apiKey
+    rate_limits:
+      - note: Limited throughput; exact rate limit not published publicly
+    endpoints:
+      included:
+        - /v1/account/{account_id}/full
+        - /v1/account/{account_id}/ft
+        - /v1/account/{account_id}/nft
+        - /v1/account/{account_id}/staking
+        - /v1/ft/{token_id}/top
+        - /v0/public_key/{public_key}
+        - /status
+        - /health
+
+  - name: Production Tier
+    description: Higher rate limit access for production applications. Requires sign-in and API key creation through the FASTNEAR dashboard.
+    url: https://docs.fastnear.com/
+    auth: api_key
+    auth_details:
+      header: Authorization
+      format: Bearer {api_key}
+      query_param: apiKey
+    rate_limits:
+      - note: Higher limits available; contact FASTNEAR for details
+    endpoints:
+      included:
+        - /v1/account/{account_id}/full
+        - /v1/account/{account_id}/ft
+        - /v1/account/{account_id}/nft
+        - /v1/account/{account_id}/staking
+        - /v1/ft/{token_id}/top
+        - /v0/public_key/{public_key}
+        - /v0/block/{block_height}
+        - /v0/first_block
+        - /status
+        - /health

@@ -1,0 +1,20 @@
+name: FASTNEAR Indexed REST API Rate Limits
+description: Rate limits for the FASTNEAR indexed REST API for NEAR blockchain data. Limits vary by tier; exact numbers are not published in public documentation.
+url: https://docs.fastnear.com/
+rate_limits:
+
+  - plan: Free Tier
+    auth: api_key
+    limits:
+      - type: requests_per_second
+        note: Limited; exact rate not published. Sufficient for development and low-traffic use.
+    enforcement: HTTP 429 Too Many Requests
+    upgrade_url: https://docs.fastnear.com/
+
+  - plan: Production Tier
+    auth: api_key
+    limits:
+      - type: requests_per_second
+        note: Higher limits available upon account sign-in and key creation via FASTNEAR Dashboard
+    enforcement: HTTP 429 Too Many Requests
+    upgrade_url: https://docs.fastnear.com/

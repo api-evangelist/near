@@ -1,0 +1,49 @@
+name: NEAR RPC API Rate Limits
+description: Rate limits for the NEAR Protocol JSON-RPC API public endpoints. The official NEAR Foundation endpoint is severely rate-limited. Third-party providers like FASTNEAR offer higher-throughput free RPC endpoints.
+url: https://docs.near.org/api/rpc/providers
+rate_limits:
+
+  - provider: NEAR Foundation Mainnet
+    endpoint: https://rpc.mainnet.near.org
+    plan: public
+    limits:
+      - type: requests_per_second
+        value: 5
+        note: Severely rate-limited; exact number not published. Use third-party providers for production.
+    enforcement: HTTP 429 Too Many Requests
+
+  - provider: NEAR Foundation Archival
+    endpoint: https://archival-rpc.mainnet.near.org
+    plan: public
+    limits:
+      - type: requests_per_second
+        value: 5
+        note: Severely rate-limited; intended for archival queries only
+    enforcement: HTTP 429 Too Many Requests
+
+  - provider: FASTNEAR Free RPC
+    endpoint: https://free.rpc.fastnear.com
+    plan: free
+    limits:
+      - type: requests_per_second
+        value: 50
+        note: Approximate; higher limits available with paid FASTNEAR API key
+    enforcement: HTTP 429 Too Many Requests
+
+  - provider: 1RPC
+    endpoint: https://1rpc.io/near
+    plan: free
+    limits:
+      - note: Free tier available; exact limits not published
+
+  - provider: BlockPI
+    endpoint: https://near.blockpi.network/v1/rpc/public
+    plan: free
+    limits:
+      - note: Free tier available; exact limits not published
+
+  - provider: dRPC
+    endpoint: https://near.drpc.org
+    plan: free
+    limits:
+      - note: Free tier available; exact limits not published

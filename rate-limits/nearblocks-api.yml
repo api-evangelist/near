@@ -1,0 +1,55 @@
+name: NearBlocks Explorer API Rate Limits
+description: Rate limits for the NearBlocks NEAR Protocol explorer REST API, enforced per API key and plan tier.
+url: https://nearblocks.io/apis
+rate_limits:
+
+  - plan: Free
+    price_usd_per_month: 0
+    limits:
+      - type: requests_per_minute
+        value: 6
+      - type: requests_per_day
+        value: 333
+      - type: requests_per_month
+        value: 10000
+    enforcement: HTTP 429 Too Many Requests
+    notes: Attribution required for all uses on the free plan.
+
+  - plan: Startup
+    price_usd_per_month: 67.15
+    limits:
+      - type: requests_per_minute
+        value: 190
+      - type: requests_per_day
+        value: 25000
+      - type: requests_per_month
+        value: 500000
+    enforcement: HTTP 429 Too Many Requests
+
+  - plan: Standard
+    price_usd_per_month: 254.15
+    limits:
+      - type: requests_per_minute
+        value: 500
+      - type: requests_per_day
+        value: 187500
+      - type: requests_per_month
+        value: 3750000
+    enforcement: HTTP 429 Too Many Requests
+
+  - plan: Professional
+    price_usd_per_month: 764.15
+    limits:
+      - type: requests_per_minute
+        value: 2250
+      - type: requests_per_day
+        value: 562500
+      - type: requests_per_month
+        value: 11250000
+    enforcement: HTTP 429 Too Many Requests
+
+  - plan: Enterprise
+    price_usd_per_month: custom
+    limits:
+      - note: Custom SLA negotiated per contract
+    enforcement: Custom SLA

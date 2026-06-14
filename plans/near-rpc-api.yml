@@ -1,0 +1,65 @@
+name: NEAR RPC API Plans
+description: Access plans for the NEAR Protocol JSON-RPC API. The official public mainnet endpoint is free and open but severely rate-limited. Third-party RPC providers offer free tiers with registration and paid tiers for production usage.
+url: https://docs.near.org/api/rpc/providers
+plans:
+
+  - name: Public Free Tier
+    description: Free public RPC endpoint provided by NEAR Foundation. Severely rate-limited, suitable for development and testing only.
+    url: https://docs.near.org/api/rpc/providers
+    spec: https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/openapi.yml
+    auth: none
+    rate_limits:
+      - requests_per_second: 5
+        note: Severely rate-limited; exact limit not published
+    quota:
+      requests_per_month: unlimited
+      note: Rate-limited but no hard monthly cap stated
+    endpoints:
+      included:
+        - send_tx
+        - tx
+        - block
+        - chunk
+        - query
+        - status
+        - health
+        - network_info
+        - validators
+        - gas_price
+        - genesis_config
+        - light_client_proof
+        - next_light_client_block
+
+  - name: FASTNEAR Free RPC
+    description: Free public RPC endpoint provided by FASTNEAR at free.rpc.fastnear.com with higher limits than the official NEAR endpoint.
+    url: https://free.rpc.fastnear.com
+    auth: none
+    rate_limits:
+      - requests_per_second: 50
+        note: Approximate; exact limit not published
+    endpoints:
+      included:
+        - send_tx
+        - tx
+        - block
+        - chunk
+        - query
+        - status
+        - health
+        - network_info
+        - validators
+        - gas_price
+
+  - name: Archival RPC (NEAR Foundation)
+    description: Archival node endpoint for querying historical data. Severely rate-limited and intended for archival queries.
+    url: https://archival-rpc.mainnet.near.org
+    auth: none
+    rate_limits:
+      - requests_per_second: 5
+        note: Severely rate-limited
+    endpoints:
+      included:
+        - block
+        - chunk
+        - query
+        - tx

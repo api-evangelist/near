@@ -1,0 +1,92 @@
+name: NearBlocks Explorer API Plans
+description: Tiered access plans for the NearBlocks NEAR Protocol explorer REST API. Plans range from a free attribution-required tier to enterprise custom SLA plans. Payment via Stripe (VISA/Mastercard). Activations are instant upon payment.
+url: https://nearblocks.io/apis
+plans:
+
+  - name: Free
+    description: Free tier with attribution required. Suitable for hobby projects and experimentation. Limited to 10,000 API calls per month.
+    url: https://nearblocks.io/apis
+    price: 0.00
+    currency: USD
+    billing_period: monthly
+    auth: api_key
+    auth_details:
+      location: header
+      note: API key obtained via user dashboard
+    rate_limits:
+      - requests_per_minute: 6
+    quota:
+      requests_per_month: 10000
+      requests_per_day: 333
+    requirements:
+      - Attribution required on all uses
+    endpoints:
+      included: all
+
+  - name: Startup
+    description: Entry-level paid plan for startups and small teams with moderate API usage needs.
+    url: https://nearblocks.io/apis
+    price: 67.15
+    currency: USD
+    billing_period: monthly
+    auth: api_key
+    auth_details:
+      location: header
+      note: API key obtained via user dashboard
+    rate_limits:
+      - requests_per_minute: 190
+    quota:
+      requests_per_month: 500000
+      requests_per_day: 25000
+    endpoints:
+      included: all
+
+  - name: Standard
+    description: Standard plan for growing applications with higher throughput requirements.
+    url: https://nearblocks.io/apis
+    price: 254.15
+    currency: USD
+    billing_period: monthly
+    auth: api_key
+    auth_details:
+      location: header
+      note: API key obtained via user dashboard
+    rate_limits:
+      - requests_per_minute: 500
+    quota:
+      requests_per_month: 3750000
+      requests_per_day: 187500
+    endpoints:
+      included: all
+
+  - name: Professional
+    description: High-volume plan for production applications and services requiring large-scale data access.
+    url: https://nearblocks.io/apis
+    price: 764.15
+    currency: USD
+    billing_period: monthly
+    auth: api_key
+    auth_details:
+      location: header
+      note: API key obtained via user dashboard
+    rate_limits:
+      - requests_per_minute: 2250
+    quota:
+      requests_per_month: 11250000
+      requests_per_day: 562500
+    endpoints:
+      included: all
+
+  - name: Enterprise
+    description: Custom enterprise plan with dedicated SLA support and custom rate limits. Contact NearBlocks for pricing.
+    url: https://nearblocks.io/apis
+    price: custom
+    currency: USD
+    billing_period: monthly
+    auth: api_key
+    rate_limits:
+      - note: Custom SLA
+    quota:
+      note: Custom limits negotiated per contract
+    endpoints:
+      included: all

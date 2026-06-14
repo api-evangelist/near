@@ -1,0 +1,59 @@
+name: NearBlocks Explorer API FinOps
+description: Financial operations guidance for NearBlocks NEAR Protocol explorer REST API. Plans are billed monthly via Stripe. Payments are non-refundable and accounts activate instantly upon payment.
+url: https://nearblocks.io/apis
+finops:
+
+  billing:
+    model: subscription
+    period: monthly
+    payment_methods:
+      - VISA
+      - Mastercard
+    processor: Stripe
+    activation: instant
+    renewal: automatic
+    refund_policy: non-refundable
+
+  cost_management:
+    - strategy: Start on Free plan during development and testing
+      note: Free plan requires attribution but has no cost
+    - strategy: Monitor daily call usage against plan quota
+      note: Free plan caps at 333 calls/day; exceeding requires upgrade
+    - strategy: Upgrade to Startup plan for production APIs with moderate traffic
+      note: Startup plan at $67.15/mo supports 500,000 calls/month
+    - strategy: Evaluate per-call cost across plans before scaling
+      note: |
+        Cost per 1,000 calls:
+          Free:         $0.00 (attribution required)
+          Startup:      $0.13
+          Standard:     $0.068
+          Professional: $0.068
+          Enterprise:   negotiated
+    - strategy: Enterprise plan for large-scale or SLA-required deployments
+      note: Contact NearBlocks directly for custom pricing and SLA terms
+
+  plans_summary:
+    - plan: Free
+      monthly_cost_usd: 0.00
+      monthly_calls: 10000
+      cost_per_1k_calls_usd: 0.00
+
+    - plan: Startup
+      monthly_cost_usd: 67.15
+      monthly_calls: 500000
+      cost_per_1k_calls_usd: 0.13
+
+    - plan: Standard
+      monthly_cost_usd: 254.15
+      monthly_calls: 3750000
+      cost_per_1k_calls_usd: 0.068
+
+    - plan: Professional
+      monthly_cost_usd: 764.15
+      monthly_calls: 11250000
+      cost_per_1k_calls_usd: 0.068
+
+    - plan: Enterprise
+      monthly_cost_usd: custom
+      monthly_calls: custom
+      cost_per_1k_calls_usd: custom
