@@ -54,6 +54,8 @@ apis:
     properties:
       - type: Documentation
         url: https://docs.fastnear.com/
+      - type: OpenAPI
+        url: https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/openapi/fastnear-api.json
       - type: Plans
         url: https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/fastnear-api.yml
       - type: RateLimits
@@ -77,6 +79,8 @@ apis:
     properties:
       - type: Documentation
         url: https://api.nearblocks.io/api-docs/
+      - type: OpenAPI
+        url: https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/openapi/nearblocks-api.json
       - type: Plans
         url: https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/nearblocks-api.yml
       - type: RateLimits
