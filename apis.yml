@@ -1,6 +1,6 @@
 name: NEAR Protocol
 description: NEAR Protocol provides blockchain infrastructure with JSON-RPC 2.0 and REST APIs for querying accounts, transactions, tokens, NFTs, and staking data on the NEAR network. Developers can interact with the NEAR blockchain through the official RPC endpoints, the FASTNEAR indexed REST API, and the NearBlocks explorer API.
-image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
 tags:
   - Blockchain
   - Web3
