@@ -94,3 +94,8 @@ apis:
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
+common:
+- type: DomainSecurity
+  url: security/near-domain-security.yml
+- type: Authentication
+  url: authentication/near-authentication.yml
