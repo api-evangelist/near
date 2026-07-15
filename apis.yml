@@ -95,6 +95,8 @@ maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
 common:
+- type: AgenticAccess
+  url: agentic-access/near-agentic-access.yml
 - type: DomainSecurity
   url: security/near-domain-security.yml
 - type: Authentication
