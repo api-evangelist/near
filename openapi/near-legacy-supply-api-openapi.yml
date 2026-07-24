@@ -1,0 +1,84 @@
+openapi: 3.0.3
+info:
+  description: Low-latency indexed account, token, and public-key lookup APIs for wallets and explorers. Embedded portal clients may forward an optional `apiKey` query parameter, but the public FastNEAR API does not require it.
+  title: FastNEAR accounts Legacy / Supply API
+  version: 3.0.3
+servers:
+- description: Mainnet
+  url: https://api.fastnear.com
+- description: Testnet
+  url: https://test.api.fastnear.com
+tags:
+- description: Deprecated.
+  name: Legacy / Supply
+paths:
+  /v1/legacy/total-supply:
+    get:
+      summary: Get total near supply
+      tags:
+      - Legacy / Supply
+      parameters:
+      - in: query
+        name: unit
+        description: Unit of Near supply. Choosing NEAR will result in a text-only response
+        schema:
+          type: string
+          enum:
+          - yoctonear
+          - near
+          default: yoctonear
+      - in: query
+        name: format
+        description: If 'coingecko', return value
+        schema:
+          type: string
+          enum:
+          - coingecko
+          default: null
+      responses:
+        '200':
+          description: Success response
+  /v1/legacy/circulating-supply:
+    get:
+      summary: Get circulating near supply
+      tags:
+      - Legacy / Supply
+      parameters:
+      - in: query
+        name: unit
+        description: Unit of Near supply. Choosing NEAR will result in a text-only response
+        schema:
+          type: string
+          enum:
+          - yoctonear
+          - near
+          default: yoctonear
+      - in: query
+        name: format
+        description: If 'coingecko', returns value
+        schema:
+          type: string
+          enum:
+          - coingecko
+          default: null
+      responses:
+        '200':
+          description: Success response
+  /v1/legacy/fees:
+    get:
+      summary: Get tokens burnt per day
+      tags:
+      - Legacy / Supply
+      parameters:
+      - in: query
+        name: period
+        description: Data period
+        schema:
+          type: string
+          enum:
+          - day
+          - week
+          default: day
+      responses:
+        '200':
+          description: Success response

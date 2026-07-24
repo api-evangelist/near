@@ -1,0 +1,226 @@
+openapi: 3.0.3
+info:
+  description: Low-latency indexed account, token, and public-key lookup APIs for wallets and explorers. Embedded portal clients may forward an optional `apiKey` query parameter, but the public FastNEAR API does not require it.
+  title: FastNEAR accounts fungible-tokens API
+  version: 3.0.3
+servers:
+- description: Mainnet
+  url: https://api.fastnear.com
+- description: Testnet
+  url: https://test.api.fastnear.com
+tags:
+- name: fungible-tokens
+paths:
+  /v0/account/{account_id}/ft:
+    get:
+      description: Fetch the fungible token contract IDs an account has held — contract IDs only, no balances.
+      operationId: account_ft_v0
+      parameters:
+      - description: NEAR account ID to inspect.
+        example: here.tg
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: Optional API key forwarded by embedded portal clients. The public FastNEAR API does not require it.
+        in: query
+        name: apiKey
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                account_id: here.tg
+                contract_ids:
+                - wrap.near
+                - usdt.tether-token.near
+              schema:
+                $ref: '#/components/schemas/V0ContractsResponse'
+          description: Fungible token contract IDs for the requested account
+        '400':
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Bad Request
+        '500':
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Internal Server Error
+      summary: Lookup fungible token contract IDs for an account
+      tags:
+      - fungible-tokens
+      x-fastnear-slug: account_ft
+      x-fastnear-title: FastNEAR API - V0 Account FT
+  /v1/account/{account_id}/ft:
+    get:
+      description: Fetch an account's fungible token balance rows, each with contract ID, balance, and last-update block height.
+      operationId: account_ft_v1
+      parameters:
+      - description: NEAR account ID to inspect.
+        example: here.tg
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: Optional API key forwarded by embedded portal clients. The public FastNEAR API does not require it.
+        in: query
+        name: apiKey
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                account_id: here.tg
+                tokens:
+                - balance: '1000000000000000000000000'
+                  contract_id: wrap.near
+                  last_update_block_height: null
+              schema:
+                $ref: '#/components/schemas/V1FtResponse'
+          description: Indexed fungible token rows for the requested account
+        '400':
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Bad Request
+        '500':
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Internal Server Error
+      summary: Lookup indexed fungible token rows for an account
+      tags:
+      - fungible-tokens
+      x-fastnear-slug: account_ft
+      x-fastnear-title: FastNEAR API - V1 Account FT
+  /v1/ft/{token_id}/top:
+    get:
+      description: Fetch the top-balance holder list for a fungible token contract, ranked highest balance first.
+      operationId: ft_top_v1
+      parameters:
+      - description: Fungible token contract account ID.
+        example: wrap.near
+        in: path
+        name: token_id
+        required: true
+        schema:
+          type: string
+      - description: Optional API key forwarded by embedded portal clients. The public FastNEAR API does not require it.
+        in: query
+        name: apiKey
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                accounts:
+                - account_id: mob.near
+                  balance: '979894691374420631019486155'
+                token_id: wrap.near
+              schema:
+                $ref: '#/components/schemas/TokenAccountsResponse'
+          description: Indexed top holders for the requested fungible token
+        '400':
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Bad Request
+        '500':
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Internal Server Error
+      summary: Lookup top indexed holders for a fungible token
+      tags:
+      - fungible-tokens
+      x-fastnear-slug: ft_top
+      x-fastnear-title: FastNEAR API - V1 FT Top Holders
+components:
+  schemas:
+    V0ContractsResponse:
+      additionalProperties: false
+      properties:
+        account_id:
+          type: string
+        contract_ids:
+          items:
+            type: string
+          type: array
+      required:
+      - account_id
+      - contract_ids
+      type: object
+    TokenRow:
+      additionalProperties: false
+      properties:
+        balance:
+          nullable: true
+          type: string
+        contract_id:
+          type: string
+        last_update_block_height:
+          format: uint64
+          minimum: 0
+          nullable: true
+          type: integer
+      required:
+      - contract_id
+      - last_update_block_height
+      - balance
+      type: object
+    V1FtResponse:
+      additionalProperties: false
+      properties:
+        account_id:
+          type: string
+        tokens:
+          items:
+            $ref: '#/components/schemas/TokenRow'
+          type: array
+      required:
+      - account_id
+      - tokens
+      type: object
+    TokenAccountsResponse:
+      additionalProperties: false
+      properties:
+        accounts:
+          items:
+            $ref: '#/components/schemas/AccountBalanceRow'
+          type: array
+        token_id:
+          type: string
+      required:
+      - token_id
+      - accounts
+      type: object
+    AccountBalanceRow:
+      additionalProperties: false
+      properties:
+        account_id:
+          type: string
+        balance:
+          nullable: true
+          type: string
+      required:
+      - account_id
+      - balance
+      type: object

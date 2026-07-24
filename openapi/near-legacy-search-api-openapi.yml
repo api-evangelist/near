@@ -1,0 +1,109 @@
+openapi: 3.0.3
+info:
+  description: Low-latency indexed account, token, and public-key lookup APIs for wallets and explorers. Embedded portal clients may forward an optional `apiKey` query parameter, but the public FastNEAR API does not require it.
+  title: FastNEAR accounts Legacy / Search API
+  version: 3.0.3
+servers:
+- description: Mainnet
+  url: https://api.fastnear.com
+- description: Testnet
+  url: https://test.api.fastnear.com
+tags:
+- description: Deprecated.
+  name: Legacy / Search
+paths:
+  /v1/search:
+    get:
+      summary: Search txn by hash, block by height/hash, account by id, receipt by id, tokens by hex address
+      tags:
+      - Legacy / Search
+      parameters:
+      - in: query
+        name: keyword
+        required: true
+        description: Transaction hash / block height / account ID / receipt ID / hex address
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success response
+  /v1/search/txns:
+    get:
+      summary: Search txns by hash
+      tags:
+      - Legacy / Search
+      parameters:
+      - in: query
+        name: keyword
+        required: true
+        description: Transaction hash
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success response
+  /v1/search/blocks:
+    get:
+      summary: Search blocks by hash/height
+      tags:
+      - Legacy / Search
+      parameters:
+      - in: query
+        name: keyword
+        required: true
+        description: Block height or hash
+        schema:
+          type: array
+          items:
+            type: string
+          example:
+          - block-height
+          - block-hash
+      responses:
+        '200':
+          description: Success response
+  /v1/search/accounts:
+    get:
+      summary: Search accounts by id
+      tags:
+      - Legacy / Search
+      parameters:
+      - in: query
+        name: keyword
+        required: true
+        description: Account ID
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success response
+  /v1/search/receipts:
+    get:
+      summary: Search receipts by id
+      tags:
+      - Legacy / Search
+      parameters:
+      - in: query
+        name: keyword
+        required: true
+        description: Receipt ID
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success response
+  /v1/search/tokens:
+    get:
+      summary: Search tokens by hex address
+      tags:
+      - Legacy / Search
+      parameters:
+      - in: query
+        name: keyword
+        required: true
+        description: Token hex address
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success response

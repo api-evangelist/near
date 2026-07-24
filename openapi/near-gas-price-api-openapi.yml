@@ -1,0 +1,221 @@
+openapi: 3.0.3
+info:
+  description: Low-latency indexed account, token, and public-key lookup APIs for wallets and explorers. Embedded portal clients may forward an optional `apiKey` query parameter, but the public FastNEAR API does not require it.
+  title: FastNEAR accounts Gas Price API
+  version: 3.0.3
+servers:
+- description: Mainnet
+  url: https://api.fastnear.com
+- description: Testnet
+  url: https://test.api.fastnear.com
+tags:
+- name: Gas Price
+paths:
+  /gas_price:
+    post:
+      description: Returns gas price for a specific block_height or block_hash. Using [null] will return the most recent block's gas price.
+      operationId: gas_price
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JsonRpcRequest_for_gas_price'
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JsonRpcResponse_for_RpcGasPriceResponse_and_RpcGasPriceError'
+      tags:
+      - Gas Price
+components:
+  schemas:
+    JsonRpcRequest_for_gas_price:
+      properties:
+        id:
+          type: string
+        jsonrpc:
+          type: string
+        method:
+          enum:
+          - gas_price
+          type: string
+        params:
+          $ref: '#/components/schemas/RpcGasPriceRequest'
+      required:
+      - jsonrpc
+      - id
+      - params
+      - method
+      title: JsonRpcRequest_for_gas_price
+      type: object
+    BlockId:
+      anyOf:
+      - format: uint64
+        minimum: 0
+        title: block_height
+        type: integer
+      - $ref: '#/components/schemas/CryptoHash'
+    CryptoHash:
+      type: string
+    NearToken:
+      type: string
+    RpcGasPriceRequest:
+      properties:
+        block_id:
+          anyOf:
+          - $ref: '#/components/schemas/BlockId'
+          - enum:
+            - null
+            nullable: true
+      title: RpcGasPriceRequest
+      type: object
+    RpcGasPriceError:
+      oneOf:
+      - properties:
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
+        required:
+        - name
+        - info
+        type: object
+      - properties:
+          info:
+            type: object
+          name:
+            enum:
+            - UNKNOWN_BLOCK
+            type: string
+        required:
+        - name
+        - info
+        type: object
+    JsonRpcResponse_for_RpcGasPriceResponse_and_RpcGasPriceError:
+      oneOf:
+      - properties:
+          result:
+            $ref: '#/components/schemas/RpcGasPriceResponse'
+        required:
+        - result
+        type: object
+      - properties:
+          error:
+            $ref: '#/components/schemas/ErrorWrapper_for_RpcGasPriceError'
+        required:
+        - error
+        type: object
+      properties:
+        id:
+          type: string
+        jsonrpc:
+          type: string
+      required:
+      - jsonrpc
+      - id
+      title: JsonRpcResponse_for_RpcGasPriceResponse_and_RpcGasPriceError
+      type: object
+    ErrorWrapper_for_RpcGasPriceError:
+      oneOf:
+      - properties:
+          cause:
+            $ref: '#/components/schemas/RpcRequestValidationErrorKind'
+          name:
+            enum:
+            - REQUEST_VALIDATION_ERROR
+            type: string
+        required:
+        - name
+        - cause
+        type: object
+      - properties:
+          cause:
+            $ref: '#/components/schemas/RpcGasPriceError'
+          name:
+            enum:
+            - HANDLER_ERROR
+            type: string
+        required:
+        - name
+        - cause
+        type: object
+      - properties:
+          cause:
+            $ref: '#/components/schemas/InternalError'
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
+        required:
+        - name
+        - cause
+        type: object
+    RpcGasPriceResponse:
+      properties:
+        gas_price:
+          $ref: '#/components/schemas/NearToken'
+      required:
+      - gas_price
+      type: object
+    RpcRequestValidationErrorKind:
+      oneOf:
+      - properties:
+          info:
+            properties:
+              method_name:
+                type: string
+            required:
+            - method_name
+            type: object
+          name:
+            enum:
+            - METHOD_NOT_FOUND
+            type: string
+        required:
+        - name
+        - info
+        type: object
+      - properties:
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - PARSE_ERROR
+            type: string
+        required:
+        - name
+        - info
+        type: object
+    InternalError:
+      oneOf:
+      - properties:
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
+        required:
+        - name
+        - info
+        type: object

@@ -1,0 +1,38 @@
+openapi: 3.0.3
+info:
+  description: Low-latency indexed account, token, and public-key lookup APIs for wallets and explorers. Embedded portal clients may forward an optional `apiKey` query parameter, but the public FastNEAR API does not require it.
+  title: FastNEAR accounts Legacy / Charts API
+  version: 3.0.3
+servers:
+- description: Mainnet
+  url: https://api.fastnear.com
+- description: Testnet
+  url: https://test.api.fastnear.com
+tags:
+- description: Deprecated.
+  name: Legacy / Charts
+paths:
+  /v1/charts:
+    get:
+      summary: Get charts data
+      tags:
+      - Legacy / Charts
+      responses:
+        '200':
+          description: Success response
+  /v1/charts/latest:
+    get:
+      summary: Get latest charts data
+      tags:
+      - Legacy / Charts
+      responses:
+        '200':
+          description: Success response
+  /v1/charts/tps:
+    get:
+      summary: Get txns per second by shards chart data
+      tags:
+      - Legacy / Charts
+      responses:
+        '200':
+          description: Success response

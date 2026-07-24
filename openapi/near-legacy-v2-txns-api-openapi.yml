@@ -1,0 +1,50 @@
+openapi: 3.0.3
+info:
+  description: Low-latency indexed account, token, and public-key lookup APIs for wallets and explorers. Embedded portal clients may forward an optional `apiKey` query parameter, but the public FastNEAR API does not require it.
+  title: FastNEAR accounts Legacy / V2 Txns API
+  version: 3.0.3
+servers:
+- description: Mainnet
+  url: https://api.fastnear.com
+- description: Testnet
+  url: https://test.api.fastnear.com
+tags:
+- description: Deprecated.
+  name: Legacy / V2 Txns
+paths:
+  /v2/txns/{hash}:
+    get:
+      summary: Get txn info with receipts and execution outcomes
+      tags:
+      - Legacy / V2 Txns
+      parameters:
+      - in: path
+        name: hash
+        required: true
+        description: Transaction hash
+        schema:
+          type: string
+        examples:
+          hash:
+            value: example-txn-hash
+      responses:
+        '200':
+          description: Success response
+  /v2/txns/{hash}/receipts:
+    get:
+      summary: Get txn receipts
+      tags:
+      - Legacy / V2 Txns
+      parameters:
+      - in: path
+        name: hash
+        required: true
+        description: Transaction hash
+        schema:
+          type: string
+        examples:
+          hash:
+            value: example-txn-hash
+      responses:
+        '200':
+          description: Success response

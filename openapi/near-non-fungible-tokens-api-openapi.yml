@@ -1,0 +1,148 @@
+openapi: 3.0.3
+info:
+  description: Low-latency indexed account, token, and public-key lookup APIs for wallets and explorers. Embedded portal clients may forward an optional `apiKey` query parameter, but the public FastNEAR API does not require it.
+  title: FastNEAR accounts non-fungible-tokens API
+  version: 3.0.3
+servers:
+- description: Mainnet
+  url: https://api.fastnear.com
+- description: Testnet
+  url: https://test.api.fastnear.com
+tags:
+- name: non-fungible-tokens
+paths:
+  /v0/account/{account_id}/nft:
+    get:
+      description: Fetch the NFT contract IDs an account has held — contract IDs only, no block-height metadata.
+      operationId: account_nft_v0
+      parameters:
+      - description: NEAR account ID to inspect.
+        example: sharddog.near
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: Optional API key forwarded by embedded portal clients. The public FastNEAR API does not require it.
+        in: query
+        name: apiKey
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                account_id: sharddog.near
+                contract_ids:
+                - nft.example.near
+              schema:
+                $ref: '#/components/schemas/V0ContractsResponse'
+          description: NFT contract IDs for the requested account
+        '400':
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Bad Request
+        '500':
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Internal Server Error
+      summary: Lookup NFT contract IDs for an account
+      tags:
+      - non-fungible-tokens
+      x-fastnear-slug: account_nft
+      x-fastnear-title: FastNEAR API - V0 Account NFT
+  /v1/account/{account_id}/nft:
+    get:
+      description: Fetch NFT contract rows for an account, including block-height metadata for each contract.
+      operationId: account_nft_v1
+      parameters:
+      - description: NEAR account ID to inspect.
+        example: sharddog.near
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+      - description: Optional API key forwarded by embedded portal clients. The public FastNEAR API does not require it.
+        in: query
+        name: apiKey
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                account_id: sharddog.near
+                tokens:
+                - contract_id: nft.example.near
+                  last_update_block_height: null
+              schema:
+                $ref: '#/components/schemas/V1NftResponse'
+          description: Indexed NFT contract rows for the requested account
+        '400':
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Bad Request
+        '500':
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Internal Server Error
+      summary: Lookup indexed NFT contract rows for an account
+      tags:
+      - non-fungible-tokens
+      x-fastnear-slug: account_nft
+      x-fastnear-title: FastNEAR API - V1 Account NFT
+components:
+  schemas:
+    NftRow:
+      additionalProperties: false
+      properties:
+        contract_id:
+          type: string
+        last_update_block_height:
+          format: uint64
+          minimum: 0
+          nullable: true
+          type: integer
+      required:
+      - contract_id
+      - last_update_block_height
+      type: object
+    V0ContractsResponse:
+      additionalProperties: false
+      properties:
+        account_id:
+          type: string
+        contract_ids:
+          items:
+            type: string
+          type: array
+      required:
+      - account_id
+      - contract_ids
+      type: object
+    V1NftResponse:
+      additionalProperties: false
+      properties:
+        account_id:
+          type: string
+        tokens:
+          items:
+            $ref: '#/components/schemas/NftRow'
+          type: array
+      required:
+      - account_id
+      - tokens
+      type: object

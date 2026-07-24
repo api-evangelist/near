@@ -1,0 +1,118 @@
+openapi: 3.0.3
+info:
+  description: Low-latency indexed account, token, and public-key lookup APIs for wallets and explorers. Embedded portal clients may forward an optional `apiKey` query parameter, but the public FastNEAR API does not require it.
+  title: FastNEAR accounts system API
+  version: 3.0.3
+servers:
+- description: Mainnet
+  url: https://api.fastnear.com
+- description: Testnet
+  url: https://test.api.fastnear.com
+tags:
+- name: system
+paths:
+  /health:
+    get:
+      description: 'Ping the FastNEAR API for liveness — returns `{status: ok}` when healthy.'
+      operationId: get_health
+      parameters:
+      - description: Optional API key forwarded by embedded portal clients. The public FastNEAR API does not require it.
+        in: query
+        name: apiKey
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                status: ok
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+          description: Health status string
+        '500':
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Internal Server Error
+      summary: Get service health
+      tags:
+      - system
+      x-fastnear-slug: health
+      x-fastnear-title: FastNEAR API - Health
+  /status:
+    get:
+      description: Check the current indexed block height, latency, and deployed service version.
+      operationId: get_status
+      parameters:
+      - description: Optional API key forwarded by embedded portal clients. The public FastNEAR API does not require it.
+        in: query
+        name: apiKey
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                sync_balance_block_height: 129734103
+                sync_block_height: 129734103
+                sync_block_timestamp_nanosec: '1728256282197171397'
+                sync_latency_sec: 4.671730603
+                version: 0.10.0
+              schema:
+                $ref: '#/components/schemas/StatusResponse'
+          description: Current FastNEAR API sync status
+        '500':
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Internal Server Error
+      summary: Get service sync status
+      tags:
+      - system
+      x-fastnear-slug: status
+      x-fastnear-title: FastNEAR API - Status
+components:
+  schemas:
+    HealthResponse:
+      additionalProperties: false
+      properties:
+        status:
+          type: string
+      required:
+      - status
+      type: object
+    StatusResponse:
+      additionalProperties: false
+      properties:
+        sync_balance_block_height:
+          format: uint64
+          minimum: 0
+          nullable: true
+          type: integer
+        sync_block_height:
+          format: uint64
+          minimum: 0
+          nullable: true
+          type: integer
+        sync_block_timestamp_nanosec:
+          nullable: true
+          type: string
+        sync_latency_sec:
+          format: double
+          nullable: true
+          type: number
+        version:
+          type: string
+      required:
+      - version
+      - sync_block_height
+      - sync_latency_sec
+      - sync_block_timestamp_nanosec
+      - sync_balance_block_height
+      type: object

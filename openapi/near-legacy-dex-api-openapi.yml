@@ -1,0 +1,195 @@
+openapi: 3.0.3
+info:
+  description: Low-latency indexed account, token, and public-key lookup APIs for wallets and explorers. Embedded portal clients may forward an optional `apiKey` query parameter, but the public FastNEAR API does not require it.
+  title: FastNEAR accounts Legacy / DEX API
+  version: 3.0.3
+servers:
+- description: Mainnet
+  url: https://api.fastnear.com
+- description: Testnet
+  url: https://test.api.fastnear.com
+tags:
+- description: Deprecated.
+  name: Legacy / DEX
+paths:
+  /v1/dex:
+    get:
+      summary: Get top dex pairs by pagination
+      tags:
+      - Legacy / DEX
+      parameters:
+      - in: query
+        name: search
+        description: Search keyword
+        schema:
+          type: string
+      - in: query
+        name: page
+        description: Page number
+        schema:
+          type: number
+          minimum: 1
+          maximum: 100
+          default: 1
+      - in: query
+        name: per_page
+        description: Number of items per page
+        schema:
+          type: number
+          minimum: 1
+          maximum: 50
+          default: 50
+      - in: query
+        name: sort
+        description: Sort field
+        schema:
+          type: string
+          enum:
+          - volume
+          - txns
+          - makers
+          default: volume
+      - in: query
+        name: order
+        description: Sort order
+        schema:
+          type: string
+          enum:
+          - desc
+          - asc
+          default: desc
+      responses:
+        '200':
+          description: Success response
+  /v1/dex/count:
+    get:
+      summary: Get top dex pairs count
+      tags:
+      - Legacy / DEX
+      parameters:
+      - in: query
+        name: search
+        description: Search keyword
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success response
+  /v1/dex/pairs/{pair}:
+    get:
+      summary: Get dex pair info
+      tags:
+      - Legacy / DEX
+      parameters:
+      - in: path
+        name: pair
+        required: true
+        description: Pair ID
+        schema:
+          type: string
+        examples:
+          pair:
+            value: example-pair-id
+      responses:
+        '200':
+          description: Success response
+  /v1/dex/pairs/{pair}/txns:
+    get:
+      summary: Get dex pair txns by pagination
+      tags:
+      - Legacy / DEX
+      parameters:
+      - in: path
+        name: pair
+        required: true
+        description: Pair ID
+        schema:
+          type: string
+        examples:
+          pair:
+            value: example-pair-id
+      - in: query
+        name: a
+        description: Maker account ID
+        schema:
+          type: string
+      - in: query
+        name: cursor
+        description: Next page cursor
+        schema:
+          type: string
+      - in: query
+        name: per_page
+        description: Number of items per page. Each increment of 25 will count towards rate limit. For example, per page 50 will use 2 credits.
+        schema:
+          type: number
+          minimum: 1
+          maximum: 250
+          default: 25
+      responses:
+        '200':
+          description: Success response
+  /v1/dex/pairs/{pair}/txns/count:
+    get:
+      summary: Get dex pair txns count
+      tags:
+      - Legacy / DEX
+      parameters:
+      - in: path
+        name: pair
+        required: true
+        description: Pair ID
+        schema:
+          type: string
+        examples:
+          pair:
+            value: example-pair-id
+      - in: query
+        name: a
+        description: Maker account ID
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success response
+  /v1/dex/pairs/{pair}/charts:
+    get:
+      summary: Get dex pair chart data
+      tags:
+      - Legacy / DEX
+      parameters:
+      - in: path
+        name: pair
+        required: true
+        description: Pair ID
+        schema:
+          type: string
+        examples:
+          pair:
+            value: example-pair-id
+      - in: query
+        name: interval
+        required: true
+        description: Time interval
+        schema:
+          type: string
+          enum:
+          - 1m
+          - 1h
+          - 1d
+          default: 1m
+      - in: query
+        name: to
+        required: true
+        description: End timestamp
+        schema:
+          type: number
+      - in: query
+        name: limit
+        required: true
+        description: Number of rows
+        schema:
+          type: number
+      responses:
+        '200':
+          description: Success response

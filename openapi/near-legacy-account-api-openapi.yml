@@ -1,0 +1,964 @@
+openapi: 3.0.3
+info:
+  description: Low-latency indexed account, token, and public-key lookup APIs for wallets and explorers. Embedded portal clients may forward an optional `apiKey` query parameter, but the public FastNEAR API does not require it.
+  title: FastNEAR accounts Legacy / Account API
+  version: 3.0.3
+servers:
+- description: Mainnet
+  url: https://api.fastnear.com
+- description: Testnet
+  url: https://test.api.fastnear.com
+tags:
+- description: Deprecated.
+  name: Legacy / Account
+paths:
+  /v1/account/{account}:
+    get:
+      summary: Get account info
+      tags:
+      - Legacy / Account
+      parameters:
+      - in: path
+        name: account
+        required: true
+        description: Account ID
+        schema:
+          type: string
+        examples:
+          account:
+            value: example-account-id
+      responses:
+        '200':
+          description: Success response
+  /v1/account/{account}/contract:
+    get:
+      summary: Get contract info
+      tags:
+      - Legacy / Account
+      parameters:
+      - in: path
+        name: account
+        required: true
+        description: Account ID
+        schema:
+          type: string
+        examples:
+          account:
+            value: example-account-id
+      responses:
+        '200':
+          description: Success response
+  /v1/account/{account}/contract/deployments:
+    get:
+      summary: Get contract deployment records (first & last)
+      tags:
+      - Legacy / Account
+      parameters:
+      - in: path
+        name: account
+        required: true
+        description: Account ID
+        schema:
+          type: string
+        examples:
+          account:
+            value: example-account-id
+      responses:
+        '200':
+          description: Success response
+  /v1/account/{account}/contract/parse:
+    get:
+      summary: Get parsed contract info
+      tags:
+      - Legacy / Account
+      parameters:
+      - in: path
+        name: account
+        required: true
+        description: Account ID
+        schema:
+          type: string
+        examples:
+          account:
+            value: example-account-id
+      responses:
+        '200':
+          description: Success response
+  /v1/account/{account}/contract/{method}:
+    get:
+      summary: Get latest action args for contract method
+      tags:
+      - Legacy / Account
+      parameters:
+      - in: path
+        name: account
+        required: true
+        description: Account ID
+        schema:
+          type: string
+        examples:
+          account:
+            value: example-account-id
+      - in: path
+        name: method
+        required: true
+        description: Method name
+        schema:
+          type: string
+        examples:
+          method:
+            value: example-method
+      responses:
+        '200':
+          description: Success response
+  /v1/account/{account}/inventory:
+    get:
+      summary: Get account ft/nft token inventory
+      tags:
+      - Legacy / Account
+      parameters:
+      - in: path
+        name: account
+        required: true
+        description: Account ID
+        schema:
+          type: string
+        examples:
+          account:
+            value: example-account-id
+      responses:
+        '200':
+          description: Success response
+  /v1/account/{account}/tokens:
+    get:
+      summary: Get possible ft/nft token contracts
+      tags:
+      - Legacy / Account
+      parameters:
+      - in: path
+        name: account
+        required: true
+        description: Account ID
+        schema:
+          type: string
+        examples:
+          account:
+            value: example-account-id
+      responses:
+        '200':
+          description: Success response
+  /v1/account/{account}/keys:
+    get:
+      summary: Get access keys by pagination
+      tags:
+      - Legacy / Account
+      parameters:
+      - in: path
+        name: account
+        required: true
+        description: Account ID
+        schema:
+          type: string
+        examples:
+          account:
+            value: example-account-id
+      - in: query
+        name: page
+        description: Page number
+        schema:
+          type: number
+          minimum: 1
+          maximum: 200
+          default: 1
+      - in: query
+        name: per_page
+        description: Number of items per page. Each increment of 25 will count towards rate limit. For example, per page 50 will use 2 credits.
+        schema:
+          type: number
+          minimum: 1
+          maximum: 250
+          default: 25
+      - in: query
+        name: order
+        description: Sort order
+        schema:
+          type: string
+          enum:
+          - desc
+          - asc
+          default: desc
+      responses:
+        '200':
+          description: Success response
+  /v1/account/{account}/keys/count:
+    get:
+      summary: Get estimated access keys count
+      tags:
+      - Legacy / Account
+      parameters:
+      - in: path
+        name: account
+        required: true
+        description: Account ID
+        schema:
+          type: string
+        examples:
+          account:
+            value: example-account-id
+      responses:
+        '200':
+          description: Success response
+  /v1/account/{account}/txns:
+    get:
+      summary: Get account txns by pagination (NOT RECOMMENDED)
+      description: '**NOT RECOMMENDED**: This endpoint is no longer recommended for large accounts due to performance issue.
+
+        For large accounts, it is better to query txns and receipts separately:
+
+        - account/{account_id}/txns-only
+
+        - account/{account_id}/receipts
+
+        '
+      tags:
+      - Legacy / Account
+      parameters:
+      - in: path
+        name: account
+        required: true
+        description: Account ID
+        schema:
+          type: string
+        examples:
+          account:
+            value: example-account-id
+      - in: query
+        name: from
+        description: Sender account ID
+        schema:
+          type: string
+      - in: query
+        name: to
+        description: Receiver account ID
+        schema:
+          type: string
+      - in: query
+        name: action
+        description: Action kind
+        schema:
+          type: string
+      - in: query
+        name: method
+        description: Function call method
+        schema:
+          type: string
+      - in: query
+        name: after_block
+        description: Block height
+        schema:
+          type: string
+      - in: query
+        name: before_block
+        description: Block height
+        schema:
+          type: string
+      - in: query
+        name: after_date
+        description: Date in YYYY-MM-DD format
+        schema:
+          type: string
+      - in: query
+        name: before_date
+        description: Date in YYYY-MM-DD format
+        schema:
+          type: string
+      - in: query
+        name: cursor
+        description: Next page cursor, takes precedence over 'page' if provided
+        schema:
+          type: string
+      - in: query
+        name: page
+        description: Page number
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 200
+          default: 1
+      - in: query
+        name: per_page
+        description: Number of items per page. Each increment of 25 will count towards rate limit. For example, per page 50 will use 2 credits.
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 250
+          default: 25
+      - in: query
+        name: order
+        description: Sort order
+        schema:
+          type: string
+          enum:
+          - desc
+          - asc
+          default: desc
+      responses:
+        '200':
+          description: Success response
+  /v1/account/{account}/txns/count:
+    get:
+      summary: Get estimated account txns count
+      tags:
+      - Legacy / Account
+      parameters:
+      - in: path
+        name: account
+        required: true
+        description: Account ID
+        schema:
+          type: string
+        examples:
+          account:
+            value: example-account-id
+      - in: query
+        name: from
+        description: Sender account ID
+        schema:
+          type: string
+      - in: query
+        name: to
+        description: Receiver account ID
+        schema:
+          type: string
+      - in: query
+        name: action
+        description: Action kind
+        schema:
+          type: string
+      - in: query
+        name: method
+        description: Function call method
+        schema:
+          type: string
+      - in: query
+        name: after_block
+        description: Block height
+        schema:
+          type: string
+      - in: query
+        name: before_block
+        description: Block height
+        schema:
+          type: string
+      - in: query
+        name: after_date
+        description: Date in YYYY-MM-DD format
+        schema:
+          type: string
+      - in: query
+        name: before_date
+        description: Date in YYYY-MM-DD format
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success response
+  /v1/account/{account}/txns-only:
+    get:
+      summary: Get account txns without receipts by pagination
+      tags:
+      - Legacy / Account
+      parameters:
+      - in: path
+        name: account
+        required: true
+        description: Account ID
+        schema:
+          type: string
+        examples:
+          account:
+            value: example-account-id
+      - in: query
+        name: from
+        description: Sender account ID
+        schema:
+          type: string
+      - in: query
+        name: to
+        description: Receiver account ID
+        schema:
+          type: string
+      - in: query
+        name: after_date
+        description: Date in YYYY-MM-DD format
+        schema:
+          type: string
+      - in: query
+        name: before_date
+        description: Date in YYYY-MM-DD format
+        schema:
+          type: string
+      - in: query
+        name: cursor
+        description: Next page cursor, takes precedence over 'page' if provided
+        schema:
+          type: string
+      - in: query
+        name: per_page
+        description: Number of items per page. Each increment of 25 will count towards rate limit. For example, per page 50 will use 2 credits.
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 250
+          default: 25
+      - in: query
+        name: order
+        description: Sort order
+        schema:
+          type: string
+          enum:
+          - desc
+          - asc
+          default: desc
+      responses:
+        '200':
+          description: Success response
+  /v1/account/{account}/txns-only/count:
+    get:
+      summary: Get estimated account txns without receipts count
+      tags:
+      - Legacy / Account
+      parameters:
+      - in: path
+        name: account
+        required: true
+        description: Account ID
+        schema:
+          type: string
+        examples:
+          account:
+            value: example-account-id
+      - in: query
+        name: from
+        description: Sender account ID
+        schema:
+          type: string
+      - in: query
+        name: to
+        description: Receiver account ID
+        schema:
+          type: string
+      - in: query
+        name: after_date
+        description: Date in YYYY-MM-DD format
+        schema:
+          type: string
+      - in: query
+        name: before_date
+        description: Date in YYYY-MM-DD format
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success response
+  /v1/account/{account}/receipts:
+    get:
+      summary: Get account receipts by pagination
+      tags:
+      - Legacy / Account
+      parameters:
+      - in: path
+        name: account
+        required: true
+        description: Account ID
+        schema:
+          type: string
+        examples:
+          account:
+            value: example-account-id
+      - in: query
+        name: from
+        description: Sender account ID
+        schema:
+          type: string
+      - in: query
+        name: to
+        description: Receiver account ID
+        schema:
+          type: string
+      - in: query
+        name: action
+        description: Action kind
+        schema:
+          type: string
+      - in: query
+        name: method
+        description: Function call method
+        schema:
+          type: string
+      - in: query
+        name: after_date
+        description: Date in YYYY-MM-DD format
+        schema:
+          type: string
+      - in: query
+        name: before_date
+        description: Date in YYYY-MM-DD format
+        schema:
+          type: string
+      - in: query
+        name: cursor
+        description: Next page cursor, takes precedence over 'page' if provided
+        schema:
+          type: string
+      - in: query
+        name: per_page
+        description: Number of items per page. Each increment of 25 will count towards rate limit. For example, per page 50 will use 2 credits.
+        schema:
+          type: integer
+          default: 25
+          minimum: 1
+          maximum: 250
+      - in: query
+        name: order
+        description: Sort order
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+          default: desc
+      responses:
+        '200':
+          description: Success response
+  /v1/account/{account}/receipts/count:
+    get:
+      summary: Get estimated account receipts count
+      tags:
+      - Legacy / Account
+      parameters:
+      - in: path
+        name: account
+        required: true
+        description: Account ID
+        schema:
+          type: string
+        examples:
+          account:
+            value: example-account-id
+      - in: query
+        name: from
+        description: Sender account ID
+        schema:
+          type: string
+      - in: query
+        name: to
+        description: Receiver account ID
+        schema:
+          type: string
+      - in: query
+        name: action
+        description: Action kind
+        schema:
+          type: string
+      - in: query
+        name: method
+        description: Function call method
+        schema:
+          type: string
+      - in: query
+        name: after_date
+        description: Date in YYYY-MM-DD format
+        schema:
+          type: string
+      - in: query
+        name: before_date
+        description: Date in YYYY-MM-DD format
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success response
+  /v1/account/{account}/ft-txns:
+    get:
+      summary: Get account token txns by pagination
+      tags:
+      - Legacy / Account
+      parameters:
+      - in: path
+        name: account
+        required: true
+        description: Account ID
+        schema:
+          type: string
+        examples:
+          account:
+            value: example-account-id
+      - in: query
+        name: involved
+        description: Involved account ID
+        schema:
+          type: string
+      - in: query
+        name: contract
+        description: Contract account ID
+        schema:
+          type: string
+      - in: query
+        name: event
+        description: Event kind
+        schema:
+          type: string
+      - in: query
+        name: after_date
+        description: Date in YYYY-MM-DD format
+        schema:
+          type: string
+      - in: query
+        name: before_date
+        description: Date in YYYY-MM-DD format
+        schema:
+          type: string
+      - in: query
+        name: cursor
+        description: Next page cursor, takes precedence over 'page' if provided
+        schema:
+          type: string
+          minLength: 36
+          maxLength: 36
+      - in: query
+        name: page
+        description: Page number
+        schema:
+          type: integer
+          default: 1
+          minimum: 1
+          maximum: 200
+      - in: query
+        name: per_page
+        description: Number of items per page. Each increment of 25 will count towards rate limit. For example, per page 50 will use 2 credits.
+        schema:
+          type: integer
+          default: 25
+          minimum: 1
+          maximum: 250
+      - in: query
+        name: order
+        description: Sort order
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+          default: desc
+      responses:
+        '200':
+          description: Success response
+  /v1/account/{account}/ft-txns/count:
+    get:
+      summary: Get estimated account token txns count
+      tags:
+      - Legacy / Account
+      parameters:
+      - in: path
+        name: account
+        required: true
+        description: Account ID
+        schema:
+          type: string
+        examples:
+          account:
+            value: example-account-id
+      - in: query
+        name: involved
+        description: Involved account ID
+        schema:
+          type: string
+      - in: query
+        name: contract
+        description: Contract account ID
+        schema:
+          type: string
+      - in: query
+        name: event
+        description: Event kind
+        schema:
+          type: string
+      - in: query
+        name: after_date
+        description: Date in YYYY-MM-DD format
+        schema:
+          type: string
+      - in: query
+        name: before_date
+        description: Date in YYYY-MM-DD format
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success response
+  /v1/account/{account}/nft-txns:
+    get:
+      summary: Get account nft txns by pagination
+      tags:
+      - Legacy / Account
+      parameters:
+      - in: path
+        name: account
+        required: true
+        description: Account ID
+        schema:
+          type: string
+        examples:
+          account:
+            value: example-account-id
+      - in: query
+        name: involved
+        description: Involved account ID
+        schema:
+          type: string
+      - in: query
+        name: event
+        description: Event kind
+        schema:
+          type: string
+      - in: query
+        name: after_date
+        description: Date in YYYY-MM-DD format
+        schema:
+          type: string
+      - in: query
+        name: before_date
+        description: Date in YYYY-MM-DD format
+        schema:
+          type: string
+      - in: query
+        name: cursor
+        description: Next page cursor, takes precedence over 'page' if provided
+        schema:
+          type: string
+          minLength: 36
+          maxLength: 36
+      - in: query
+        name: page
+        description: Page number
+        schema:
+          type: integer
+          default: 1
+          minimum: 1
+          maximum: 200
+      - in: query
+        name: per_page
+        description: Number of items per page. Each increment of 25 will count towards rate limit. For example, per page 50 will use 2 credits.
+        schema:
+          type: integer
+          default: 25
+          minimum: 1
+          maximum: 250
+      - in: query
+        name: order
+        description: Sort order
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+          default: desc
+      responses:
+        '200':
+          description: Success response
+  /v1/account/{account}/nft-txns/count:
+    get:
+      summary: Get estimated account nft txns count
+      tags:
+      - Legacy / Account
+      parameters:
+      - in: path
+        name: account
+        required: true
+        description: Account ID
+        schema:
+          type: string
+        examples:
+          account:
+            value: example-account-id
+      - in: query
+        name: involved
+        description: Involved account ID
+        schema:
+          type: string
+      - in: query
+        name: event
+        description: Event kind
+        schema:
+          type: string
+      - in: query
+        name: after_date
+        description: Date in YYYY-MM-DD format
+        schema:
+          type: string
+      - in: query
+        name: before_date
+        description: Date in YYYY-MM-DD format
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success response
+  /v1/account/{account}/stake-txns:
+    get:
+      summary: Get account stake txns by pagination
+      tags:
+      - Legacy / Account
+      parameters:
+      - in: path
+        name: account
+        required: true
+        description: Account ID
+        schema:
+          type: string
+        examples:
+          account:
+            value: example-account-id
+      - in: query
+        name: from
+        description: Sender account ID
+        schema:
+          type: string
+      - in: query
+        name: to
+        description: Receiver account ID
+        schema:
+          type: string
+      - in: query
+        name: after_date
+        description: Date in YYYY-MM-DD format
+        schema:
+          type: string
+      - in: query
+        name: before_date
+        description: Date in YYYY-MM-DD format
+        schema:
+          type: string
+      - in: query
+        name: cursor
+        description: Next page cursor, takes precedence over 'page' if provided
+        schema:
+          type: string
+      - in: query
+        name: page
+        description: Page number
+        schema:
+          type: integer
+          default: 1
+          minimum: 1
+          maximum: 200
+      - in: query
+        name: per_page
+        description: Number of items per page. Each increment of 25 will count towards rate limit. For example, per page 50 will use 2 credits.
+        schema:
+          type: integer
+          default: 25
+          minimum: 1
+          maximum: 250
+      - in: query
+        name: order
+        description: Sort order
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+          default: desc
+      responses:
+        '200':
+          description: Success response
+  /v1/account/{account}/stake-txns/count:
+    get:
+      summary: Get estimated account stake txns count
+      tags:
+      - Legacy / Account
+      parameters:
+      - in: path
+        name: account
+        required: true
+        description: Account ID
+        schema:
+          type: string
+        examples:
+          account:
+            value: example-account-id
+      - in: query
+        name: from
+        description: Sender account ID
+        schema:
+          type: string
+      - in: query
+        name: to
+        description: Receiver account ID
+        schema:
+          type: string
+      - in: query
+        name: after_date
+        description: Date in YYYY-MM-DD format
+        schema:
+          type: string
+      - in: query
+        name: before_date
+        description: Date in YYYY-MM-DD format
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success response
+  /v1/account/{account}/activities:
+    get:
+      summary: Get account balance change activities by pagination
+      tags:
+      - Legacy / Account
+      parameters:
+      - in: path
+        name: account
+        required: true
+        description: Account ID
+        schema:
+          type: string
+        examples:
+          account:
+            value: example-account-id
+      - in: query
+        name: cursor
+        description: Next page cursor, takes precedence over 'page' if provided
+        schema:
+          type: string
+          minLength: 36
+          maxLength: 36
+      - in: query
+        name: per_page
+        description: Number of items per page. Each increment of 25 will count towards rate limit. For example, per page 50 will use 2 credits.
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 250
+          default: 25
+      responses:
+        '200':
+          description: Success response
+  /v1/account/{account}/activities/count:
+    get:
+      summary: Get estimated account balance change activities count
+      tags:
+      - Legacy / Account
+      parameters:
+      - in: path
+        name: account
+        required: true
+        description: Account ID
+        schema:
+          type: string
+        examples:
+          account:
+            value: example-account-id
+      responses:
+        '200':
+          description: Success response

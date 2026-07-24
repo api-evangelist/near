@@ -1,0 +1,36 @@
+openapi: 3.0.3
+info:
+  description: Low-latency indexed account, token, and public-key lookup APIs for wallets and explorers. Embedded portal clients may forward an optional `apiKey` query parameter, but the public FastNEAR API does not require it.
+  title: FastNEAR accounts Legacy / Stats API
+  version: 3.0.3
+servers:
+- description: Mainnet
+  url: https://api.fastnear.com
+- description: Testnet
+  url: https://test.api.fastnear.com
+tags:
+- description: Deprecated.
+  name: Legacy / Stats
+paths:
+  /v1/stats:
+    get:
+      summary: Get stats
+      tags:
+      - Legacy / Stats
+      responses:
+        '200':
+          description: Success response
+  /v1/stats/price:
+    get:
+      summary: Get near price
+      tags:
+      - Legacy / Stats
+      parameters:
+      - in: query
+        name: date
+        description: Date in YYYY-MM-DD format
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success response

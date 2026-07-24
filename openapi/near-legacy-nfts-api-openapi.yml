@@ -1,0 +1,475 @@
+openapi: 3.0.3
+info:
+  description: Low-latency indexed account, token, and public-key lookup APIs for wallets and explorers. Embedded portal clients may forward an optional `apiKey` query parameter, but the public FastNEAR API does not require it.
+  title: FastNEAR accounts Legacy / NFTs API
+  version: 3.0.3
+servers:
+- description: Mainnet
+  url: https://api.fastnear.com
+- description: Testnet
+  url: https://test.api.fastnear.com
+tags:
+- description: Deprecated.
+  name: Legacy / NFTs
+paths:
+  /v1/nfts:
+    get:
+      summary: Get top NFTs by pagination
+      tags:
+      - Legacy / NFTs
+      parameters:
+      - in: query
+        name: search
+        description: Search keyword
+        schema:
+          type: string
+      - in: query
+        name: page
+        description: Page number
+        schema:
+          type: number
+          minimum: 1
+          maximum: 100
+          default: 1
+      - in: query
+        name: per_page
+        description: Number of items per page
+        schema:
+          type: number
+          minimum: 1
+          maximum: 50
+          default: 50
+      - in: query
+        name: sort
+        description: Sort field
+        schema:
+          type: string
+          enum:
+          - holders
+          - tokens
+          - txns_day
+          default: txns_day
+      - in: query
+        name: order
+        description: Sort order
+        schema:
+          type: string
+          enum:
+          - desc
+          - asc
+          default: desc
+      responses:
+        '200':
+          description: Success response
+  /v1/nfts/count:
+    get:
+      summary: Get top NFTs count
+      tags:
+      - Legacy / NFTs
+      parameters:
+      - in: query
+        name: search
+        description: Search keyword
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success response
+  /v1/nfts/txns:
+    get:
+      summary: Get NFT transactions by pagination
+      tags:
+      - Legacy / NFTs
+      parameters:
+      - in: query
+        name: cursor
+        description: Next page cursor, takes precedence over 'page' if provided
+        schema:
+          type: string
+          minLength: 36
+          maxLength: 36
+      - in: query
+        name: page
+        description: Page number
+        schema:
+          type: number
+          minimum: 1
+          maximum: 200
+          default: 1
+      - in: query
+        name: per_page
+        description: Number of items per page
+        schema:
+          type: number
+          minimum: 1
+          maximum: 250
+          default: 25
+      responses:
+        '200':
+          description: Success response
+  /v1/nfts/txns/count:
+    get:
+      summary: Get estimated NFT transactions count
+      tags:
+      - Legacy / NFTs
+      responses:
+        '200':
+          description: Success response
+  /v1/nfts/{contract}:
+    get:
+      summary: Get NFT info
+      tags:
+      - Legacy / NFTs
+      parameters:
+      - in: path
+        name: contract
+        required: true
+        description: Contract ID
+        schema:
+          type: string
+        examples:
+          contract:
+            value: example-contract-id
+      responses:
+        '200':
+          description: Success response
+  /v1/nfts/{contract}/txns:
+    get:
+      summary: Get NFT transactions by pagination
+      tags:
+      - Legacy / NFTs
+      parameters:
+      - in: path
+        name: contract
+        required: true
+        description: Contract ID
+        schema:
+          type: string
+        examples:
+          contract:
+            value: example-contract-id
+      - in: query
+        name: account
+        description: Affected account ID
+        schema:
+          type: string
+      - in: query
+        name: event
+        description: Event type
+        schema:
+          type: string
+          enum:
+          - MINT
+          - BURN
+          - TRANSFER
+      - in: query
+        name: cursor
+        description: Next page cursor, takes precedence over 'page' if provided
+        schema:
+          type: string
+          minLength: 36
+          maxLength: 36
+      - in: query
+        name: page
+        description: Page number
+        schema:
+          type: number
+          minimum: 1
+          maximum: 200
+          default: 1
+      - in: query
+        name: per_page
+        description: Number of items per page
+        schema:
+          type: number
+          minimum: 1
+          maximum: 250
+          default: 25
+      - in: query
+        name: order
+        description: Sort order
+        schema:
+          type: string
+          enum:
+          - desc
+          - asc
+          default: desc
+      responses:
+        '200':
+          description: Success response
+  /v1/nfts/{contract}/txns/count:
+    get:
+      summary: Get estimated NFT transaction count
+      tags:
+      - Legacy / NFTs
+      parameters:
+      - in: path
+        name: contract
+        required: true
+        description: Contract ID
+        schema:
+          type: string
+        examples:
+          contract:
+            value: example-contract-id
+      - in: query
+        name: account
+        description: Affected account ID
+        schema:
+          type: string
+      - in: query
+        name: event
+        description: Event type
+        schema:
+          type: string
+          enum:
+          - MINT
+          - BURN
+          - TRANSFER
+      responses:
+        '200':
+          description: Success response
+  /v1/nfts/{contract}/holders:
+    get:
+      summary: Get NFT holders by pagination
+      tags:
+      - Legacy / NFTs
+      parameters:
+      - in: path
+        name: contract
+        required: true
+        description: Contract ID
+        schema:
+          type: string
+        examples:
+          contract:
+            value: example-contract-id
+      - in: query
+        name: page
+        description: Page number
+        schema:
+          type: number
+          minimum: 1
+          maximum: 200
+          default: 1
+      - in: query
+        name: per_page
+        description: Number of items per page
+        schema:
+          type: number
+          minimum: 1
+          maximum: 250
+          default: 25
+      - in: query
+        name: order
+        description: Sort order
+        schema:
+          type: string
+          enum:
+          - desc
+          - asc
+          default: desc
+      responses:
+        '200':
+          description: Success response
+  /v1/nfts/{contract}/holders/count:
+    get:
+      summary: Get estimated NFT holders count
+      tags:
+      - Legacy / NFTs
+      parameters:
+      - in: path
+        name: contract
+        required: true
+        description: Contract ID
+        schema:
+          type: string
+        examples:
+          contract:
+            value: example-contract-id
+      responses:
+        '200':
+          description: Success response
+  /v1/nfts/{contract}/tokens:
+    get:
+      summary: Get NFT tokens list by pagination
+      tags:
+      - Legacy / NFTs
+      parameters:
+      - in: path
+        name: contract
+        required: true
+        description: Contract ID
+        schema:
+          type: string
+        examples:
+          contract:
+            value: example-contract-id
+      - in: query
+        name: page
+        description: Page number
+        schema:
+          type: number
+          minimum: 1
+          maximum: 200
+          default: 1
+      - in: query
+        name: per_page
+        description: Number of items per page
+        schema:
+          type: number
+          minimum: 1
+          maximum: 250
+          default: 25
+      responses:
+        '200':
+          description: Success response
+  /v1/nfts/{contract}/tokens/count:
+    get:
+      summary: Get estimated NFT tokens count
+      tags:
+      - Legacy / NFTs
+      parameters:
+      - in: path
+        name: contract
+        required: true
+        description: Contract ID
+        schema:
+          type: string
+        examples:
+          contract:
+            value: example-contract-id
+      responses:
+        '200':
+          description: Success response
+  /v1/nfts/{contract}/tokens/{token}:
+    get:
+      summary: Get NFT token info
+      tags:
+      - Legacy / NFTs
+      parameters:
+      - in: path
+        name: contract
+        required: true
+        description: Contract ID
+        schema:
+          type: string
+        examples:
+          contract:
+            value: example-contract-id
+      - in: path
+        name: token
+        required: true
+        description: Token ID
+        schema:
+          type: string
+        examples:
+          token:
+            value: example-token-id
+      responses:
+        '200':
+          description: Success response
+  /v1/nfts/{contract}/tokens/{token}/txns:
+    get:
+      summary: Get NFT token transactions by pagination
+      tags:
+      - Legacy / NFTs
+      parameters:
+      - in: path
+        name: contract
+        required: true
+        description: Contract ID
+        schema:
+          type: string
+        examples:
+          contract:
+            value: example-contract-id
+      - in: path
+        name: token
+        required: true
+        description: Token ID
+        schema:
+          type: string
+        examples:
+          token:
+            value: example-token-id
+      - in: query
+        name: event
+        description: Event type
+        schema:
+          type: string
+          enum:
+          - MINT
+          - BURN
+          - TRANSFER
+      - in: query
+        name: cursor
+        description: Next page cursor, takes precedence over 'page' if provided
+        schema:
+          type: string
+          minLength: 36
+          maxLength: 36
+      - in: query
+        name: page
+        description: Page number
+        schema:
+          type: number
+          minimum: 1
+          maximum: 200
+          default: 1
+      - in: query
+        name: per_page
+        description: Number of items per page
+        schema:
+          type: number
+          minimum: 1
+          maximum: 250
+          default: 25
+      - in: query
+        name: order
+        description: Sort order
+        schema:
+          type: string
+          enum:
+          - desc
+          - asc
+          default: desc
+      responses:
+        '200':
+          description: Success response
+  /v1/nfts/{contract}/tokens/{token}/txns/count:
+    get:
+      summary: Get estimated NFT token transactions count
+      tags:
+      - Legacy / NFTs
+      parameters:
+      - in: path
+        name: contract
+        required: true
+        description: Contract ID
+        schema:
+          type: string
+        examples:
+          contract:
+            value: example-contract-id
+      - in: path
+        name: token
+        required: true
+        description: Token ID
+        schema:
+          type: string
+        examples:
+          token:
+            value: example-token-id
+      - in: query
+        name: event
+        description: Event type
+        schema:
+          type: string
+          enum:
+          - MINT
+          - BURN
+          - TRANSFER
+      responses:
+        '200':
+          description: Success response

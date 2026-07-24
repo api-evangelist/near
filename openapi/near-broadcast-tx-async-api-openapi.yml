@@ -1,0 +1,294 @@
+openapi: 3.0.3
+info:
+  description: Low-latency indexed account, token, and public-key lookup APIs for wallets and explorers. Embedded portal clients may forward an optional `apiKey` query parameter, but the public FastNEAR API does not require it.
+  title: FastNEAR accounts Broadcast Tx Async API
+  version: 3.0.3
+servers:
+- description: Mainnet
+  url: https://api.fastnear.com
+- description: Testnet
+  url: https://test.api.fastnear.com
+tags:
+- name: Broadcast Tx Async
+paths:
+  /broadcast_tx_async:
+    post:
+      description: '[Deprecated] Sends a transaction and immediately returns transaction hash. Consider using send_tx instead.'
+      operationId: broadcast_tx_async
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JsonRpcRequest_for_broadcast_tx_async'
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JsonRpcResponse_for_CryptoHash_and_RpcTransactionError'
+      tags:
+      - Broadcast Tx Async
+components:
+  schemas:
+    CryptoHash:
+      type: string
+    RpcTransactionError:
+      oneOf:
+      - properties:
+          info:
+            type: object
+          name:
+            enum:
+            - INVALID_TRANSACTION
+            type: string
+        required:
+        - name
+        - info
+        type: object
+      - properties:
+          name:
+            enum:
+            - DOES_NOT_TRACK_SHARD
+            type: string
+        required:
+        - name
+        type: object
+      - properties:
+          info:
+            properties:
+              transaction_hash:
+                $ref: '#/components/schemas/CryptoHash'
+            required:
+            - transaction_hash
+            type: object
+          name:
+            enum:
+            - REQUEST_ROUTED
+            type: string
+        required:
+        - name
+        - info
+        type: object
+      - properties:
+          info:
+            properties:
+              requested_transaction_hash:
+                $ref: '#/components/schemas/CryptoHash'
+            required:
+            - requested_transaction_hash
+            type: object
+          name:
+            enum:
+            - UNKNOWN_TRANSACTION
+            type: string
+        required:
+        - name
+        - info
+        type: object
+      - properties:
+          info:
+            properties:
+              debug_info:
+                type: string
+            required:
+            - debug_info
+            type: object
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
+        required:
+        - name
+        - info
+        type: object
+      - properties:
+          name:
+            enum:
+            - TIMEOUT_ERROR
+            type: string
+        required:
+        - name
+        type: object
+    SignedTransaction:
+      format: byte
+      type: string
+    JsonRpcResponse_for_CryptoHash_and_RpcTransactionError:
+      oneOf:
+      - properties:
+          result:
+            $ref: '#/components/schemas/CryptoHash'
+        required:
+        - result
+        type: object
+      - properties:
+          error:
+            $ref: '#/components/schemas/ErrorWrapper_for_RpcTransactionError'
+        required:
+        - error
+        type: object
+      properties:
+        id:
+          type: string
+        jsonrpc:
+          type: string
+      required:
+      - jsonrpc
+      - id
+      title: JsonRpcResponse_for_CryptoHash_and_RpcTransactionError
+      type: object
+    ErrorWrapper_for_RpcTransactionError:
+      oneOf:
+      - properties:
+          cause:
+            $ref: '#/components/schemas/RpcRequestValidationErrorKind'
+          name:
+            enum:
+            - REQUEST_VALIDATION_ERROR
+            type: string
+        required:
+        - name
+        - cause
+        type: object
+      - properties:
+          cause:
+            $ref: '#/components/schemas/RpcTransactionError'
+          name:
+            enum:
+            - HANDLER_ERROR
+            type: string
+        required:
+        - name
+        - cause
+        type: object
+      - properties:
+          cause:
+            $ref: '#/components/schemas/InternalError'
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
+        required:
+        - name
+        - cause
+        type: object
+    JsonRpcRequest_for_broadcast_tx_async:
+      properties:
+        id:
+          type: string
+        jsonrpc:
+          type: string
+        method:
+          enum:
+          - broadcast_tx_async
+          type: string
+        params:
+          $ref: '#/components/schemas/RpcSendTransactionRequest'
+      required:
+      - jsonrpc
+      - id
+      - params
+      - method
+      title: JsonRpcRequest_for_broadcast_tx_async
+      type: object
+    TxExecutionStatus:
+      oneOf:
+      - description: Transaction is waiting to be included into the block
+        enum:
+        - NONE
+        type: string
+      - description: Transaction is included into the block. The block may be not finalized yet
+        enum:
+        - INCLUDED
+        type: string
+      - description: 'Transaction is included into the block +
+
+          All non-refund transaction receipts finished their execution.
+
+          The corresponding blocks for tx and each receipt may be not finalized yet'
+        enum:
+        - EXECUTED_OPTIMISTIC
+        type: string
+      - description: Transaction is included into finalized block
+        enum:
+        - INCLUDED_FINAL
+        type: string
+      - description: 'Transaction is included into finalized block +
+
+          All non-refund transaction receipts finished their execution.
+
+          The corresponding blocks for each receipt may be not finalized yet'
+        enum:
+        - EXECUTED
+        type: string
+      - description: 'Transaction is included into finalized block +
+
+          Execution of all transaction receipts is finalized, including refund receipts'
+        enum:
+        - FINAL
+        type: string
+    InternalError:
+      oneOf:
+      - properties:
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
+        required:
+        - name
+        - info
+        type: object
+    RpcRequestValidationErrorKind:
+      oneOf:
+      - properties:
+          info:
+            properties:
+              method_name:
+                type: string
+            required:
+            - method_name
+            type: object
+          name:
+            enum:
+            - METHOD_NOT_FOUND
+            type: string
+        required:
+        - name
+        - info
+        type: object
+      - properties:
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - PARSE_ERROR
+            type: string
+        required:
+        - name
+        - info
+        type: object
+    RpcSendTransactionRequest:
+      properties:
+        signed_tx_base64:
+          $ref: '#/components/schemas/SignedTransaction'
+        wait_until:
+          allOf:
+          - $ref: '#/components/schemas/TxExecutionStatus'
+          default: EXECUTED_OPTIMISTIC
+      required:
+      - signed_tx_base64
+      title: RpcSendTransactionRequest
+      type: object

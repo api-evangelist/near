@@ -1,0 +1,379 @@
+openapi: 3.0.3
+info:
+  description: Low-latency indexed account, token, and public-key lookup APIs for wallets and explorers. Embedded portal clients may forward an optional `apiKey` query parameter, but the public FastNEAR API does not require it.
+  title: FastNEAR accounts EXPERIMENTAL Light Client Block Proof API
+  version: 3.0.3
+servers:
+- description: Mainnet
+  url: https://api.fastnear.com
+- description: Testnet
+  url: https://test.api.fastnear.com
+tags:
+- name: EXPERIMENTAL Light Client Block Proof
+paths:
+  /EXPERIMENTAL_light_client_block_proof:
+    post:
+      description: Returns the proofs for a transaction execution.
+      operationId: EXPERIMENTAL_light_client_block_proof
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JsonRpcRequest_for_EXPERIMENTAL_light_client_block_proof'
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JsonRpcResponse_for_RpcLightClientBlockProofResponse_and_RpcLightClientProofError'
+      tags:
+      - EXPERIMENTAL Light Client Block Proof
+components:
+  schemas:
+    CryptoHash:
+      type: string
+    RpcLightClientProofError:
+      oneOf:
+      - properties:
+          info:
+            type: object
+          name:
+            enum:
+            - UNKNOWN_BLOCK
+            type: string
+        required:
+        - name
+        - info
+        type: object
+      - properties:
+          info:
+            properties:
+              execution_outcome_shard_id:
+                $ref: '#/components/schemas/ShardId'
+              number_or_shards:
+                format: uint
+                minimum: 0
+                type: integer
+            required:
+            - number_or_shards
+            - execution_outcome_shard_id
+            type: object
+          name:
+            enum:
+            - INCONSISTENT_STATE
+            type: string
+        required:
+        - name
+        - info
+        type: object
+      - properties:
+          info:
+            properties:
+              transaction_or_receipt_id:
+                $ref: '#/components/schemas/CryptoHash'
+            required:
+            - transaction_or_receipt_id
+            type: object
+          name:
+            enum:
+            - NOT_CONFIRMED
+            type: string
+        required:
+        - name
+        - info
+        type: object
+      - properties:
+          info:
+            properties:
+              transaction_or_receipt_id:
+                $ref: '#/components/schemas/CryptoHash'
+            required:
+            - transaction_or_receipt_id
+            type: object
+          name:
+            enum:
+            - UNKNOWN_TRANSACTION_OR_RECEIPT
+            type: string
+        required:
+        - name
+        - info
+        type: object
+      - properties:
+          info:
+            properties:
+              shard_id:
+                $ref: '#/components/schemas/ShardId'
+              transaction_or_receipt_id:
+                $ref: '#/components/schemas/CryptoHash'
+            required:
+            - transaction_or_receipt_id
+            - shard_id
+            type: object
+          name:
+            enum:
+            - UNAVAILABLE_SHARD
+            type: string
+        required:
+        - name
+        - info
+        type: object
+      - properties:
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
+        required:
+        - name
+        - info
+        type: object
+    Direction:
+      enum:
+      - Left
+      - Right
+      type: string
+    MerklePathItem:
+      properties:
+        direction:
+          $ref: '#/components/schemas/Direction'
+        hash:
+          $ref: '#/components/schemas/CryptoHash'
+      required:
+      - hash
+      - direction
+      type: object
+    JsonRpcRequest_for_EXPERIMENTAL_light_client_block_proof:
+      properties:
+        id:
+          type: string
+        jsonrpc:
+          type: string
+        method:
+          enum:
+          - EXPERIMENTAL_light_client_block_proof
+          type: string
+        params:
+          $ref: '#/components/schemas/RpcLightClientBlockProofRequest'
+      required:
+      - jsonrpc
+      - id
+      - params
+      - method
+      title: JsonRpcRequest_for_EXPERIMENTAL_light_client_block_proof
+      type: object
+    BlockHeaderInnerLiteView:
+      description: A part of a state for the current head of a light client. More info [here](https://nomicon.io/ChainSpec/LightClient).
+      properties:
+        block_merkle_root:
+          allOf:
+          - $ref: '#/components/schemas/CryptoHash'
+          description: The merkle root of all the block hashes
+        epoch_id:
+          allOf:
+          - $ref: '#/components/schemas/CryptoHash'
+          description: The epoch to which the block that is the current known head belongs
+        height:
+          format: uint64
+          minimum: 0
+          type: integer
+        next_bp_hash:
+          allOf:
+          - $ref: '#/components/schemas/CryptoHash'
+          description: The hash of the block producers set for the next epoch
+        next_epoch_id:
+          allOf:
+          - $ref: '#/components/schemas/CryptoHash'
+          description: The epoch that will follow the current epoch
+        outcome_root:
+          $ref: '#/components/schemas/CryptoHash'
+        prev_state_root:
+          $ref: '#/components/schemas/CryptoHash'
+        timestamp:
+          description: Legacy json number. Should not be used.
+          format: uint64
+          minimum: 0
+          type: integer
+        timestamp_nanosec:
+          type: string
+      required:
+      - height
+      - epoch_id
+      - next_epoch_id
+      - prev_state_root
+      - outcome_root
+      - timestamp
+      - timestamp_nanosec
+      - next_bp_hash
+      - block_merkle_root
+      type: object
+    RpcLightClientBlockProofResponse:
+      properties:
+        block_header_lite:
+          $ref: '#/components/schemas/LightClientBlockLiteView'
+        block_proof:
+          items:
+            $ref: '#/components/schemas/MerklePathItem'
+          type: array
+      required:
+      - block_header_lite
+      - block_proof
+      type: object
+    RpcLightClientBlockProofRequest:
+      properties:
+        block_hash:
+          $ref: '#/components/schemas/CryptoHash'
+        light_client_head:
+          $ref: '#/components/schemas/CryptoHash'
+      required:
+      - block_hash
+      - light_client_head
+      title: RpcLightClientBlockProofRequest
+      type: object
+    InternalError:
+      oneOf:
+      - properties:
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
+        required:
+        - name
+        - info
+        type: object
+    RpcRequestValidationErrorKind:
+      oneOf:
+      - properties:
+          info:
+            properties:
+              method_name:
+                type: string
+            required:
+            - method_name
+            type: object
+          name:
+            enum:
+            - METHOD_NOT_FOUND
+            type: string
+        required:
+        - name
+        - info
+        type: object
+      - properties:
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - PARSE_ERROR
+            type: string
+        required:
+        - name
+        - info
+        type: object
+    ErrorWrapper_for_RpcLightClientProofError:
+      oneOf:
+      - properties:
+          cause:
+            $ref: '#/components/schemas/RpcRequestValidationErrorKind'
+          name:
+            enum:
+            - REQUEST_VALIDATION_ERROR
+            type: string
+        required:
+        - name
+        - cause
+        type: object
+      - properties:
+          cause:
+            $ref: '#/components/schemas/RpcLightClientProofError'
+          name:
+            enum:
+            - HANDLER_ERROR
+            type: string
+        required:
+        - name
+        - cause
+        type: object
+      - properties:
+          cause:
+            $ref: '#/components/schemas/InternalError'
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
+        required:
+        - name
+        - cause
+        type: object
+    LightClientBlockLiteView:
+      properties:
+        inner_lite:
+          $ref: '#/components/schemas/BlockHeaderInnerLiteView'
+        inner_rest_hash:
+          $ref: '#/components/schemas/CryptoHash'
+        prev_block_hash:
+          $ref: '#/components/schemas/CryptoHash'
+      required:
+      - prev_block_hash
+      - inner_rest_hash
+      - inner_lite
+      type: object
+    ShardId:
+      description: 'The shard identifier. It may be an arbitrary number - it does not need to be
+
+        a number in the range 0..NUM_SHARDS. The shard ids do not need to be
+
+        sequential or contiguous.
+
+
+        The shard id is wrapped in a new type to prevent the old pattern of using
+
+        indices in range 0..NUM_SHARDS and casting to ShardId. Once the transition
+
+        if fully complete it potentially may be simplified to a regular type alias.'
+      format: uint64
+      minimum: 0
+      type: integer
+    JsonRpcResponse_for_RpcLightClientBlockProofResponse_and_RpcLightClientProofError:
+      oneOf:
+      - properties:
+          result:
+            $ref: '#/components/schemas/RpcLightClientBlockProofResponse'
+        required:
+        - result
+        type: object
+      - properties:
+          error:
+            $ref: '#/components/schemas/ErrorWrapper_for_RpcLightClientProofError'
+        required:
+        - error
+        type: object
+      properties:
+        id:
+          type: string
+        jsonrpc:
+          type: string
+      required:
+      - jsonrpc
+      - id
+      title: JsonRpcResponse_for_RpcLightClientBlockProofResponse_and_RpcLightClientProofError
+      type: object

@@ -1,0 +1,212 @@
+openapi: 3.0.3
+info:
+  description: Low-latency indexed account, token, and public-key lookup APIs for wallets and explorers. Embedded portal clients may forward an optional `apiKey` query parameter, but the public FastNEAR API does not require it.
+  title: FastNEAR accounts public-key API
+  version: 3.0.3
+servers:
+- description: Mainnet
+  url: https://api.fastnear.com
+- description: Testnet
+  url: https://test.api.fastnear.com
+tags:
+- name: public-key
+paths:
+  /v0/public_key/{public_key}:
+    get:
+      description: Fetch the account IDs that have registered a full-access public key, via the legacy V0 lookup path.
+      operationId: lookup_by_public_key_v0
+      parameters:
+      - description: NEAR public key in `ed25519:...` or `secp256k1:...` form.
+        example: ed25519:CCaThr3uokqnUs6Z5vVnaDcJdrfuTpYJHJWcAGubDjT
+        in: path
+        name: public_key
+        required: true
+        schema:
+          type: string
+      - description: Optional API key forwarded by embedded portal clients. The public FastNEAR API does not require it.
+        in: query
+        name: apiKey
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                account_ids:
+                - root.near
+                public_key: ed25519:CCaThr3uokqnUs6Z5vVnaDcJdrfuTpYJHJWcAGubDjT
+              schema:
+                $ref: '#/components/schemas/PublicKeyLookupResponse'
+          description: Matching account IDs for the supplied full-access public key
+        '400':
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Bad Request
+        '500':
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Internal Server Error
+      summary: Lookup full-access accounts by public key
+      tags:
+      - public-key
+      x-fastnear-slug: public_key_lookup
+      x-fastnear-title: FastNEAR API - V0 Public Key Lookup
+  /v0/public_key/{public_key}/all:
+    get:
+      description: List every account tied to a public key — full-access and limited-access keys together — via the legacy V0 lookup-all path.
+      operationId: lookup_by_public_key_all_v0
+      parameters:
+      - description: NEAR public key in `ed25519:...` or `secp256k1:...` form.
+        example: ed25519:CCaThr3uokqnUs6Z5vVnaDcJdrfuTpYJHJWcAGubDjT
+        in: path
+        name: public_key
+        required: true
+        schema:
+          type: string
+      - description: Optional API key forwarded by embedded portal clients. The public FastNEAR API does not require it.
+        in: query
+        name: apiKey
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                account_ids:
+                - root.near
+                public_key: ed25519:CCaThr3uokqnUs6Z5vVnaDcJdrfuTpYJHJWcAGubDjT
+              schema:
+                $ref: '#/components/schemas/PublicKeyLookupResponse'
+          description: Matching account IDs for the supplied public key, including limited-access keys
+        '400':
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Bad Request
+        '500':
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Internal Server Error
+      summary: Lookup all indexed accounts by public key
+      tags:
+      - public-key
+      x-fastnear-slug: public_key_lookup_all
+      x-fastnear-title: FastNEAR API - V0 Public Key Lookup (All)
+  /v1/public_key/{public_key}:
+    get:
+      description: Resolve a full-access public key to the indexed NEAR accounts that have registered it — V1 canonical lookup path.
+      operationId: lookup_by_public_key_v1
+      parameters:
+      - description: NEAR public key in `ed25519:...` or `secp256k1:...` form.
+        example: ed25519:CCaThr3uokqnUs6Z5vVnaDcJdrfuTpYJHJWcAGubDjT
+        in: path
+        name: public_key
+        required: true
+        schema:
+          type: string
+      - description: Optional API key forwarded by embedded portal clients. The public FastNEAR API does not require it.
+        in: query
+        name: apiKey
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                account_ids:
+                - root.near
+                public_key: ed25519:CCaThr3uokqnUs6Z5vVnaDcJdrfuTpYJHJWcAGubDjT
+              schema:
+                $ref: '#/components/schemas/PublicKeyLookupResponse'
+          description: Matching account IDs for the supplied full-access public key
+        '400':
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Bad Request
+        '500':
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Internal Server Error
+      summary: Lookup full-access accounts by public key
+      tags:
+      - public-key
+      x-fastnear-slug: public_key_lookup
+      x-fastnear-title: FastNEAR API - V1 Public Key Lookup
+  /v1/public_key/{public_key}/all:
+    get:
+      description: Resolve a public key to every account that holds it — full-access and limited-access keys alike — via the V1 lookup-all path.
+      operationId: lookup_by_public_key_all_v1
+      parameters:
+      - description: NEAR public key in `ed25519:...` or `secp256k1:...` form.
+        example: ed25519:CCaThr3uokqnUs6Z5vVnaDcJdrfuTpYJHJWcAGubDjT
+        in: path
+        name: public_key
+        required: true
+        schema:
+          type: string
+      - description: Optional API key forwarded by embedded portal clients. The public FastNEAR API does not require it.
+        in: query
+        name: apiKey
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                account_ids:
+                - root.near
+                public_key: ed25519:CCaThr3uokqnUs6Z5vVnaDcJdrfuTpYJHJWcAGubDjT
+              schema:
+                $ref: '#/components/schemas/PublicKeyLookupResponse'
+          description: Matching account IDs for the supplied public key, including limited-access keys
+        '400':
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Bad Request
+        '500':
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Internal Server Error
+      summary: Lookup all indexed accounts by public key
+      tags:
+      - public-key
+      x-fastnear-slug: public_key_lookup_all
+      x-fastnear-title: FastNEAR API - V1 Public Key Lookup (All)
+components:
+  schemas:
+    PublicKeyLookupResponse:
+      additionalProperties: false
+      properties:
+        account_ids:
+          items:
+            type: string
+          type: array
+        public_key:
+          type: string
+      required:
+      - public_key
+      - account_ids
+      type: object

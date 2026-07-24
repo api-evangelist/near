@@ -1,0 +1,32 @@
+openapi: 3.0.3
+info:
+  description: Low-latency indexed account, token, and public-key lookup APIs for wallets and explorers. Embedded portal clients may forward an optional `apiKey` query parameter, but the public FastNEAR API does not require it.
+  title: FastNEAR accounts Legacy / Access Keys API
+  version: 3.0.3
+servers:
+- description: Mainnet
+  url: https://api.fastnear.com
+- description: Testnet
+  url: https://test.api.fastnear.com
+tags:
+- description: Deprecated.
+  name: Legacy / Access Keys
+paths:
+  /v1/keys/{key}:
+    get:
+      summary: Get access key info by public key
+      tags:
+      - Legacy / Access Keys
+      parameters:
+      - in: path
+        name: key
+        required: true
+        description: Public key
+        schema:
+          type: string
+        examples:
+          key:
+            value: example-public-key
+      responses:
+        '200':
+          description: Success response

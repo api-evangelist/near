@@ -1,0 +1,39 @@
+openapi: 3.0.3
+info:
+  description: Low-latency indexed account, token, and public-key lookup APIs for wallets and explorers. Embedded portal clients may forward an optional `apiKey` query parameter, but the public FastNEAR API does not require it.
+  title: FastNEAR accounts Legacy / Validators API
+  version: 3.0.3
+servers:
+- description: Mainnet
+  url: https://api.fastnear.com
+- description: Testnet
+  url: https://test.api.fastnear.com
+tags:
+- description: Deprecated.
+  name: Legacy / Validators
+paths:
+  /v1/validators:
+    get:
+      summary: Get validators
+      tags:
+      - Legacy / Validators
+      parameters:
+      - in: query
+        name: page
+        description: Page number
+        schema:
+          type: number
+          minimum: 1
+          maximum: 200
+          default: 1
+      - in: query
+        name: per_page
+        description: Number of items per page.
+        schema:
+          type: number
+          minimum: 1
+          maximum: 250
+          default: 25
+      responses:
+        '200':
+          description: Success response
