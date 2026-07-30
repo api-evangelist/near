@@ -1,6 +1,19 @@
 name: NEAR Protocol
 description: NEAR Protocol provides blockchain infrastructure with JSON-RPC 2.0 and REST APIs for querying accounts, transactions, tokens, NFTs, and staking data on the NEAR network. Developers can interact with the NEAR blockchain through the official RPC endpoints, the FASTNEAR indexed REST API, and the NearBlocks explorer API.
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+accessModel:
+  pricing: freemium
+  onboarding: self-serve
+  trial: false
+  try_now: true
+  public: false
+  label: Freemium · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/near.png
 tags:
   - Blockchain
   - Web3
@@ -14,83 +27,2257 @@ created: '2026-06-13'
 modified: '2026-06-13'
 specificationVersion: '0.19'
 apis:
-
-  - name: NEAR RPC API
-    description: The NEAR JSON-RPC 2.0 API provides programmatic access to the NEAR blockchain network. All requests are POST to a provider endpoint with the method name encoded in the URL path. Supports transactions, blocks, accounts, network status, gas, and light client proofs.
-    humanURL: https://docs.near.org/api/rpc/introduction
-    baseURL: https://rpc.mainnet.near.org
-    tags:
-      - RPC
-      - Blockchain
-      - Transactions
-      - Accounts
-      - Blocks
-      - Network
-    properties:
-      - type: Documentation
-        url: https://docs.near.org/api/rpc/introduction
-      - type: OpenAPI
-        url: https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/openapi.yml
-      - type: Plans
-        url: https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/near-rpc-api.yml
-      - type: RateLimits
-        url: https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/near-rpc-api.yml
-    contact:
-      - FN: NEAR Protocol
-        url: https://near.org
-        email: hello@near.org
-
-  - name: FASTNEAR Indexed REST API
-    description: FASTNEAR provides indexed REST endpoints for account-centric reads on the NEAR blockchain. Offers low-latency access to account state, fungible token balances, NFT holdings, staking positions, and public key lookups without raw JSON-RPC envelopes.
-    humanURL: https://docs.fastnear.com/
-    baseURL: https://api.fastnear.com
-    tags:
-      - REST
-      - Accounts
-      - Tokens
-      - NFT
-      - Staking
-      - Indexed
-    properties:
-      - type: Documentation
-        url: https://docs.fastnear.com/
-      - type: OpenAPI
-        url: https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/openapi/fastnear-api.json
-      - type: Plans
-        url: https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/fastnear-api.yml
-      - type: RateLimits
-        url: https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/fastnear-api.yml
-    contact:
-      - FN: FASTNEAR
-        url: https://fastnear.com
-
-  - name: NearBlocks Explorer API
-    description: NearBlocks provides a REST API derived from the NearBlocks NEAR Protocol block explorer. Supports querying accounts, transactions, blocks, tokens, NFTs, and staking data with tiered access plans and API key authentication.
-    humanURL: https://nearblocks.io/apis
-    baseURL: https://api.nearblocks.io
-    tags:
-      - Explorer
-      - REST
-      - Accounts
-      - Transactions
-      - Blocks
-      - Tokens
-      - NFT
-    properties:
-      - type: Documentation
-        url: https://api.nearblocks.io/api-docs/
-      - type: OpenAPI
-        url: https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/openapi/nearblocks-api.json
-      - type: Plans
-        url: https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/nearblocks-api.yml
-      - type: RateLimits
-        url: https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/nearblocks-api.yml
-      - type: FinOps
-        url: https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/finops/nearblocks-api.yml
-    contact:
-      - FN: NearBlocks
-        url: https://nearblocks.io
-
+- aid: near:near-accounts-api
+  name: NEAR Protocol accounts API
+  description: The accounts API from NEAR Protocol — 1 operation(s) for accounts.
+  humanURL: https://docs.near.org/api/rpc/introduction
+  baseURL: https://rpc.mainnet.near.org
+  tags:
+  - accounts
+  properties:
+  - type: OpenAPI
+    url: openapi/near-accounts-api-openapi.yml
+  - type: Documentation
+    url: https://docs.near.org/api/rpc/introduction
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/near-rpc-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/near-rpc-api.yml
+  - type: Documentation
+    url: https://docs.fastnear.com/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/fastnear-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/fastnear-api.yml
+  - type: Documentation
+    url: https://api.nearblocks.io/api-docs/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/nearblocks-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/nearblocks-api.yml
+  - type: FinOps
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/finops/nearblocks-api.yml
+- aid: near:near-block-api
+  name: NEAR Protocol Block API
+  description: The Block API from NEAR Protocol — 1 operation(s) for block.
+  humanURL: https://docs.near.org/api/rpc/introduction
+  baseURL: https://rpc.mainnet.near.org
+  tags:
+  - Block
+  properties:
+  - type: OpenAPI
+    url: openapi/near-block-api-openapi.yml
+  - type: Documentation
+    url: https://docs.near.org/api/rpc/introduction
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/near-rpc-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/near-rpc-api.yml
+  - type: Documentation
+    url: https://docs.fastnear.com/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/fastnear-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/fastnear-api.yml
+  - type: Documentation
+    url: https://api.nearblocks.io/api-docs/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/nearblocks-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/nearblocks-api.yml
+  - type: FinOps
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/finops/nearblocks-api.yml
+- aid: near:near-block-effects-api
+  name: NEAR Protocol Block Effects API
+  description: The Block Effects API from NEAR Protocol — 1 operation(s) for block effects.
+  humanURL: https://docs.near.org/api/rpc/introduction
+  baseURL: https://rpc.mainnet.near.org
+  tags:
+  - Block Effects
+  properties:
+  - type: OpenAPI
+    url: openapi/near-block-effects-api-openapi.yml
+  - type: Documentation
+    url: https://docs.near.org/api/rpc/introduction
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/near-rpc-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/near-rpc-api.yml
+  - type: Documentation
+    url: https://docs.fastnear.com/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/fastnear-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/fastnear-api.yml
+  - type: Documentation
+    url: https://api.nearblocks.io/api-docs/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/nearblocks-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/nearblocks-api.yml
+  - type: FinOps
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/finops/nearblocks-api.yml
+- aid: near:near-broadcast-tx-async-api
+  name: NEAR Protocol Broadcast Tx Async API
+  description: The Broadcast Tx Async API from NEAR Protocol — 1 operation(s) for broadcast tx async.
+  humanURL: https://docs.near.org/api/rpc/introduction
+  baseURL: https://rpc.mainnet.near.org
+  tags:
+  - Broadcast Tx Async
+  properties:
+  - type: OpenAPI
+    url: openapi/near-broadcast-tx-async-api-openapi.yml
+  - type: Documentation
+    url: https://docs.near.org/api/rpc/introduction
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/near-rpc-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/near-rpc-api.yml
+  - type: Documentation
+    url: https://docs.fastnear.com/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/fastnear-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/fastnear-api.yml
+  - type: Documentation
+    url: https://api.nearblocks.io/api-docs/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/nearblocks-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/nearblocks-api.yml
+  - type: FinOps
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/finops/nearblocks-api.yml
+- aid: near:near-broadcast-tx-commit-api
+  name: NEAR Protocol Broadcast Tx Commit API
+  description: The Broadcast Tx Commit API from NEAR Protocol — 1 operation(s) for broadcast tx commit.
+  humanURL: https://docs.near.org/api/rpc/introduction
+  baseURL: https://rpc.mainnet.near.org
+  tags:
+  - Broadcast Tx Commit
+  properties:
+  - type: OpenAPI
+    url: openapi/near-broadcast-tx-commit-api-openapi.yml
+  - type: Documentation
+    url: https://docs.near.org/api/rpc/introduction
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/near-rpc-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/near-rpc-api.yml
+  - type: Documentation
+    url: https://docs.fastnear.com/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/fastnear-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/fastnear-api.yml
+  - type: Documentation
+    url: https://api.nearblocks.io/api-docs/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/nearblocks-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/nearblocks-api.yml
+  - type: FinOps
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/finops/nearblocks-api.yml
+- aid: near:near-changes-api
+  name: NEAR Protocol Changes API
+  description: The Changes API from NEAR Protocol — 1 operation(s) for changes.
+  humanURL: https://docs.near.org/api/rpc/introduction
+  baseURL: https://rpc.mainnet.near.org
+  tags:
+  - Changes
+  properties:
+  - type: OpenAPI
+    url: openapi/near-changes-api-openapi.yml
+  - type: Documentation
+    url: https://docs.near.org/api/rpc/introduction
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/near-rpc-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/near-rpc-api.yml
+  - type: Documentation
+    url: https://docs.fastnear.com/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/fastnear-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/fastnear-api.yml
+  - type: Documentation
+    url: https://api.nearblocks.io/api-docs/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/nearblocks-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/nearblocks-api.yml
+  - type: FinOps
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/finops/nearblocks-api.yml
+- aid: near:near-chunk-api
+  name: NEAR Protocol Chunk API
+  description: The Chunk API from NEAR Protocol — 1 operation(s) for chunk.
+  humanURL: https://docs.near.org/api/rpc/introduction
+  baseURL: https://rpc.mainnet.near.org
+  tags:
+  - Chunk
+  properties:
+  - type: OpenAPI
+    url: openapi/near-chunk-api-openapi.yml
+  - type: Documentation
+    url: https://docs.near.org/api/rpc/introduction
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/near-rpc-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/near-rpc-api.yml
+  - type: Documentation
+    url: https://docs.fastnear.com/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/fastnear-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/fastnear-api.yml
+  - type: Documentation
+    url: https://api.nearblocks.io/api-docs/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/nearblocks-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/nearblocks-api.yml
+  - type: FinOps
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/finops/nearblocks-api.yml
+- aid: near:near-client-config-api
+  name: NEAR Protocol Client Config API
+  description: The Client Config API from NEAR Protocol — 1 operation(s) for client config.
+  humanURL: https://docs.near.org/api/rpc/introduction
+  baseURL: https://rpc.mainnet.near.org
+  tags:
+  - Client Config
+  properties:
+  - type: OpenAPI
+    url: openapi/near-client-config-api-openapi.yml
+  - type: Documentation
+    url: https://docs.near.org/api/rpc/introduction
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/near-rpc-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/near-rpc-api.yml
+  - type: Documentation
+    url: https://docs.fastnear.com/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/fastnear-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/fastnear-api.yml
+  - type: Documentation
+    url: https://api.nearblocks.io/api-docs/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/nearblocks-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/nearblocks-api.yml
+  - type: FinOps
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/finops/nearblocks-api.yml
+- aid: near:near-experimental-call-function-api
+  name: NEAR Protocol EXPERIMENTAL Call Function API
+  description: >-
+    The EXPERIMENTAL Call Function API from NEAR Protocol — 1 operation(s) for experimental call function.
+  humanURL: https://docs.near.org/api/rpc/introduction
+  baseURL: https://rpc.mainnet.near.org
+  tags:
+  - EXPERIMENTAL Call Function
+  properties:
+  - type: OpenAPI
+    url: openapi/near-experimental-call-function-api-openapi.yml
+  - type: Documentation
+    url: https://docs.near.org/api/rpc/introduction
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/near-rpc-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/near-rpc-api.yml
+  - type: Documentation
+    url: https://docs.fastnear.com/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/fastnear-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/fastnear-api.yml
+  - type: Documentation
+    url: https://api.nearblocks.io/api-docs/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/nearblocks-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/nearblocks-api.yml
+  - type: FinOps
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/finops/nearblocks-api.yml
+- aid: near:near-experimental-changes-api
+  name: NEAR Protocol EXPERIMENTAL Changes API
+  description: >-
+    The EXPERIMENTAL Changes API from NEAR Protocol — 1 operation(s) for experimental changes.
+  humanURL: https://docs.near.org/api/rpc/introduction
+  baseURL: https://rpc.mainnet.near.org
+  tags:
+  - EXPERIMENTAL Changes
+  properties:
+  - type: OpenAPI
+    url: openapi/near-experimental-changes-api-openapi.yml
+  - type: Documentation
+    url: https://docs.near.org/api/rpc/introduction
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/near-rpc-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/near-rpc-api.yml
+  - type: Documentation
+    url: https://docs.fastnear.com/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/fastnear-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/fastnear-api.yml
+  - type: Documentation
+    url: https://api.nearblocks.io/api-docs/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/nearblocks-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/nearblocks-api.yml
+  - type: FinOps
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/finops/nearblocks-api.yml
+- aid: near:near-experimental-changes-in-block-api
+  name: NEAR Protocol EXPERIMENTAL Changes In Block API
+  description: >-
+    The EXPERIMENTAL Changes In Block API from NEAR Protocol — 1 operation(s) for experimental changes
+    in block.
+  humanURL: https://docs.near.org/api/rpc/introduction
+  baseURL: https://rpc.mainnet.near.org
+  tags:
+  - EXPERIMENTAL Changes In Block
+  properties:
+  - type: OpenAPI
+    url: openapi/near-experimental-changes-in-block-api-openapi.yml
+  - type: Documentation
+    url: https://docs.near.org/api/rpc/introduction
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/near-rpc-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/near-rpc-api.yml
+  - type: Documentation
+    url: https://docs.fastnear.com/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/fastnear-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/fastnear-api.yml
+  - type: Documentation
+    url: https://api.nearblocks.io/api-docs/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/nearblocks-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/nearblocks-api.yml
+  - type: FinOps
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/finops/nearblocks-api.yml
+- aid: near:near-experimental-congestion-level-api
+  name: NEAR Protocol EXPERIMENTAL Congestion Level API
+  description: >-
+    The EXPERIMENTAL Congestion Level API from NEAR Protocol — 1 operation(s) for experimental congestion
+    level.
+  humanURL: https://docs.near.org/api/rpc/introduction
+  baseURL: https://rpc.mainnet.near.org
+  tags:
+  - EXPERIMENTAL Congestion Level
+  properties:
+  - type: OpenAPI
+    url: openapi/near-experimental-congestion-level-api-openapi.yml
+  - type: Documentation
+    url: https://docs.near.org/api/rpc/introduction
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/near-rpc-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/near-rpc-api.yml
+  - type: Documentation
+    url: https://docs.fastnear.com/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/fastnear-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/fastnear-api.yml
+  - type: Documentation
+    url: https://api.nearblocks.io/api-docs/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/nearblocks-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/nearblocks-api.yml
+  - type: FinOps
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/finops/nearblocks-api.yml
+- aid: near:near-experimental-genesis-config-api
+  name: NEAR Protocol EXPERIMENTAL Genesis Config API
+  description: >-
+    The EXPERIMENTAL Genesis Config API from NEAR Protocol — 1 operation(s) for experimental genesis config.
+  humanURL: https://docs.near.org/api/rpc/introduction
+  baseURL: https://rpc.mainnet.near.org
+  tags:
+  - EXPERIMENTAL Genesis Config
+  properties:
+  - type: OpenAPI
+    url: openapi/near-experimental-genesis-config-api-openapi.yml
+  - type: Documentation
+    url: https://docs.near.org/api/rpc/introduction
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/near-rpc-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/near-rpc-api.yml
+  - type: Documentation
+    url: https://docs.fastnear.com/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/fastnear-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/fastnear-api.yml
+  - type: Documentation
+    url: https://api.nearblocks.io/api-docs/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/nearblocks-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/nearblocks-api.yml
+  - type: FinOps
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/finops/nearblocks-api.yml
+- aid: near:near-experimental-light-client-block-proof-api
+  name: NEAR Protocol EXPERIMENTAL Light Client Block Proof API
+  description: >-
+    The EXPERIMENTAL Light Client Block Proof API from NEAR Protocol — 1 operation(s) for experimental
+    light client block proof.
+  humanURL: https://docs.near.org/api/rpc/introduction
+  baseURL: https://rpc.mainnet.near.org
+  tags:
+  - EXPERIMENTAL Light Client Block Proof
+  properties:
+  - type: OpenAPI
+    url: openapi/near-experimental-light-client-block-proof-api-openapi.yml
+  - type: Documentation
+    url: https://docs.near.org/api/rpc/introduction
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/near-rpc-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/near-rpc-api.yml
+  - type: Documentation
+    url: https://docs.fastnear.com/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/fastnear-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/fastnear-api.yml
+  - type: Documentation
+    url: https://api.nearblocks.io/api-docs/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/nearblocks-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/nearblocks-api.yml
+  - type: FinOps
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/finops/nearblocks-api.yml
+- aid: near:near-experimental-light-client-proof-api
+  name: NEAR Protocol EXPERIMENTAL Light Client Proof API
+  description: >-
+    The EXPERIMENTAL Light Client Proof API from NEAR Protocol — 1 operation(s) for experimental light
+    client proof.
+  humanURL: https://docs.near.org/api/rpc/introduction
+  baseURL: https://rpc.mainnet.near.org
+  tags:
+  - EXPERIMENTAL Light Client Proof
+  properties:
+  - type: OpenAPI
+    url: openapi/near-experimental-light-client-proof-api-openapi.yml
+  - type: Documentation
+    url: https://docs.near.org/api/rpc/introduction
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/near-rpc-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/near-rpc-api.yml
+  - type: Documentation
+    url: https://docs.fastnear.com/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/fastnear-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/fastnear-api.yml
+  - type: Documentation
+    url: https://api.nearblocks.io/api-docs/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/nearblocks-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/nearblocks-api.yml
+  - type: FinOps
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/finops/nearblocks-api.yml
+- aid: near:near-experimental-maintenance-windows-api
+  name: NEAR Protocol EXPERIMENTAL Maintenance Windows API
+  description: >-
+    The EXPERIMENTAL Maintenance Windows API from NEAR Protocol — 1 operation(s) for experimental maintenance
+    windows.
+  humanURL: https://docs.near.org/api/rpc/introduction
+  baseURL: https://rpc.mainnet.near.org
+  tags:
+  - EXPERIMENTAL Maintenance Windows
+  properties:
+  - type: OpenAPI
+    url: openapi/near-experimental-maintenance-windows-api-openapi.yml
+  - type: Documentation
+    url: https://docs.near.org/api/rpc/introduction
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/near-rpc-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/near-rpc-api.yml
+  - type: Documentation
+    url: https://docs.fastnear.com/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/fastnear-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/fastnear-api.yml
+  - type: Documentation
+    url: https://api.nearblocks.io/api-docs/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/nearblocks-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/nearblocks-api.yml
+  - type: FinOps
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/finops/nearblocks-api.yml
+- aid: near:near-experimental-protocol-config-api
+  name: NEAR Protocol EXPERIMENTAL Protocol Config API
+  description: >-
+    The EXPERIMENTAL Protocol Config API from NEAR Protocol — 1 operation(s) for experimental protocol
+    config.
+  humanURL: https://docs.near.org/api/rpc/introduction
+  baseURL: https://rpc.mainnet.near.org
+  tags:
+  - EXPERIMENTAL Protocol Config
+  properties:
+  - type: OpenAPI
+    url: openapi/near-experimental-protocol-config-api-openapi.yml
+  - type: Documentation
+    url: https://docs.near.org/api/rpc/introduction
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/near-rpc-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/near-rpc-api.yml
+  - type: Documentation
+    url: https://docs.fastnear.com/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/fastnear-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/fastnear-api.yml
+  - type: Documentation
+    url: https://api.nearblocks.io/api-docs/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/nearblocks-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/nearblocks-api.yml
+  - type: FinOps
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/finops/nearblocks-api.yml
+- aid: near:near-experimental-receipt-api
+  name: NEAR Protocol EXPERIMENTAL Receipt API
+  description: >-
+    The EXPERIMENTAL Receipt API from NEAR Protocol — 1 operation(s) for experimental receipt.
+  humanURL: https://docs.near.org/api/rpc/introduction
+  baseURL: https://rpc.mainnet.near.org
+  tags:
+  - EXPERIMENTAL Receipt
+  properties:
+  - type: OpenAPI
+    url: openapi/near-experimental-receipt-api-openapi.yml
+  - type: Documentation
+    url: https://docs.near.org/api/rpc/introduction
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/near-rpc-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/near-rpc-api.yml
+  - type: Documentation
+    url: https://docs.fastnear.com/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/fastnear-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/fastnear-api.yml
+  - type: Documentation
+    url: https://api.nearblocks.io/api-docs/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/nearblocks-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/nearblocks-api.yml
+  - type: FinOps
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/finops/nearblocks-api.yml
+- aid: near:near-experimental-receipt-to-tx-api
+  name: NEAR Protocol EXPERIMENTAL Receipt To Tx API
+  description: >-
+    The EXPERIMENTAL Receipt To Tx API from NEAR Protocol — 1 operation(s) for experimental receipt to
+    tx.
+  humanURL: https://docs.near.org/api/rpc/introduction
+  baseURL: https://rpc.mainnet.near.org
+  tags:
+  - EXPERIMENTAL Receipt To Tx
+  properties:
+  - type: OpenAPI
+    url: openapi/near-experimental-receipt-to-tx-api-openapi.yml
+  - type: Documentation
+    url: https://docs.near.org/api/rpc/introduction
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/near-rpc-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/near-rpc-api.yml
+  - type: Documentation
+    url: https://docs.fastnear.com/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/fastnear-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/fastnear-api.yml
+  - type: Documentation
+    url: https://api.nearblocks.io/api-docs/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/nearblocks-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/nearblocks-api.yml
+  - type: FinOps
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/finops/nearblocks-api.yml
+- aid: near:near-experimental-split-storage-info-api
+  name: NEAR Protocol EXPERIMENTAL Split Storage Info API
+  description: >-
+    The EXPERIMENTAL Split Storage Info API from NEAR Protocol — 1 operation(s) for experimental split
+    storage info.
+  humanURL: https://docs.near.org/api/rpc/introduction
+  baseURL: https://rpc.mainnet.near.org
+  tags:
+  - EXPERIMENTAL Split Storage Info
+  properties:
+  - type: OpenAPI
+    url: openapi/near-experimental-split-storage-info-api-openapi.yml
+  - type: Documentation
+    url: https://docs.near.org/api/rpc/introduction
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/near-rpc-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/near-rpc-api.yml
+  - type: Documentation
+    url: https://docs.fastnear.com/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/fastnear-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/fastnear-api.yml
+  - type: Documentation
+    url: https://api.nearblocks.io/api-docs/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/nearblocks-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/nearblocks-api.yml
+  - type: FinOps
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/finops/nearblocks-api.yml
+- aid: near:near-experimental-tx-status-api
+  name: NEAR Protocol EXPERIMENTAL Tx Status API
+  description: >-
+    The EXPERIMENTAL Tx Status API from NEAR Protocol — 1 operation(s) for experimental tx status.
+  humanURL: https://docs.near.org/api/rpc/introduction
+  baseURL: https://rpc.mainnet.near.org
+  tags:
+  - EXPERIMENTAL Tx Status
+  properties:
+  - type: OpenAPI
+    url: openapi/near-experimental-tx-status-api-openapi.yml
+  - type: Documentation
+    url: https://docs.near.org/api/rpc/introduction
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/near-rpc-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/near-rpc-api.yml
+  - type: Documentation
+    url: https://docs.fastnear.com/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/fastnear-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/fastnear-api.yml
+  - type: Documentation
+    url: https://api.nearblocks.io/api-docs/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/nearblocks-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/nearblocks-api.yml
+  - type: FinOps
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/finops/nearblocks-api.yml
+- aid: near:near-experimental-validators-ordered-api
+  name: NEAR Protocol EXPERIMENTAL Validators Ordered API
+  description: >-
+    The EXPERIMENTAL Validators Ordered API from NEAR Protocol — 1 operation(s) for experimental validators
+    ordered.
+  humanURL: https://docs.near.org/api/rpc/introduction
+  baseURL: https://rpc.mainnet.near.org
+  tags:
+  - EXPERIMENTAL Validators Ordered
+  properties:
+  - type: OpenAPI
+    url: openapi/near-experimental-validators-ordered-api-openapi.yml
+  - type: Documentation
+    url: https://docs.near.org/api/rpc/introduction
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/near-rpc-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/near-rpc-api.yml
+  - type: Documentation
+    url: https://docs.fastnear.com/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/fastnear-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/fastnear-api.yml
+  - type: Documentation
+    url: https://api.nearblocks.io/api-docs/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/nearblocks-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/nearblocks-api.yml
+  - type: FinOps
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/finops/nearblocks-api.yml
+- aid: near:near-experimental-view-access-key-api
+  name: NEAR Protocol EXPERIMENTAL View Access Key API
+  description: >-
+    The EXPERIMENTAL View Access Key API from NEAR Protocol — 1 operation(s) for experimental view access
+    key.
+  humanURL: https://docs.near.org/api/rpc/introduction
+  baseURL: https://rpc.mainnet.near.org
+  tags:
+  - EXPERIMENTAL View Access Key
+  properties:
+  - type: OpenAPI
+    url: openapi/near-experimental-view-access-key-api-openapi.yml
+  - type: Documentation
+    url: https://docs.near.org/api/rpc/introduction
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/near-rpc-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/near-rpc-api.yml
+  - type: Documentation
+    url: https://docs.fastnear.com/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/fastnear-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/fastnear-api.yml
+  - type: Documentation
+    url: https://api.nearblocks.io/api-docs/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/nearblocks-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/nearblocks-api.yml
+  - type: FinOps
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/finops/nearblocks-api.yml
+- aid: near:near-experimental-view-access-key-list-api
+  name: NEAR Protocol EXPERIMENTAL View Access Key List API
+  description: >-
+    The EXPERIMENTAL View Access Key List API from NEAR Protocol — 1 operation(s) for experimental view
+    access key list.
+  humanURL: https://docs.near.org/api/rpc/introduction
+  baseURL: https://rpc.mainnet.near.org
+  tags:
+  - EXPERIMENTAL View Access Key List
+  properties:
+  - type: OpenAPI
+    url: openapi/near-experimental-view-access-key-list-api-openapi.yml
+  - type: Documentation
+    url: https://docs.near.org/api/rpc/introduction
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/near-rpc-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/near-rpc-api.yml
+  - type: Documentation
+    url: https://docs.fastnear.com/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/fastnear-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/fastnear-api.yml
+  - type: Documentation
+    url: https://api.nearblocks.io/api-docs/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/nearblocks-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/nearblocks-api.yml
+  - type: FinOps
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/finops/nearblocks-api.yml
+- aid: near:near-experimental-view-account-api
+  name: NEAR Protocol EXPERIMENTAL View Account API
+  description: >-
+    The EXPERIMENTAL View Account API from NEAR Protocol — 1 operation(s) for experimental view account.
+  humanURL: https://docs.near.org/api/rpc/introduction
+  baseURL: https://rpc.mainnet.near.org
+  tags:
+  - EXPERIMENTAL View Account
+  properties:
+  - type: OpenAPI
+    url: openapi/near-experimental-view-account-api-openapi.yml
+  - type: Documentation
+    url: https://docs.near.org/api/rpc/introduction
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/near-rpc-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/near-rpc-api.yml
+  - type: Documentation
+    url: https://docs.fastnear.com/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/fastnear-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/fastnear-api.yml
+  - type: Documentation
+    url: https://api.nearblocks.io/api-docs/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/nearblocks-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/nearblocks-api.yml
+  - type: FinOps
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/finops/nearblocks-api.yml
+- aid: near:near-experimental-view-code-api
+  name: NEAR Protocol EXPERIMENTAL View Code API
+  description: >-
+    The EXPERIMENTAL View Code API from NEAR Protocol — 1 operation(s) for experimental view code.
+  humanURL: https://docs.near.org/api/rpc/introduction
+  baseURL: https://rpc.mainnet.near.org
+  tags:
+  - EXPERIMENTAL View Code
+  properties:
+  - type: OpenAPI
+    url: openapi/near-experimental-view-code-api-openapi.yml
+  - type: Documentation
+    url: https://docs.near.org/api/rpc/introduction
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/near-rpc-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/near-rpc-api.yml
+  - type: Documentation
+    url: https://docs.fastnear.com/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/fastnear-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/fastnear-api.yml
+  - type: Documentation
+    url: https://api.nearblocks.io/api-docs/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/nearblocks-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/nearblocks-api.yml
+  - type: FinOps
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/finops/nearblocks-api.yml
+- aid: near:near-experimental-view-state-api
+  name: NEAR Protocol EXPERIMENTAL View State API
+  description: >-
+    The EXPERIMENTAL View State API from NEAR Protocol — 1 operation(s) for experimental view state.
+  humanURL: https://docs.near.org/api/rpc/introduction
+  baseURL: https://rpc.mainnet.near.org
+  tags:
+  - EXPERIMENTAL View State
+  properties:
+  - type: OpenAPI
+    url: openapi/near-experimental-view-state-api-openapi.yml
+  - type: Documentation
+    url: https://docs.near.org/api/rpc/introduction
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/near-rpc-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/near-rpc-api.yml
+  - type: Documentation
+    url: https://docs.fastnear.com/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/fastnear-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/fastnear-api.yml
+  - type: Documentation
+    url: https://api.nearblocks.io/api-docs/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/nearblocks-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/nearblocks-api.yml
+  - type: FinOps
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/finops/nearblocks-api.yml
+- aid: near:near-fungible-tokens-api
+  name: NEAR Protocol fungible-tokens API
+  description: The fungible-tokens API from NEAR Protocol — 3 operation(s) for fungible-tokens.
+  humanURL: https://docs.near.org/api/rpc/introduction
+  baseURL: https://rpc.mainnet.near.org
+  tags:
+  - fungible-tokens
+  properties:
+  - type: OpenAPI
+    url: openapi/near-fungible-tokens-api-openapi.yml
+  - type: Documentation
+    url: https://docs.near.org/api/rpc/introduction
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/near-rpc-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/near-rpc-api.yml
+  - type: Documentation
+    url: https://docs.fastnear.com/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/fastnear-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/fastnear-api.yml
+  - type: Documentation
+    url: https://api.nearblocks.io/api-docs/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/nearblocks-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/nearblocks-api.yml
+  - type: FinOps
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/finops/nearblocks-api.yml
+- aid: near:near-gas-price-api
+  name: NEAR Protocol Gas Price API
+  description: The Gas Price API from NEAR Protocol — 1 operation(s) for gas price.
+  humanURL: https://docs.near.org/api/rpc/introduction
+  baseURL: https://rpc.mainnet.near.org
+  tags:
+  - Gas Price
+  properties:
+  - type: OpenAPI
+    url: openapi/near-gas-price-api-openapi.yml
+  - type: Documentation
+    url: https://docs.near.org/api/rpc/introduction
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/near-rpc-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/near-rpc-api.yml
+  - type: Documentation
+    url: https://docs.fastnear.com/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/fastnear-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/fastnear-api.yml
+  - type: Documentation
+    url: https://api.nearblocks.io/api-docs/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/nearblocks-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/nearblocks-api.yml
+  - type: FinOps
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/finops/nearblocks-api.yml
+- aid: near:near-genesis-config-api
+  name: NEAR Protocol Genesis Config API
+  description: The Genesis Config API from NEAR Protocol — 1 operation(s) for genesis config.
+  humanURL: https://docs.near.org/api/rpc/introduction
+  baseURL: https://rpc.mainnet.near.org
+  tags:
+  - Genesis Config
+  properties:
+  - type: OpenAPI
+    url: openapi/near-genesis-config-api-openapi.yml
+  - type: Documentation
+    url: https://docs.near.org/api/rpc/introduction
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/near-rpc-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/near-rpc-api.yml
+  - type: Documentation
+    url: https://docs.fastnear.com/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/fastnear-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/fastnear-api.yml
+  - type: Documentation
+    url: https://api.nearblocks.io/api-docs/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/nearblocks-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/nearblocks-api.yml
+  - type: FinOps
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/finops/nearblocks-api.yml
+- aid: near:near-health-api
+  name: NEAR Protocol Health API
+  description: The Health API from NEAR Protocol — 1 operation(s) for health.
+  humanURL: https://docs.near.org/api/rpc/introduction
+  baseURL: https://rpc.mainnet.near.org
+  tags:
+  - Health
+  properties:
+  - type: OpenAPI
+    url: openapi/near-health-api-openapi.yml
+  - type: Documentation
+    url: https://docs.near.org/api/rpc/introduction
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/near-rpc-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/near-rpc-api.yml
+  - type: Documentation
+    url: https://docs.fastnear.com/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/fastnear-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/fastnear-api.yml
+  - type: Documentation
+    url: https://api.nearblocks.io/api-docs/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/nearblocks-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/nearblocks-api.yml
+  - type: FinOps
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/finops/nearblocks-api.yml
+- aid: near:near-legacy-access-keys-api
+  name: NEAR Protocol Legacy / Access Keys API
+  description: Deprecated.
+  humanURL: https://docs.near.org/api/rpc/introduction
+  baseURL: https://rpc.mainnet.near.org
+  tags:
+  - Legacy / Access Keys
+  properties:
+  - type: OpenAPI
+    url: openapi/near-legacy-access-keys-api-openapi.yml
+  - type: Documentation
+    url: https://docs.near.org/api/rpc/introduction
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/near-rpc-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/near-rpc-api.yml
+  - type: Documentation
+    url: https://docs.fastnear.com/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/fastnear-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/fastnear-api.yml
+  - type: Documentation
+    url: https://api.nearblocks.io/api-docs/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/nearblocks-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/nearblocks-api.yml
+  - type: FinOps
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/finops/nearblocks-api.yml
+- aid: near:near-legacy-account-api
+  name: NEAR Protocol Legacy / Account API
+  description: Deprecated.
+  humanURL: https://docs.near.org/api/rpc/introduction
+  baseURL: https://rpc.mainnet.near.org
+  tags:
+  - Legacy / Account
+  properties:
+  - type: OpenAPI
+    url: openapi/near-legacy-account-api-openapi.yml
+  - type: Documentation
+    url: https://docs.near.org/api/rpc/introduction
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/near-rpc-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/near-rpc-api.yml
+  - type: Documentation
+    url: https://docs.fastnear.com/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/fastnear-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/fastnear-api.yml
+  - type: Documentation
+    url: https://api.nearblocks.io/api-docs/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/nearblocks-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/nearblocks-api.yml
+  - type: FinOps
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/finops/nearblocks-api.yml
+- aid: near:near-legacy-blocks-api
+  name: NEAR Protocol Legacy / Blocks API
+  description: Deprecated.
+  humanURL: https://docs.near.org/api/rpc/introduction
+  baseURL: https://rpc.mainnet.near.org
+  tags:
+  - Legacy / Blocks
+  properties:
+  - type: OpenAPI
+    url: openapi/near-legacy-blocks-api-openapi.yml
+  - type: Documentation
+    url: https://docs.near.org/api/rpc/introduction
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/near-rpc-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/near-rpc-api.yml
+  - type: Documentation
+    url: https://docs.fastnear.com/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/fastnear-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/fastnear-api.yml
+  - type: Documentation
+    url: https://api.nearblocks.io/api-docs/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/nearblocks-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/nearblocks-api.yml
+  - type: FinOps
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/finops/nearblocks-api.yml
+- aid: near:near-legacy-chain-abstraction-api
+  name: NEAR Protocol Legacy / Chain Abstraction API
+  description: Deprecated.
+  humanURL: https://docs.near.org/api/rpc/introduction
+  baseURL: https://rpc.mainnet.near.org
+  tags:
+  - Legacy / Chain Abstraction
+  properties:
+  - type: OpenAPI
+    url: openapi/near-legacy-chain-abstraction-api-openapi.yml
+  - type: Documentation
+    url: https://docs.near.org/api/rpc/introduction
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/near-rpc-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/near-rpc-api.yml
+  - type: Documentation
+    url: https://docs.fastnear.com/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/fastnear-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/fastnear-api.yml
+  - type: Documentation
+    url: https://api.nearblocks.io/api-docs/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/nearblocks-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/nearblocks-api.yml
+  - type: FinOps
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/finops/nearblocks-api.yml
+- aid: near:near-legacy-charts-api
+  name: NEAR Protocol Legacy / Charts API
+  description: Deprecated.
+  humanURL: https://docs.near.org/api/rpc/introduction
+  baseURL: https://rpc.mainnet.near.org
+  tags:
+  - Legacy / Charts
+  properties:
+  - type: OpenAPI
+    url: openapi/near-legacy-charts-api-openapi.yml
+  - type: Documentation
+    url: https://docs.near.org/api/rpc/introduction
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/near-rpc-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/near-rpc-api.yml
+  - type: Documentation
+    url: https://docs.fastnear.com/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/fastnear-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/fastnear-api.yml
+  - type: Documentation
+    url: https://api.nearblocks.io/api-docs/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/nearblocks-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/nearblocks-api.yml
+  - type: FinOps
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/finops/nearblocks-api.yml
+- aid: near:near-legacy-dex-api
+  name: NEAR Protocol Legacy / DEX API
+  description: Deprecated.
+  humanURL: https://docs.near.org/api/rpc/introduction
+  baseURL: https://rpc.mainnet.near.org
+  tags:
+  - Legacy / DEX
+  properties:
+  - type: OpenAPI
+    url: openapi/near-legacy-dex-api-openapi.yml
+  - type: Documentation
+    url: https://docs.near.org/api/rpc/introduction
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/near-rpc-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/near-rpc-api.yml
+  - type: Documentation
+    url: https://docs.fastnear.com/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/fastnear-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/fastnear-api.yml
+  - type: Documentation
+    url: https://api.nearblocks.io/api-docs/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/nearblocks-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/nearblocks-api.yml
+  - type: FinOps
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/finops/nearblocks-api.yml
+- aid: near:near-legacy-fts-api
+  name: NEAR Protocol Legacy / FTs API
+  description: Deprecated.
+  humanURL: https://docs.near.org/api/rpc/introduction
+  baseURL: https://rpc.mainnet.near.org
+  tags:
+  - Legacy / FTs
+  properties:
+  - type: OpenAPI
+    url: openapi/near-legacy-fts-api-openapi.yml
+  - type: Documentation
+    url: https://docs.near.org/api/rpc/introduction
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/near-rpc-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/near-rpc-api.yml
+  - type: Documentation
+    url: https://docs.fastnear.com/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/fastnear-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/fastnear-api.yml
+  - type: Documentation
+    url: https://api.nearblocks.io/api-docs/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/nearblocks-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/nearblocks-api.yml
+  - type: FinOps
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/finops/nearblocks-api.yml
+- aid: near:near-legacy-kitwallet-api
+  name: NEAR Protocol Legacy / Kitwallet API
+  description: Deprecated.
+  humanURL: https://docs.near.org/api/rpc/introduction
+  baseURL: https://rpc.mainnet.near.org
+  tags:
+  - Legacy / Kitwallet
+  properties:
+  - type: OpenAPI
+    url: openapi/near-legacy-kitwallet-api-openapi.yml
+  - type: Documentation
+    url: https://docs.near.org/api/rpc/introduction
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/near-rpc-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/near-rpc-api.yml
+  - type: Documentation
+    url: https://docs.fastnear.com/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/fastnear-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/fastnear-api.yml
+  - type: Documentation
+    url: https://api.nearblocks.io/api-docs/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/nearblocks-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/nearblocks-api.yml
+  - type: FinOps
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/finops/nearblocks-api.yml
+- aid: near:near-legacy-nfts-api
+  name: NEAR Protocol Legacy / NFTs API
+  description: Deprecated.
+  humanURL: https://docs.near.org/api/rpc/introduction
+  baseURL: https://rpc.mainnet.near.org
+  tags:
+  - Legacy / NFTs
+  properties:
+  - type: OpenAPI
+    url: openapi/near-legacy-nfts-api-openapi.yml
+  - type: Documentation
+    url: https://docs.near.org/api/rpc/introduction
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/near-rpc-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/near-rpc-api.yml
+  - type: Documentation
+    url: https://docs.fastnear.com/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/fastnear-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/fastnear-api.yml
+  - type: Documentation
+    url: https://api.nearblocks.io/api-docs/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/nearblocks-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/nearblocks-api.yml
+  - type: FinOps
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/finops/nearblocks-api.yml
+- aid: near:near-legacy-search-api
+  name: NEAR Protocol Legacy / Search API
+  description: Deprecated.
+  humanURL: https://docs.near.org/api/rpc/introduction
+  baseURL: https://rpc.mainnet.near.org
+  tags:
+  - Legacy / Search
+  properties:
+  - type: OpenAPI
+    url: openapi/near-legacy-search-api-openapi.yml
+  - type: Documentation
+    url: https://docs.near.org/api/rpc/introduction
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/near-rpc-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/near-rpc-api.yml
+  - type: Documentation
+    url: https://docs.fastnear.com/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/fastnear-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/fastnear-api.yml
+  - type: Documentation
+    url: https://api.nearblocks.io/api-docs/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/nearblocks-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/nearblocks-api.yml
+  - type: FinOps
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/finops/nearblocks-api.yml
+- aid: near:near-legacy-stats-api
+  name: NEAR Protocol Legacy / Stats API
+  description: Deprecated.
+  humanURL: https://docs.near.org/api/rpc/introduction
+  baseURL: https://rpc.mainnet.near.org
+  tags:
+  - Legacy / Stats
+  properties:
+  - type: OpenAPI
+    url: openapi/near-legacy-stats-api-openapi.yml
+  - type: Documentation
+    url: https://docs.near.org/api/rpc/introduction
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/near-rpc-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/near-rpc-api.yml
+  - type: Documentation
+    url: https://docs.fastnear.com/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/fastnear-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/fastnear-api.yml
+  - type: Documentation
+    url: https://api.nearblocks.io/api-docs/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/nearblocks-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/nearblocks-api.yml
+  - type: FinOps
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/finops/nearblocks-api.yml
+- aid: near:near-legacy-supply-api
+  name: NEAR Protocol Legacy / Supply API
+  description: Deprecated.
+  humanURL: https://docs.near.org/api/rpc/introduction
+  baseURL: https://rpc.mainnet.near.org
+  tags:
+  - Legacy / Supply
+  properties:
+  - type: OpenAPI
+    url: openapi/near-legacy-supply-api-openapi.yml
+  - type: Documentation
+    url: https://docs.near.org/api/rpc/introduction
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/near-rpc-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/near-rpc-api.yml
+  - type: Documentation
+    url: https://docs.fastnear.com/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/fastnear-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/fastnear-api.yml
+  - type: Documentation
+    url: https://api.nearblocks.io/api-docs/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/nearblocks-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/nearblocks-api.yml
+  - type: FinOps
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/finops/nearblocks-api.yml
+- aid: near:near-legacy-txns-api
+  name: NEAR Protocol Legacy / Txns API
+  description: Deprecated.
+  humanURL: https://docs.near.org/api/rpc/introduction
+  baseURL: https://rpc.mainnet.near.org
+  tags:
+  - Legacy / Txns
+  properties:
+  - type: OpenAPI
+    url: openapi/near-legacy-txns-api-openapi.yml
+  - type: Documentation
+    url: https://docs.near.org/api/rpc/introduction
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/near-rpc-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/near-rpc-api.yml
+  - type: Documentation
+    url: https://docs.fastnear.com/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/fastnear-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/fastnear-api.yml
+  - type: Documentation
+    url: https://api.nearblocks.io/api-docs/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/nearblocks-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/nearblocks-api.yml
+  - type: FinOps
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/finops/nearblocks-api.yml
+- aid: near:near-legacy-v2-account-api
+  name: NEAR Protocol Legacy / V2 Account API
+  description: Deprecated.
+  humanURL: https://docs.near.org/api/rpc/introduction
+  baseURL: https://rpc.mainnet.near.org
+  tags:
+  - Legacy / V2 Account
+  properties:
+  - type: OpenAPI
+    url: openapi/near-legacy-v2-account-api-openapi.yml
+  - type: Documentation
+    url: https://docs.near.org/api/rpc/introduction
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/near-rpc-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/near-rpc-api.yml
+  - type: Documentation
+    url: https://docs.fastnear.com/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/fastnear-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/fastnear-api.yml
+  - type: Documentation
+    url: https://api.nearblocks.io/api-docs/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/nearblocks-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/nearblocks-api.yml
+  - type: FinOps
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/finops/nearblocks-api.yml
+- aid: near:near-legacy-v2-txns-api
+  name: NEAR Protocol Legacy / V2 Txns API
+  description: Deprecated.
+  humanURL: https://docs.near.org/api/rpc/introduction
+  baseURL: https://rpc.mainnet.near.org
+  tags:
+  - Legacy / V2 Txns
+  properties:
+  - type: OpenAPI
+    url: openapi/near-legacy-v2-txns-api-openapi.yml
+  - type: Documentation
+    url: https://docs.near.org/api/rpc/introduction
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/near-rpc-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/near-rpc-api.yml
+  - type: Documentation
+    url: https://docs.fastnear.com/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/fastnear-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/fastnear-api.yml
+  - type: Documentation
+    url: https://api.nearblocks.io/api-docs/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/nearblocks-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/nearblocks-api.yml
+  - type: FinOps
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/finops/nearblocks-api.yml
+- aid: near:near-legacy-validators-api
+  name: NEAR Protocol Legacy / Validators API
+  description: Deprecated.
+  humanURL: https://docs.near.org/api/rpc/introduction
+  baseURL: https://rpc.mainnet.near.org
+  tags:
+  - Legacy / Validators
+  properties:
+  - type: OpenAPI
+    url: openapi/near-legacy-validators-api-openapi.yml
+  - type: Documentation
+    url: https://docs.near.org/api/rpc/introduction
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/near-rpc-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/near-rpc-api.yml
+  - type: Documentation
+    url: https://docs.fastnear.com/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/fastnear-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/fastnear-api.yml
+  - type: Documentation
+    url: https://api.nearblocks.io/api-docs/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/nearblocks-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/nearblocks-api.yml
+  - type: FinOps
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/finops/nearblocks-api.yml
+- aid: near:near-light-client-proof-api
+  name: NEAR Protocol Light Client Proof API
+  description: The Light Client Proof API from NEAR Protocol — 1 operation(s) for light client proof.
+  humanURL: https://docs.near.org/api/rpc/introduction
+  baseURL: https://rpc.mainnet.near.org
+  tags:
+  - Light Client Proof
+  properties:
+  - type: OpenAPI
+    url: openapi/near-light-client-proof-api-openapi.yml
+  - type: Documentation
+    url: https://docs.near.org/api/rpc/introduction
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/near-rpc-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/near-rpc-api.yml
+  - type: Documentation
+    url: https://docs.fastnear.com/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/fastnear-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/fastnear-api.yml
+  - type: Documentation
+    url: https://api.nearblocks.io/api-docs/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/nearblocks-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/nearblocks-api.yml
+  - type: FinOps
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/finops/nearblocks-api.yml
+- aid: near:near-maintenance-windows-api
+  name: NEAR Protocol Maintenance Windows API
+  description: The Maintenance Windows API from NEAR Protocol — 1 operation(s) for maintenance windows.
+  humanURL: https://docs.near.org/api/rpc/introduction
+  baseURL: https://rpc.mainnet.near.org
+  tags:
+  - Maintenance Windows
+  properties:
+  - type: OpenAPI
+    url: openapi/near-maintenance-windows-api-openapi.yml
+  - type: Documentation
+    url: https://docs.near.org/api/rpc/introduction
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/near-rpc-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/near-rpc-api.yml
+  - type: Documentation
+    url: https://docs.fastnear.com/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/fastnear-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/fastnear-api.yml
+  - type: Documentation
+    url: https://api.nearblocks.io/api-docs/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/nearblocks-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/nearblocks-api.yml
+  - type: FinOps
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/finops/nearblocks-api.yml
+- aid: near:near-network-info-api
+  name: NEAR Protocol Network Info API
+  description: The Network Info API from NEAR Protocol — 1 operation(s) for network info.
+  humanURL: https://docs.near.org/api/rpc/introduction
+  baseURL: https://rpc.mainnet.near.org
+  tags:
+  - Network Info
+  properties:
+  - type: OpenAPI
+    url: openapi/near-network-info-api-openapi.yml
+  - type: Documentation
+    url: https://docs.near.org/api/rpc/introduction
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/near-rpc-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/near-rpc-api.yml
+  - type: Documentation
+    url: https://docs.fastnear.com/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/fastnear-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/fastnear-api.yml
+  - type: Documentation
+    url: https://api.nearblocks.io/api-docs/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/nearblocks-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/nearblocks-api.yml
+  - type: FinOps
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/finops/nearblocks-api.yml
+- aid: near:near-next-light-client-block-api
+  name: NEAR Protocol Next Light Client Block API
+  description: >-
+    The Next Light Client Block API from NEAR Protocol — 1 operation(s) for next light client block.
+  humanURL: https://docs.near.org/api/rpc/introduction
+  baseURL: https://rpc.mainnet.near.org
+  tags:
+  - Next Light Client Block
+  properties:
+  - type: OpenAPI
+    url: openapi/near-next-light-client-block-api-openapi.yml
+  - type: Documentation
+    url: https://docs.near.org/api/rpc/introduction
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/near-rpc-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/near-rpc-api.yml
+  - type: Documentation
+    url: https://docs.fastnear.com/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/fastnear-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/fastnear-api.yml
+  - type: Documentation
+    url: https://api.nearblocks.io/api-docs/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/nearblocks-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/nearblocks-api.yml
+  - type: FinOps
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/finops/nearblocks-api.yml
+- aid: near:near-non-fungible-tokens-api
+  name: NEAR Protocol non-fungible-tokens API
+  description: The non-fungible-tokens API from NEAR Protocol — 2 operation(s) for non-fungible-tokens.
+  humanURL: https://docs.near.org/api/rpc/introduction
+  baseURL: https://rpc.mainnet.near.org
+  tags:
+  - non-fungible-tokens
+  properties:
+  - type: OpenAPI
+    url: openapi/near-non-fungible-tokens-api-openapi.yml
+  - type: Documentation
+    url: https://docs.near.org/api/rpc/introduction
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/near-rpc-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/near-rpc-api.yml
+  - type: Documentation
+    url: https://docs.fastnear.com/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/fastnear-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/fastnear-api.yml
+  - type: Documentation
+    url: https://api.nearblocks.io/api-docs/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/nearblocks-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/nearblocks-api.yml
+  - type: FinOps
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/finops/nearblocks-api.yml
+- aid: near:near-public-key-api
+  name: NEAR Protocol public-key API
+  description: The public-key API from NEAR Protocol — 4 operation(s) for public-key.
+  humanURL: https://docs.near.org/api/rpc/introduction
+  baseURL: https://rpc.mainnet.near.org
+  tags:
+  - public-key
+  properties:
+  - type: OpenAPI
+    url: openapi/near-public-key-api-openapi.yml
+  - type: Documentation
+    url: https://docs.near.org/api/rpc/introduction
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/near-rpc-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/near-rpc-api.yml
+  - type: Documentation
+    url: https://docs.fastnear.com/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/fastnear-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/fastnear-api.yml
+  - type: Documentation
+    url: https://api.nearblocks.io/api-docs/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/nearblocks-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/nearblocks-api.yml
+  - type: FinOps
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/finops/nearblocks-api.yml
+- aid: near:near-query-api
+  name: NEAR Protocol Query API
+  description: The Query API from NEAR Protocol — 1 operation(s) for query.
+  humanURL: https://docs.near.org/api/rpc/introduction
+  baseURL: https://rpc.mainnet.near.org
+  tags:
+  - Query
+  properties:
+  - type: OpenAPI
+    url: openapi/near-query-api-openapi.yml
+  - type: Documentation
+    url: https://docs.near.org/api/rpc/introduction
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/near-rpc-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/near-rpc-api.yml
+  - type: Documentation
+    url: https://docs.fastnear.com/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/fastnear-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/fastnear-api.yml
+  - type: Documentation
+    url: https://api.nearblocks.io/api-docs/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/nearblocks-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/nearblocks-api.yml
+  - type: FinOps
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/finops/nearblocks-api.yml
+- aid: near:near-send-tx-api
+  name: NEAR Protocol Send Tx API
+  description: The Send Tx API from NEAR Protocol — 1 operation(s) for send tx.
+  humanURL: https://docs.near.org/api/rpc/introduction
+  baseURL: https://rpc.mainnet.near.org
+  tags:
+  - Send Tx
+  properties:
+  - type: OpenAPI
+    url: openapi/near-send-tx-api-openapi.yml
+  - type: Documentation
+    url: https://docs.near.org/api/rpc/introduction
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/near-rpc-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/near-rpc-api.yml
+  - type: Documentation
+    url: https://docs.fastnear.com/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/fastnear-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/fastnear-api.yml
+  - type: Documentation
+    url: https://api.nearblocks.io/api-docs/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/nearblocks-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/nearblocks-api.yml
+  - type: FinOps
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/finops/nearblocks-api.yml
+- aid: near:near-staking-api
+  name: NEAR Protocol staking API
+  description: The staking API from NEAR Protocol — 2 operation(s) for staking.
+  humanURL: https://docs.near.org/api/rpc/introduction
+  baseURL: https://rpc.mainnet.near.org
+  tags:
+  - staking
+  properties:
+  - type: OpenAPI
+    url: openapi/near-staking-api-openapi.yml
+  - type: Documentation
+    url: https://docs.near.org/api/rpc/introduction
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/near-rpc-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/near-rpc-api.yml
+  - type: Documentation
+    url: https://docs.fastnear.com/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/fastnear-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/fastnear-api.yml
+  - type: Documentation
+    url: https://api.nearblocks.io/api-docs/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/nearblocks-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/nearblocks-api.yml
+  - type: FinOps
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/finops/nearblocks-api.yml
+- aid: near:near-status-api
+  name: NEAR Protocol Status API
+  description: The Status API from NEAR Protocol — 1 operation(s) for status.
+  humanURL: https://docs.near.org/api/rpc/introduction
+  baseURL: https://rpc.mainnet.near.org
+  tags:
+  - Status
+  properties:
+  - type: OpenAPI
+    url: openapi/near-status-api-openapi.yml
+  - type: Documentation
+    url: https://docs.near.org/api/rpc/introduction
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/near-rpc-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/near-rpc-api.yml
+  - type: Documentation
+    url: https://docs.fastnear.com/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/fastnear-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/fastnear-api.yml
+  - type: Documentation
+    url: https://api.nearblocks.io/api-docs/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/nearblocks-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/nearblocks-api.yml
+  - type: FinOps
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/finops/nearblocks-api.yml
+- aid: near:near-system-api
+  name: NEAR Protocol system API
+  description: The system API from NEAR Protocol — 2 operation(s) for system.
+  humanURL: https://docs.near.org/api/rpc/introduction
+  baseURL: https://rpc.mainnet.near.org
+  tags:
+  - system
+  properties:
+  - type: OpenAPI
+    url: openapi/near-system-api-openapi.yml
+  - type: Documentation
+    url: https://docs.near.org/api/rpc/introduction
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/near-rpc-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/near-rpc-api.yml
+  - type: Documentation
+    url: https://docs.fastnear.com/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/fastnear-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/fastnear-api.yml
+  - type: Documentation
+    url: https://api.nearblocks.io/api-docs/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/nearblocks-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/nearblocks-api.yml
+  - type: FinOps
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/finops/nearblocks-api.yml
+- aid: near:near-tx-api
+  name: NEAR Protocol Tx API
+  description: The Tx API from NEAR Protocol — 1 operation(s) for tx.
+  humanURL: https://docs.near.org/api/rpc/introduction
+  baseURL: https://rpc.mainnet.near.org
+  tags:
+  - Tx
+  properties:
+  - type: OpenAPI
+    url: openapi/near-tx-api-openapi.yml
+  - type: Documentation
+    url: https://docs.near.org/api/rpc/introduction
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/near-rpc-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/near-rpc-api.yml
+  - type: Documentation
+    url: https://docs.fastnear.com/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/fastnear-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/fastnear-api.yml
+  - type: Documentation
+    url: https://api.nearblocks.io/api-docs/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/nearblocks-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/nearblocks-api.yml
+  - type: FinOps
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/finops/nearblocks-api.yml
+- aid: near:near-validators-api
+  name: NEAR Protocol Validators API
+  description: The Validators API from NEAR Protocol — 1 operation(s) for validators.
+  humanURL: https://docs.near.org/api/rpc/introduction
+  baseURL: https://rpc.mainnet.near.org
+  tags:
+  - Validators
+  properties:
+  - type: OpenAPI
+    url: openapi/near-validators-api-openapi.yml
+  - type: Documentation
+    url: https://docs.near.org/api/rpc/introduction
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/near-rpc-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/near-rpc-api.yml
+  - type: Documentation
+    url: https://docs.fastnear.com/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/fastnear-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/fastnear-api.yml
+  - type: Documentation
+    url: https://api.nearblocks.io/api-docs/
+  - type: Plans
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/plans/nearblocks-api.yml
+  - type: RateLimits
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/rate-limits/nearblocks-api.yml
+  - type: FinOps
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/finops/nearblocks-api.yml
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
