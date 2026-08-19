@@ -1,0 +1,122 @@
+{
+  "item": [
+    {
+      "id": "34df4860-4274-470c-a618-494b0ba5ae79",
+      "name": "Broadcast Tx Async",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "431dab13-1298-488f-a24e-501574570b8d",
+          "name": "broadcast tx async",
+          "request": {
+            "name": "broadcast tx async",
+            "description": {
+              "content": "[Deprecated] Sends a transaction and immediately returns transaction hash. Consider using send_tx instead.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "broadcast_tx_async"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"jsonrpc\": \"<string>\",\n  \"id\": \"<string>\",\n  \"params\": {\n    \"signed_tx_base64\": \"<byte>\",\n    \"wait_until\": \"EXECUTED_OPTIMISTIC\"\n  },\n  \"method\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "4c615053-0004-45a2-b94c-1c53503cbeb5",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "broadcast_tx_async"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"jsonrpc\": \"<string>\",\n  \"id\": \"<string>\",\n  \"params\": {\n    \"signed_tx_base64\": \"<byte>\",\n    \"wait_until\": \"EXECUTED_OPTIMISTIC\"\n  },\n  \"method\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"result\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.fastnear.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "8d8c9fc4-03ad-4f0b-a36a-628de189ef4e",
+    "name": "FastNEAR accounts Broadcast Tx Async API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Low-latency indexed account, token, and public-key lookup APIs for wallets and explorers. Embedded portal clients may forward an optional `apiKey` query parameter, but the public FastNEAR API does not require it.",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,122 @@
+{
+  "item": [
+    {
+      "id": "a7d31541-2a4b-490a-8ef8-de0487b4632d",
+      "name": "Next Light Client Block",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "a7a5e5d8-94ea-4e33-9e58-7190f65b1adc",
+          "name": "next light client block",
+          "request": {
+            "name": "next light client block",
+            "description": {
+              "content": "Returns the next light client block.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "next_light_client_block"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"jsonrpc\": \"<string>\",\n  \"id\": \"<string>\",\n  \"params\": {\n    \"last_block_hash\": \"<string>\"\n  },\n  \"method\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "a826aaf5-7bd5-438c-b5dd-f242bf75ede7",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "next_light_client_block"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"jsonrpc\": \"<string>\",\n  \"id\": \"<string>\",\n  \"params\": {\n    \"last_block_hash\": \"<string>\"\n  },\n  \"method\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"result\": {\n    \"approvals_after_next\": [\n      \"string\",\n      \"string\"\n    ],\n    \"inner_lite\": {\n      \"height\": 6610,\n      \"epoch_id\": \"<string>\",\n      \"next_epoch_id\": \"<string>\",\n      \"prev_state_root\": \"<string>\",\n      \"outcome_root\": \"<string>\",\n      \"timestamp\": 1850,\n      \"timestamp_nanosec\": \"string\",\n      \"next_bp_hash\": \"<string>\",\n      \"block_merkle_root\": \"<string>\"\n    },\n    \"inner_rest_hash\": \"<string>\",\n    \"next_block_inner_hash\": \"<string>\",\n    \"next_bps\": [\n      {\n        \"account_id\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"public_key\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"stake\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"validator_stake_struct_version\": \"V1\"\n      },\n      {\n        \"account_id\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"public_key\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"stake\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"validator_stake_struct_version\": \"V1\"\n      }\n    ],\n    \"prev_block_hash\": \"<string>\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.fastnear.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "8ccb8627-fbbe-4611-b920-e6816828ec0e",
+    "name": "FastNEAR accounts Next Light Client Block API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Low-latency indexed account, token, and public-key lookup APIs for wallets and explorers. Embedded portal clients may forward an optional `apiKey` query parameter, but the public FastNEAR API does not require it.",
+      "type": "text/plain"
+    }
+  }
+}

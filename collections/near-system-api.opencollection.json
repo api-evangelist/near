@@ -1,0 +1,56 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "FastNEAR accounts system API",
+    "version": "3.0.3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "system",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get service health",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/health",
+            "params": [
+              {
+                "name": "apiKey",
+                "value": "",
+                "type": "query",
+                "description": "Optional API key forwarded by embedded portal clients. The public FastNEAR API does not require it."
+              }
+            ]
+          },
+          "docs": "Ping the FastNEAR API for liveness — returns `{status: ok}` when healthy."
+        },
+        {
+          "info": {
+            "name": "Get service sync status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/status",
+            "params": [
+              {
+                "name": "apiKey",
+                "value": "",
+                "type": "query",
+                "description": "Optional API key forwarded by embedded portal clients. The public FastNEAR API does not require it."
+              }
+            ]
+          },
+          "docs": "Check the current indexed block height, latency, and deployed service version."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,33 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "FastNEAR accounts Network Info API",
+    "version": "3.0.3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Network Info",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "network_info",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fastnear.com/network_info",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Queries the current state of node network connections. This includes information about active peers, transmitted data, known producers, etc."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

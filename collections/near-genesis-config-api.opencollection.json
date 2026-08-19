@@ -1,0 +1,33 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "FastNEAR accounts Genesis Config API",
+    "version": "3.0.3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Genesis Config",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "genesis_config",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fastnear.com/genesis_config",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Get initial state and parameters for the genesis block"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,122 @@
+{
+  "item": [
+    {
+      "id": "780858bf-5a4f-41b2-ae70-779132d0549b",
+      "name": "Query",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "ae3f2ed3-315a-44bf-90ee-07da96536f6b",
+          "name": "query",
+          "request": {
+            "name": "query",
+            "description": {
+              "content": "This module allows you to make generic requests to the network.\n\nThe `RpcQueryRequest` struct takes in a [`BlockReference`](https://docs.rs/near-primitives/0.12.0/near_primitives/types/enum.BlockReference.html) and a [`QueryRequest`](https://docs.rs/near-primitives/0.12.0/near_primitives/views/enum.QueryRequest.html).\n\nThe `BlockReference` enum allows you to specify a block by `Finality`, `BlockId` or `SyncCheckpoint`.\n\nThe `QueryRequest` enum provides multiple variants for performing the following actions:\n - View an account's details\n - View a contract's code\n - View the state of an account\n - View the `AccessKey` of an account\n - View the `AccessKeyList` of an account\n - Call a function in a contract deployed on the network.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "query"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"jsonrpc\": \"<string>\",\n  \"id\": \"<string>\",\n  \"params\": {\n    \"account_id\": \"<string>\",\n    \"block_id\": \"<uint64>\",\n    \"request_type\": \"<string>\"\n  },\n  \"method\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "2e9a1fa5-34b5-486b-a3f6-92ac812a6610",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "query"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"jsonrpc\": \"<string>\",\n  \"id\": \"<string>\",\n  \"params\": {\n    \"account_id\": \"<string>\",\n    \"block_id\": \"<uint64>\",\n    \"request_type\": \"<string>\"\n  },\n  \"method\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"result\": {\n    \"amount\": \"string\",\n    \"locked\": \"string\",\n    \"code_hash\": \"string\",\n    \"storage_usage\": 3559,\n    \"global_contract_account_id\": \"<string>\",\n    \"global_contract_hash\": \"string\",\n    \"storage_paid_at\": 0\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.fastnear.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "c4f53935-4bde-4aa9-b6e4-8d9bc0b1deec",
+    "name": "FastNEAR accounts Query API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Low-latency indexed account, token, and public-key lookup APIs for wallets and explorers. Embedded portal clients may forward an optional `apiKey` query parameter, but the public FastNEAR API does not require it.",
+      "type": "text/plain"
+    }
+  }
+}

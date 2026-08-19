@@ -1,0 +1,773 @@
+{
+  "item": [
+    {
+      "id": "aaf02404-1ccd-401d-931d-98e7c672d2bc",
+      "name": "Legacy / Chain Abstraction",
+      "description": {
+        "content": "Deprecated.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "03c71d2b-f698-427c-81eb-d275d3cfc1f0",
+          "name": "Get multi chain accounts of an account",
+          "request": {
+            "name": "Get multi chain accounts of an account",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "chain-abstraction",
+                ":account",
+                "multi-chain-accounts"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account",
+                  "description": "(Required) Account ID"
+                }
+              ]
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "34f57525-d6cd-4ab9-907b-d7beb284f4eb",
+              "name": "Success response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "chain-abstraction",
+                    ":account",
+                    "multi-chain-accounts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "account",
+                      "description": "(Required) Account ID"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e695c7c4-db71-4f12-b277-f19a9185db84",
+          "name": "Get multi chain txns of the account by pagination",
+          "request": {
+            "name": "Get multi chain txns of the account by pagination",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "chain-abstraction",
+                ":account",
+                "txns"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "from",
+                  "value": "<string>",
+                  "description": "Sender account ID"
+                },
+                {
+                  "disabled": false,
+                  "key": "after_block",
+                  "value": "<string>",
+                  "description": "Block height after which to get transactions"
+                },
+                {
+                  "disabled": false,
+                  "key": "before_block",
+                  "value": "<string>",
+                  "description": "Block height before which to get transactions"
+                },
+                {
+                  "disabled": false,
+                  "key": "after_date",
+                  "value": "<string>",
+                  "description": "Date in YYYY-MM-DD format to get transactions after this date"
+                },
+                {
+                  "disabled": false,
+                  "key": "before_date",
+                  "value": "<string>",
+                  "description": "Date in YYYY-MM-DD format to get transactions before this date"
+                },
+                {
+                  "disabled": false,
+                  "key": "chain",
+                  "value": "<string>",
+                  "description": "Foreign chain"
+                },
+                {
+                  "disabled": false,
+                  "key": "multichain_address",
+                  "value": "<string>",
+                  "description": "Multi-chain address"
+                },
+                {
+                  "disabled": false,
+                  "key": "cursor",
+                  "value": "<string>",
+                  "description": "Next page cursor, takes precedence over 'page' if provided"
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number"
+                },
+                {
+                  "disabled": false,
+                  "key": "per_page",
+                  "value": "25",
+                  "description": "Number of items per page. Each increment of 25 will count towards rate limit. For example, per page 50 will use 2 credits."
+                },
+                {
+                  "disabled": false,
+                  "key": "order",
+                  "value": "desc",
+                  "description": "Sort order"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account",
+                  "description": "(Required) Account ID"
+                }
+              ]
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "577d0ffe-3ff4-4b7a-a126-37d12a5e4f66",
+              "name": "Success response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "chain-abstraction",
+                    ":account",
+                    "txns"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "from",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after_block",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "before_block",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after_date",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "before_date",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "chain",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "multichain_address",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "25"
+                    },
+                    {
+                      "key": "order",
+                      "value": "desc"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "account",
+                      "description": "(Required) Account ID"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d845efc0-daf5-45a0-851c-202e98d4ca95",
+          "name": "Get estimated multi chain txns count of the account",
+          "request": {
+            "name": "Get estimated multi chain txns count of the account",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "chain-abstraction",
+                ":account",
+                "txns",
+                "count"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "from",
+                  "value": "<string>",
+                  "description": "Sender account ID"
+                },
+                {
+                  "disabled": false,
+                  "key": "after_block",
+                  "value": "<string>",
+                  "description": "Block height after which to get transactions"
+                },
+                {
+                  "disabled": false,
+                  "key": "before_block",
+                  "value": "<string>",
+                  "description": "Block height before which to get transactions"
+                },
+                {
+                  "disabled": false,
+                  "key": "after_date",
+                  "value": "<string>",
+                  "description": "Date in YYYY-MM-DD format to get transactions after this date"
+                },
+                {
+                  "disabled": false,
+                  "key": "before_date",
+                  "value": "<string>",
+                  "description": "Date in YYYY-MM-DD format to get transactions before this date"
+                },
+                {
+                  "disabled": false,
+                  "key": "chain",
+                  "value": "<string>",
+                  "description": "Foreign chain"
+                },
+                {
+                  "disabled": false,
+                  "key": "multichain_address",
+                  "value": "<string>",
+                  "description": "Multi-chain address"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account",
+                  "description": "(Required) Account ID"
+                }
+              ]
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "a7304456-cd17-4a29-a929-544f7e512e61",
+              "name": "Success response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "chain-abstraction",
+                    ":account",
+                    "txns",
+                    "count"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "from",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after_block",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "before_block",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after_date",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "before_date",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "chain",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "multichain_address",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "account",
+                      "description": "(Required) Account ID"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "540b2bc5-2f0b-4e10-a009-c20ab9792402",
+          "name": "Get multi chain txns by pagination",
+          "request": {
+            "name": "Get multi chain txns by pagination",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "chain-abstraction",
+                "txns"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "account",
+                  "value": "<string>",
+                  "description": "(Required) Account ID"
+                },
+                {
+                  "disabled": false,
+                  "key": "from",
+                  "value": "<string>",
+                  "description": "Sender account ID"
+                },
+                {
+                  "disabled": false,
+                  "key": "after_block",
+                  "value": "<string>",
+                  "description": "Block height after which to get transactions"
+                },
+                {
+                  "disabled": false,
+                  "key": "before_block",
+                  "value": "<string>",
+                  "description": "Block height before which to get transactions"
+                },
+                {
+                  "disabled": false,
+                  "key": "after_date",
+                  "value": "<string>",
+                  "description": "Date in YYYY-MM-DD format to get transactions after this date"
+                },
+                {
+                  "disabled": false,
+                  "key": "before_date",
+                  "value": "<string>",
+                  "description": "Date in YYYY-MM-DD format to get transactions before this date"
+                },
+                {
+                  "disabled": false,
+                  "key": "chain",
+                  "value": "<string>",
+                  "description": "Foreign chain"
+                },
+                {
+                  "disabled": false,
+                  "key": "multichain_address",
+                  "value": "<string>",
+                  "description": "Multi-chain address"
+                },
+                {
+                  "disabled": false,
+                  "key": "cursor",
+                  "value": "<string>",
+                  "description": "Next page cursor, takes precedence over 'page' if provided"
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number"
+                },
+                {
+                  "disabled": false,
+                  "key": "per_page",
+                  "value": "25",
+                  "description": "Number of items per page. Each increment of 25 will count towards rate limit. For example, per page 50 will use 2 credits."
+                },
+                {
+                  "disabled": false,
+                  "key": "order",
+                  "value": "desc",
+                  "description": "Sort order"
+                }
+              ],
+              "variable": []
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "2bb9bb1d-bc05-4380-beaa-eccf3a1a0086",
+              "name": "Success response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "chain-abstraction",
+                    "txns"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "account",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "from",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after_block",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "before_block",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after_date",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "before_date",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "chain",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "multichain_address",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "25"
+                    },
+                    {
+                      "key": "order",
+                      "value": "desc"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "60e960cf-bae0-4d56-ae2f-22e9459c9743",
+          "name": "Get estimated multi chain txns count",
+          "request": {
+            "name": "Get estimated multi chain txns count",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "chain-abstraction",
+                "txns",
+                "count"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "account",
+                  "value": "<string>",
+                  "description": "(Required) Account ID"
+                },
+                {
+                  "disabled": false,
+                  "key": "from",
+                  "value": "<string>",
+                  "description": "Sender account ID"
+                },
+                {
+                  "disabled": false,
+                  "key": "after_block",
+                  "value": "<string>",
+                  "description": "Block height after which to get transaction count"
+                },
+                {
+                  "disabled": false,
+                  "key": "before_block",
+                  "value": "<string>",
+                  "description": "Block height before which to get transaction count"
+                },
+                {
+                  "disabled": false,
+                  "key": "after_date",
+                  "value": "<string>",
+                  "description": "Date in YYYY-MM-DD format to get transaction count after this date"
+                },
+                {
+                  "disabled": false,
+                  "key": "before_date",
+                  "value": "<string>",
+                  "description": "Date in YYYY-MM-DD format to get transaction count before this date"
+                },
+                {
+                  "disabled": false,
+                  "key": "chain",
+                  "value": "<string>",
+                  "description": "Foreign chain"
+                },
+                {
+                  "disabled": false,
+                  "key": "multichain_address",
+                  "value": "<string>",
+                  "description": "Multi-chain address"
+                }
+              ],
+              "variable": []
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "4fc6b591-cc1c-48bd-b96a-497480ee080b",
+              "name": "Success response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "chain-abstraction",
+                    "txns",
+                    "count"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "account",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "from",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after_block",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "before_block",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after_date",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "before_date",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "chain",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "multichain_address",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.fastnear.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "b547c48f-607d-4409-bffc-3d9b68987ec4",
+    "name": "FastNEAR accounts Legacy / Chain Abstraction API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Low-latency indexed account, token, and public-key lookup APIs for wallets and explorers. Embedded portal clients may forward an optional `apiKey` query parameter, but the public FastNEAR API does not require it.",
+      "type": "text/plain"
+    }
+  }
+}

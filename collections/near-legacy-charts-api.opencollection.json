@@ -1,0 +1,51 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "FastNEAR accounts Legacy / Charts API",
+    "version": "3.0.3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Legacy / Charts",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get charts data",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/charts"
+          },
+          "docs": "Get charts data"
+        },
+        {
+          "info": {
+            "name": "Get latest charts data",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/charts/latest"
+          },
+          "docs": "Get latest charts data"
+        },
+        {
+          "info": {
+            "name": "Get txns per second by shards chart data",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/charts/tps"
+          },
+          "docs": "Get txns per second by shards chart data"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

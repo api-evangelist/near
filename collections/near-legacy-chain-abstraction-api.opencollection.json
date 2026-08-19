@@ -1,0 +1,329 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "FastNEAR accounts Legacy / Chain Abstraction API",
+    "version": "3.0.3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Legacy / Chain Abstraction",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get multi chain accounts of an account",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/chain-abstraction/:account/multi-chain-accounts",
+            "params": [
+              {
+                "name": "account",
+                "value": "",
+                "type": "path",
+                "description": "Account ID"
+              }
+            ]
+          },
+          "docs": "Get multi chain accounts of an account"
+        },
+        {
+          "info": {
+            "name": "Get multi chain txns of the account by pagination",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/chain-abstraction/:account/txns",
+            "params": [
+              {
+                "name": "account",
+                "value": "",
+                "type": "path",
+                "description": "Account ID"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Sender account ID"
+              },
+              {
+                "name": "after_block",
+                "value": "",
+                "type": "query",
+                "description": "Block height after which to get transactions"
+              },
+              {
+                "name": "before_block",
+                "value": "",
+                "type": "query",
+                "description": "Block height before which to get transactions"
+              },
+              {
+                "name": "after_date",
+                "value": "",
+                "type": "query",
+                "description": "Date in YYYY-MM-DD format to get transactions after this date"
+              },
+              {
+                "name": "before_date",
+                "value": "",
+                "type": "query",
+                "description": "Date in YYYY-MM-DD format to get transactions before this date"
+              },
+              {
+                "name": "chain",
+                "value": "",
+                "type": "query",
+                "description": "Foreign chain"
+              },
+              {
+                "name": "multichain_address",
+                "value": "",
+                "type": "query",
+                "description": "Multi-chain address"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "Next page cursor, takes precedence over 'page' if provided"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of items per page. Each increment of 25 will count towards rate limit. For example, per page 50 will use 2 credits."
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order"
+              }
+            ]
+          },
+          "docs": "Get multi chain txns of the account by pagination"
+        },
+        {
+          "info": {
+            "name": "Get estimated multi chain txns count of the account",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/chain-abstraction/:account/txns/count",
+            "params": [
+              {
+                "name": "account",
+                "value": "",
+                "type": "path",
+                "description": "Account ID"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Sender account ID"
+              },
+              {
+                "name": "after_block",
+                "value": "",
+                "type": "query",
+                "description": "Block height after which to get transactions"
+              },
+              {
+                "name": "before_block",
+                "value": "",
+                "type": "query",
+                "description": "Block height before which to get transactions"
+              },
+              {
+                "name": "after_date",
+                "value": "",
+                "type": "query",
+                "description": "Date in YYYY-MM-DD format to get transactions after this date"
+              },
+              {
+                "name": "before_date",
+                "value": "",
+                "type": "query",
+                "description": "Date in YYYY-MM-DD format to get transactions before this date"
+              },
+              {
+                "name": "chain",
+                "value": "",
+                "type": "query",
+                "description": "Foreign chain"
+              },
+              {
+                "name": "multichain_address",
+                "value": "",
+                "type": "query",
+                "description": "Multi-chain address"
+              }
+            ]
+          },
+          "docs": "Get estimated multi chain txns count of the account"
+        },
+        {
+          "info": {
+            "name": "Get multi chain txns by pagination",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/chain-abstraction/txns",
+            "params": [
+              {
+                "name": "account",
+                "value": "",
+                "type": "query",
+                "description": "Account ID"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Sender account ID"
+              },
+              {
+                "name": "after_block",
+                "value": "",
+                "type": "query",
+                "description": "Block height after which to get transactions"
+              },
+              {
+                "name": "before_block",
+                "value": "",
+                "type": "query",
+                "description": "Block height before which to get transactions"
+              },
+              {
+                "name": "after_date",
+                "value": "",
+                "type": "query",
+                "description": "Date in YYYY-MM-DD format to get transactions after this date"
+              },
+              {
+                "name": "before_date",
+                "value": "",
+                "type": "query",
+                "description": "Date in YYYY-MM-DD format to get transactions before this date"
+              },
+              {
+                "name": "chain",
+                "value": "",
+                "type": "query",
+                "description": "Foreign chain"
+              },
+              {
+                "name": "multichain_address",
+                "value": "",
+                "type": "query",
+                "description": "Multi-chain address"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "Next page cursor, takes precedence over 'page' if provided"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of items per page. Each increment of 25 will count towards rate limit. For example, per page 50 will use 2 credits."
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order"
+              }
+            ]
+          },
+          "docs": "Get multi chain txns by pagination"
+        },
+        {
+          "info": {
+            "name": "Get estimated multi chain txns count",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/chain-abstraction/txns/count",
+            "params": [
+              {
+                "name": "account",
+                "value": "",
+                "type": "query",
+                "description": "Account ID"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Sender account ID"
+              },
+              {
+                "name": "after_block",
+                "value": "",
+                "type": "query",
+                "description": "Block height after which to get transaction count"
+              },
+              {
+                "name": "before_block",
+                "value": "",
+                "type": "query",
+                "description": "Block height before which to get transaction count"
+              },
+              {
+                "name": "after_date",
+                "value": "",
+                "type": "query",
+                "description": "Date in YYYY-MM-DD format to get transaction count after this date"
+              },
+              {
+                "name": "before_date",
+                "value": "",
+                "type": "query",
+                "description": "Date in YYYY-MM-DD format to get transaction count before this date"
+              },
+              {
+                "name": "chain",
+                "value": "",
+                "type": "query",
+                "description": "Foreign chain"
+              },
+              {
+                "name": "multichain_address",
+                "value": "",
+                "type": "query",
+                "description": "Multi-chain address"
+              }
+            ]
+          },
+          "docs": "Get estimated multi chain txns count"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

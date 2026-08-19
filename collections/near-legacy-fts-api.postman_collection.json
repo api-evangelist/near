@@ -1,0 +1,867 @@
+{
+  "item": [
+    {
+      "id": "b38fa3d3-e6f7-402a-a2a6-ff1e36fc96fe",
+      "name": "Legacy / FTs",
+      "description": {
+        "content": "Deprecated.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "b54b4f14-ad10-4726-b214-1c6f01b531b4",
+          "name": "Get top tokens by pagination",
+          "request": {
+            "name": "Get top tokens by pagination",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "fts"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "search",
+                  "value": "<string>",
+                  "description": "Search keyword"
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number"
+                },
+                {
+                  "disabled": false,
+                  "key": "per_page",
+                  "value": "50",
+                  "description": "Number of items per page"
+                },
+                {
+                  "disabled": false,
+                  "key": "sort",
+                  "value": "onchain_market_cap",
+                  "description": "Sort field"
+                },
+                {
+                  "disabled": false,
+                  "key": "order",
+                  "value": "desc",
+                  "description": "Sort order"
+                }
+              ],
+              "variable": []
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "0e66c09a-1dc9-4040-a187-bcfee9afbe91",
+              "name": "Success response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "fts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "search",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "50"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "onchain_market_cap"
+                    },
+                    {
+                      "key": "order",
+                      "value": "desc"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "45965e18-1208-4cb6-a938-21a04713801a",
+          "name": "Get top tokens count",
+          "request": {
+            "name": "Get top tokens count",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "fts",
+                "count"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "search",
+                  "value": "<string>",
+                  "description": "Search keyword"
+                }
+              ],
+              "variable": []
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "77e1d4f1-6049-4cc4-8a6b-7561059852ba",
+              "name": "Success response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "fts",
+                    "count"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "search",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5e89cc76-bfaf-4ccd-99ec-2707d39d51c3",
+          "name": "Get token txns by pagination",
+          "request": {
+            "name": "Get token txns by pagination",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "fts",
+                "txns"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "cursor",
+                  "value": "<string>",
+                  "description": "Next page cursor. Takes precedence over 'page' if provided."
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number"
+                },
+                {
+                  "disabled": false,
+                  "key": "per_page",
+                  "value": "25",
+                  "description": "Number of items per page. Each increment of 25 will count towards rate limit."
+                }
+              ],
+              "variable": []
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "db0712f1-c20b-4da5-aaea-6728c4898270",
+              "name": "Success response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "fts",
+                    "txns"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "25"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "84c05c59-04d6-405d-b32c-bc68fb20f1b5",
+          "name": "Get estimated token txns count",
+          "request": {
+            "name": "Get estimated token txns count",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "fts",
+                "txns",
+                "count"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "6e4b95cb-f09b-49ff-8713-3b0bca6d7ad8",
+              "name": "Success response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "fts",
+                    "txns",
+                    "count"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "108d32b8-87bb-4c21-b88d-ef93a926f6cb",
+          "name": "Get token info",
+          "request": {
+            "name": "Get token info",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "fts",
+                ":contract"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "contract",
+                  "description": "(Required) Contract ID"
+                }
+              ]
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b264ebdc-1608-4282-bfdf-54c1c438c756",
+              "name": "Success response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "fts",
+                    ":contract"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "contract",
+                      "description": "(Required) Contract ID"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5fdf3840-75ee-4b78-9a91-9d43dec4a914",
+          "name": "Get token txns by pagination",
+          "request": {
+            "name": "Get token txns by pagination",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "fts",
+                ":contract",
+                "txns"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "account",
+                  "value": "<string>",
+                  "description": "Affected account ID"
+                },
+                {
+                  "disabled": false,
+                  "key": "event",
+                  "value": "<string>",
+                  "description": "Event type"
+                },
+                {
+                  "disabled": false,
+                  "key": "cursor",
+                  "value": "<string>",
+                  "description": "Next page cursor. Takes precedence over 'page' if provided."
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number"
+                },
+                {
+                  "disabled": false,
+                  "key": "per_page",
+                  "value": "25",
+                  "description": "Number of items per page. Each increment of 25 will count towards rate limit."
+                },
+                {
+                  "disabled": false,
+                  "key": "order",
+                  "value": "desc",
+                  "description": "Sort order"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "contract",
+                  "description": "(Required) Contract ID"
+                }
+              ]
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "bc6a0bb4-8c38-49d2-8937-3fb64f8fb4f2",
+              "name": "Success response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "fts",
+                    ":contract",
+                    "txns"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "account",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "event",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "25"
+                    },
+                    {
+                      "key": "order",
+                      "value": "desc"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "contract",
+                      "description": "(Required) Contract ID"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2fd59f08-9e7c-4be3-a3c4-164107f9f4b5",
+          "name": "Get estimated token txns count",
+          "request": {
+            "name": "Get estimated token txns count",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "fts",
+                ":contract",
+                "txns",
+                "count"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "account",
+                  "value": "<string>",
+                  "description": "Affected account ID"
+                },
+                {
+                  "disabled": false,
+                  "key": "event",
+                  "value": "<string>",
+                  "description": "Event type"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "contract",
+                  "description": "(Required) Contract ID"
+                }
+              ]
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "de016273-0c14-4530-a29c-4c759a4b750d",
+              "name": "Success response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "fts",
+                    ":contract",
+                    "txns",
+                    "count"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "account",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "event",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "contract",
+                      "description": "(Required) Contract ID"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7006ff2f-1e13-400b-aa89-b46d099855af",
+          "name": "Get token holders by pagination",
+          "request": {
+            "name": "Get token holders by pagination",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "fts",
+                ":contract",
+                "holders"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number"
+                },
+                {
+                  "disabled": false,
+                  "key": "per_page",
+                  "value": "25",
+                  "description": "Number of items per page. Each increment of 25 will count towards rate limit."
+                },
+                {
+                  "disabled": false,
+                  "key": "order",
+                  "value": "desc",
+                  "description": "Sort order"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "contract",
+                  "description": "(Required) Contract ID"
+                }
+              ]
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b4cd6351-4aa6-47ef-be91-0c8c332704dc",
+              "name": "Success response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "fts",
+                    ":contract",
+                    "holders"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "25"
+                    },
+                    {
+                      "key": "order",
+                      "value": "desc"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "contract",
+                      "description": "(Required) Contract ID"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8688bcdc-5673-43d9-ae74-c9961d3e1916",
+          "name": "Get estimated token holders count",
+          "request": {
+            "name": "Get estimated token holders count",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "fts",
+                ":contract",
+                "holders",
+                "count"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "contract",
+                  "description": "(Required) Contract ID"
+                }
+              ]
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "c09a3c34-85c0-4424-8872-d2611ce5d5fc",
+              "name": "Success response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "fts",
+                    ":contract",
+                    "holders",
+                    "count"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "contract",
+                      "description": "(Required) Contract ID"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.fastnear.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "2f735ccd-6ceb-416e-9442-7f46870a1fb9",
+    "name": "FastNEAR accounts Legacy / FTs API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Low-latency indexed account, token, and public-key lookup APIs for wallets and explorers. Embedded portal clients may forward an optional `apiKey` query parameter, but the public FastNEAR API does not require it.",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,122 @@
+{
+  "item": [
+    {
+      "id": "da9250ed-d54d-44d8-8db6-070488e4e1c2",
+      "name": "Status",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "29f4ee2e-d011-4182-849b-50d13a607222",
+          "name": "status",
+          "request": {
+            "name": "status",
+            "description": {
+              "content": "Requests the status of the connected RPC node. This includes information about sync status, nearcore node version, protocol version, the current set of validators, etc.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "status"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"jsonrpc\": \"<string>\",\n  \"id\": \"<string>\",\n  \"params\": \"<object>\",\n  \"method\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "91422319-f470-4ffd-8260-b6a5c205fda8",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "status"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"jsonrpc\": \"<string>\",\n  \"id\": \"<string>\",\n  \"params\": \"<object>\",\n  \"method\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"result\": {\n    \"version\": {\n      \"version\": \"string\",\n      \"build\": \"string\",\n      \"commit\": \"string\",\n      \"rustc_version\": \"\"\n    },\n    \"chain_id\": \"string\",\n    \"protocol_version\": 7232,\n    \"latest_protocol_version\": 551,\n    \"validators\": [\n      {\n        \"account_id\": \"string\"\n      },\n      {\n        \"account_id\": \"string\"\n      }\n    ],\n    \"sync_info\": {\n      \"latest_block_hash\": \"string\",\n      \"latest_block_height\": 3470,\n      \"latest_state_root\": \"string\",\n      \"latest_block_time\": \"string\",\n      \"syncing\": true,\n      \"earliest_block_hash\": \"string\",\n      \"earliest_block_height\": 7165,\n      \"earliest_block_time\": \"string\",\n      \"epoch_id\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"epoch_start_height\": 5280\n    },\n    \"node_public_key\": \"string\",\n    \"uptime_sec\": 4832,\n    \"genesis_hash\": \"string\",\n    \"detailed_debug_status\": {\n      \"network_info\": {\n        \"peer_max_count\": 7124,\n        \"num_connected_peers\": 916,\n        \"connected_peers\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ],\n        \"known_producers\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ],\n        \"tier1_accounts_keys\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ],\n        \"tier1_accounts_data\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ],\n        \"tier1_connections\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ]\n      },\n      \"sync_status\": \"string\",\n      \"catchup_status\": [\n        {\n          \"sync_block_hash\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"sync_block_height\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"shard_sync_status\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"blocks_to_catchup\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        {\n          \"sync_block_hash\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"sync_block_height\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"shard_sync_status\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"blocks_to_catchup\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      ],\n      \"current_head_status\": {\n        \"height\": 9268,\n        \"hash\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"current_header_head_status\": {\n        \"height\": 5100,\n        \"hash\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"block_production_delay_millis\": 328\n    },\n    \"node_key\": \"string\",\n    \"rpc_addr\": \"string\",\n    \"validator_account_id\": \"string\",\n    \"validator_public_key\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.fastnear.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "83a724f5-2aff-4166-889b-5c27f74d4110",
+    "name": "FastNEAR accounts Status API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Low-latency indexed account, token, and public-key lookup APIs for wallets and explorers. Embedded portal clients may forward an optional `apiKey` query parameter, but the public FastNEAR API does not require it.",
+      "type": "text/plain"
+    }
+  }
+}

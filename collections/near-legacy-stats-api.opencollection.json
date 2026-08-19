@@ -1,0 +1,48 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "FastNEAR accounts Legacy / Stats API",
+    "version": "3.0.3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Legacy / Stats",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get stats",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/stats"
+          },
+          "docs": "Get stats"
+        },
+        {
+          "info": {
+            "name": "Get near price",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/stats/price",
+            "params": [
+              {
+                "name": "date",
+                "value": "",
+                "type": "query",
+                "description": "Date in YYYY-MM-DD format"
+              }
+            ]
+          },
+          "docs": "Get near price"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

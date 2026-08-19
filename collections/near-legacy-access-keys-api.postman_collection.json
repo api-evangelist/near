@@ -1,0 +1,107 @@
+{
+  "item": [
+    {
+      "id": "3ddb8533-607d-4c93-bef4-6f277f1e9850",
+      "name": "Legacy / Access Keys",
+      "description": {
+        "content": "Deprecated.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "5e97f6ff-7b64-4403-bebf-31ae004795e9",
+          "name": "Get access key info by public key",
+          "request": {
+            "name": "Get access key info by public key",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "keys",
+                ":key"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "key",
+                  "description": "(Required) Public key"
+                }
+              ]
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "8cf30850-9405-465b-9b02-b8e1cf681535",
+              "name": "Success response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "keys",
+                    ":key"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "key",
+                      "description": "(Required) Public key"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.fastnear.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "8107b1eb-4533-479b-b54b-667374f41989",
+    "name": "FastNEAR accounts Legacy / Access Keys API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Low-latency indexed account, token, and public-key lookup APIs for wallets and explorers. Embedded portal clients may forward an optional `apiKey` query parameter, but the public FastNEAR API does not require it.",
+      "type": "text/plain"
+    }
+  }
+}

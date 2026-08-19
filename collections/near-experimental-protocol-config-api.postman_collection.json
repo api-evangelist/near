@@ -1,0 +1,122 @@
+{
+  "item": [
+    {
+      "id": "22456193-87c2-415f-91e2-9eb98244fcec",
+      "name": "EXPERIMENTAL Protocol Config",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "e72b7f68-5049-4a1d-bdd7-df337d825814",
+          "name": "EXPERIMENTAL protocol config",
+          "request": {
+            "name": "EXPERIMENTAL protocol config",
+            "description": {
+              "content": "A configuration that defines the protocol-level parameters such as gas/storage costs, limits, feature flags, other settings",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "EXPERIMENTAL_protocol_config"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"jsonrpc\": \"<string>\",\n  \"id\": \"<string>\",\n  \"params\": {\n    \"block_id\": \"<uint64>\"\n  },\n  \"method\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "d057be23-834d-4ce4-bf75-8e099a839c25",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "EXPERIMENTAL_protocol_config"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"jsonrpc\": \"<string>\",\n  \"id\": \"<string>\",\n  \"params\": {\n    \"block_id\": \"<uint64>\"\n  },\n  \"method\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"result\": {\n    \"block_producer_kickout_threshold\": 240,\n    \"chain_id\": \"string\",\n    \"chunk_producer_kickout_threshold\": 198,\n    \"chunk_validator_only_kickout_threshold\": 13,\n    \"dynamic_resharding\": false,\n    \"epoch_length\": 1181,\n    \"fishermen_threshold\": \"string\",\n    \"gas_limit\": 2531,\n    \"gas_price_adjustment_rate\": [\n      2620,\n      7120\n    ],\n    \"genesis_height\": 3978,\n    \"genesis_time\": \"1967-03-19T13:40:13.094Z\",\n    \"max_gas_price\": \"string\",\n    \"max_inflation_rate\": [\n      2924,\n      8301\n    ],\n    \"max_kickout_stake_perc\": 199,\n    \"min_gas_price\": \"string\",\n    \"minimum_stake_divisor\": 114,\n    \"minimum_stake_ratio\": [\n      7645,\n      9786\n    ],\n    \"minimum_validators_per_shard\": 9694,\n    \"num_block_producer_seats\": 5362,\n    \"num_blocks_per_year\": 8255,\n    \"online_max_threshold\": [\n      9444,\n      3486\n    ],\n    \"online_min_threshold\": [\n      8379,\n      7784\n    ],\n    \"protocol_reward_rate\": [\n      4261,\n      5612\n    ],\n    \"protocol_treasury_account\": \"string\",\n    \"protocol_upgrade_stake_threshold\": [\n      5481,\n      14\n    ],\n    \"protocol_version\": 501,\n    \"runtime_config\": {\n      \"account_creation_config\": {\n        \"min_allowed_top_level_account_length\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"registrar_account_id\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"congestion_control_config\": {\n        \"allowed_shard_outgoing_gas\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"max_congestion_incoming_gas\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"max_congestion_memory_consumption\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"max_congestion_missed_chunks\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"max_congestion_outgoing_gas\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"max_outgoing_gas\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"max_tx_gas\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"min_outgoing_gas\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"min_tx_gas\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"outgoing_receipts_big_size_limit\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"outgoing_receipts_usual_size_limit\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"reject_tx_congestion_threshold\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"storage_amount_per_byte\": \"string\",\n      \"transaction_costs\": {\n        \"action_creation_config\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"action_receipt_creation_config\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"burnt_gas_reward\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"data_receipt_creation_config\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"ml_dsa_65_verification_cost\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"pessimistic_gas_price_inflation_ratio\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"storage_usage_config\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"wasm_config\": {\n        \"bls12381_not_in_group_fix\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"chain_id_host_fn\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"discard_custom_sections\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"eth_implicit_accounts\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"eth_implicit_global_contract\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"ext_costs\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"fix_contract_loading_cost\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"gas_key_host_fns\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"global_contract_host_fns\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"grow_mem_cost\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"implicit_account_creation\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"limit_config\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"linear_op_base_cost\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"linear_op_unit_cost\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"one_yocto_on_promise\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"p256_verify_host_fn\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"reftypes_bulk_memory\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"regular_op_cost\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"storage_get_mode\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"vm_kind\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"yield_with_id_host_fns\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"witness_config\": {\n        \"combined_transactions_size_limit\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"main_storage_proof_size_soft_limit\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"new_transactions_validation_state_size_soft_limit\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      }\n    },\n    \"shard_layout\": {\n      \"V0\": {\n        \"num_shards\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"version\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      }\n    },\n    \"shuffle_shard_assignment_for_chunk_producers\": true,\n    \"target_validator_mandates_per_shard\": 5301,\n    \"transaction_validity_period\": 3719\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.fastnear.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "bad36f05-57b0-4358-be37-d3bca0771f3e",
+    "name": "FastNEAR accounts EXPERIMENTAL Protocol Config API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Low-latency indexed account, token, and public-key lookup APIs for wallets and explorers. Embedded portal clients may forward an optional `apiKey` query parameter, but the public FastNEAR API does not require it.",
+      "type": "text/plain"
+    }
+  }
+}

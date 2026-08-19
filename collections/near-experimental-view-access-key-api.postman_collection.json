@@ -1,0 +1,122 @@
+{
+  "item": [
+    {
+      "id": "1e7ebf6e-efe1-44ce-a1b4-6a88e55cdb56",
+      "name": "EXPERIMENTAL View Access Key",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "b8341da1-0de5-4415-8995-c468bdc24506",
+          "name": "EXPERIMENTAL view access key",
+          "request": {
+            "name": "EXPERIMENTAL view access key",
+            "description": {
+              "content": "Returns information about a single access key for given account.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "EXPERIMENTAL_view_access_key"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"jsonrpc\": \"<string>\",\n  \"id\": \"<string>\",\n  \"params\": {\n    \"block_id\": \"<uint64>\"\n  },\n  \"method\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "7e01885b-6116-4020-b840-157067f904c0",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "EXPERIMENTAL_view_access_key"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"jsonrpc\": \"<string>\",\n  \"id\": \"<string>\",\n  \"params\": {\n    \"block_id\": \"<uint64>\"\n  },\n  \"method\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"result\": {\n    \"nonce\": 5245,\n    \"permission\": \"FullAccess\",\n    \"block_height\": 6865,\n    \"block_hash\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.fastnear.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "0c38dd25-9f84-4c09-98de-9a4246d0228f",
+    "name": "FastNEAR accounts EXPERIMENTAL View Access Key API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Low-latency indexed account, token, and public-key lookup APIs for wallets and explorers. Embedded portal clients may forward an optional `apiKey` query parameter, but the public FastNEAR API does not require it.",
+      "type": "text/plain"
+    }
+  }
+}

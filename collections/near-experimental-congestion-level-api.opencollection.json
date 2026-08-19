@@ -1,0 +1,33 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "FastNEAR accounts EXPERIMENTAL Congestion Level API",
+    "version": "3.0.3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "EXPERIMENTAL Congestion Level",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "EXPERIMENTAL_congestion_level",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fastnear.com/EXPERIMENTAL_congestion_level",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Queries the congestion level of a shard. More info about congestion [here](https://near.github.io/nearcore/architecture/how/receipt-congestion.html?highlight=congestion#receipt-congestion)"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,184 @@
+{
+  "item": [
+    {
+      "id": "c3e52c16-2ab1-4700-befb-6973047a299f",
+      "name": "Legacy / V2 Txns",
+      "description": {
+        "content": "Deprecated.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "f254e375-91f8-4045-8e26-54fede434fc6",
+          "name": "Get txn info with receipts and execution outcomes",
+          "request": {
+            "name": "Get txn info with receipts and execution outcomes",
+            "description": {},
+            "url": {
+              "path": [
+                "v2",
+                "txns",
+                ":hash"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "hash",
+                  "description": "(Required) Transaction hash"
+                }
+              ]
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "0447dfc2-8912-4088-959e-d70da9a630a1",
+              "name": "Success response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "txns",
+                    ":hash"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "hash",
+                      "description": "(Required) Transaction hash"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5def1ccb-77e7-4acf-acc4-5098aced9c3c",
+          "name": "Get txn receipts",
+          "request": {
+            "name": "Get txn receipts",
+            "description": {},
+            "url": {
+              "path": [
+                "v2",
+                "txns",
+                ":hash",
+                "receipts"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "hash",
+                  "description": "(Required) Transaction hash"
+                }
+              ]
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "e9eb7c75-279c-4d88-9113-31dda57ce89f",
+              "name": "Success response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "txns",
+                    ":hash",
+                    "receipts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "hash",
+                      "description": "(Required) Transaction hash"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.fastnear.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "8fe91f7d-85b7-4922-9156-576f1bb4cd9f",
+    "name": "FastNEAR accounts Legacy / V2 Txns API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Low-latency indexed account, token, and public-key lookup APIs for wallets and explorers. Embedded portal clients may forward an optional `apiKey` query parameter, but the public FastNEAR API does not require it.",
+      "type": "text/plain"
+    }
+  }
+}

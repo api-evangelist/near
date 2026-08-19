@@ -1,0 +1,33 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "FastNEAR accounts Gas Price API",
+    "version": "3.0.3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Gas Price",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "gas_price",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fastnear.com/gas_price",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Returns gas price for a specific block_height or block_hash. Using [null] will return the most recent block's gas price."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

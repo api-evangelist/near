@@ -1,0 +1,68 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "FastNEAR accounts non-fungible-tokens API",
+    "version": "3.0.3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "non-fungible-tokens",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Lookup NFT contract IDs for an account",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v0/account/:account_id/nft",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "sharddog.near",
+                "type": "path",
+                "description": "NEAR account ID to inspect."
+              },
+              {
+                "name": "apiKey",
+                "value": "",
+                "type": "query",
+                "description": "Optional API key forwarded by embedded portal clients. The public FastNEAR API does not require it."
+              }
+            ]
+          },
+          "docs": "Fetch the NFT contract IDs an account has held — contract IDs only, no block-height metadata."
+        },
+        {
+          "info": {
+            "name": "Lookup indexed NFT contract rows for an account",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/account/:account_id/nft",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "sharddog.near",
+                "type": "path",
+                "description": "NEAR account ID to inspect."
+              },
+              {
+                "name": "apiKey",
+                "value": "",
+                "type": "query",
+                "description": "Optional API key forwarded by embedded portal clients. The public FastNEAR API does not require it."
+              }
+            ]
+          },
+          "docs": "Fetch NFT contract rows for an account, including block-height metadata for each contract."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

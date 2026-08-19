@@ -1,0 +1,122 @@
+{
+  "item": [
+    {
+      "id": "864006a3-9823-4064-a88b-4557d24cad40",
+      "name": "EXPERIMENTAL Light Client Block Proof",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "d44bd3e4-bbaa-4f43-a1c1-b6ef5317b11b",
+          "name": "EXPERIMENTAL light client block proof",
+          "request": {
+            "name": "EXPERIMENTAL light client block proof",
+            "description": {
+              "content": "Returns the proofs for a transaction execution.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "EXPERIMENTAL_light_client_block_proof"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"jsonrpc\": \"<string>\",\n  \"id\": \"<string>\",\n  \"params\": {\n    \"block_hash\": \"<string>\",\n    \"light_client_head\": \"<string>\"\n  },\n  \"method\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "1070d9f9-bf25-43df-9b40-45b7ab5a13c0",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "EXPERIMENTAL_light_client_block_proof"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"jsonrpc\": \"<string>\",\n  \"id\": \"<string>\",\n  \"params\": {\n    \"block_hash\": \"<string>\",\n    \"light_client_head\": \"<string>\"\n  },\n  \"method\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"result\": {\n    \"block_header_lite\": {\n      \"prev_block_hash\": \"<string>\",\n      \"inner_rest_hash\": \"<string>\",\n      \"inner_lite\": {\n        \"height\": 2960,\n        \"epoch_id\": {\n          \"description\": \"The epoch to which the block that is the current known head belongs\",\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"next_epoch_id\": {\n          \"description\": \"The epoch that will follow the current epoch\",\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"prev_state_root\": \"<string>\",\n        \"outcome_root\": \"<string>\",\n        \"timestamp\": 6632,\n        \"timestamp_nanosec\": \"string\",\n        \"next_bp_hash\": {\n          \"description\": \"The hash of the block producers set for the next epoch\",\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"block_merkle_root\": {\n          \"description\": \"The merkle root of all the block hashes\",\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      }\n    },\n    \"block_proof\": [\n      {\n        \"hash\": \"<string>\",\n        \"direction\": \"Left\"\n      },\n      {\n        \"hash\": \"<string>\",\n        \"direction\": \"Right\"\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.fastnear.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "12d49106-ee34-4d36-b5e3-e74ae18f52a3",
+    "name": "FastNEAR accounts EXPERIMENTAL Light Client Block Proof API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Low-latency indexed account, token, and public-key lookup APIs for wallets and explorers. Embedded portal clients may forward an optional `apiKey` query parameter, but the public FastNEAR API does not require it.",
+      "type": "text/plain"
+    }
+  }
+}

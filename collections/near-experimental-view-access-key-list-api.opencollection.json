@@ -1,0 +1,33 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "FastNEAR accounts EXPERIMENTAL View Access Key List API",
+    "version": "3.0.3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "EXPERIMENTAL View Access Key List",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "EXPERIMENTAL_view_access_key_list",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fastnear.com/EXPERIMENTAL_view_access_key_list",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Returns all access keys for a given account."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

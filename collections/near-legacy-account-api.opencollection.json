@@ -1,0 +1,995 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "FastNEAR accounts Legacy / Account API",
+    "version": "3.0.3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Legacy / Account",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get account info",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/account/:account",
+            "params": [
+              {
+                "name": "account",
+                "value": "",
+                "type": "path",
+                "description": "Account ID"
+              }
+            ]
+          },
+          "docs": "Get account info"
+        },
+        {
+          "info": {
+            "name": "Get contract info",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/account/:account/contract",
+            "params": [
+              {
+                "name": "account",
+                "value": "",
+                "type": "path",
+                "description": "Account ID"
+              }
+            ]
+          },
+          "docs": "Get contract info"
+        },
+        {
+          "info": {
+            "name": "Get contract deployment records (first & last)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/account/:account/contract/deployments",
+            "params": [
+              {
+                "name": "account",
+                "value": "",
+                "type": "path",
+                "description": "Account ID"
+              }
+            ]
+          },
+          "docs": "Get contract deployment records (first & last)"
+        },
+        {
+          "info": {
+            "name": "Get parsed contract info",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/account/:account/contract/parse",
+            "params": [
+              {
+                "name": "account",
+                "value": "",
+                "type": "path",
+                "description": "Account ID"
+              }
+            ]
+          },
+          "docs": "Get parsed contract info"
+        },
+        {
+          "info": {
+            "name": "Get latest action args for contract method",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/account/:account/contract/:method",
+            "params": [
+              {
+                "name": "account",
+                "value": "",
+                "type": "path",
+                "description": "Account ID"
+              },
+              {
+                "name": "method",
+                "value": "",
+                "type": "path",
+                "description": "Method name"
+              }
+            ]
+          },
+          "docs": "Get latest action args for contract method"
+        },
+        {
+          "info": {
+            "name": "Get account ft/nft token inventory",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/account/:account/inventory",
+            "params": [
+              {
+                "name": "account",
+                "value": "",
+                "type": "path",
+                "description": "Account ID"
+              }
+            ]
+          },
+          "docs": "Get account ft/nft token inventory"
+        },
+        {
+          "info": {
+            "name": "Get possible ft/nft token contracts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/account/:account/tokens",
+            "params": [
+              {
+                "name": "account",
+                "value": "",
+                "type": "path",
+                "description": "Account ID"
+              }
+            ]
+          },
+          "docs": "Get possible ft/nft token contracts"
+        },
+        {
+          "info": {
+            "name": "Get access keys by pagination",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/account/:account/keys",
+            "params": [
+              {
+                "name": "account",
+                "value": "",
+                "type": "path",
+                "description": "Account ID"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of items per page. Each increment of 25 will count towards rate limit. For example, per page 50 will use 2 credits."
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order"
+              }
+            ]
+          },
+          "docs": "Get access keys by pagination"
+        },
+        {
+          "info": {
+            "name": "Get estimated access keys count",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/account/:account/keys/count",
+            "params": [
+              {
+                "name": "account",
+                "value": "",
+                "type": "path",
+                "description": "Account ID"
+              }
+            ]
+          },
+          "docs": "Get estimated access keys count"
+        },
+        {
+          "info": {
+            "name": "Get account txns by pagination (NOT RECOMMENDED)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/account/:account/txns",
+            "params": [
+              {
+                "name": "account",
+                "value": "",
+                "type": "path",
+                "description": "Account ID"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Sender account ID"
+              },
+              {
+                "name": "to",
+                "value": "",
+                "type": "query",
+                "description": "Receiver account ID"
+              },
+              {
+                "name": "action",
+                "value": "",
+                "type": "query",
+                "description": "Action kind"
+              },
+              {
+                "name": "method",
+                "value": "",
+                "type": "query",
+                "description": "Function call method"
+              },
+              {
+                "name": "after_block",
+                "value": "",
+                "type": "query",
+                "description": "Block height"
+              },
+              {
+                "name": "before_block",
+                "value": "",
+                "type": "query",
+                "description": "Block height"
+              },
+              {
+                "name": "after_date",
+                "value": "",
+                "type": "query",
+                "description": "Date in YYYY-MM-DD format"
+              },
+              {
+                "name": "before_date",
+                "value": "",
+                "type": "query",
+                "description": "Date in YYYY-MM-DD format"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "Next page cursor, takes precedence over 'page' if provided"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of items per page. Each increment of 25 will count towards rate limit. For example, per page 50 will use 2 credits."
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order"
+              }
+            ]
+          },
+          "docs": "**NOT RECOMMENDED**: This endpoint is no longer recommended for large accounts due to performance issue.\nFor large accounts, it is better to query txns and receipts separately:\n- account/{account_id}/txns-only\n- account/{account_id}/receipts\n"
+        },
+        {
+          "info": {
+            "name": "Get estimated account txns count",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/account/:account/txns/count",
+            "params": [
+              {
+                "name": "account",
+                "value": "",
+                "type": "path",
+                "description": "Account ID"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Sender account ID"
+              },
+              {
+                "name": "to",
+                "value": "",
+                "type": "query",
+                "description": "Receiver account ID"
+              },
+              {
+                "name": "action",
+                "value": "",
+                "type": "query",
+                "description": "Action kind"
+              },
+              {
+                "name": "method",
+                "value": "",
+                "type": "query",
+                "description": "Function call method"
+              },
+              {
+                "name": "after_block",
+                "value": "",
+                "type": "query",
+                "description": "Block height"
+              },
+              {
+                "name": "before_block",
+                "value": "",
+                "type": "query",
+                "description": "Block height"
+              },
+              {
+                "name": "after_date",
+                "value": "",
+                "type": "query",
+                "description": "Date in YYYY-MM-DD format"
+              },
+              {
+                "name": "before_date",
+                "value": "",
+                "type": "query",
+                "description": "Date in YYYY-MM-DD format"
+              }
+            ]
+          },
+          "docs": "Get estimated account txns count"
+        },
+        {
+          "info": {
+            "name": "Get account txns without receipts by pagination",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/account/:account/txns-only",
+            "params": [
+              {
+                "name": "account",
+                "value": "",
+                "type": "path",
+                "description": "Account ID"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Sender account ID"
+              },
+              {
+                "name": "to",
+                "value": "",
+                "type": "query",
+                "description": "Receiver account ID"
+              },
+              {
+                "name": "after_date",
+                "value": "",
+                "type": "query",
+                "description": "Date in YYYY-MM-DD format"
+              },
+              {
+                "name": "before_date",
+                "value": "",
+                "type": "query",
+                "description": "Date in YYYY-MM-DD format"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "Next page cursor, takes precedence over 'page' if provided"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of items per page. Each increment of 25 will count towards rate limit. For example, per page 50 will use 2 credits."
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order"
+              }
+            ]
+          },
+          "docs": "Get account txns without receipts by pagination"
+        },
+        {
+          "info": {
+            "name": "Get estimated account txns without receipts count",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/account/:account/txns-only/count",
+            "params": [
+              {
+                "name": "account",
+                "value": "",
+                "type": "path",
+                "description": "Account ID"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Sender account ID"
+              },
+              {
+                "name": "to",
+                "value": "",
+                "type": "query",
+                "description": "Receiver account ID"
+              },
+              {
+                "name": "after_date",
+                "value": "",
+                "type": "query",
+                "description": "Date in YYYY-MM-DD format"
+              },
+              {
+                "name": "before_date",
+                "value": "",
+                "type": "query",
+                "description": "Date in YYYY-MM-DD format"
+              }
+            ]
+          },
+          "docs": "Get estimated account txns without receipts count"
+        },
+        {
+          "info": {
+            "name": "Get account receipts by pagination",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/account/:account/receipts",
+            "params": [
+              {
+                "name": "account",
+                "value": "",
+                "type": "path",
+                "description": "Account ID"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Sender account ID"
+              },
+              {
+                "name": "to",
+                "value": "",
+                "type": "query",
+                "description": "Receiver account ID"
+              },
+              {
+                "name": "action",
+                "value": "",
+                "type": "query",
+                "description": "Action kind"
+              },
+              {
+                "name": "method",
+                "value": "",
+                "type": "query",
+                "description": "Function call method"
+              },
+              {
+                "name": "after_date",
+                "value": "",
+                "type": "query",
+                "description": "Date in YYYY-MM-DD format"
+              },
+              {
+                "name": "before_date",
+                "value": "",
+                "type": "query",
+                "description": "Date in YYYY-MM-DD format"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "Next page cursor, takes precedence over 'page' if provided"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of items per page. Each increment of 25 will count towards rate limit. For example, per page 50 will use 2 credits."
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order"
+              }
+            ]
+          },
+          "docs": "Get account receipts by pagination"
+        },
+        {
+          "info": {
+            "name": "Get estimated account receipts count",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/account/:account/receipts/count",
+            "params": [
+              {
+                "name": "account",
+                "value": "",
+                "type": "path",
+                "description": "Account ID"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Sender account ID"
+              },
+              {
+                "name": "to",
+                "value": "",
+                "type": "query",
+                "description": "Receiver account ID"
+              },
+              {
+                "name": "action",
+                "value": "",
+                "type": "query",
+                "description": "Action kind"
+              },
+              {
+                "name": "method",
+                "value": "",
+                "type": "query",
+                "description": "Function call method"
+              },
+              {
+                "name": "after_date",
+                "value": "",
+                "type": "query",
+                "description": "Date in YYYY-MM-DD format"
+              },
+              {
+                "name": "before_date",
+                "value": "",
+                "type": "query",
+                "description": "Date in YYYY-MM-DD format"
+              }
+            ]
+          },
+          "docs": "Get estimated account receipts count"
+        },
+        {
+          "info": {
+            "name": "Get account token txns by pagination",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/account/:account/ft-txns",
+            "params": [
+              {
+                "name": "account",
+                "value": "",
+                "type": "path",
+                "description": "Account ID"
+              },
+              {
+                "name": "involved",
+                "value": "",
+                "type": "query",
+                "description": "Involved account ID"
+              },
+              {
+                "name": "contract",
+                "value": "",
+                "type": "query",
+                "description": "Contract account ID"
+              },
+              {
+                "name": "event",
+                "value": "",
+                "type": "query",
+                "description": "Event kind"
+              },
+              {
+                "name": "after_date",
+                "value": "",
+                "type": "query",
+                "description": "Date in YYYY-MM-DD format"
+              },
+              {
+                "name": "before_date",
+                "value": "",
+                "type": "query",
+                "description": "Date in YYYY-MM-DD format"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "Next page cursor, takes precedence over 'page' if provided"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of items per page. Each increment of 25 will count towards rate limit. For example, per page 50 will use 2 credits."
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order"
+              }
+            ]
+          },
+          "docs": "Get account token txns by pagination"
+        },
+        {
+          "info": {
+            "name": "Get estimated account token txns count",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/account/:account/ft-txns/count",
+            "params": [
+              {
+                "name": "account",
+                "value": "",
+                "type": "path",
+                "description": "Account ID"
+              },
+              {
+                "name": "involved",
+                "value": "",
+                "type": "query",
+                "description": "Involved account ID"
+              },
+              {
+                "name": "contract",
+                "value": "",
+                "type": "query",
+                "description": "Contract account ID"
+              },
+              {
+                "name": "event",
+                "value": "",
+                "type": "query",
+                "description": "Event kind"
+              },
+              {
+                "name": "after_date",
+                "value": "",
+                "type": "query",
+                "description": "Date in YYYY-MM-DD format"
+              },
+              {
+                "name": "before_date",
+                "value": "",
+                "type": "query",
+                "description": "Date in YYYY-MM-DD format"
+              }
+            ]
+          },
+          "docs": "Get estimated account token txns count"
+        },
+        {
+          "info": {
+            "name": "Get account nft txns by pagination",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/account/:account/nft-txns",
+            "params": [
+              {
+                "name": "account",
+                "value": "",
+                "type": "path",
+                "description": "Account ID"
+              },
+              {
+                "name": "involved",
+                "value": "",
+                "type": "query",
+                "description": "Involved account ID"
+              },
+              {
+                "name": "event",
+                "value": "",
+                "type": "query",
+                "description": "Event kind"
+              },
+              {
+                "name": "after_date",
+                "value": "",
+                "type": "query",
+                "description": "Date in YYYY-MM-DD format"
+              },
+              {
+                "name": "before_date",
+                "value": "",
+                "type": "query",
+                "description": "Date in YYYY-MM-DD format"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "Next page cursor, takes precedence over 'page' if provided"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of items per page. Each increment of 25 will count towards rate limit. For example, per page 50 will use 2 credits."
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order"
+              }
+            ]
+          },
+          "docs": "Get account nft txns by pagination"
+        },
+        {
+          "info": {
+            "name": "Get estimated account nft txns count",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/account/:account/nft-txns/count",
+            "params": [
+              {
+                "name": "account",
+                "value": "",
+                "type": "path",
+                "description": "Account ID"
+              },
+              {
+                "name": "involved",
+                "value": "",
+                "type": "query",
+                "description": "Involved account ID"
+              },
+              {
+                "name": "event",
+                "value": "",
+                "type": "query",
+                "description": "Event kind"
+              },
+              {
+                "name": "after_date",
+                "value": "",
+                "type": "query",
+                "description": "Date in YYYY-MM-DD format"
+              },
+              {
+                "name": "before_date",
+                "value": "",
+                "type": "query",
+                "description": "Date in YYYY-MM-DD format"
+              }
+            ]
+          },
+          "docs": "Get estimated account nft txns count"
+        },
+        {
+          "info": {
+            "name": "Get account stake txns by pagination",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/account/:account/stake-txns",
+            "params": [
+              {
+                "name": "account",
+                "value": "",
+                "type": "path",
+                "description": "Account ID"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Sender account ID"
+              },
+              {
+                "name": "to",
+                "value": "",
+                "type": "query",
+                "description": "Receiver account ID"
+              },
+              {
+                "name": "after_date",
+                "value": "",
+                "type": "query",
+                "description": "Date in YYYY-MM-DD format"
+              },
+              {
+                "name": "before_date",
+                "value": "",
+                "type": "query",
+                "description": "Date in YYYY-MM-DD format"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "Next page cursor, takes precedence over 'page' if provided"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of items per page. Each increment of 25 will count towards rate limit. For example, per page 50 will use 2 credits."
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order"
+              }
+            ]
+          },
+          "docs": "Get account stake txns by pagination"
+        },
+        {
+          "info": {
+            "name": "Get estimated account stake txns count",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/account/:account/stake-txns/count",
+            "params": [
+              {
+                "name": "account",
+                "value": "",
+                "type": "path",
+                "description": "Account ID"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Sender account ID"
+              },
+              {
+                "name": "to",
+                "value": "",
+                "type": "query",
+                "description": "Receiver account ID"
+              },
+              {
+                "name": "after_date",
+                "value": "",
+                "type": "query",
+                "description": "Date in YYYY-MM-DD format"
+              },
+              {
+                "name": "before_date",
+                "value": "",
+                "type": "query",
+                "description": "Date in YYYY-MM-DD format"
+              }
+            ]
+          },
+          "docs": "Get estimated account stake txns count"
+        },
+        {
+          "info": {
+            "name": "Get account balance change activities by pagination",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/account/:account/activities",
+            "params": [
+              {
+                "name": "account",
+                "value": "",
+                "type": "path",
+                "description": "Account ID"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "Next page cursor, takes precedence over 'page' if provided"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of items per page. Each increment of 25 will count towards rate limit. For example, per page 50 will use 2 credits."
+              }
+            ]
+          },
+          "docs": "Get account balance change activities by pagination"
+        },
+        {
+          "info": {
+            "name": "Get estimated account balance change activities count",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/account/:account/activities/count",
+            "params": [
+              {
+                "name": "account",
+                "value": "",
+                "type": "path",
+                "description": "Account ID"
+              }
+            ]
+          },
+          "docs": "Get estimated account balance change activities count"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

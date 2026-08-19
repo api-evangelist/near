@@ -1,0 +1,33 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "FastNEAR accounts EXPERIMENTAL View State API",
+    "version": "3.0.3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "EXPERIMENTAL View State",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "EXPERIMENTAL_view_state",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fastnear.com/EXPERIMENTAL_view_state",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Returns the state (key-value pairs) of a contract based on the key prefix."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,122 @@
+{
+  "item": [
+    {
+      "id": "262f6139-00c5-4590-a62c-242eaf0014ee",
+      "name": "EXPERIMENTAL Receipt To Tx",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "0b734cd2-0387-4479-b91d-fc6036b8c9b4",
+          "name": "EXPERIMENTAL receipt to tx",
+          "request": {
+            "name": "EXPERIMENTAL receipt to tx",
+            "description": {
+              "content": "Resolves a receipt ID back to the originating transaction hash and sender account",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "EXPERIMENTAL_receipt_to_tx"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"jsonrpc\": \"<string>\",\n  \"id\": \"<string>\",\n  \"params\": {\n    \"receipt_id\": \"<string>\",\n    \"block_height\": \"<uint64>\",\n    \"shard_id\": \"<uint64>\",\n    \"window\": \"<uint64>\"\n  },\n  \"method\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "a0ca2332-373e-4a67-b31c-ae244689dfa7",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "EXPERIMENTAL_receipt_to_tx"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"jsonrpc\": \"<string>\",\n  \"id\": \"<string>\",\n  \"params\": {\n    \"receipt_id\": \"<string>\",\n    \"block_height\": \"<uint64>\",\n    \"shard_id\": \"<uint64>\",\n    \"window\": \"<uint64>\"\n  },\n  \"method\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"result\": {\n    \"transaction_hash\": \"<string>\",\n    \"sender_account_id\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.fastnear.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "501f5903-f7d8-486b-848e-4ce9f9712198",
+    "name": "FastNEAR accounts EXPERIMENTAL Receipt To Tx API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Low-latency indexed account, token, and public-key lookup APIs for wallets and explorers. Embedded portal clients may forward an optional `apiKey` query parameter, but the public FastNEAR API does not require it.",
+      "type": "text/plain"
+    }
+  }
+}

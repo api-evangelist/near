@@ -1,0 +1,33 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "FastNEAR accounts Broadcast Tx Async API",
+    "version": "3.0.3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Broadcast Tx Async",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "broadcast_tx_async",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fastnear.com/broadcast_tx_async",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "[Deprecated] Sends a transaction and immediately returns transaction hash. Consider using send_tx instead."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

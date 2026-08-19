@@ -1,0 +1,321 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "FastNEAR accounts Legacy / Kitwallet API",
+    "version": "3.0.3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Legacy / Kitwallet",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get all staking pools",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/kitwallet/stakingPools"
+          },
+          "docs": "Get all staking pools"
+        },
+        {
+          "info": {
+            "name": "Get staking deposits for an account",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/kitwallet/staking-deposits/:account",
+            "params": [
+              {
+                "name": "account",
+                "value": "",
+                "type": "path",
+                "description": "Account ID"
+              }
+            ]
+          },
+          "docs": "Get staking deposits for an account"
+        },
+        {
+          "info": {
+            "name": "Get accounts by public key",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/kitwallet/publicKey/:key/accounts",
+            "params": [
+              {
+                "name": "key",
+                "value": "",
+                "type": "path",
+                "description": "Public key"
+              }
+            ]
+          },
+          "docs": "Get accounts by public key"
+        },
+        {
+          "info": {
+            "name": "Get activities for an account",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/kitwallet/account/:account/activities",
+            "params": [
+              {
+                "name": "account",
+                "value": "",
+                "type": "path",
+                "description": "Account ID"
+              }
+            ]
+          },
+          "docs": "Get activities for an account"
+        },
+        {
+          "info": {
+            "name": "Get call receivers for an account",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/kitwallet/account/:account/callReceivers",
+            "params": [
+              {
+                "name": "account",
+                "value": "",
+                "type": "path",
+                "description": "Account ID"
+              }
+            ]
+          },
+          "docs": "Get call receivers for an account"
+        },
+        {
+          "info": {
+            "name": "Get likely tokens for an account",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/kitwallet/account/:account/likelyTokens",
+            "params": [
+              {
+                "name": "account",
+                "value": "",
+                "type": "path",
+                "description": "Account ID"
+              }
+            ]
+          },
+          "docs": "Get likely tokens for an account"
+        },
+        {
+          "info": {
+            "name": "Get likely tokens for an account from block",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/kitwallet/account/:account/likelyTokensFromBlock",
+            "params": [
+              {
+                "name": "account",
+                "value": "",
+                "type": "path",
+                "description": "Account ID"
+              },
+              {
+                "name": "fromBlockTimestamp",
+                "value": "",
+                "type": "query",
+                "description": "Block timestamp"
+              }
+            ]
+          },
+          "docs": "Get likely tokens for an account from block"
+        },
+        {
+          "info": {
+            "name": "Get likely NFTs for an account",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/kitwallet/account/:account/likelyNFTs",
+            "params": [
+              {
+                "name": "account",
+                "value": "",
+                "type": "path",
+                "description": "Account ID"
+              }
+            ]
+          },
+          "docs": "Get likely NFTs for an account"
+        },
+        {
+          "info": {
+            "name": "Get likely NFTs for an account from block",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/kitwallet/account/:account/likelyNFTsFromBlock",
+            "params": [
+              {
+                "name": "account",
+                "value": "",
+                "type": "path",
+                "description": "Account ID"
+              },
+              {
+                "name": "fromBlockTimestamp",
+                "value": "",
+                "type": "query",
+                "description": "Block timestamp"
+              }
+            ]
+          },
+          "docs": "Get likely NFTs for an account from block"
+        },
+        {
+          "info": {
+            "name": "Get account receipts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/kitwallet/account/:account/receipts",
+            "params": [
+              {
+                "name": "account",
+                "value": "",
+                "type": "path",
+                "description": "Account ID"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Sender account ID"
+              },
+              {
+                "name": "to",
+                "value": "",
+                "type": "query",
+                "description": "Receiver account ID"
+              },
+              {
+                "name": "action",
+                "value": "",
+                "type": "query",
+                "description": "Action kind"
+              },
+              {
+                "name": "method",
+                "value": "",
+                "type": "query",
+                "description": "Function call method"
+              },
+              {
+                "name": "after_date",
+                "value": "",
+                "type": "query",
+                "description": "Date in YYYY-MM-DD format"
+              },
+              {
+                "name": "before_date",
+                "value": "",
+                "type": "query",
+                "description": "Date in YYYY-MM-DD format"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "Next page cursor, takes precedence over 'page' if provided"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of items per page. Each increment of 25 will count towards rate limit."
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order"
+              }
+            ]
+          },
+          "docs": "Get account receipts"
+        },
+        {
+          "info": {
+            "name": "Get estimated account receipts count",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/kitwallet/account/:account/receipts/count",
+            "params": [
+              {
+                "name": "account",
+                "value": "",
+                "type": "path",
+                "description": "Account ID"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Sender account ID"
+              },
+              {
+                "name": "to",
+                "value": "",
+                "type": "query",
+                "description": "Receiver account ID"
+              },
+              {
+                "name": "action",
+                "value": "",
+                "type": "query",
+                "description": "Action kind"
+              },
+              {
+                "name": "method",
+                "value": "",
+                "type": "query",
+                "description": "Function call method"
+              },
+              {
+                "name": "after_date",
+                "value": "",
+                "type": "query",
+                "description": "Date in YYYY-MM-DD format"
+              },
+              {
+                "name": "before_date",
+                "value": "",
+                "type": "query",
+                "description": "Date in YYYY-MM-DD format"
+              }
+            ]
+          },
+          "docs": "Get estimated account receipts count"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

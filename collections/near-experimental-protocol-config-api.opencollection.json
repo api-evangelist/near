@@ -1,0 +1,33 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "FastNEAR accounts EXPERIMENTAL Protocol Config API",
+    "version": "3.0.3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "EXPERIMENTAL Protocol Config",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "EXPERIMENTAL_protocol_config",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fastnear.com/EXPERIMENTAL_protocol_config",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "A configuration that defines the protocol-level parameters such as gas/storage costs, limits, feature flags, other settings"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

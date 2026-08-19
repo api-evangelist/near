@@ -1,0 +1,198 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "FastNEAR accounts Legacy / DEX API",
+    "version": "3.0.3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Legacy / DEX",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get top dex pairs by pagination",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/dex",
+            "params": [
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "Search keyword"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of items per page"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Sort field"
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order"
+              }
+            ]
+          },
+          "docs": "Get top dex pairs by pagination"
+        },
+        {
+          "info": {
+            "name": "Get top dex pairs count",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/dex/count",
+            "params": [
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "Search keyword"
+              }
+            ]
+          },
+          "docs": "Get top dex pairs count"
+        },
+        {
+          "info": {
+            "name": "Get dex pair info",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/dex/pairs/:pair",
+            "params": [
+              {
+                "name": "pair",
+                "value": "",
+                "type": "path",
+                "description": "Pair ID"
+              }
+            ]
+          },
+          "docs": "Get dex pair info"
+        },
+        {
+          "info": {
+            "name": "Get dex pair txns by pagination",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/dex/pairs/:pair/txns",
+            "params": [
+              {
+                "name": "pair",
+                "value": "",
+                "type": "path",
+                "description": "Pair ID"
+              },
+              {
+                "name": "a",
+                "value": "",
+                "type": "query",
+                "description": "Maker account ID"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "Next page cursor"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of items per page. Each increment of 25 will count towards rate limit. For example, per page 50 will use 2 credits."
+              }
+            ]
+          },
+          "docs": "Get dex pair txns by pagination"
+        },
+        {
+          "info": {
+            "name": "Get dex pair txns count",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/dex/pairs/:pair/txns/count",
+            "params": [
+              {
+                "name": "pair",
+                "value": "",
+                "type": "path",
+                "description": "Pair ID"
+              },
+              {
+                "name": "a",
+                "value": "",
+                "type": "query",
+                "description": "Maker account ID"
+              }
+            ]
+          },
+          "docs": "Get dex pair txns count"
+        },
+        {
+          "info": {
+            "name": "Get dex pair chart data",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/dex/pairs/:pair/charts",
+            "params": [
+              {
+                "name": "pair",
+                "value": "",
+                "type": "path",
+                "description": "Pair ID"
+              },
+              {
+                "name": "interval",
+                "value": "",
+                "type": "query",
+                "description": "Time interval"
+              },
+              {
+                "name": "to",
+                "value": "",
+                "type": "query",
+                "description": "End timestamp"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of rows"
+              }
+            ]
+          },
+          "docs": "Get dex pair chart data"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

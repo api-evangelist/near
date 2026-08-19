@@ -1,0 +1,444 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "FastNEAR accounts Legacy / NFTs API",
+    "version": "3.0.3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Legacy / NFTs",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get top NFTs by pagination",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/nfts",
+            "params": [
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "Search keyword"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of items per page"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Sort field"
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order"
+              }
+            ]
+          },
+          "docs": "Get top NFTs by pagination"
+        },
+        {
+          "info": {
+            "name": "Get top NFTs count",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/nfts/count",
+            "params": [
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "Search keyword"
+              }
+            ]
+          },
+          "docs": "Get top NFTs count"
+        },
+        {
+          "info": {
+            "name": "Get NFT transactions by pagination",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/nfts/txns",
+            "params": [
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "Next page cursor, takes precedence over 'page' if provided"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of items per page"
+              }
+            ]
+          },
+          "docs": "Get NFT transactions by pagination"
+        },
+        {
+          "info": {
+            "name": "Get estimated NFT transactions count",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/nfts/txns/count"
+          },
+          "docs": "Get estimated NFT transactions count"
+        },
+        {
+          "info": {
+            "name": "Get NFT info",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/nfts/:contract",
+            "params": [
+              {
+                "name": "contract",
+                "value": "",
+                "type": "path",
+                "description": "Contract ID"
+              }
+            ]
+          },
+          "docs": "Get NFT info"
+        },
+        {
+          "info": {
+            "name": "Get NFT transactions by pagination",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/nfts/:contract/txns",
+            "params": [
+              {
+                "name": "contract",
+                "value": "",
+                "type": "path",
+                "description": "Contract ID"
+              },
+              {
+                "name": "account",
+                "value": "",
+                "type": "query",
+                "description": "Affected account ID"
+              },
+              {
+                "name": "event",
+                "value": "",
+                "type": "query",
+                "description": "Event type"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "Next page cursor, takes precedence over 'page' if provided"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of items per page"
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order"
+              }
+            ]
+          },
+          "docs": "Get NFT transactions by pagination"
+        },
+        {
+          "info": {
+            "name": "Get estimated NFT transaction count",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/nfts/:contract/txns/count",
+            "params": [
+              {
+                "name": "contract",
+                "value": "",
+                "type": "path",
+                "description": "Contract ID"
+              },
+              {
+                "name": "account",
+                "value": "",
+                "type": "query",
+                "description": "Affected account ID"
+              },
+              {
+                "name": "event",
+                "value": "",
+                "type": "query",
+                "description": "Event type"
+              }
+            ]
+          },
+          "docs": "Get estimated NFT transaction count"
+        },
+        {
+          "info": {
+            "name": "Get NFT holders by pagination",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/nfts/:contract/holders",
+            "params": [
+              {
+                "name": "contract",
+                "value": "",
+                "type": "path",
+                "description": "Contract ID"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of items per page"
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order"
+              }
+            ]
+          },
+          "docs": "Get NFT holders by pagination"
+        },
+        {
+          "info": {
+            "name": "Get estimated NFT holders count",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/nfts/:contract/holders/count",
+            "params": [
+              {
+                "name": "contract",
+                "value": "",
+                "type": "path",
+                "description": "Contract ID"
+              }
+            ]
+          },
+          "docs": "Get estimated NFT holders count"
+        },
+        {
+          "info": {
+            "name": "Get NFT tokens list by pagination",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/nfts/:contract/tokens",
+            "params": [
+              {
+                "name": "contract",
+                "value": "",
+                "type": "path",
+                "description": "Contract ID"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of items per page"
+              }
+            ]
+          },
+          "docs": "Get NFT tokens list by pagination"
+        },
+        {
+          "info": {
+            "name": "Get estimated NFT tokens count",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/nfts/:contract/tokens/count",
+            "params": [
+              {
+                "name": "contract",
+                "value": "",
+                "type": "path",
+                "description": "Contract ID"
+              }
+            ]
+          },
+          "docs": "Get estimated NFT tokens count"
+        },
+        {
+          "info": {
+            "name": "Get NFT token info",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/nfts/:contract/tokens/:token",
+            "params": [
+              {
+                "name": "contract",
+                "value": "",
+                "type": "path",
+                "description": "Contract ID"
+              },
+              {
+                "name": "token",
+                "value": "",
+                "type": "path",
+                "description": "Token ID"
+              }
+            ]
+          },
+          "docs": "Get NFT token info"
+        },
+        {
+          "info": {
+            "name": "Get NFT token transactions by pagination",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/nfts/:contract/tokens/:token/txns",
+            "params": [
+              {
+                "name": "contract",
+                "value": "",
+                "type": "path",
+                "description": "Contract ID"
+              },
+              {
+                "name": "token",
+                "value": "",
+                "type": "path",
+                "description": "Token ID"
+              },
+              {
+                "name": "event",
+                "value": "",
+                "type": "query",
+                "description": "Event type"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "Next page cursor, takes precedence over 'page' if provided"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of items per page"
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order"
+              }
+            ]
+          },
+          "docs": "Get NFT token transactions by pagination"
+        },
+        {
+          "info": {
+            "name": "Get estimated NFT token transactions count",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/nfts/:contract/tokens/:token/txns/count",
+            "params": [
+              {
+                "name": "contract",
+                "value": "",
+                "type": "path",
+                "description": "Contract ID"
+              },
+              {
+                "name": "token",
+                "value": "",
+                "type": "path",
+                "description": "Token ID"
+              },
+              {
+                "name": "event",
+                "value": "",
+                "type": "query",
+                "description": "Event type"
+              }
+            ]
+          },
+          "docs": "Get estimated NFT token transactions count"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,33 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "FastNEAR accounts EXPERIMENTAL Tx Status API",
+    "version": "3.0.3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "EXPERIMENTAL Tx Status",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "EXPERIMENTAL_tx_status",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fastnear.com/EXPERIMENTAL_tx_status",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Queries status of a transaction by hash, returning the final transaction result and details of all receipts."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

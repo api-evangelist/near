@@ -1,0 +1,98 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "FastNEAR accounts Legacy / Blocks API",
+    "version": "3.0.3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Legacy / Blocks",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get blocks by pagination",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/blocks",
+            "params": [
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "Next page cursor, takes precedence over 'page' if provided"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of items per page. Each increment of 25 will count towards rate limit. For example, per page 50 will use 2 credits."
+              }
+            ]
+          },
+          "docs": "Get blocks by pagination"
+        },
+        {
+          "info": {
+            "name": "Get estimated total blocks count",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/blocks/count"
+          },
+          "docs": "Get estimated total blocks count"
+        },
+        {
+          "info": {
+            "name": "Get the latest blocks",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/blocks/latest",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of latest blocks to retrieve"
+              }
+            ]
+          },
+          "docs": "Get the latest blocks"
+        },
+        {
+          "info": {
+            "name": "Get block info",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/blocks/:hash",
+            "params": [
+              {
+                "name": "hash",
+                "value": "",
+                "type": "path",
+                "description": "Block hash"
+              }
+            ]
+          },
+          "docs": "Get block info"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

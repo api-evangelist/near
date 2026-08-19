@@ -1,0 +1,122 @@
+{
+  "item": [
+    {
+      "id": "c07e8746-d46d-4506-ba3c-3de9c306b7ba",
+      "name": "EXPERIMENTAL Genesis Config",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "383cb2ea-dcc7-4a00-9538-14e221c4650d",
+          "name": "EXPERIMENTAL genesis config",
+          "request": {
+            "name": "EXPERIMENTAL genesis config",
+            "description": {
+              "content": "[Deprecated] Get initial state and parameters for the genesis block. Consider genesis_config instead.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "EXPERIMENTAL_genesis_config"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"jsonrpc\": \"<string>\",\n  \"id\": \"<string>\",\n  \"params\": \"<object>\",\n  \"method\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "9e190ab3-b84e-4501-9f23-aefb116645dc",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "EXPERIMENTAL_genesis_config"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"jsonrpc\": \"<string>\",\n  \"id\": \"<string>\",\n  \"params\": \"<object>\",\n  \"method\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"result\": {\n    \"protocol_version\": 2082,\n    \"genesis_time\": \"1998-11-11T12:02:03.086Z\",\n    \"chain_id\": \"string\",\n    \"genesis_height\": 519,\n    \"num_block_producer_seats\": 8999,\n    \"dynamic_resharding\": false,\n    \"epoch_length\": 1880,\n    \"gas_limit\": 9032,\n    \"min_gas_price\": \"string\",\n    \"max_gas_price\": \"string\",\n    \"block_producer_kickout_threshold\": 48,\n    \"chunk_producer_kickout_threshold\": 216,\n    \"gas_price_adjustment_rate\": [\n      1028,\n      4573\n    ],\n    \"validators\": [\n      {\n        \"account_id\": \"string\",\n        \"public_key\": \"string\",\n        \"amount\": \"string\"\n      },\n      {\n        \"account_id\": \"string\",\n        \"public_key\": \"string\",\n        \"amount\": \"string\"\n      }\n    ],\n    \"transaction_validity_period\": 3452,\n    \"protocol_reward_rate\": [\n      7607,\n      3565\n    ],\n    \"max_inflation_rate\": [\n      7633,\n      6360\n    ],\n    \"total_supply\": \"string\",\n    \"num_blocks_per_year\": 9431,\n    \"protocol_treasury_account\": \"string\",\n    \"fishermen_threshold\": \"string\",\n    \"chunk_producer_assignment_changes_limit\": 5,\n    \"chunk_validator_only_kickout_threshold\": 80,\n    \"max_kickout_stake_perc\": 100,\n    \"minimum_stake_divisor\": 10,\n    \"minimum_stake_ratio\": [\n      1,\n      6250\n    ],\n    \"minimum_validators_per_shard\": 1,\n    \"num_chunk_producer_seats\": 100,\n    \"num_chunk_validator_seats\": 300,\n    \"online_max_threshold\": [\n      99,\n      100\n    ],\n    \"online_min_threshold\": [\n      9,\n      10\n    ],\n    \"protocol_upgrade_stake_threshold\": [\n      4,\n      5\n    ],\n    \"shard_layout\": {\n      \"V2\": {\n        \"boundary_accounts\": [],\n        \"id_to_index_map\": {\n          \"0\": 0\n        },\n        \"index_to_id_map\": {\n          \"0\": 0\n        },\n        \"shard_ids\": [\n          0\n        ],\n        \"version\": 0\n      }\n    },\n    \"shuffle_shard_assignment_for_chunk_producers\": false,\n    \"target_validator_mandates_per_shard\": 68,\n    \"use_production_config\": false\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.fastnear.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "affe76b8-5dee-4942-a5ac-cfdc89842027",
+    "name": "FastNEAR accounts EXPERIMENTAL Genesis Config API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Low-latency indexed account, token, and public-key lookup APIs for wallets and explorers. Embedded portal clients may forward an optional `apiKey` query parameter, but the public FastNEAR API does not require it.",
+      "type": "text/plain"
+    }
+  }
+}

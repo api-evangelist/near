@@ -1,0 +1,33 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "FastNEAR accounts Client Config API",
+    "version": "3.0.3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Client Config",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "client_config",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fastnear.com/client_config",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Queries client node configuration"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

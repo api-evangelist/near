@@ -1,0 +1,87 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "FastNEAR accounts Legacy / Supply API",
+    "version": "3.0.3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Legacy / Supply",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get total near supply",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/legacy/total-supply",
+            "params": [
+              {
+                "name": "unit",
+                "value": "",
+                "type": "query",
+                "description": "Unit of Near supply. Choosing NEAR will result in a text-only response"
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "If 'coingecko', return value"
+              }
+            ]
+          },
+          "docs": "Get total near supply"
+        },
+        {
+          "info": {
+            "name": "Get circulating near supply",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/legacy/circulating-supply",
+            "params": [
+              {
+                "name": "unit",
+                "value": "",
+                "type": "query",
+                "description": "Unit of Near supply. Choosing NEAR will result in a text-only response"
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "If 'coingecko', returns value"
+              }
+            ]
+          },
+          "docs": "Get circulating near supply"
+        },
+        {
+          "info": {
+            "name": "Get tokens burnt per day",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/legacy/fees",
+            "params": [
+              {
+                "name": "period",
+                "value": "",
+                "type": "query",
+                "description": "Data period"
+              }
+            ]
+          },
+          "docs": "Get tokens burnt per day"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

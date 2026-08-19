@@ -1,0 +1,33 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "FastNEAR accounts Send Tx API",
+    "version": "3.0.3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Send Tx",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "send_tx",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fastnear.com/send_tx",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Sends transaction. Returns the guaranteed execution status and the results the blockchain can provide at the moment."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

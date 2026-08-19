@@ -1,0 +1,33 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "FastNEAR accounts EXPERIMENTAL Genesis Config API",
+    "version": "3.0.3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "EXPERIMENTAL Genesis Config",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "EXPERIMENTAL_genesis_config",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fastnear.com/EXPERIMENTAL_genesis_config",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "[Deprecated] Get initial state and parameters for the genesis block. Consider genesis_config instead."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

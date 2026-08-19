@@ -1,0 +1,146 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "FastNEAR accounts Legacy / V2 Account API",
+    "version": "3.0.3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Legacy / V2 Account",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get account receipts by pagination",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v2/account/:account/receipts",
+            "params": [
+              {
+                "name": "account",
+                "value": "",
+                "type": "path",
+                "description": "Account ID"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Sender account ID"
+              },
+              {
+                "name": "to",
+                "value": "",
+                "type": "query",
+                "description": "Receiver account ID"
+              },
+              {
+                "name": "action",
+                "value": "",
+                "type": "query",
+                "description": "Action kind"
+              },
+              {
+                "name": "method",
+                "value": "",
+                "type": "query",
+                "description": "Function call method"
+              },
+              {
+                "name": "after_timestamp",
+                "value": "",
+                "type": "query",
+                "description": "Nanosecond timestamp"
+              },
+              {
+                "name": "before_timestamp",
+                "value": "",
+                "type": "query",
+                "description": "Nanosecond timestamp"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "Next page cursor, takes precedence over 'page' if provided"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of items per page. Each increment of 25 will count towards rate limit. For example, per page 50 will use 2 credits."
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order"
+              }
+            ]
+          },
+          "docs": "Get account receipts by pagination"
+        },
+        {
+          "info": {
+            "name": "Get estimated account receipts count",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v2/account/:account/receipts/count",
+            "params": [
+              {
+                "name": "account",
+                "value": "",
+                "type": "path",
+                "description": "Account ID"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Sender account ID"
+              },
+              {
+                "name": "to",
+                "value": "",
+                "type": "query",
+                "description": "Receiver account ID"
+              },
+              {
+                "name": "action",
+                "value": "",
+                "type": "query",
+                "description": "Action kind"
+              },
+              {
+                "name": "method",
+                "value": "",
+                "type": "query",
+                "description": "Function call method"
+              },
+              {
+                "name": "after_timestamp",
+                "value": "",
+                "type": "query",
+                "description": "Nanosecond timestamp"
+              },
+              {
+                "name": "before_timestamp",
+                "value": "",
+                "type": "query",
+                "description": "Nanosecond timestamp"
+              }
+            ]
+          },
+          "docs": "Get estimated account receipts count"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,43 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "FastNEAR accounts API",
+    "version": "3.0.3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "accounts",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Lookup full indexed account information",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/account/:account_id/full",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "here.tg",
+                "type": "path",
+                "description": "NEAR account ID to inspect."
+              },
+              {
+                "name": "apiKey",
+                "value": "",
+                "type": "query",
+                "description": "Optional API key forwarded by embedded portal clients. The public FastNEAR API does not require it."
+              }
+            ]
+          },
+          "docs": "Fetch the combined indexed account view, including staking pools, FT balances, NFTs, and account state."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

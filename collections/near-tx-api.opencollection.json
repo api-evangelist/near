@@ -1,0 +1,33 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "FastNEAR accounts Tx API",
+    "version": "3.0.3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Tx",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "tx",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fastnear.com/tx",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Queries status of a transaction by hash and returns the final transaction result."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

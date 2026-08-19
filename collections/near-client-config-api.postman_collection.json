@@ -1,0 +1,122 @@
+{
+  "item": [
+    {
+      "id": "c2cbcdbf-e986-4e2f-9762-2ceaf59b8a43",
+      "name": "Client Config",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "0cd7ff0b-f407-4a7f-9a12-0644bae7a6eb",
+          "name": "client config",
+          "request": {
+            "name": "client config",
+            "description": {
+              "content": "Queries client node configuration",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "client_config"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"jsonrpc\": \"<string>\",\n  \"id\": \"<string>\",\n  \"params\": \"<object>\",\n  \"method\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "e828f84e-e34a-4145-b441-1f6c166bdf0d",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "client_config"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"jsonrpc\": \"<string>\",\n  \"id\": \"<string>\",\n  \"params\": \"<object>\",\n  \"method\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"result\": {\n    \"archive\": false,\n    \"block_header_fetch_horizon\": 8129,\n    \"block_production_tracking_delay\": \"string\",\n    \"catchup_step_period\": [\n      4181,\n      2260\n    ],\n    \"chain_id\": \"string\",\n    \"chunk_distribution_network\": {\n      \"enabled\": false,\n      \"uris\": {\n        \"get\": \"string\",\n        \"set\": \"string\"\n      }\n    },\n    \"chunk_request_retry_period\": [\n      8167,\n      7962\n    ],\n    \"chunk_validation_threads\": 6770,\n    \"chunk_wait_mult\": \"string\",\n    \"chunks_cache_height_horizon\": 1872,\n    \"client_background_migration_threads\": 7468,\n    \"cloud_archival_writer\": {\n      \"archive_block_data\": false,\n      \"polling_interval\": {\n        \"nanos\": 0,\n        \"secs\": 1\n      },\n      \"snapshot_every_n_epochs\": 10\n    },\n    \"disable_tx_routing\": true,\n    \"doomslug_step_period\": \"string\",\n    \"enable_early_prepare_transactions\": true,\n    \"enable_multiline_logging\": true,\n    \"enable_statistics_export\": false,\n    \"epoch_length\": 5283,\n    \"epoch_sync\": {\n      \"epoch_sync_horizon_num_epochs\": 2,\n      \"timeout_for_epoch_sync\": {\n        \"secs\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"nanos\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      }\n    },\n    \"expected_shutdown\": \"string\",\n    \"gc\": {\n      \"gc_blocks_limit\": 2,\n      \"gc_fork_clean_step\": 100,\n      \"gc_num_epochs_to_keep\": 5,\n      \"gc_step_period\": {\n        \"nanos\": 500000000,\n        \"secs\": 0\n      }\n    },\n    \"header_sync_expected_height_per_second\": 8833,\n    \"header_sync_initial_timeout\": [\n      6621,\n      1304\n    ],\n    \"header_sync_progress_timeout\": [\n      1565,\n      2173\n    ],\n    \"header_sync_stall_ban_timeout\": [\n      9654,\n      4733\n    ],\n    \"log_summary_period\": [\n      3971,\n      5952\n    ],\n    \"log_summary_style\": \"colored\",\n    \"max_block_production_delay\": \"string\",\n    \"max_block_wait_delay\": \"string\",\n    \"max_gas_burnt_view\": 4325,\n    \"min_block_production_delay\": \"string\",\n    \"min_num_peers\": 5550,\n    \"num_block_producer_seats\": 4841,\n    \"orphan_state_witness_max_size\": 2663,\n    \"orphan_state_witness_pool_size\": 7176,\n    \"produce_chunk_add_transactions_time_limit\": \"string\",\n    \"produce_empty_blocks\": false,\n    \"protocol_version_check\": \"NextNext\",\n    \"receipt_to_tx_max_hint_window\": 2340,\n    \"receipt_to_tx_max_hop_distance\": 6544,\n    \"receipt_to_tx_max_outcomes_per_request\": 7770,\n    \"resharding_config\": \"string\",\n    \"rpc_addr\": \"string\",\n    \"save_invalid_witnesses\": false,\n    \"save_latest_witnesses\": false,\n    \"save_receipt_to_tx\": true,\n    \"save_state_changes\": true,\n    \"save_trie_changes\": false,\n    \"save_tx_outcomes\": true,\n    \"save_untracked_partial_chunks_parts\": false,\n    \"skip_sync_wait\": false,\n    \"state_request_server_threads\": 5526,\n    \"state_request_throttle_period\": [\n      453,\n      9553\n    ],\n    \"state_requests_per_throttle_period\": 4834,\n    \"state_sync\": {\n      \"concurrency\": {\n        \"apply\": 192,\n        \"apply_during_catchup\": 45,\n        \"peer_downloads\": 155,\n        \"per_shard\": 56\n      },\n      \"dump\": {\n        \"credentials_file\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"iteration_delay\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"location\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"restart_dump_for_shards\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"parts_compression_lvl\": 1,\n      \"sync\": \"Peers\"\n    },\n    \"state_sync_external_backoff\": [\n      8378,\n      4222\n    ],\n    \"state_sync_external_timeout\": [\n      819,\n      5927\n    ],\n    \"state_sync_p2p_timeout\": [\n      5753,\n      8966\n    ],\n    \"state_sync_retry_backoff\": [\n      9928,\n      4847\n    ],\n    \"sync_check_period\": [\n      5705,\n      5521\n    ],\n    \"sync_height_threshold\": 5407,\n    \"sync_max_block_requests\": 7577,\n    \"sync_step_period\": [\n      6405,\n      4265\n    ],\n    \"tracked_shards_config\": \"NoShards\",\n    \"transaction_pool_size_limit\": 5990,\n    \"transaction_pool_strict_nonce_ttl_blocks\": 6145,\n    \"transaction_request_handler_threads\": 2902,\n    \"trie_viewer_state_size_limit\": 3483,\n    \"ttl_account_id_router\": [\n      1474,\n      7769\n    ],\n    \"tx_routing_height_horizon\": 5056,\n    \"version\": {\n      \"version\": \"string\",\n      \"build\": \"string\",\n      \"commit\": \"string\",\n      \"rustc_version\": \"\"\n    },\n    \"view_client_threads\": 9889\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.fastnear.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "960ca456-b4b0-483c-9e70-eef895b632e6",
+    "name": "FastNEAR accounts Client Config API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Low-latency indexed account, token, and public-key lookup APIs for wallets and explorers. Embedded portal clients may forward an optional `apiKey` query parameter, but the public FastNEAR API does not require it.",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "FastNEAR accounts Next Light Client Block API",
+    "version": "3.0.3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Next Light Client Block",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "next_light_client_block",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fastnear.com/next_light_client_block",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Returns the next light client block."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

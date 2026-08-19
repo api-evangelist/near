@@ -1,0 +1,56 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "FastNEAR accounts Legacy / V2 Txns API",
+    "version": "3.0.3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Legacy / V2 Txns",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get txn info with receipts and execution outcomes",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v2/txns/:hash",
+            "params": [
+              {
+                "name": "hash",
+                "value": "",
+                "type": "path",
+                "description": "Transaction hash"
+              }
+            ]
+          },
+          "docs": "Get txn info with receipts and execution outcomes"
+        },
+        {
+          "info": {
+            "name": "Get txn receipts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v2/txns/:hash/receipts",
+            "params": [
+              {
+                "name": "hash",
+                "value": "",
+                "type": "path",
+                "description": "Transaction hash"
+              }
+            ]
+          },
+          "docs": "Get txn receipts"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

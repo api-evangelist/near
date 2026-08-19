@@ -1,0 +1,122 @@
+{
+  "item": [
+    {
+      "id": "374c0389-0acc-419e-bed7-fa1fa5622a3d",
+      "name": "Validators",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "89a77371-caf0-4cb5-914c-74fbabb90fb4",
+          "name": "validators",
+          "request": {
+            "name": "validators",
+            "description": {
+              "content": "Queries active validators on the network. Returns details and the state of validation on the blockchain.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "validators"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"jsonrpc\": \"<string>\",\n  \"id\": \"<string>\",\n  \"params\": {\n    \"epoch_id\": \"<string>\"\n  },\n  \"method\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "ab1e41a3-964b-4ad2-991b-776af7df949f",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "validators"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"jsonrpc\": \"<string>\",\n  \"id\": \"<string>\",\n  \"params\": {\n    \"epoch_id\": \"<string>\"\n  },\n  \"method\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"result\": {\n    \"current_validators\": [\n      {\n        \"account_id\": \"string\",\n        \"public_key\": \"string\",\n        \"is_slashed\": false,\n        \"stake\": \"string\",\n        \"shards\": [\n          859,\n          1301\n        ],\n        \"num_produced_blocks\": 7988,\n        \"num_expected_blocks\": 1273,\n        \"num_expected_chunks\": 0,\n        \"num_expected_endorsements\": 0,\n        \"num_produced_chunks\": 0,\n        \"num_produced_endorsements\": 0\n      },\n      {\n        \"account_id\": \"string\",\n        \"public_key\": \"string\",\n        \"is_slashed\": false,\n        \"stake\": \"string\",\n        \"shards\": [\n          8522,\n          2536\n        ],\n        \"num_produced_blocks\": 3727,\n        \"num_expected_blocks\": 2606,\n        \"num_expected_chunks\": 0,\n        \"num_expected_endorsements\": 0,\n        \"num_produced_chunks\": 0,\n        \"num_produced_endorsements\": 0\n      }\n    ],\n    \"next_validators\": [\n      {\n        \"account_id\": \"string\",\n        \"public_key\": \"string\",\n        \"stake\": \"string\",\n        \"shards\": [\n          4455,\n          2720\n        ]\n      },\n      {\n        \"account_id\": \"string\",\n        \"public_key\": \"string\",\n        \"stake\": \"string\",\n        \"shards\": [\n          618,\n          4978\n        ]\n      }\n    ],\n    \"current_fishermen\": [\n      {\n        \"account_id\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"public_key\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"stake\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"validator_stake_struct_version\": \"V1\"\n      },\n      {\n        \"account_id\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"public_key\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"stake\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"validator_stake_struct_version\": \"V1\"\n      }\n    ],\n    \"next_fishermen\": [\n      {\n        \"account_id\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"public_key\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"stake\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"validator_stake_struct_version\": \"V1\"\n      },\n      {\n        \"account_id\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"public_key\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"stake\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"validator_stake_struct_version\": \"V1\"\n      }\n    ],\n    \"current_proposals\": [\n      {\n        \"account_id\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"public_key\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"stake\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"validator_stake_struct_version\": \"V1\"\n      },\n      {\n        \"account_id\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"public_key\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"stake\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"validator_stake_struct_version\": \"V1\"\n      }\n    ],\n    \"prev_epoch_kickout\": [\n      {\n        \"account_id\": \"string\",\n        \"reason\": \"_UnusedSlashed\"\n      },\n      {\n        \"account_id\": \"string\",\n        \"reason\": \"_UnusedSlashed\"\n      }\n    ],\n    \"epoch_start_height\": 1836,\n    \"epoch_height\": 2327,\n    \"validator_reward_paid_prev_epoch\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.fastnear.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "10c93052-0c68-4cd6-8f72-ce482ce3d406",
+    "name": "FastNEAR accounts Validators API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Low-latency indexed account, token, and public-key lookup APIs for wallets and explorers. Embedded portal clients may forward an optional `apiKey` query parameter, but the public FastNEAR API does not require it.",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,122 @@
+{
+  "item": [
+    {
+      "id": "d567dfcf-b69f-4e97-9106-376f67f3d1c4",
+      "name": "Chunk",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "6071f00d-6d51-4109-ab12-9ecbc7d31594",
+          "name": "chunk",
+          "request": {
+            "name": "chunk",
+            "description": {
+              "content": "Returns details of a specific chunk. You can run a block details query to get a valid chunk hash.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "chunk"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"jsonrpc\": \"<string>\",\n  \"id\": \"<string>\",\n  \"params\": {\n    \"block_id\": \"<uint64>\",\n    \"shard_id\": \"<uint64>\"\n  },\n  \"method\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "41d4a264-5986-43b0-b171-9981f7a3eb3a",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "chunk"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"jsonrpc\": \"<string>\",\n  \"id\": \"<string>\",\n  \"params\": {\n    \"block_id\": \"<uint64>\",\n    \"shard_id\": \"<uint64>\"\n  },\n  \"method\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"result\": {\n    \"author\": \"string\",\n    \"header\": {\n      \"chunk_hash\": \"string\",\n      \"prev_block_hash\": \"string\",\n      \"outcome_root\": \"string\",\n      \"prev_state_root\": \"string\",\n      \"encoded_merkle_root\": \"string\",\n      \"encoded_length\": 9670,\n      \"height_created\": 1961,\n      \"height_included\": 3420,\n      \"shard_id\": \"<uint64>\",\n      \"gas_used\": 9776,\n      \"gas_limit\": 8475,\n      \"balance_burnt\": \"string\",\n      \"outgoing_receipts_root\": \"string\",\n      \"tx_root\": \"string\",\n      \"validator_proposals\": [\n        {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      ],\n      \"signature\": \"string\",\n      \"bandwidth_requests\": {\n        \"V1\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"congestion_info\": {\n        \"delayed_receipts_gas\": \"string\",\n        \"buffered_receipts_gas\": \"string\",\n        \"receipt_bytes\": 1818,\n        \"allowed_shard\": 18398\n      },\n      \"proposed_split\": {\n        \"boundary_account\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"left_memory\": 3064,\n        \"right_memory\": 1246\n      },\n      \"rent_paid\": \"0\",\n      \"validator_reward\": \"0\"\n    },\n    \"transactions\": [\n      {\n        \"signer_id\": \"string\",\n        \"public_key\": \"string\",\n        \"nonce\": 6488,\n        \"receiver_id\": \"string\",\n        \"actions\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ],\n        \"signature\": \"string\",\n        \"hash\": \"string\",\n        \"nonce_index\": 24154,\n        \"nonce_mode\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"priority_fee\": 0\n      },\n      {\n        \"signer_id\": \"string\",\n        \"public_key\": \"string\",\n        \"nonce\": 9887,\n        \"receiver_id\": \"string\",\n        \"actions\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ],\n        \"signature\": \"string\",\n        \"hash\": \"string\",\n        \"nonce_index\": 1925,\n        \"nonce_mode\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"priority_fee\": 0\n      }\n    ],\n    \"receipts\": [\n      {\n        \"predecessor_id\": \"string\",\n        \"receiver_id\": \"string\",\n        \"receipt_id\": \"string\",\n        \"receipt\": {\n          \"Action\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"priority\": 0\n      },\n      {\n        \"predecessor_id\": \"string\",\n        \"receiver_id\": \"string\",\n        \"receipt_id\": \"string\",\n        \"receipt\": {\n          \"Action\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"priority\": 0\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.fastnear.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "f27e5730-8e61-4e2c-84e4-e444e4d7c65c",
+    "name": "FastNEAR accounts Chunk API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Low-latency indexed account, token, and public-key lookup APIs for wallets and explorers. Embedded portal clients may forward an optional `apiKey` query parameter, but the public FastNEAR API does not require it.",
+      "type": "text/plain"
+    }
+  }
+}

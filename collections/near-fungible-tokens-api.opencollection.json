@@ -1,0 +1,93 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "FastNEAR accounts fungible-tokens API",
+    "version": "3.0.3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "fungible-tokens",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Lookup fungible token contract IDs for an account",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v0/account/:account_id/ft",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "here.tg",
+                "type": "path",
+                "description": "NEAR account ID to inspect."
+              },
+              {
+                "name": "apiKey",
+                "value": "",
+                "type": "query",
+                "description": "Optional API key forwarded by embedded portal clients. The public FastNEAR API does not require it."
+              }
+            ]
+          },
+          "docs": "Fetch the fungible token contract IDs an account has held — contract IDs only, no balances."
+        },
+        {
+          "info": {
+            "name": "Lookup indexed fungible token rows for an account",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/account/:account_id/ft",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "here.tg",
+                "type": "path",
+                "description": "NEAR account ID to inspect."
+              },
+              {
+                "name": "apiKey",
+                "value": "",
+                "type": "query",
+                "description": "Optional API key forwarded by embedded portal clients. The public FastNEAR API does not require it."
+              }
+            ]
+          },
+          "docs": "Fetch an account's fungible token balance rows, each with contract ID, balance, and last-update block height."
+        },
+        {
+          "info": {
+            "name": "Lookup top indexed holders for a fungible token",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/ft/:token_id/top",
+            "params": [
+              {
+                "name": "token_id",
+                "value": "wrap.near",
+                "type": "path",
+                "description": "Fungible token contract account ID."
+              },
+              {
+                "name": "apiKey",
+                "value": "",
+                "type": "query",
+                "description": "Optional API key forwarded by embedded portal clients. The public FastNEAR API does not require it."
+              }
+            ]
+          },
+          "docs": "Fetch the top-balance holder list for a fungible token contract, ranked highest balance first."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

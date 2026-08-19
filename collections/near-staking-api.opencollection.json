@@ -1,0 +1,68 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "FastNEAR accounts staking API",
+    "version": "3.0.3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "staking",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Lookup staking pool account IDs for an account",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v0/account/:account_id/staking",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "mob.near",
+                "type": "path",
+                "description": "NEAR account ID to inspect."
+              },
+              {
+                "name": "apiKey",
+                "value": "",
+                "type": "query",
+                "description": "Optional API key forwarded by embedded portal clients. The public FastNEAR API does not require it."
+              }
+            ]
+          },
+          "docs": "Fetch staking pool account IDs for one account — pool IDs only, no block-height metadata."
+        },
+        {
+          "info": {
+            "name": "Lookup indexed staking pools for an account",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/account/:account_id/staking",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "mob.near",
+                "type": "path",
+                "description": "NEAR account ID to inspect."
+              },
+              {
+                "name": "apiKey",
+                "value": "",
+                "type": "query",
+                "description": "Optional API key forwarded by embedded portal clients. The public FastNEAR API does not require it."
+              }
+            ]
+          },
+          "docs": "Retrieve staking pool rows for an account, including block-height metadata for each pool relationship."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

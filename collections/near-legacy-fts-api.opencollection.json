@@ -1,0 +1,283 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "FastNEAR accounts Legacy / FTs API",
+    "version": "3.0.3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Legacy / FTs",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get top tokens by pagination",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/fts",
+            "params": [
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "Search keyword"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of items per page"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Sort field"
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order"
+              }
+            ]
+          },
+          "docs": "Get top tokens by pagination"
+        },
+        {
+          "info": {
+            "name": "Get top tokens count",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/fts/count",
+            "params": [
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "Search keyword"
+              }
+            ]
+          },
+          "docs": "Get top tokens count"
+        },
+        {
+          "info": {
+            "name": "Get token txns by pagination",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/fts/txns",
+            "params": [
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "Next page cursor. Takes precedence over 'page' if provided."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of items per page. Each increment of 25 will count towards rate limit."
+              }
+            ]
+          },
+          "docs": "Get token txns by pagination"
+        },
+        {
+          "info": {
+            "name": "Get estimated token txns count",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/fts/txns/count"
+          },
+          "docs": "Get estimated token txns count"
+        },
+        {
+          "info": {
+            "name": "Get token info",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/fts/:contract",
+            "params": [
+              {
+                "name": "contract",
+                "value": "",
+                "type": "path",
+                "description": "Contract ID"
+              }
+            ]
+          },
+          "docs": "Get token info"
+        },
+        {
+          "info": {
+            "name": "Get token txns by pagination",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/fts/:contract/txns",
+            "params": [
+              {
+                "name": "contract",
+                "value": "",
+                "type": "path",
+                "description": "Contract ID"
+              },
+              {
+                "name": "account",
+                "value": "",
+                "type": "query",
+                "description": "Affected account ID"
+              },
+              {
+                "name": "event",
+                "value": "",
+                "type": "query",
+                "description": "Event type"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "Next page cursor. Takes precedence over 'page' if provided."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of items per page. Each increment of 25 will count towards rate limit."
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order"
+              }
+            ]
+          },
+          "docs": "Get token txns by pagination"
+        },
+        {
+          "info": {
+            "name": "Get estimated token txns count",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/fts/:contract/txns/count",
+            "params": [
+              {
+                "name": "contract",
+                "value": "",
+                "type": "path",
+                "description": "Contract ID"
+              },
+              {
+                "name": "account",
+                "value": "",
+                "type": "query",
+                "description": "Affected account ID"
+              },
+              {
+                "name": "event",
+                "value": "",
+                "type": "query",
+                "description": "Event type"
+              }
+            ]
+          },
+          "docs": "Get estimated token txns count"
+        },
+        {
+          "info": {
+            "name": "Get token holders by pagination",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/fts/:contract/holders",
+            "params": [
+              {
+                "name": "contract",
+                "value": "",
+                "type": "path",
+                "description": "Contract ID"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of items per page. Each increment of 25 will count towards rate limit."
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order"
+              }
+            ]
+          },
+          "docs": "Get token holders by pagination"
+        },
+        {
+          "info": {
+            "name": "Get estimated token holders count",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/fts/:contract/holders/count",
+            "params": [
+              {
+                "name": "contract",
+                "value": "",
+                "type": "path",
+                "description": "Contract ID"
+              }
+            ]
+          },
+          "docs": "Get estimated token holders count"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

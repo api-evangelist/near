@@ -1,0 +1,33 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "FastNEAR accounts Chunk API",
+    "version": "3.0.3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Chunk",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "chunk",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fastnear.com/chunk",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Returns details of a specific chunk. You can run a block details query to get a valid chunk hash."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

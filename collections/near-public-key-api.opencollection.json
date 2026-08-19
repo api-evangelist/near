@@ -1,0 +1,118 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "FastNEAR accounts public-key API",
+    "version": "3.0.3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "public-key",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Lookup full-access accounts by public key",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v0/public_key/:public_key",
+            "params": [
+              {
+                "name": "public_key",
+                "value": "ed25519:CCaThr3uokqnUs6Z5vVnaDcJdrfuTpYJHJWcAGubDjT",
+                "type": "path",
+                "description": "NEAR public key in `ed25519:...` or `secp256k1:...` form."
+              },
+              {
+                "name": "apiKey",
+                "value": "",
+                "type": "query",
+                "description": "Optional API key forwarded by embedded portal clients. The public FastNEAR API does not require it."
+              }
+            ]
+          },
+          "docs": "Fetch the account IDs that have registered a full-access public key, via the legacy V0 lookup path."
+        },
+        {
+          "info": {
+            "name": "Lookup all indexed accounts by public key",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v0/public_key/:public_key/all",
+            "params": [
+              {
+                "name": "public_key",
+                "value": "ed25519:CCaThr3uokqnUs6Z5vVnaDcJdrfuTpYJHJWcAGubDjT",
+                "type": "path",
+                "description": "NEAR public key in `ed25519:...` or `secp256k1:...` form."
+              },
+              {
+                "name": "apiKey",
+                "value": "",
+                "type": "query",
+                "description": "Optional API key forwarded by embedded portal clients. The public FastNEAR API does not require it."
+              }
+            ]
+          },
+          "docs": "List every account tied to a public key — full-access and limited-access keys together — via the legacy V0 lookup-all path."
+        },
+        {
+          "info": {
+            "name": "Lookup full-access accounts by public key",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/public_key/:public_key",
+            "params": [
+              {
+                "name": "public_key",
+                "value": "ed25519:CCaThr3uokqnUs6Z5vVnaDcJdrfuTpYJHJWcAGubDjT",
+                "type": "path",
+                "description": "NEAR public key in `ed25519:...` or `secp256k1:...` form."
+              },
+              {
+                "name": "apiKey",
+                "value": "",
+                "type": "query",
+                "description": "Optional API key forwarded by embedded portal clients. The public FastNEAR API does not require it."
+              }
+            ]
+          },
+          "docs": "Resolve a full-access public key to the indexed NEAR accounts that have registered it — V1 canonical lookup path."
+        },
+        {
+          "info": {
+            "name": "Lookup all indexed accounts by public key",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/public_key/:public_key/all",
+            "params": [
+              {
+                "name": "public_key",
+                "value": "ed25519:CCaThr3uokqnUs6Z5vVnaDcJdrfuTpYJHJWcAGubDjT",
+                "type": "path",
+                "description": "NEAR public key in `ed25519:...` or `secp256k1:...` form."
+              },
+              {
+                "name": "apiKey",
+                "value": "",
+                "type": "query",
+                "description": "Optional API key forwarded by embedded portal clients. The public FastNEAR API does not require it."
+              }
+            ]
+          },
+          "docs": "Resolve a public key to every account that holds it — full-access and limited-access keys alike — via the V1 lookup-all path."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

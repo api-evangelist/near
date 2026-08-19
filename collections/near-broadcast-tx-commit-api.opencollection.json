@@ -1,0 +1,33 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "FastNEAR accounts Broadcast Tx Commit API",
+    "version": "3.0.3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Broadcast Tx Commit",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "broadcast_tx_commit",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fastnear.com/broadcast_tx_commit",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "[Deprecated] Sends a transaction and waits until transaction is fully complete. (Has a 10 second timeout). Consider using send_tx instead."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

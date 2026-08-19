@@ -1,0 +1,132 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "FastNEAR accounts Legacy / Search API",
+    "version": "3.0.3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Legacy / Search",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Search txn by hash, block by height/hash, account by id, receipt by id, tokens by hex address",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/search",
+            "params": [
+              {
+                "name": "keyword",
+                "value": "",
+                "type": "query",
+                "description": "Transaction hash / block height / account ID / receipt ID / hex address"
+              }
+            ]
+          },
+          "docs": "Search txn by hash, block by height/hash, account by id, receipt by id, tokens by hex address"
+        },
+        {
+          "info": {
+            "name": "Search txns by hash",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/search/txns",
+            "params": [
+              {
+                "name": "keyword",
+                "value": "",
+                "type": "query",
+                "description": "Transaction hash"
+              }
+            ]
+          },
+          "docs": "Search txns by hash"
+        },
+        {
+          "info": {
+            "name": "Search blocks by hash/height",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/search/blocks",
+            "params": [
+              {
+                "name": "keyword",
+                "value": "",
+                "type": "query",
+                "description": "Block height or hash"
+              }
+            ]
+          },
+          "docs": "Search blocks by hash/height"
+        },
+        {
+          "info": {
+            "name": "Search accounts by id",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/search/accounts",
+            "params": [
+              {
+                "name": "keyword",
+                "value": "",
+                "type": "query",
+                "description": "Account ID"
+              }
+            ]
+          },
+          "docs": "Search accounts by id"
+        },
+        {
+          "info": {
+            "name": "Search receipts by id",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/search/receipts",
+            "params": [
+              {
+                "name": "keyword",
+                "value": "",
+                "type": "query",
+                "description": "Receipt ID"
+              }
+            ]
+          },
+          "docs": "Search receipts by id"
+        },
+        {
+          "info": {
+            "name": "Search tokens by hex address",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/search/tokens",
+            "params": [
+              {
+                "name": "keyword",
+                "value": "",
+                "type": "query",
+                "description": "Token hex address"
+              }
+            ]
+          },
+          "docs": "Search tokens by hex address"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

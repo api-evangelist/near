@@ -1,0 +1,122 @@
+{
+  "item": [
+    {
+      "id": "91029164-996f-49c1-b6a0-b5304db65a4c",
+      "name": "Light Client Proof",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "656a6c58-0d7a-4bc6-b06a-fed701ada430",
+          "name": "light client proof",
+          "request": {
+            "name": "light client proof",
+            "description": {
+              "content": "Returns the proofs for a transaction execution.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "light_client_proof"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"jsonrpc\": \"<string>\",\n  \"id\": \"<string>\",\n  \"params\": {\n    \"type\": \"<string>\",\n    \"transaction_hash\": \"<string>\",\n    \"sender_id\": \"<string>\"\n  },\n  \"method\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "8369e605-a4df-4a3b-b277-5056b7460beb",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "light_client_proof"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"jsonrpc\": \"<string>\",\n  \"id\": \"<string>\",\n  \"params\": {\n    \"type\": \"<string>\",\n    \"transaction_hash\": \"<string>\",\n    \"sender_id\": \"<string>\"\n  },\n  \"method\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"result\": {\n    \"outcome_proof\": {\n      \"proof\": [\n        {\n          \"hash\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"direction\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        {\n          \"hash\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"direction\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      ],\n      \"block_hash\": \"<string>\",\n      \"id\": \"<string>\",\n      \"outcome\": {\n        \"logs\": [\n          \"string\",\n          \"string\"\n        ],\n        \"receipt_ids\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ],\n        \"gas_burnt\": {\n          \"description\": \"The amount of the gas burnt by the given transaction or receipt.\",\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"tokens_burnt\": {\n          \"description\": \"The amount of tokens burnt corresponding to the burnt gas amount.\\nThis value doesn't always equal to the `gas_burnt` multiplied by the gas price, because\\nthe prepaid gas price might be lower than the actual gas price and it creates a deficit.\\n`tokens_burnt` also contains the penalty subtracted from refunds, while\\n`gas_burnt` only contains the gas that we actually burn for the execution.\",\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"executor_id\": {\n          \"description\": \"The id of the account on which the execution happens. For transaction this is signer_id,\\nfor receipt this is receiver_id.\",\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"status\": {\n          \"description\": \"Execution status. Contains the result in case of successful execution.\",\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"metadata\": {\n          \"version\": 1\n        }\n      }\n    },\n    \"outcome_root_proof\": [\n      {\n        \"hash\": \"<string>\",\n        \"direction\": \"Left\"\n      },\n      {\n        \"hash\": \"<string>\",\n        \"direction\": \"Left\"\n      }\n    ],\n    \"block_header_lite\": {\n      \"prev_block_hash\": \"<string>\",\n      \"inner_rest_hash\": \"<string>\",\n      \"inner_lite\": {\n        \"height\": 8262,\n        \"epoch_id\": {\n          \"description\": \"The epoch to which the block that is the current known head belongs\",\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"next_epoch_id\": {\n          \"description\": \"The epoch that will follow the current epoch\",\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"prev_state_root\": \"<string>\",\n        \"outcome_root\": \"<string>\",\n        \"timestamp\": 1692,\n        \"timestamp_nanosec\": \"string\",\n        \"next_bp_hash\": {\n          \"description\": \"The hash of the block producers set for the next epoch\",\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"block_merkle_root\": {\n          \"description\": \"The merkle root of all the block hashes\",\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      }\n    },\n    \"block_proof\": [\n      {\n        \"hash\": \"<string>\",\n        \"direction\": \"Right\"\n      },\n      {\n        \"hash\": \"<string>\",\n        \"direction\": \"Right\"\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.fastnear.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "9de982fc-4129-4786-b9eb-03805eb202da",
+    "name": "FastNEAR accounts Light Client Proof API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Low-latency indexed account, token, and public-key lookup APIs for wallets and explorers. Embedded portal clients may forward an optional `apiKey` query parameter, but the public FastNEAR API does not require it.",
+      "type": "text/plain"
+    }
+  }
+}

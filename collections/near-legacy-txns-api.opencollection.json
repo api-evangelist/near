@@ -1,0 +1,209 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "FastNEAR accounts Legacy / Txns API",
+    "version": "3.0.3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Legacy / Txns",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get txns by pagination",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/txns",
+            "params": [
+              {
+                "name": "block",
+                "value": "",
+                "type": "query",
+                "description": "Block hash"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Sender account id"
+              },
+              {
+                "name": "to",
+                "value": "",
+                "type": "query",
+                "description": "Receiver account id"
+              },
+              {
+                "name": "action",
+                "value": "",
+                "type": "query",
+                "description": "Action kind"
+              },
+              {
+                "name": "method",
+                "value": "",
+                "type": "query",
+                "description": "Function call method"
+              },
+              {
+                "name": "after_date",
+                "value": "",
+                "type": "query",
+                "description": "Date in YYYY-MM-DD format"
+              },
+              {
+                "name": "before_date",
+                "value": "",
+                "type": "query",
+                "description": "Date in YYYY-MM-DD format"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "Next page cursor, takes precedence over 'page' if provided"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of items per page. Each increment of 25 will count towards rate limit."
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order"
+              }
+            ]
+          },
+          "docs": "Get txns by pagination"
+        },
+        {
+          "info": {
+            "name": "Get estimated total txns count",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/txns/count",
+            "params": [
+              {
+                "name": "block",
+                "value": "",
+                "type": "query",
+                "description": "Block hash"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Sender account id"
+              },
+              {
+                "name": "to",
+                "value": "",
+                "type": "query",
+                "description": "Receiver account id"
+              },
+              {
+                "name": "action",
+                "value": "",
+                "type": "query",
+                "description": "Action kind"
+              },
+              {
+                "name": "method",
+                "value": "",
+                "type": "query",
+                "description": "Function call method"
+              },
+              {
+                "name": "after_date",
+                "value": "",
+                "type": "query",
+                "description": "Date in YYYY-MM-DD format"
+              },
+              {
+                "name": "before_date",
+                "value": "",
+                "type": "query",
+                "description": "Date in YYYY-MM-DD format"
+              }
+            ]
+          },
+          "docs": "Get estimated total txns count"
+        },
+        {
+          "info": {
+            "name": "Get the latest txns",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/txns/latest",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of latest transactions"
+              }
+            ]
+          },
+          "docs": "Get the latest txns"
+        },
+        {
+          "info": {
+            "name": "Get txn info",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/txns/:hash",
+            "params": [
+              {
+                "name": "hash",
+                "value": "",
+                "type": "path",
+                "description": "Transaction hash"
+              }
+            ]
+          },
+          "docs": "Get txn info"
+        },
+        {
+          "info": {
+            "name": "Get txn info with receipts and execution outcomes",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fastnear.com/v1/txns/:hash/full",
+            "params": [
+              {
+                "name": "hash",
+                "value": "",
+                "type": "path",
+                "description": "Transaction hash"
+              }
+            ]
+          },
+          "docs": "Get txn info with receipts and execution outcomes"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
