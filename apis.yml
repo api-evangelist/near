@@ -33,6 +33,8 @@ apis:
   humanURL: https://docs.near.org/api/rpc/introduction
   baseURL: https://rpc.mainnet.near.org
   tags:
+  - Account
+  tags_raw:
   - accounts
   properties:
   - type: OpenAPI
@@ -1062,6 +1064,8 @@ apis:
   humanURL: https://docs.near.org/api/rpc/introduction
   baseURL: https://rpc.mainnet.near.org
   tags:
+  - Fungible Tokens
+  tags_raw:
   - fungible-tokens
   properties:
   - type: OpenAPI
@@ -1951,6 +1955,8 @@ apis:
   humanURL: https://docs.near.org/api/rpc/introduction
   baseURL: https://rpc.mainnet.near.org
   tags:
+  - Non-Fungible Tokens
+  tags_raw:
   - non-fungible-tokens
   properties:
   - type: OpenAPI
@@ -1988,6 +1994,8 @@ apis:
   humanURL: https://docs.near.org/api/rpc/introduction
   baseURL: https://rpc.mainnet.near.org
   tags:
+  - Public Key
+  tags_raw:
   - public-key
   properties:
   - type: OpenAPI
@@ -2099,6 +2107,8 @@ apis:
   humanURL: https://docs.near.org/api/rpc/introduction
   baseURL: https://rpc.mainnet.near.org
   tags:
+  - Staking
+  tags_raw:
   - staking
   properties:
   - type: OpenAPI
@@ -2173,6 +2183,8 @@ apis:
   humanURL: https://docs.near.org/api/rpc/introduction
   baseURL: https://rpc.mainnet.near.org
   tags:
+  - System
+  tags_raw:
   - system
   properties:
   - type: OpenAPI
