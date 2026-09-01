@@ -1076,7 +1076,7 @@ apis:
   humanURL: https://docs.near.org/api/rpc/introduction
   baseURL: https://rpc.mainnet.near.org
   tags:
-  - fungible-tokens
+  - Fungible Tokens
   tags_raw:
   - fungible-tokens
   properties:
@@ -1967,7 +1967,7 @@ apis:
   humanURL: https://docs.near.org/api/rpc/introduction
   baseURL: https://rpc.mainnet.near.org
   tags:
-  - non-fungible-tokens
+  - Non-Fungible Tokens
   tags_raw:
   - non-fungible-tokens
   properties:
@@ -2006,7 +2006,7 @@ apis:
   humanURL: https://docs.near.org/api/rpc/introduction
   baseURL: https://rpc.mainnet.near.org
   tags:
-  - public-key
+  - Public Key
   tags_raw:
   - public-key
   properties:
@@ -2119,7 +2119,7 @@ apis:
   humanURL: https://docs.near.org/api/rpc/introduction
   baseURL: https://rpc.mainnet.near.org
   tags:
-  - staking
+  - Staking
   tags_raw:
   - staking
   properties:
