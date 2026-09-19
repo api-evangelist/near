@@ -1848,6 +1848,8 @@ apis:
   humanURL: https://docs.near.org/api/rpc/introduction
   baseURL: https://rpc.mainnet.near.org
   tags:
+  - Validator
+  tags_raw:
   - Validators
   properties:
   - type: OpenAPI
