@@ -1,13 +1,7 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  description: Low-latency indexed account, token, and public-key lookup APIs for wallets and explorers. Embedded portal clients may forward an optional `apiKey` query parameter, but the public FastNEAR API does not require it.
-  title: FastNEAR accounts Health API
-  version: 3.0.3
-servers:
-- description: Mainnet
-  url: https://api.fastnear.com
-- description: Testnet
-  url: https://test.api.fastnear.com
+  title: NEAR Protocol JSON RPC Health API
+  version: 1.2.11
 tags:
 - name: Health
 paths:
@@ -30,29 +24,44 @@ paths:
                 $ref: '#/components/schemas/JsonRpcResponse_for_Nullable_RpcHealthResponse_and_RpcStatusError'
       tags:
       - Health
+      summary: Health
+      x-summary-source: derived
 components:
   schemas:
-    CryptoHash:
-      type: string
-    JsonRpcRequest_for_health:
+    RpcHealthResponse:
+      enum:
+      - null
+    JsonRpcResponse_for_Nullable_RpcHealthResponse_and_RpcStatusError:
+      oneOf:
+      - properties:
+          result:
+            anyOf:
+            - $ref: '#/components/schemas/RpcHealthResponse'
+            - enum:
+              - null
+        required:
+        - result
+        type: object
+      - properties:
+          error:
+            $ref: '#/components/schemas/ErrorWrapper_for_RpcStatusError'
+        required:
+        - error
+        type: object
       properties:
         id:
           type: string
         jsonrpc:
           type: string
-        method:
-          enum:
-          - health
-          type: string
-        params:
-          $ref: '#/components/schemas/RpcHealthRequest'
       required:
       - jsonrpc
       - id
-      - params
-      - method
-      title: JsonRpcRequest_for_health
+      title: JsonRpcResponse_for_Nullable_RpcHealthResponse_and_RpcStatusError
       type: object
+    RpcHealthRequest:
+      enum:
+      - null
+      title: RpcHealthRequest
     ErrorWrapper_for_RpcStatusError:
       oneOf:
       - properties:
@@ -88,41 +97,6 @@ components:
         - name
         - cause
         type: object
-    EpochId:
-      allOf:
-      - $ref: '#/components/schemas/CryptoHash'
-      description: 'Epoch identifier -- wrapped hash, to make it easier to distinguish.
-
-        EpochId of epoch T is the hash of last block in T-2
-
-        EpochId of first two epochs is 0'
-    RpcHealthResponse:
-      enum:
-      - null
-      nullable: true
-    InternalError:
-      oneOf:
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
-          name:
-            enum:
-            - INTERNAL_ERROR
-            type: string
-        required:
-        - name
-        - info
-        type: object
-    RpcHealthRequest:
-      enum:
-      - null
-      nullable: true
-      title: RpcHealthRequest
     RpcRequestValidationErrorKind:
       oneOf:
       - properties:
@@ -157,6 +131,27 @@ components:
         - name
         - info
         type: object
+    CryptoHash:
+      type: string
+    JsonRpcRequest_for_health:
+      properties:
+        id:
+          type: string
+        jsonrpc:
+          type: string
+        method:
+          enum:
+          - health
+          type: string
+        params:
+          $ref: '#/components/schemas/RpcHealthRequest'
+      required:
+      - jsonrpc
+      - id
+      - params
+      - method
+      title: JsonRpcRequest_for_health
+      type: object
     RpcStatusError:
       oneOf:
       - properties:
@@ -221,31 +216,29 @@ components:
         - name
         - info
         type: object
-    JsonRpcResponse_for_Nullable_RpcHealthResponse_and_RpcStatusError:
+    InternalError:
       oneOf:
       - properties:
-          result:
-            anyOf:
-            - $ref: '#/components/schemas/RpcHealthResponse'
-            - enum:
-              - null
-              nullable: true
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
         required:
-        - result
+        - name
+        - info
         type: object
-      - properties:
-          error:
-            $ref: '#/components/schemas/ErrorWrapper_for_RpcStatusError'
-        required:
-        - error
-        type: object
-      properties:
-        id:
-          type: string
-        jsonrpc:
-          type: string
-      required:
-      - jsonrpc
-      - id
-      title: JsonRpcResponse_for_Nullable_RpcHealthResponse_and_RpcStatusError
-      type: object
+    EpochId:
+      allOf:
+      - $ref: '#/components/schemas/CryptoHash'
+      description: 'Epoch identifier -- wrapped hash, to make it easier to distinguish.
+
+        EpochId of epoch T is the hash of last block in T-2
+
+        EpochId of first two epochs is 0'

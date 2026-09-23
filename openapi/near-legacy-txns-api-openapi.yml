@@ -1,13 +1,13 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  description: Low-latency indexed account, token, and public-key lookup APIs for wallets and explorers. Embedded portal clients may forward an optional `apiKey` query parameter, but the public FastNEAR API does not require it.
-  title: FastNEAR accounts Legacy / Txns API
-  version: 3.0.3
+  description: NearBlocks REST API for the NEAR Protocol block explorer. Provides endpoints to access blockchain data including accounts, transactions, blocks, tokens, NFTs, and staking.
+  title: NearBlocks Explorer Legacy / Txns API
+  version: 1.0.0
 servers:
 - description: Mainnet
-  url: https://api.fastnear.com
+  url: https://api.nearblocks.io
 - description: Testnet
-  url: https://test.api.fastnear.com
+  url: https://api-testnet.nearblocks.io
 tags:
 - description: Deprecated.
   name: Legacy / Txns
@@ -86,6 +86,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1Txns
+      x-operation-id-source: derived
   /v1/txns/count:
     get:
       summary: Get estimated total txns count
@@ -130,6 +132,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1TxnsCount
+      x-operation-id-source: derived
   /v1/txns/latest:
     get:
       summary: Get the latest txns
@@ -147,6 +151,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1TxnsLatest
+      x-operation-id-source: derived
   /v1/txns/{hash}:
     get:
       summary: Get txn info
@@ -165,6 +171,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1TxnsByHash
+      x-operation-id-source: derived
   /v1/txns/{hash}/full:
     get:
       summary: Get txn info with receipts and execution outcomes
@@ -183,3 +191,10 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1TxnsByHashFull
+      x-operation-id-source: derived
+components:
+  securitySchemes:
+    BearerAuth:
+      scheme: bearer
+      type: http

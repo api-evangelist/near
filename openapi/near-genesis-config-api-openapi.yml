@@ -1,13 +1,7 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  description: Low-latency indexed account, token, and public-key lookup APIs for wallets and explorers. Embedded portal clients may forward an optional `apiKey` query parameter, but the public FastNEAR API does not require it.
-  title: FastNEAR accounts Genesis Config API
-  version: 3.0.3
-servers:
-- description: Mainnet
-  url: https://api.fastnear.com
-- description: Testnet
-  url: https://test.api.fastnear.com
+  title: NEAR Protocol JSON RPC Genesis Config API
+  version: 1.2.11
 tags:
 - name: Genesis Config
 paths:
@@ -30,372 +24,10 @@ paths:
                 $ref: '#/components/schemas/JsonRpcResponse_for_GenesisConfig_and_GenesisConfigError'
       tags:
       - Genesis Config
+      summary: Genesis config
+      x-summary-source: derived
 components:
   schemas:
-    ErrorWrapper_for_GenesisConfigError:
-      oneOf:
-      - properties:
-          cause:
-            $ref: '#/components/schemas/RpcRequestValidationErrorKind'
-          name:
-            enum:
-            - REQUEST_VALIDATION_ERROR
-            type: string
-        required:
-        - name
-        - cause
-        type: object
-      - properties:
-          cause:
-            $ref: '#/components/schemas/GenesisConfigError'
-          name:
-            enum:
-            - HANDLER_ERROR
-            type: string
-        required:
-        - name
-        - cause
-        type: object
-      - properties:
-          cause:
-            $ref: '#/components/schemas/InternalError'
-          name:
-            enum:
-            - INTERNAL_ERROR
-            type: string
-        required:
-        - name
-        - cause
-        type: object
-    NearToken:
-      type: string
-    JsonRpcResponse_for_GenesisConfig_and_GenesisConfigError:
-      oneOf:
-      - properties:
-          result:
-            $ref: '#/components/schemas/GenesisConfig'
-        required:
-        - result
-        type: object
-      - properties:
-          error:
-            $ref: '#/components/schemas/ErrorWrapper_for_GenesisConfigError'
-        required:
-        - error
-        type: object
-      properties:
-        id:
-          type: string
-        jsonrpc:
-          type: string
-      required:
-      - jsonrpc
-      - id
-      title: JsonRpcResponse_for_GenesisConfig_and_GenesisConfigError
-      type: object
-    ShardLayoutV2:
-      description: 'Counterpart to `ShardLayoutV2` composed of maps with string keys to aid
-
-        serde serialization.'
-      properties:
-        boundary_accounts:
-          items:
-            $ref: '#/components/schemas/AccountId'
-          type: array
-        id_to_index_map:
-          additionalProperties:
-            format: uint
-            minimum: 0
-            type: integer
-          type: object
-        index_to_id_map:
-          additionalProperties:
-            $ref: '#/components/schemas/ShardId'
-          type: object
-        shard_ids:
-          items:
-            $ref: '#/components/schemas/ShardId'
-          type: array
-        shards_parent_map:
-          additionalProperties:
-            $ref: '#/components/schemas/ShardId'
-          nullable: true
-          type: object
-        shards_split_map:
-          additionalProperties:
-            items:
-              $ref: '#/components/schemas/ShardId'
-            type: array
-          nullable: true
-          type: object
-        version:
-          format: uint32
-          minimum: 0
-          type: integer
-      required:
-      - boundary_accounts
-      - shard_ids
-      - id_to_index_map
-      - index_to_id_map
-      - version
-      type: object
-    ShardLayoutV3:
-      description: 'Counterpart to `ShardLayoutV3` composed of maps with string keys to aid
-
-        serde serialization.'
-      properties:
-        boundary_accounts:
-          items:
-            $ref: '#/components/schemas/AccountId'
-          type: array
-        id_to_index_map:
-          additionalProperties:
-            format: uint
-            minimum: 0
-            type: integer
-          type: object
-        last_split:
-          $ref: '#/components/schemas/ShardId'
-        shard_ids:
-          items:
-            $ref: '#/components/schemas/ShardId'
-          type: array
-        shards_split_map:
-          additionalProperties:
-            items:
-              $ref: '#/components/schemas/ShardId'
-            type: array
-          type: object
-      required:
-      - boundary_accounts
-      - shard_ids
-      - id_to_index_map
-      - shards_split_map
-      - last_split
-      type: object
-    AccountId:
-      $schema: https://json-schema.org/draft/2020-12/schema
-      description: 'NEAR Account Identifier.
-
-
-        This is a unique, syntactically valid, human-readable account identifier on the NEAR network.
-
-
-        [See the crate-level docs for information about validation.](index.html#account-id-rules)
-
-
-        Also see [Error kind precedence](AccountId#error-kind-precedence).
-
-
-        ## Examples
-
-
-        ```
-
-        use near_account_id::AccountId;
-
-
-        let alice: AccountId = "alice.near".parse().unwrap();
-
-
-        assert!("ƒelicia.near".parse::<AccountId>().is_err()); // (ƒ is not f)
-
-        ```'
-      title: AccountId
-      type: string
-    ShardLayout:
-      description: 'A versioned struct that contains all information needed to assign accounts to shards.
-
-
-        Because of re-sharding, the chain may use different shard layout to split shards at different
-
-        times. Currently, `ShardLayout` is stored as part of `EpochConfig`, which is generated each
-
-        epoch given the epoch protocol version. In mainnet/testnet, we use two shard layouts since
-
-        re-sharding has only happened once. It is stored as part of genesis config, see
-
-        default_simple_nightshade_shard_layout() Below is an overview for some important
-
-        functionalities of ShardLayout interface.'
-      oneOf:
-      - additionalProperties: false
-        properties:
-          V0:
-            $ref: '#/components/schemas/ShardLayoutV0'
-        required:
-        - V0
-        type: object
-      - additionalProperties: false
-        properties:
-          V1:
-            $ref: '#/components/schemas/ShardLayoutV1'
-        required:
-        - V1
-        type: object
-      - additionalProperties: false
-        properties:
-          V2:
-            $ref: '#/components/schemas/ShardLayoutV2'
-        required:
-        - V2
-        type: object
-      - additionalProperties: false
-        properties:
-          V3:
-            $ref: '#/components/schemas/ShardLayoutV3'
-        required:
-        - V3
-        type: object
-    NearGas:
-      format: uint64
-      minimum: 0
-      type: integer
-    AccountInfo:
-      description: Account info for validators
-      properties:
-        account_id:
-          $ref: '#/components/schemas/AccountId'
-        amount:
-          $ref: '#/components/schemas/NearToken'
-        public_key:
-          $ref: '#/components/schemas/PublicKey'
-      required:
-      - account_id
-      - public_key
-      - amount
-      type: object
-    ShardLayoutV0:
-      description: 'A shard layout that maps accounts evenly across all shards -- by calculate the hash of account
-
-        id and mod number of shards. This is added to capture the old `account_id_to_shard_id` algorithm,
-
-        to keep backward compatibility for some existing tests.
-
-        `parent_shards` for `ShardLayoutV1` is always `None`, meaning it can only be the first shard layout
-
-        a chain uses.'
-      properties:
-        num_shards:
-          description: Map accounts evenly across all shards
-          format: uint64
-          minimum: 0
-          type: integer
-        version:
-          description: Version of the shard layout, this is useful for uniquely identify the shard layout
-          format: uint32
-          minimum: 0
-          type: integer
-      required:
-      - num_shards
-      - version
-      type: object
-    GenesisConfigError:
-      enum:
-      - null
-      nullable: true
-    ShardLayoutV1:
-      properties:
-        boundary_accounts:
-          description: 'The boundary accounts are the accounts on boundaries between shards.
-
-            Each shard contains a range of accounts from one boundary account to
-
-            another - or the smallest or largest account possible. The total
-
-            number of shards is equal to the number of boundary accounts plus 1.'
-          items:
-            $ref: '#/components/schemas/AccountId'
-          type: array
-        shards_split_map:
-          description: 'Maps shards from the last shard layout to shards that it splits to in this shard layout,
-
-            Useful for constructing states for the shards.
-
-            None for the genesis shard layout'
-          items:
-            items:
-              $ref: '#/components/schemas/ShardId'
-            type: array
-          nullable: true
-          type: array
-        to_parent_shard_map:
-          description: 'Maps shard in this shard layout to their parent shard
-
-            Since shard_ids always range from 0 to num_shards - 1, we use vec instead of a hashmap'
-          items:
-            $ref: '#/components/schemas/ShardId'
-          nullable: true
-          type: array
-        version:
-          description: Version of the shard layout, this is useful for uniquely identify the shard layout
-          format: uint32
-          minimum: 0
-          type: integer
-      required:
-      - boundary_accounts
-      - version
-      type: object
-    JsonRpcRequest_for_genesis_config:
-      properties:
-        id:
-          type: string
-        jsonrpc:
-          type: string
-        method:
-          enum:
-          - genesis_config
-          type: string
-        params:
-          $ref: '#/components/schemas/GenesisConfigRequest'
-      required:
-      - jsonrpc
-      - id
-      - params
-      - method
-      title: JsonRpcRequest_for_genesis_config
-      type: object
-    InternalError:
-      oneOf:
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
-          name:
-            enum:
-            - INTERNAL_ERROR
-            type: string
-        required:
-        - name
-        - info
-        type: object
-    ShardId:
-      description: 'The shard identifier. It may be an arbitrary number - it does not need to be
-
-        a number in the range 0..NUM_SHARDS. The shard ids do not need to be
-
-        sequential or contiguous.
-
-
-        The shard id is wrapped in a new type to prevent the old pattern of using
-
-        indices in range 0..NUM_SHARDS and casting to ShardId. Once the transition
-
-        if fully complete it potentially may be simplified to a regular type alias.'
-      format: uint64
-      minimum: 0
-      type: integer
-    PublicKey:
-      type: string
-    GenesisConfigRequest:
-      enum:
-      - null
-      nullable: true
-      title: GenesisConfigRequest
     GenesisConfig:
       properties:
         block_producer_kickout_threshold:
@@ -659,6 +291,190 @@ components:
       - protocol_treasury_account
       - fishermen_threshold
       type: object
+    AccountId:
+      $schema: https://json-schema.org/draft/2020-12/schema
+      description: 'NEAR Account Identifier.
+
+
+        This is a unique, syntactically valid, human-readable account identifier on the NEAR network.
+
+
+        [See the crate-level docs for information about validation.](index.html#account-id-rules)
+
+
+        Also see [Error kind precedence](AccountId#error-kind-precedence).
+
+
+        ## Examples
+
+
+        ```
+
+        use near_account_id::AccountId;
+
+
+        let alice: AccountId = "alice.near".parse().unwrap();
+
+
+        assert!("ƒelicia.near".parse::<AccountId>().is_err()); // (ƒ is not f)
+
+        ```'
+      title: AccountId
+      type: string
+    ShardLayoutV2:
+      description: 'Counterpart to `ShardLayoutV2` composed of maps with string keys to aid
+
+        serde serialization.'
+      properties:
+        boundary_accounts:
+          items:
+            $ref: '#/components/schemas/AccountId'
+          type: array
+        id_to_index_map:
+          additionalProperties:
+            format: uint
+            minimum: 0
+            type: integer
+          type: object
+        index_to_id_map:
+          additionalProperties:
+            $ref: '#/components/schemas/ShardId'
+          type: object
+        shard_ids:
+          items:
+            $ref: '#/components/schemas/ShardId'
+          type: array
+        shards_parent_map:
+          additionalProperties:
+            $ref: '#/components/schemas/ShardId'
+          type:
+          - object
+          - 'null'
+        shards_split_map:
+          additionalProperties:
+            items:
+              $ref: '#/components/schemas/ShardId'
+            type: array
+          type:
+          - object
+          - 'null'
+        version:
+          format: uint32
+          minimum: 0
+          type: integer
+      required:
+      - boundary_accounts
+      - shard_ids
+      - id_to_index_map
+      - index_to_id_map
+      - version
+      type: object
+    ShardLayoutV1:
+      properties:
+        boundary_accounts:
+          description: 'The boundary accounts are the accounts on boundaries between shards.
+
+            Each shard contains a range of accounts from one boundary account to
+
+            another - or the smallest or largest account possible. The total
+
+            number of shards is equal to the number of boundary accounts plus 1.'
+          items:
+            $ref: '#/components/schemas/AccountId'
+          type: array
+        shards_split_map:
+          description: 'Maps shards from the last shard layout to shards that it splits to in this shard layout,
+
+            Useful for constructing states for the shards.
+
+            None for the genesis shard layout'
+          items:
+            items:
+              $ref: '#/components/schemas/ShardId'
+            type: array
+          type:
+          - array
+          - 'null'
+        to_parent_shard_map:
+          description: 'Maps shard in this shard layout to their parent shard
+
+            Since shard_ids always range from 0 to num_shards - 1, we use vec instead of a hashmap'
+          items:
+            $ref: '#/components/schemas/ShardId'
+          type:
+          - array
+          - 'null'
+        version:
+          description: Version of the shard layout, this is useful for uniquely identify the shard layout
+          format: uint32
+          minimum: 0
+          type: integer
+      required:
+      - boundary_accounts
+      - version
+      type: object
+    InternalError:
+      oneOf:
+      - properties:
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
+        required:
+        - name
+        - info
+        type: object
+    GenesisConfigRequest:
+      enum:
+      - null
+      title: GenesisConfigRequest
+    NearGas:
+      format: uint64
+      minimum: 0
+      type: integer
+    NearToken:
+      type: string
+    ShardLayoutV3:
+      description: 'Counterpart to `ShardLayoutV3` composed of maps with string keys to aid
+
+        serde serialization.'
+      properties:
+        boundary_accounts:
+          items:
+            $ref: '#/components/schemas/AccountId'
+          type: array
+        id_to_index_map:
+          additionalProperties:
+            format: uint
+            minimum: 0
+            type: integer
+          type: object
+        last_split:
+          $ref: '#/components/schemas/ShardId'
+        shard_ids:
+          items:
+            $ref: '#/components/schemas/ShardId'
+          type: array
+        shards_split_map:
+          additionalProperties:
+            items:
+              $ref: '#/components/schemas/ShardId'
+            type: array
+          type: object
+      required:
+      - boundary_accounts
+      - shard_ids
+      - id_to_index_map
+      - shards_split_map
+      - last_split
+      type: object
     RpcRequestValidationErrorKind:
       oneOf:
       - properties:
@@ -693,3 +509,185 @@ components:
         - name
         - info
         type: object
+    AccountInfo:
+      description: Account info for validators
+      properties:
+        account_id:
+          $ref: '#/components/schemas/AccountId'
+        amount:
+          $ref: '#/components/schemas/NearToken'
+        public_key:
+          $ref: '#/components/schemas/PublicKey'
+      required:
+      - account_id
+      - public_key
+      - amount
+      type: object
+    JsonRpcResponse_for_GenesisConfig_and_GenesisConfigError:
+      oneOf:
+      - properties:
+          result:
+            $ref: '#/components/schemas/GenesisConfig'
+        required:
+        - result
+        type: object
+      - properties:
+          error:
+            $ref: '#/components/schemas/ErrorWrapper_for_GenesisConfigError'
+        required:
+        - error
+        type: object
+      properties:
+        id:
+          type: string
+        jsonrpc:
+          type: string
+      required:
+      - jsonrpc
+      - id
+      title: JsonRpcResponse_for_GenesisConfig_and_GenesisConfigError
+      type: object
+    ShardId:
+      description: 'The shard identifier. It may be an arbitrary number - it does not need to be
+
+        a number in the range 0..NUM_SHARDS. The shard ids do not need to be
+
+        sequential or contiguous.
+
+
+        The shard id is wrapped in a new type to prevent the old pattern of using
+
+        indices in range 0..NUM_SHARDS and casting to ShardId. Once the transition
+
+        if fully complete it potentially may be simplified to a regular type alias.'
+      format: uint64
+      minimum: 0
+      type: integer
+    ErrorWrapper_for_GenesisConfigError:
+      oneOf:
+      - properties:
+          cause:
+            $ref: '#/components/schemas/RpcRequestValidationErrorKind'
+          name:
+            enum:
+            - REQUEST_VALIDATION_ERROR
+            type: string
+        required:
+        - name
+        - cause
+        type: object
+      - properties:
+          cause:
+            $ref: '#/components/schemas/GenesisConfigError'
+          name:
+            enum:
+            - HANDLER_ERROR
+            type: string
+        required:
+        - name
+        - cause
+        type: object
+      - properties:
+          cause:
+            $ref: '#/components/schemas/InternalError'
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
+        required:
+        - name
+        - cause
+        type: object
+    ShardLayoutV0:
+      description: 'A shard layout that maps accounts evenly across all shards -- by calculate the hash of account
+
+        id and mod number of shards. This is added to capture the old `account_id_to_shard_id` algorithm,
+
+        to keep backward compatibility for some existing tests.
+
+        `parent_shards` for `ShardLayoutV1` is always `None`, meaning it can only be the first shard layout
+
+        a chain uses.'
+      properties:
+        num_shards:
+          description: Map accounts evenly across all shards
+          format: uint64
+          minimum: 0
+          type: integer
+        version:
+          description: Version of the shard layout, this is useful for uniquely identify the shard layout
+          format: uint32
+          minimum: 0
+          type: integer
+      required:
+      - num_shards
+      - version
+      type: object
+    ShardLayout:
+      description: 'A versioned struct that contains all information needed to assign accounts to shards.
+
+
+        Because of re-sharding, the chain may use different shard layout to split shards at different
+
+        times. Currently, `ShardLayout` is stored as part of `EpochConfig`, which is generated each
+
+        epoch given the epoch protocol version. In mainnet/testnet, we use two shard layouts since
+
+        re-sharding has only happened once. It is stored as part of genesis config, see
+
+        default_simple_nightshade_shard_layout() Below is an overview for some important
+
+        functionalities of ShardLayout interface.'
+      oneOf:
+      - additionalProperties: false
+        properties:
+          V0:
+            $ref: '#/components/schemas/ShardLayoutV0'
+        required:
+        - V0
+        type: object
+      - additionalProperties: false
+        properties:
+          V1:
+            $ref: '#/components/schemas/ShardLayoutV1'
+        required:
+        - V1
+        type: object
+      - additionalProperties: false
+        properties:
+          V2:
+            $ref: '#/components/schemas/ShardLayoutV2'
+        required:
+        - V2
+        type: object
+      - additionalProperties: false
+        properties:
+          V3:
+            $ref: '#/components/schemas/ShardLayoutV3'
+        required:
+        - V3
+        type: object
+    JsonRpcRequest_for_genesis_config:
+      properties:
+        id:
+          type: string
+        jsonrpc:
+          type: string
+        method:
+          enum:
+          - genesis_config
+          type: string
+        params:
+          $ref: '#/components/schemas/GenesisConfigRequest'
+      required:
+      - jsonrpc
+      - id
+      - params
+      - method
+      title: JsonRpcRequest_for_genesis_config
+      type: object
+    PublicKey:
+      type: string
+    GenesisConfigError:
+      enum:
+      - null

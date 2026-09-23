@@ -1,7 +1,7 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
   description: Low-latency indexed account, token, and public-key lookup APIs for wallets and explorers. Embedded portal clients may forward an optional `apiKey` query parameter, but the public FastNEAR API does not require it.
-  title: FastNEAR accounts staking API
+  title: FastNEAR Staking API
   version: 3.0.3
 servers:
 - description: Mainnet
@@ -9,7 +9,7 @@ servers:
 - description: Testnet
   url: https://test.api.fastnear.com
 tags:
-- name: staking
+- name: Staking
 paths:
   /v0/account/{account_id}/staking:
     get:
@@ -54,7 +54,7 @@ paths:
           description: Internal Server Error
       summary: Lookup staking pool account IDs for an account
       tags:
-      - staking
+      - Staking
       x-fastnear-slug: account_staking
       x-fastnear-title: FastNEAR API - V0 Account Staking
   /v1/account/{account_id}/staking:
@@ -101,25 +101,11 @@ paths:
           description: Internal Server Error
       summary: Lookup indexed staking pools for an account
       tags:
-      - staking
+      - Staking
       x-fastnear-slug: account_staking
       x-fastnear-title: FastNEAR API - V1 Account Staking
 components:
   schemas:
-    PoolRow:
-      additionalProperties: false
-      properties:
-        last_update_block_height:
-          format: uint64
-          minimum: 0
-          nullable: true
-          type: integer
-        pool_id:
-          type: string
-      required:
-      - pool_id
-      - last_update_block_height
-      type: object
     V0StakingResponse:
       additionalProperties: false
       properties:
@@ -145,4 +131,19 @@ components:
       required:
       - account_id
       - pools
+      type: object
+    PoolRow:
+      additionalProperties: false
+      properties:
+        last_update_block_height:
+          format: uint64
+          minimum: 0
+          type:
+          - integer
+          - 'null'
+        pool_id:
+          type: string
+      required:
+      - pool_id
+      - last_update_block_height
       type: object

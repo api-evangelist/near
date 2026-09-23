@@ -1,0 +1,31 @@
+# Front Door AI Index — near — 2026-09-17
+# AI vocabulary counted on the provider's root page. Generated; do not edit.
+# `score` is null unless ownership is `own` — see front_door_ai.py.
+front_door_ai:
+  slug: near
+  lexicon_version: '1.0'
+  probed_at: '2026-09-17'
+  host: near.org
+  final_host: www.near.org
+  ownership: own
+  owner: near
+  shares_host_with: null
+  inherited_from: null
+  verdict: scored
+  score: 25
+  host_score: 25
+  density: 38.82
+  words: 644
+  tiers:
+    agentic: 11
+    core: 13
+    model: 1
+  ambiguous: 11
+  top_terms:
+    AI: 13
+    agent: 10
+    inference: 9
+    agentic: 1
+    intelligence: 1
+    prompts: 1
+    transformer: 1

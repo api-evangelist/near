@@ -1,13 +1,13 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  description: Low-latency indexed account, token, and public-key lookup APIs for wallets and explorers. Embedded portal clients may forward an optional `apiKey` query parameter, but the public FastNEAR API does not require it.
-  title: FastNEAR accounts Legacy / Supply API
-  version: 3.0.3
+  description: NearBlocks REST API for the NEAR Protocol block explorer. Provides endpoints to access blockchain data including accounts, transactions, blocks, tokens, NFTs, and staking.
+  title: NearBlocks Explorer Legacy / Supply API
+  version: 1.0.0
 servers:
 - description: Mainnet
-  url: https://api.fastnear.com
+  url: https://api.nearblocks.io
 - description: Testnet
-  url: https://test.api.fastnear.com
+  url: https://api-testnet.nearblocks.io
 tags:
 - description: Deprecated.
   name: Legacy / Supply
@@ -38,6 +38,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1LegacyTotalSupply
+      x-operation-id-source: derived
   /v1/legacy/circulating-supply:
     get:
       summary: Get circulating near supply
@@ -64,6 +66,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1LegacyCirculatingSupply
+      x-operation-id-source: derived
   /v1/legacy/fees:
     get:
       summary: Get tokens burnt per day
@@ -82,3 +86,10 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1LegacyFees
+      x-operation-id-source: derived
+components:
+  securitySchemes:
+    BearerAuth:
+      scheme: bearer
+      type: http

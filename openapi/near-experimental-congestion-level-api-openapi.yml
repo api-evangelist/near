@@ -1,19 +1,13 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  description: Low-latency indexed account, token, and public-key lookup APIs for wallets and explorers. Embedded portal clients may forward an optional `apiKey` query parameter, but the public FastNEAR API does not require it.
-  title: FastNEAR accounts EXPERIMENTAL Congestion Level API
-  version: 3.0.3
-servers:
-- description: Mainnet
-  url: https://api.fastnear.com
-- description: Testnet
-  url: https://test.api.fastnear.com
+  title: NEAR Protocol JSON RPC EXPERIMENTAL Congestion Level API
+  version: 1.2.11
 tags:
 - name: EXPERIMENTAL Congestion Level
 paths:
   /EXPERIMENTAL_congestion_level:
     post:
-      description: Queries the congestion level of a shard. More info about congestion [here](https://near.github.io/nearcore/architecture/how/receipt-congestion.html?highlight=congestion#receipt-congestion)
+      description: Queries the congestion level of a shard. More info about congestion here
       operationId: EXPERIMENTAL_congestion_level
       requestBody:
         content:
@@ -30,40 +24,91 @@ paths:
                 $ref: '#/components/schemas/JsonRpcResponse_for_RpcCongestionLevelResponse_and_RpcChunkError'
       tags:
       - EXPERIMENTAL Congestion Level
+      summary: EXPERIMENTAL congestion level
+      x-summary-source: derived
 components:
   schemas:
-    CryptoHash:
-      type: string
-    BlockId:
+    RpcCongestionLevelResponse:
+      properties:
+        congestion_level:
+          format: double
+          type: number
+      required:
+      - congestion_level
+      type: object
+    RpcCongestionLevelRequest:
       anyOf:
-      - format: uint64
-        minimum: 0
-        title: block_height
-        type: integer
-      - $ref: '#/components/schemas/CryptoHash'
-    JsonRpcResponse_for_RpcCongestionLevelResponse_and_RpcChunkError:
+      - properties:
+          block_id:
+            $ref: '#/components/schemas/BlockId'
+          shard_id:
+            $ref: '#/components/schemas/ShardId'
+        required:
+        - block_id
+        - shard_id
+        title: block_shard_id
+        type: object
+      - properties:
+          chunk_id:
+            $ref: '#/components/schemas/CryptoHash'
+        required:
+        - chunk_id
+        title: chunk_hash
+        type: object
+      title: RpcCongestionLevelRequest
+      type: object
+    RpcRequestValidationErrorKind:
       oneOf:
       - properties:
-          result:
-            $ref: '#/components/schemas/RpcCongestionLevelResponse'
+          info:
+            properties:
+              method_name:
+                type: string
+            required:
+            - method_name
+            type: object
+          name:
+            enum:
+            - METHOD_NOT_FOUND
+            type: string
         required:
-        - result
+        - name
+        - info
         type: object
       - properties:
-          error:
-            $ref: '#/components/schemas/ErrorWrapper_for_RpcChunkError'
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - PARSE_ERROR
+            type: string
         required:
-        - error
+        - name
+        - info
         type: object
+    JsonRpcRequest_for_EXPERIMENTAL_congestion_level:
       properties:
         id:
           type: string
         jsonrpc:
           type: string
+        method:
+          enum:
+          - EXPERIMENTAL_congestion_level
+          type: string
+        params:
+          $ref: '#/components/schemas/RpcCongestionLevelRequest'
       required:
       - jsonrpc
       - id
-      title: JsonRpcResponse_for_RpcCongestionLevelResponse_and_RpcChunkError
+      - params
+      - method
+      title: JsonRpcRequest_for_EXPERIMENTAL_congestion_level
       type: object
     RpcChunkError:
       oneOf:
@@ -126,6 +171,59 @@ components:
         - name
         - info
         type: object
+    CryptoHash:
+      type: string
+    JsonRpcResponse_for_RpcCongestionLevelResponse_and_RpcChunkError:
+      oneOf:
+      - properties:
+          result:
+            $ref: '#/components/schemas/RpcCongestionLevelResponse'
+        required:
+        - result
+        type: object
+      - properties:
+          error:
+            $ref: '#/components/schemas/ErrorWrapper_for_RpcChunkError'
+        required:
+        - error
+        type: object
+      properties:
+        id:
+          type: string
+        jsonrpc:
+          type: string
+      required:
+      - jsonrpc
+      - id
+      title: JsonRpcResponse_for_RpcCongestionLevelResponse_and_RpcChunkError
+      type: object
+    BlockId:
+      anyOf:
+      - format: uint64
+        minimum: 0
+        title: block_height
+        type: integer
+      - $ref: '#/components/schemas/CryptoHash'
+    ChunkHash:
+      $ref: '#/components/schemas/CryptoHash'
+    InternalError:
+      oneOf:
+      - properties:
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
+        required:
+        - name
+        - info
+        type: object
     ErrorWrapper_for_RpcChunkError:
       oneOf:
       - properties:
@@ -161,108 +259,6 @@ components:
         - name
         - cause
         type: object
-    RpcCongestionLevelResponse:
-      properties:
-        congestion_level:
-          format: double
-          type: number
-      required:
-      - congestion_level
-      type: object
-    InternalError:
-      oneOf:
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
-          name:
-            enum:
-            - INTERNAL_ERROR
-            type: string
-        required:
-        - name
-        - info
-        type: object
-    JsonRpcRequest_for_EXPERIMENTAL_congestion_level:
-      properties:
-        id:
-          type: string
-        jsonrpc:
-          type: string
-        method:
-          enum:
-          - EXPERIMENTAL_congestion_level
-          type: string
-        params:
-          $ref: '#/components/schemas/RpcCongestionLevelRequest'
-      required:
-      - jsonrpc
-      - id
-      - params
-      - method
-      title: JsonRpcRequest_for_EXPERIMENTAL_congestion_level
-      type: object
-    RpcRequestValidationErrorKind:
-      oneOf:
-      - properties:
-          info:
-            properties:
-              method_name:
-                type: string
-            required:
-            - method_name
-            type: object
-          name:
-            enum:
-            - METHOD_NOT_FOUND
-            type: string
-        required:
-        - name
-        - info
-        type: object
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
-          name:
-            enum:
-            - PARSE_ERROR
-            type: string
-        required:
-        - name
-        - info
-        type: object
-    ChunkHash:
-      $ref: '#/components/schemas/CryptoHash'
-    RpcCongestionLevelRequest:
-      anyOf:
-      - properties:
-          block_id:
-            $ref: '#/components/schemas/BlockId'
-          shard_id:
-            $ref: '#/components/schemas/ShardId'
-        required:
-        - block_id
-        - shard_id
-        title: block_shard_id
-        type: object
-      - properties:
-          chunk_id:
-            $ref: '#/components/schemas/CryptoHash'
-        required:
-        - chunk_id
-        title: chunk_hash
-        type: object
-      title: RpcCongestionLevelRequest
-      type: object
     ShardId:
       description: 'The shard identifier. It may be an arbitrary number - it does not need to be
 

@@ -1,13 +1,7 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  description: Low-latency indexed account, token, and public-key lookup APIs for wallets and explorers. Embedded portal clients may forward an optional `apiKey` query parameter, but the public FastNEAR API does not require it.
-  title: FastNEAR accounts EXPERIMENTAL View State API
-  version: 3.0.3
-servers:
-- description: Mainnet
-  url: https://api.fastnear.com
-- description: Testnet
-  url: https://test.api.fastnear.com
+  title: NEAR Protocol JSON RPC EXPERIMENTAL View State API
+  version: 1.2.11
 tags:
 - name: EXPERIMENTAL View State
 paths:
@@ -30,78 +24,109 @@ paths:
                 $ref: '#/components/schemas/JsonRpcResponse_for_RpcViewStateResponse_and_RpcViewStateError'
       tags:
       - EXPERIMENTAL View State
+      summary: EXPERIMENTAL view state
+      x-summary-source: derived
 components:
   schemas:
-    CryptoHash:
-      type: string
-    BlockId:
-      anyOf:
-      - format: uint64
-        minimum: 0
-        title: block_height
-        type: integer
-      - $ref: '#/components/schemas/CryptoHash'
-    StoreValue:
-      description: 'This type is used to mark values returned from store (arrays of bytes).
-
-
-        NOTE: Currently, this type is only used in the view_client and RPC to be able to transparently
-
-        pretty-serialize the bytes arrays as base64-encoded strings (see `serialize.rs`).'
-      format: bytes
-      type: string
-    RpcViewStateResponse:
-      description: Resulting state values for a view state query request
-      properties:
-        block_hash:
-          $ref: '#/components/schemas/CryptoHash'
-        block_height:
-          format: uint64
-          minimum: 0
-          type: integer
-        last_key:
-          anyOf:
-          - $ref: '#/components/schemas/StoreKey'
-          - enum:
-            - null
-            nullable: true
-        proof:
-          items:
+    ErrorWrapper_for_RpcViewStateError:
+      oneOf:
+      - properties:
+          cause:
+            $ref: '#/components/schemas/RpcRequestValidationErrorKind'
+          name:
+            enum:
+            - REQUEST_VALIDATION_ERROR
             type: string
-          type: array
-        values:
-          items:
-            $ref: '#/components/schemas/StateItem'
-          type: array
-      required:
-      - values
-      - block_height
-      - block_hash
-      type: object
-    JsonRpcRequest_for_EXPERIMENTAL_view_state:
-      properties:
-        id:
-          type: string
-        jsonrpc:
-          type: string
-        method:
-          enum:
-          - EXPERIMENTAL_view_state
-          type: string
-        params:
-          $ref: '#/components/schemas/RpcViewStateRequest'
-      required:
-      - jsonrpc
-      - id
-      - params
-      - method
-      title: JsonRpcRequest_for_EXPERIMENTAL_view_state
-      type: object
-    SyncCheckpoint:
+        required:
+        - name
+        - cause
+        type: object
+      - properties:
+          cause:
+            $ref: '#/components/schemas/RpcViewStateError'
+          name:
+            enum:
+            - HANDLER_ERROR
+            type: string
+        required:
+        - name
+        - cause
+        type: object
+      - properties:
+          cause:
+            $ref: '#/components/schemas/InternalError'
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
+        required:
+        - name
+        - cause
+        type: object
+    Finality:
+      description: Different types of finality.
       enum:
-      - genesis
-      - earliest_available
+      - optimistic
+      - near-final
+      - final
       type: string
+    RpcRequestValidationErrorKind:
+      oneOf:
+      - properties:
+          info:
+            properties:
+              method_name:
+                type: string
+            required:
+            - method_name
+            type: object
+          name:
+            enum:
+            - METHOD_NOT_FOUND
+            type: string
+        required:
+        - name
+        - info
+        type: object
+      - properties:
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - PARSE_ERROR
+            type: string
+        required:
+        - name
+        - info
+        type: object
+    BlockReference:
+      oneOf:
+      - additionalProperties: false
+        properties:
+          block_id:
+            $ref: '#/components/schemas/BlockId'
+        required:
+        - block_id
+        type: object
+      - additionalProperties: false
+        properties:
+          finality:
+            $ref: '#/components/schemas/Finality'
+        required:
+        - finality
+        type: object
+      - additionalProperties: false
+        properties:
+          sync_checkpoint:
+            $ref: '#/components/schemas/SyncCheckpoint'
+        required:
+        - sync_checkpoint
+        type: object
     RpcViewStateError:
       oneOf:
       - properties:
@@ -208,124 +233,6 @@ components:
         - name
         - info
         type: object
-    InternalError:
-      oneOf:
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
-          name:
-            enum:
-            - INTERNAL_ERROR
-            type: string
-        required:
-        - name
-        - info
-        type: object
-    Finality:
-      description: Different types of finality.
-      enum:
-      - optimistic
-      - near-final
-      - final
-      type: string
-    RpcRequestValidationErrorKind:
-      oneOf:
-      - properties:
-          info:
-            properties:
-              method_name:
-                type: string
-            required:
-            - method_name
-            type: object
-          name:
-            enum:
-            - METHOD_NOT_FOUND
-            type: string
-        required:
-        - name
-        - info
-        type: object
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
-          name:
-            enum:
-            - PARSE_ERROR
-            type: string
-        required:
-        - name
-        - info
-        type: object
-    ErrorWrapper_for_RpcViewStateError:
-      oneOf:
-      - properties:
-          cause:
-            $ref: '#/components/schemas/RpcRequestValidationErrorKind'
-          name:
-            enum:
-            - REQUEST_VALIDATION_ERROR
-            type: string
-        required:
-        - name
-        - cause
-        type: object
-      - properties:
-          cause:
-            $ref: '#/components/schemas/RpcViewStateError'
-          name:
-            enum:
-            - HANDLER_ERROR
-            type: string
-        required:
-        - name
-        - cause
-        type: object
-      - properties:
-          cause:
-            $ref: '#/components/schemas/InternalError'
-          name:
-            enum:
-            - INTERNAL_ERROR
-            type: string
-        required:
-        - name
-        - cause
-        type: object
-    JsonRpcResponse_for_RpcViewStateResponse_and_RpcViewStateError:
-      oneOf:
-      - properties:
-          result:
-            $ref: '#/components/schemas/RpcViewStateResponse'
-        required:
-        - result
-        type: object
-      - properties:
-          error:
-            $ref: '#/components/schemas/ErrorWrapper_for_RpcViewStateError'
-        required:
-        - error
-        type: object
-      properties:
-        id:
-          type: string
-        jsonrpc:
-          type: string
-      required:
-      - jsonrpc
-      - id
-      title: JsonRpcResponse_for_RpcViewStateResponse_and_RpcViewStateError
-      type: object
     AccountId:
       $schema: https://json-schema.org/draft/2020-12/schema
       description: 'NEAR Account Identifier.
@@ -356,8 +263,8 @@ components:
         ```'
       title: AccountId
       type: string
-    StoreKey:
-      description: 'This type is used to mark keys (arrays of bytes) that are queried from store.
+    StoreValue:
+      description: 'This type is used to mark values returned from store (arrays of bytes).
 
 
         NOTE: Currently, this type is only used in the view_client and RPC to be able to transparently
@@ -365,29 +272,82 @@ components:
         pretty-serialize the bytes arrays as base64-encoded strings (see `serialize.rs`).'
       format: bytes
       type: string
-    BlockReference:
+    CryptoHash:
+      type: string
+    RpcViewStateResponse:
+      description: Resulting state values for a view state query request
+      properties:
+        block_hash:
+          $ref: '#/components/schemas/CryptoHash'
+        block_height:
+          format: uint64
+          minimum: 0
+          type: integer
+        last_key:
+          anyOf:
+          - $ref: '#/components/schemas/StoreKey'
+          - enum:
+            - null
+        proof:
+          items:
+            type: string
+          type: array
+        values:
+          items:
+            $ref: '#/components/schemas/StateItem'
+          type: array
+      required:
+      - values
+      - block_height
+      - block_hash
+      type: object
+    StateItem:
+      description: Item of the state, key and value are serialized in base64 and proof for inclusion of given state item.
+      properties:
+        key:
+          $ref: '#/components/schemas/StoreKey'
+        value:
+          $ref: '#/components/schemas/StoreValue'
+      required:
+      - key
+      - value
+      type: object
+    JsonRpcResponse_for_RpcViewStateResponse_and_RpcViewStateError:
       oneOf:
-      - additionalProperties: false
-        properties:
-          block_id:
-            $ref: '#/components/schemas/BlockId'
+      - properties:
+          result:
+            $ref: '#/components/schemas/RpcViewStateResponse'
         required:
-        - block_id
+        - result
         type: object
-      - additionalProperties: false
-        properties:
-          finality:
-            $ref: '#/components/schemas/Finality'
+      - properties:
+          error:
+            $ref: '#/components/schemas/ErrorWrapper_for_RpcViewStateError'
         required:
-        - finality
+        - error
         type: object
-      - additionalProperties: false
-        properties:
-          sync_checkpoint:
-            $ref: '#/components/schemas/SyncCheckpoint'
-        required:
-        - sync_checkpoint
-        type: object
+      properties:
+        id:
+          type: string
+        jsonrpc:
+          type: string
+      required:
+      - jsonrpc
+      - id
+      title: JsonRpcResponse_for_RpcViewStateResponse_and_RpcViewStateError
+      type: object
+    SyncCheckpoint:
+      enum:
+      - genesis
+      - earliest_available
+      type: string
+    BlockId:
+      anyOf:
+      - format: uint64
+        minimum: 0
+        title: block_height
+        type: integer
+      - $ref: '#/components/schemas/CryptoHash'
     RpcViewStateRequest:
       oneOf:
       - properties:
@@ -416,7 +376,6 @@ components:
           - $ref: '#/components/schemas/StoreKey'
           - enum:
             - null
-            nullable: true
           default: null
         include_proof:
           default: false
@@ -425,8 +384,9 @@ components:
           default: null
           format: uint32
           minimum: 1
-          nullable: true
-          type: integer
+          type:
+          - integer
+          - 'null'
         prefix_base64:
           $ref: '#/components/schemas/StoreKey'
       required:
@@ -434,14 +394,49 @@ components:
       - prefix_base64
       title: RpcViewStateRequest
       type: object
-    StateItem:
-      description: Item of the state, key and value are serialized in base64 and proof for inclusion of given state item.
+    InternalError:
+      oneOf:
+      - properties:
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
+        required:
+        - name
+        - info
+        type: object
+    JsonRpcRequest_for_EXPERIMENTAL_view_state:
       properties:
-        key:
-          $ref: '#/components/schemas/StoreKey'
-        value:
-          $ref: '#/components/schemas/StoreValue'
+        id:
+          type: string
+        jsonrpc:
+          type: string
+        method:
+          enum:
+          - EXPERIMENTAL_view_state
+          type: string
+        params:
+          $ref: '#/components/schemas/RpcViewStateRequest'
       required:
-      - key
-      - value
+      - jsonrpc
+      - id
+      - params
+      - method
+      title: JsonRpcRequest_for_EXPERIMENTAL_view_state
       type: object
+    StoreKey:
+      description: 'This type is used to mark keys (arrays of bytes) that are queried from store.
+
+
+        NOTE: Currently, this type is only used in the view_client and RPC to be able to transparently
+
+        pretty-serialize the bytes arrays as base64-encoded strings (see `serialize.rs`).'
+      format: bytes
+      type: string

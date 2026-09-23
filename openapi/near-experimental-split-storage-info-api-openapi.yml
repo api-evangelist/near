@@ -1,19 +1,13 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  description: Low-latency indexed account, token, and public-key lookup APIs for wallets and explorers. Embedded portal clients may forward an optional `apiKey` query parameter, but the public FastNEAR API does not require it.
-  title: FastNEAR accounts EXPERIMENTAL Split Storage Info API
-  version: 3.0.3
-servers:
-- description: Mainnet
-  url: https://api.fastnear.com
-- description: Testnet
-  url: https://test.api.fastnear.com
+  title: NEAR Protocol JSON RPC EXPERIMENTAL Split Storage Info API
+  version: 1.2.11
 tags:
 - name: EXPERIMENTAL Split Storage Info
 paths:
   /EXPERIMENTAL_split_storage_info:
     post:
-      description: Contains the split storage information. More info on split storage [here](https://near-nodes.io/archival/split-storage-archival)
+      description: Contains the split storage information. More info on split storage here
       operationId: EXPERIMENTAL_split_storage_info
       requestBody:
         content:
@@ -30,6 +24,8 @@ paths:
                 $ref: '#/components/schemas/JsonRpcResponse_for_RpcSplitStorageInfoResponse_and_RpcSplitStorageInfoError'
       tags:
       - EXPERIMENTAL Split Storage Info
+      summary: EXPERIMENTAL split storage info
+      x-summary-source: derived
 components:
   schemas:
     JsonRpcRequest_for_EXPERIMENTAL_split_storage_info:
@@ -50,6 +46,43 @@ components:
       - params
       - method
       title: JsonRpcRequest_for_EXPERIMENTAL_split_storage_info
+      type: object
+    RpcRequestValidationErrorKind:
+      oneOf:
+      - properties:
+          info:
+            properties:
+              method_name:
+                type: string
+            required:
+            - method_name
+            type: object
+          name:
+            enum:
+            - METHOD_NOT_FOUND
+            type: string
+        required:
+        - name
+        - info
+        type: object
+      - properties:
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - PARSE_ERROR
+            type: string
+        required:
+        - name
+        - info
+        type: object
+    RpcSplitStorageInfoRequest:
+      title: RpcSplitStorageInfoRequest
       type: object
     JsonRpcResponse_for_RpcSplitStorageInfoResponse_and_RpcSplitStorageInfoError:
       oneOf:
@@ -110,61 +143,6 @@ components:
         - name
         - cause
         type: object
-    RpcSplitStorageInfoRequest:
-      title: RpcSplitStorageInfoRequest
-      type: object
-    InternalError:
-      oneOf:
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
-          name:
-            enum:
-            - INTERNAL_ERROR
-            type: string
-        required:
-        - name
-        - info
-        type: object
-    RpcRequestValidationErrorKind:
-      oneOf:
-      - properties:
-          info:
-            properties:
-              method_name:
-                type: string
-            required:
-            - method_name
-            type: object
-          name:
-            enum:
-            - METHOD_NOT_FOUND
-            type: string
-        required:
-        - name
-        - info
-        type: object
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
-          name:
-            enum:
-            - PARSE_ERROR
-            type: string
-        required:
-        - name
-        - info
-        type: object
     RpcSplitStorageInfoError:
       oneOf:
       - properties:
@@ -189,19 +167,41 @@ components:
         cold_head_height:
           format: uint64
           minimum: 0
-          nullable: true
-          type: integer
+          type:
+          - integer
+          - 'null'
         final_head_height:
           format: uint64
           minimum: 0
-          nullable: true
-          type: integer
+          type:
+          - integer
+          - 'null'
         head_height:
           format: uint64
           minimum: 0
-          nullable: true
-          type: integer
+          type:
+          - integer
+          - 'null'
         hot_db_kind:
-          nullable: true
-          type: string
+          type:
+          - string
+          - 'null'
       type: object
+    InternalError:
+      oneOf:
+      - properties:
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
+        required:
+        - name
+        - info
+        type: object

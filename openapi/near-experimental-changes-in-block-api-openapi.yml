@@ -1,13 +1,7 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  description: Low-latency indexed account, token, and public-key lookup APIs for wallets and explorers. Embedded portal clients may forward an optional `apiKey` query parameter, but the public FastNEAR API does not require it.
-  title: FastNEAR accounts EXPERIMENTAL Changes In Block API
-  version: 3.0.3
-servers:
-- description: Mainnet
-  url: https://api.fastnear.com
-- description: Testnet
-  url: https://test.api.fastnear.com
+  title: NEAR Protocol JSON RPC EXPERIMENTAL Changes In Block API
+  version: 1.2.11
 tags:
 - name: EXPERIMENTAL Changes In Block
 paths:
@@ -30,6 +24,8 @@ paths:
                 $ref: '#/components/schemas/JsonRpcResponse_for_RpcStateChangesInBlockByTypeResponse_and_RpcStateChangesError'
       tags:
       - EXPERIMENTAL Changes In Block
+      summary: EXPERIMENTAL changes in block
+      x-summary-source: derived
 components:
   schemas:
     JsonRpcRequest_for_EXPERIMENTAL_changes_in_block:
@@ -51,66 +47,18 @@ components:
       - method
       title: JsonRpcRequest_for_EXPERIMENTAL_changes_in_block
       type: object
-    CryptoHash:
-      type: string
-    BlockId:
-      anyOf:
-      - format: uint64
-        minimum: 0
-        title: block_height
-        type: integer
-      - $ref: '#/components/schemas/CryptoHash'
-    JsonRpcResponse_for_RpcStateChangesInBlockByTypeResponse_and_RpcStateChangesError:
-      oneOf:
-      - properties:
-          result:
-            $ref: '#/components/schemas/RpcStateChangesInBlockByTypeResponse'
-        required:
-        - result
-        type: object
-      - properties:
-          error:
-            $ref: '#/components/schemas/ErrorWrapper_for_RpcStateChangesError'
-        required:
-        - error
-        type: object
+    RpcStateChangesInBlockByTypeResponse:
       properties:
-        id:
-          type: string
-        jsonrpc:
-          type: string
+        block_hash:
+          $ref: '#/components/schemas/CryptoHash'
+        changes:
+          items:
+            $ref: '#/components/schemas/StateChangeKindView'
+          type: array
       required:
-      - jsonrpc
-      - id
-      title: JsonRpcResponse_for_RpcStateChangesInBlockByTypeResponse_and_RpcStateChangesError
+      - block_hash
+      - changes
       type: object
-    RpcStateChangesInBlockRequest:
-      oneOf:
-      - properties:
-          block_id:
-            $ref: '#/components/schemas/BlockId'
-        required:
-        - block_id
-        type: object
-      - properties:
-          finality:
-            $ref: '#/components/schemas/Finality'
-        required:
-        - finality
-        type: object
-      - properties:
-          sync_checkpoint:
-            $ref: '#/components/schemas/SyncCheckpoint'
-        required:
-        - sync_checkpoint
-        type: object
-      title: RpcStateChangesInBlockRequest
-      type: object
-    SyncCheckpoint:
-      enum:
-      - genesis
-      - earliest_available
-      type: string
     ErrorWrapper_for_RpcStateChangesError:
       oneOf:
       - properties:
@@ -146,76 +94,13 @@ components:
         - name
         - cause
         type: object
-    InternalError:
-      oneOf:
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
-          name:
-            enum:
-            - INTERNAL_ERROR
-            type: string
-        required:
-        - name
-        - info
-        type: object
-    StateChangeKindView:
-      description: 'It is a [serializable view] of [`StateChangeKind`].
-
-
-        [serializable view]: ./index.html
-
-        [`StateChangeKind`]: ../types/struct.StateChangeKind.html'
-      oneOf:
-      - properties:
-          account_id:
-            $ref: '#/components/schemas/AccountId'
-          type:
-            enum:
-            - account_touched
-            type: string
-        required:
-        - type
-        - account_id
-        type: object
-      - properties:
-          account_id:
-            $ref: '#/components/schemas/AccountId'
-          type:
-            enum:
-            - access_key_touched
-            type: string
-        required:
-        - type
-        - account_id
-        type: object
-      - properties:
-          account_id:
-            $ref: '#/components/schemas/AccountId'
-          type:
-            enum:
-            - data_touched
-            type: string
-        required:
-        - type
-        - account_id
-        type: object
-      - properties:
-          account_id:
-            $ref: '#/components/schemas/AccountId'
-          type:
-            enum:
-            - contract_code_touched
-            type: string
-        required:
-        - type
-        - account_id
-        type: object
+    Finality:
+      description: Different types of finality.
+      enum:
+      - optimistic
+      - near-final
+      - final
+      type: string
     RpcRequestValidationErrorKind:
       oneOf:
       - properties:
@@ -250,6 +135,52 @@ components:
         - name
         - info
         type: object
+    RpcStateChangesInBlockRequest:
+      oneOf:
+      - properties:
+          block_id:
+            $ref: '#/components/schemas/BlockId'
+        required:
+        - block_id
+        type: object
+      - properties:
+          finality:
+            $ref: '#/components/schemas/Finality'
+        required:
+        - finality
+        type: object
+      - properties:
+          sync_checkpoint:
+            $ref: '#/components/schemas/SyncCheckpoint'
+        required:
+        - sync_checkpoint
+        type: object
+      title: RpcStateChangesInBlockRequest
+      type: object
+    JsonRpcResponse_for_RpcStateChangesInBlockByTypeResponse_and_RpcStateChangesError:
+      oneOf:
+      - properties:
+          result:
+            $ref: '#/components/schemas/RpcStateChangesInBlockByTypeResponse'
+        required:
+        - result
+        type: object
+      - properties:
+          error:
+            $ref: '#/components/schemas/ErrorWrapper_for_RpcStateChangesError'
+        required:
+        - error
+        type: object
+      properties:
+        id:
+          type: string
+        jsonrpc:
+          type: string
+      required:
+      - jsonrpc
+      - id
+      title: JsonRpcResponse_for_RpcStateChangesInBlockByTypeResponse_and_RpcStateChangesError
+      type: object
     AccountId:
       $schema: https://json-schema.org/draft/2020-12/schema
       description: 'NEAR Account Identifier.
@@ -280,13 +211,15 @@ components:
         ```'
       title: AccountId
       type: string
-    Finality:
-      description: Different types of finality.
-      enum:
-      - optimistic
-      - near-final
-      - final
+    CryptoHash:
       type: string
+    BlockId:
+      anyOf:
+      - format: uint64
+        minimum: 0
+        title: block_height
+        type: integer
+      - $ref: '#/components/schemas/CryptoHash'
     RpcStateChangesError:
       oneOf:
       - properties:
@@ -340,6 +273,81 @@ components:
         - name
         - info
         type: object
+    SyncCheckpoint:
+      enum:
+      - genesis
+      - earliest_available
+      type: string
+    StateChangeKindView:
+      description: 'It is a [serializable view] of [`StateChangeKind`].
+
+
+        [serializable view]: ./index.html
+
+        [`StateChangeKind`]: ../types/struct.StateChangeKind.html'
+      oneOf:
+      - properties:
+          account_id:
+            $ref: '#/components/schemas/AccountId'
+          type:
+            enum:
+            - account_touched
+            type: string
+        required:
+        - type
+        - account_id
+        type: object
+      - properties:
+          account_id:
+            $ref: '#/components/schemas/AccountId'
+          type:
+            enum:
+            - access_key_touched
+            type: string
+        required:
+        - type
+        - account_id
+        type: object
+      - properties:
+          account_id:
+            $ref: '#/components/schemas/AccountId'
+          type:
+            enum:
+            - data_touched
+            type: string
+        required:
+        - type
+        - account_id
+        type: object
+      - properties:
+          account_id:
+            $ref: '#/components/schemas/AccountId'
+          type:
+            enum:
+            - contract_code_touched
+            type: string
+        required:
+        - type
+        - account_id
+        type: object
+    InternalError:
+      oneOf:
+      - properties:
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
+        required:
+        - name
+        - info
+        type: object
     ShardId:
       description: 'The shard identifier. It may be an arbitrary number - it does not need to be
 
@@ -356,15 +364,3 @@ components:
       format: uint64
       minimum: 0
       type: integer
-    RpcStateChangesInBlockByTypeResponse:
-      properties:
-        block_hash:
-          $ref: '#/components/schemas/CryptoHash'
-        changes:
-          items:
-            $ref: '#/components/schemas/StateChangeKindView'
-          type: array
-      required:
-      - block_hash
-      - changes
-      type: object

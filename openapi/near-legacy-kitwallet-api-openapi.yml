@@ -1,13 +1,13 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  description: Low-latency indexed account, token, and public-key lookup APIs for wallets and explorers. Embedded portal clients may forward an optional `apiKey` query parameter, but the public FastNEAR API does not require it.
-  title: FastNEAR accounts Legacy / Kitwallet API
-  version: 3.0.3
+  description: NearBlocks REST API for the NEAR Protocol block explorer. Provides endpoints to access blockchain data including accounts, transactions, blocks, tokens, NFTs, and staking.
+  title: NearBlocks Explorer Legacy / Kitwallet API
+  version: 1.0.0
 servers:
 - description: Mainnet
-  url: https://api.fastnear.com
+  url: https://api.nearblocks.io
 - description: Testnet
-  url: https://test.api.fastnear.com
+  url: https://api-testnet.nearblocks.io
 tags:
 - description: Deprecated.
   name: Legacy / Kitwallet
@@ -20,6 +20,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1KitwalletStakingPools
+      x-operation-id-source: derived
   /v1/kitwallet/staking-deposits/{account}:
     get:
       summary: Get staking deposits for an account
@@ -38,6 +40,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1KitwalletStakingDepositsByAccount
+      x-operation-id-source: derived
   /v1/kitwallet/publicKey/{key}/accounts:
     get:
       summary: Get accounts by public key
@@ -56,6 +60,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1KitwalletPublicKeyByKeyAccounts
+      x-operation-id-source: derived
   /v1/kitwallet/account/{account}/activities:
     get:
       summary: Get activities for an account
@@ -74,6 +80,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1KitwalletAccountByAccountActivities
+      x-operation-id-source: derived
   /v1/kitwallet/account/{account}/callReceivers:
     get:
       summary: Get call receivers for an account
@@ -92,6 +100,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1KitwalletAccountByAccountCallReceivers
+      x-operation-id-source: derived
   /v1/kitwallet/account/{account}/likelyTokens:
     get:
       summary: Get likely tokens for an account
@@ -110,6 +120,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1KitwalletAccountByAccountLikelyTokens
+      x-operation-id-source: derived
   /v1/kitwallet/account/{account}/likelyTokensFromBlock:
     get:
       summary: Get likely tokens for an account from block
@@ -133,6 +145,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1KitwalletAccountByAccountLikelyTokensFromBlock
+      x-operation-id-source: derived
   /v1/kitwallet/account/{account}/likelyNFTs:
     get:
       summary: Get likely NFTs for an account
@@ -151,6 +165,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1KitwalletAccountByAccountLikelyNFTs
+      x-operation-id-source: derived
   /v1/kitwallet/account/{account}/likelyNFTsFromBlock:
     get:
       summary: Get likely NFTs for an account from block
@@ -174,6 +190,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1KitwalletAccountByAccountLikelyNFTsFromBlock
+      x-operation-id-source: derived
   /v1/kitwallet/account/{account}/receipts:
     get:
       summary: Get account receipts
@@ -244,6 +262,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1KitwalletAccountByAccountReceipts
+      x-operation-id-source: derived
   /v1/kitwallet/account/{account}/receipts/count:
     get:
       summary: Get estimated account receipts count
@@ -292,3 +312,10 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1KitwalletAccountByAccountReceiptsCount
+      x-operation-id-source: derived
+components:
+  securitySchemes:
+    BearerAuth:
+      scheme: bearer
+      type: http

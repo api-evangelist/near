@@ -1,13 +1,13 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  description: Low-latency indexed account, token, and public-key lookup APIs for wallets and explorers. Embedded portal clients may forward an optional `apiKey` query parameter, but the public FastNEAR API does not require it.
-  title: FastNEAR accounts Legacy / FTs API
-  version: 3.0.3
+  description: NearBlocks REST API for the NEAR Protocol block explorer. Provides endpoints to access blockchain data including accounts, transactions, blocks, tokens, NFTs, and staking.
+  title: NearBlocks Explorer Legacy / FTs API
+  version: 1.0.0
 servers:
 - description: Mainnet
-  url: https://api.fastnear.com
+  url: https://api.nearblocks.io
 - description: Testnet
-  url: https://test.api.fastnear.com
+  url: https://api-testnet.nearblocks.io
 tags:
 - description: Deprecated.
   name: Legacy / FTs
@@ -63,6 +63,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1Fts
+      x-operation-id-source: derived
   /v1/fts/count:
     get:
       summary: Get top tokens count
@@ -77,6 +79,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1FtsCount
+      x-operation-id-source: derived
   /v1/fts/txns:
     get:
       summary: Get token txns by pagination
@@ -109,6 +113,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1FtsTxns
+      x-operation-id-source: derived
   /v1/fts/txns/count:
     get:
       summary: Get estimated token txns count
@@ -117,6 +123,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1FtsTxnsCount
+      x-operation-id-source: derived
   /v1/fts/{contract}:
     get:
       summary: Get token info
@@ -135,6 +143,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1FtsByContract
+      x-operation-id-source: derived
   /v1/fts/{contract}/txns:
     get:
       summary: Get token txns by pagination
@@ -199,6 +209,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1FtsByContractTxns
+      x-operation-id-source: derived
   /v1/fts/{contract}/txns/count:
     get:
       summary: Get estimated token txns count
@@ -231,6 +243,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1FtsByContractTxnsCount
+      x-operation-id-source: derived
   /v1/fts/{contract}/holders:
     get:
       summary: Get token holders by pagination
@@ -274,6 +288,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1FtsByContractHolders
+      x-operation-id-source: derived
   /v1/fts/{contract}/holders/count:
     get:
       summary: Get estimated token holders count
@@ -292,3 +308,10 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1FtsByContractHoldersCount
+      x-operation-id-source: derived
+components:
+  securitySchemes:
+    BearerAuth:
+      scheme: bearer
+      type: http

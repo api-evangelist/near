@@ -1,13 +1,7 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  description: Low-latency indexed account, token, and public-key lookup APIs for wallets and explorers. Embedded portal clients may forward an optional `apiKey` query parameter, but the public FastNEAR API does not require it.
-  title: FastNEAR accounts EXPERIMENTAL Call Function API
-  version: 3.0.3
-servers:
-- description: Mainnet
-  url: https://api.fastnear.com
-- description: Testnet
-  url: https://test.api.fastnear.com
+  title: NEAR Protocol JSON RPC EXPERIMENTAL Call Function API
+  version: 1.2.11
 tags:
 - name: EXPERIMENTAL Call Function
 paths:
@@ -30,8 +24,71 @@ paths:
                 $ref: '#/components/schemas/JsonRpcResponse_for_RpcCallFunctionResponse_and_RpcCallFunctionError'
       tags:
       - EXPERIMENTAL Call Function
+      summary: EXPERIMENTAL call function
+      x-summary-source: derived
 components:
   schemas:
+    JsonRpcResponse_for_RpcCallFunctionResponse_and_RpcCallFunctionError:
+      oneOf:
+      - properties:
+          result:
+            $ref: '#/components/schemas/RpcCallFunctionResponse'
+        required:
+        - result
+        type: object
+      - properties:
+          error:
+            $ref: '#/components/schemas/ErrorWrapper_for_RpcCallFunctionError'
+        required:
+        - error
+        type: object
+      properties:
+        id:
+          type: string
+        jsonrpc:
+          type: string
+      required:
+      - jsonrpc
+      - id
+      title: JsonRpcResponse_for_RpcCallFunctionResponse_and_RpcCallFunctionError
+      type: object
+    AccountId:
+      $schema: https://json-schema.org/draft/2020-12/schema
+      description: 'NEAR Account Identifier.
+
+
+        This is a unique, syntactically valid, human-readable account identifier on the NEAR network.
+
+
+        [See the crate-level docs for information about validation.](index.html#account-id-rules)
+
+
+        Also see [Error kind precedence](AccountId#error-kind-precedence).
+
+
+        ## Examples
+
+
+        ```
+
+        use near_account_id::AccountId;
+
+
+        let alice: AccountId = "alice.near".parse().unwrap();
+
+
+        assert!("ƒelicia.near".parse::<AccountId>().is_err()); // (ƒ is not f)
+
+        ```'
+      title: AccountId
+      type: string
+    BlockId:
+      anyOf:
+      - format: uint64
+        minimum: 0
+        title: block_height
+        type: integer
+      - $ref: '#/components/schemas/CryptoHash'
     PrepareError:
       description: Error that can occur while preparing or executing Wasm smart-contract.
       oneOf:
@@ -124,6 +181,24 @@ components:
         enum:
         - OperandStackTooLarge
         type: string
+    InternalError:
+      oneOf:
+      - properties:
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
+        required:
+        - name
+        - info
+        type: object
     RpcCallFunctionError:
       oneOf:
       - properties:
@@ -254,6 +329,175 @@ components:
         - name
         - info
         type: object
+    RpcCallFunctionResponse:
+      description: A result returned by contract method
+      properties:
+        block_hash:
+          $ref: '#/components/schemas/CryptoHash'
+        block_height:
+          format: uint64
+          minimum: 0
+          type: integer
+        logs:
+          items:
+            type: string
+          type: array
+        result:
+          items:
+            format: uint8
+            maximum: 255
+            minimum: 0
+            type: integer
+          type: array
+      required:
+      - result
+      - logs
+      - block_height
+      - block_hash
+      type: object
+    RpcRequestValidationErrorKind:
+      oneOf:
+      - properties:
+          info:
+            properties:
+              method_name:
+                type: string
+            required:
+            - method_name
+            type: object
+          name:
+            enum:
+            - METHOD_NOT_FOUND
+            type: string
+        required:
+        - name
+        - info
+        type: object
+      - properties:
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - PARSE_ERROR
+            type: string
+        required:
+        - name
+        - info
+        type: object
+    FunctionCallError:
+      description: 'Serializable version of `near-vm-runner::FunctionCallError`.
+
+
+        Must never reorder/remove elements, can only add new variants at the end (but do that very
+
+        carefully). It describes stable serialization format, and only used by serialization logic.'
+      oneOf:
+      - enum:
+        - WasmUnknownError
+        - _EVMError
+        type: string
+      - additionalProperties: false
+        description: Wasm compilation error
+        properties:
+          CompilationError:
+            $ref: '#/components/schemas/CompilationError'
+        required:
+        - CompilationError
+        type: object
+      - additionalProperties: false
+        description: 'Wasm binary env link error
+
+
+          Note: this is only to deserialize old data, use execution error for new data'
+        properties:
+          LinkError:
+            properties:
+              msg:
+                type: string
+            required:
+            - msg
+            type: object
+        required:
+        - LinkError
+        type: object
+      - additionalProperties: false
+        description: Import/export resolve error
+        properties:
+          MethodResolveError:
+            $ref: '#/components/schemas/MethodResolveError'
+        required:
+        - MethodResolveError
+        type: object
+      - additionalProperties: false
+        description: 'A trap happened during execution of a binary
+
+
+          Note: this is only to deserialize old data, use execution error for new data'
+        properties:
+          WasmTrap:
+            $ref: '#/components/schemas/WasmTrap'
+        required:
+        - WasmTrap
+        type: object
+      - additionalProperties: false
+        description: 'Note: this is only to deserialize old data, use execution error for new data'
+        properties:
+          HostError:
+            $ref: '#/components/schemas/HostError'
+        required:
+        - HostError
+        type: object
+      - additionalProperties: false
+        properties:
+          ExecutionError:
+            type: string
+        required:
+        - ExecutionError
+        type: object
+    WasmTrap:
+      description: A kind of a trap happened during execution of a binary
+      oneOf:
+      - description: An `unreachable` opcode was executed.
+        enum:
+        - Unreachable
+        type: string
+      - description: Call indirect incorrect signature trap.
+        enum:
+        - IncorrectCallIndirectSignature
+        type: string
+      - description: Memory out of bounds trap.
+        enum:
+        - MemoryOutOfBounds
+        type: string
+      - description: Call indirect out of bounds trap.
+        enum:
+        - CallIndirectOOB
+        type: string
+      - description: An arithmetic exception, e.g. divided by zero.
+        enum:
+        - IllegalArithmetic
+        type: string
+      - description: Misaligned atomic access trap.
+        enum:
+        - MisalignedAtomicAccess
+        type: string
+      - description: Indirect call to null.
+        enum:
+        - IndirectCallToNull
+        type: string
+      - description: Stack overflow.
+        enum:
+        - StackOverflow
+        type: string
+      - description: Generic trap.
+        enum:
+        - GenericTrap
+        type: string
     Finality:
       description: Different types of finality.
       enum:
@@ -261,47 +505,64 @@ components:
       - near-final
       - final
       type: string
-    FunctionArgs:
-      description: 'This type is used to mark function arguments.
-
-
-        NOTE: The main reason for this to exist (except the type-safety) is that the value is
-
-        transparently serialized and deserialized as a base64-encoded string when serde is used
-
-        (serde_json).'
-      format: bytes
+    BlockReference:
+      oneOf:
+      - additionalProperties: false
+        properties:
+          block_id:
+            $ref: '#/components/schemas/BlockId'
+        required:
+        - block_id
+        type: object
+      - additionalProperties: false
+        properties:
+          finality:
+            $ref: '#/components/schemas/Finality'
+        required:
+        - finality
+        type: object
+      - additionalProperties: false
+        properties:
+          sync_checkpoint:
+            $ref: '#/components/schemas/SyncCheckpoint'
+        required:
+        - sync_checkpoint
+        type: object
+    CryptoHash:
       type: string
-    AccountId:
-      $schema: https://json-schema.org/draft/2020-12/schema
-      description: 'NEAR Account Identifier.
-
-
-        This is a unique, syntactically valid, human-readable account identifier on the NEAR network.
-
-
-        [See the crate-level docs for information about validation.](index.html#account-id-rules)
-
-
-        Also see [Error kind precedence](AccountId#error-kind-precedence).
-
-
-        ## Examples
-
-
-        ```
-
-        use near_account_id::AccountId;
-
-
-        let alice: AccountId = "alice.near".parse().unwrap();
-
-
-        assert!("ƒelicia.near".parse::<AccountId>().is_err()); // (ƒ is not f)
-
-        ```'
-      title: AccountId
-      type: string
+    RpcCallFunctionRequest:
+      oneOf:
+      - properties:
+          block_id:
+            $ref: '#/components/schemas/BlockId'
+        required:
+        - block_id
+        type: object
+      - properties:
+          finality:
+            $ref: '#/components/schemas/Finality'
+        required:
+        - finality
+        type: object
+      - properties:
+          sync_checkpoint:
+            $ref: '#/components/schemas/SyncCheckpoint'
+        required:
+        - sync_checkpoint
+        type: object
+      properties:
+        account_id:
+          $ref: '#/components/schemas/AccountId'
+        args_base64:
+          $ref: '#/components/schemas/FunctionArgs'
+        method_name:
+          type: string
+      required:
+      - account_id
+      - method_name
+      - args_base64
+      title: RpcCallFunctionRequest
+      type: object
     HostError:
       oneOf:
       - description: String encoding is bad UTF-16 sequence
@@ -700,32 +961,6 @@ components:
         required:
         - P256VerifyInvalidInput
         type: object
-    RpcCallFunctionResponse:
-      description: A result returned by contract method
-      properties:
-        block_hash:
-          $ref: '#/components/schemas/CryptoHash'
-        block_height:
-          format: uint64
-          minimum: 0
-          type: integer
-        logs:
-          items:
-            type: string
-          type: array
-        result:
-          items:
-            format: uint8
-            maximum: 255
-            minimum: 0
-            type: integer
-          type: array
-      required:
-      - result
-      - logs
-      - block_height
-      - block_hash
-      type: object
     ErrorWrapper_for_RpcCallFunctionError:
       oneOf:
       - properties:
@@ -761,267 +996,41 @@ components:
         - name
         - cause
         type: object
-    InternalError:
-      oneOf:
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
-          name:
-            enum:
-            - INTERNAL_ERROR
-            type: string
-        required:
-        - name
-        - info
-        type: object
+    FunctionArgs:
+      description: 'This type is used to mark function arguments.
+
+
+        NOTE: The main reason for this to exist (except the type-safety) is that the value is
+
+        transparently serialized and deserialized as a base64-encoded string when serde is used
+
+        (serde_json).'
+      format: bytes
+      type: string
     SyncCheckpoint:
       enum:
       - genesis
       - earliest_available
       type: string
-    BlockReference:
-      oneOf:
-      - additionalProperties: false
-        properties:
-          block_id:
-            $ref: '#/components/schemas/BlockId'
-        required:
-        - block_id
-        type: object
-      - additionalProperties: false
-        properties:
-          finality:
-            $ref: '#/components/schemas/Finality'
-        required:
-        - finality
-        type: object
-      - additionalProperties: false
-        properties:
-          sync_checkpoint:
-            $ref: '#/components/schemas/SyncCheckpoint'
-        required:
-        - sync_checkpoint
-        type: object
-    WasmTrap:
-      description: A kind of a trap happened during execution of a binary
-      oneOf:
-      - description: An `unreachable` opcode was executed.
-        enum:
-        - Unreachable
-        type: string
-      - description: Call indirect incorrect signature trap.
-        enum:
-        - IncorrectCallIndirectSignature
-        type: string
-      - description: Memory out of bounds trap.
-        enum:
-        - MemoryOutOfBounds
-        type: string
-      - description: Call indirect out of bounds trap.
-        enum:
-        - CallIndirectOOB
-        type: string
-      - description: An arithmetic exception, e.g. divided by zero.
-        enum:
-        - IllegalArithmetic
-        type: string
-      - description: Misaligned atomic access trap.
-        enum:
-        - MisalignedAtomicAccess
-        type: string
-      - description: Indirect call to null.
-        enum:
-        - IndirectCallToNull
-        type: string
-      - description: Stack overflow.
-        enum:
-        - StackOverflow
-        type: string
-      - description: Generic trap.
-        enum:
-        - GenericTrap
-        type: string
-    FunctionCallError:
-      description: 'Serializable version of `near-vm-runner::FunctionCallError`.
-
-
-        Must never reorder/remove elements, can only add new variants at the end (but do that very
-
-        carefully). It describes stable serialization format, and only used by serialization logic.'
-      oneOf:
-      - enum:
-        - WasmUnknownError
-        - _EVMError
-        type: string
-      - additionalProperties: false
-        description: Wasm compilation error
-        properties:
-          CompilationError:
-            $ref: '#/components/schemas/CompilationError'
-        required:
-        - CompilationError
-        type: object
-      - additionalProperties: false
-        description: 'Wasm binary env link error
-
-
-          Note: this is only to deserialize old data, use execution error for new data'
-        properties:
-          LinkError:
-            properties:
-              msg:
-                type: string
-            required:
-            - msg
-            type: object
-        required:
-        - LinkError
-        type: object
-      - additionalProperties: false
-        description: Import/export resolve error
-        properties:
-          MethodResolveError:
-            $ref: '#/components/schemas/MethodResolveError'
-        required:
-        - MethodResolveError
-        type: object
-      - additionalProperties: false
-        description: 'A trap happened during execution of a binary
-
-
-          Note: this is only to deserialize old data, use execution error for new data'
-        properties:
-          WasmTrap:
-            $ref: '#/components/schemas/WasmTrap'
-        required:
-        - WasmTrap
-        type: object
-      - additionalProperties: false
-        description: 'Note: this is only to deserialize old data, use execution error for new data'
-        properties:
-          HostError:
-            $ref: '#/components/schemas/HostError'
-        required:
-        - HostError
-        type: object
-      - additionalProperties: false
-        properties:
-          ExecutionError:
-            type: string
-        required:
-        - ExecutionError
-        type: object
-    RpcCallFunctionRequest:
-      oneOf:
-      - properties:
-          block_id:
-            $ref: '#/components/schemas/BlockId'
-        required:
-        - block_id
-        type: object
-      - properties:
-          finality:
-            $ref: '#/components/schemas/Finality'
-        required:
-        - finality
-        type: object
-      - properties:
-          sync_checkpoint:
-            $ref: '#/components/schemas/SyncCheckpoint'
-        required:
-        - sync_checkpoint
-        type: object
-      properties:
-        account_id:
-          $ref: '#/components/schemas/AccountId'
-        args_base64:
-          $ref: '#/components/schemas/FunctionArgs'
-        method_name:
-          type: string
-      required:
-      - account_id
-      - method_name
-      - args_base64
-      title: RpcCallFunctionRequest
-      type: object
-    CryptoHash:
-      type: string
-    BlockId:
-      anyOf:
-      - format: uint64
-        minimum: 0
-        title: block_height
-        type: integer
-      - $ref: '#/components/schemas/CryptoHash'
-    JsonRpcResponse_for_RpcCallFunctionResponse_and_RpcCallFunctionError:
-      oneOf:
-      - properties:
-          result:
-            $ref: '#/components/schemas/RpcCallFunctionResponse'
-        required:
-        - result
-        type: object
-      - properties:
-          error:
-            $ref: '#/components/schemas/ErrorWrapper_for_RpcCallFunctionError'
-        required:
-        - error
-        type: object
+    JsonRpcRequest_for_EXPERIMENTAL_call_function:
       properties:
         id:
           type: string
         jsonrpc:
           type: string
+        method:
+          enum:
+          - EXPERIMENTAL_call_function
+          type: string
+        params:
+          $ref: '#/components/schemas/RpcCallFunctionRequest'
       required:
       - jsonrpc
       - id
-      title: JsonRpcResponse_for_RpcCallFunctionResponse_and_RpcCallFunctionError
+      - params
+      - method
+      title: JsonRpcRequest_for_EXPERIMENTAL_call_function
       type: object
-    MethodResolveError:
-      enum:
-      - MethodEmptyName
-      - MethodNotFound
-      - MethodInvalidSignature
-      type: string
-    RpcRequestValidationErrorKind:
-      oneOf:
-      - properties:
-          info:
-            properties:
-              method_name:
-                type: string
-            required:
-            - method_name
-            type: object
-          name:
-            enum:
-            - METHOD_NOT_FOUND
-            type: string
-        required:
-        - name
-        - info
-        type: object
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
-          name:
-            enum:
-            - PARSE_ERROR
-            type: string
-        required:
-        - name
-        - info
-        type: object
     CompilationError:
       oneOf:
       - additionalProperties: false
@@ -1060,22 +1069,9 @@ components:
         required:
         - WasmerCompileError
         type: object
-    JsonRpcRequest_for_EXPERIMENTAL_call_function:
-      properties:
-        id:
-          type: string
-        jsonrpc:
-          type: string
-        method:
-          enum:
-          - EXPERIMENTAL_call_function
-          type: string
-        params:
-          $ref: '#/components/schemas/RpcCallFunctionRequest'
-      required:
-      - jsonrpc
-      - id
-      - params
-      - method
-      title: JsonRpcRequest_for_EXPERIMENTAL_call_function
-      type: object
+    MethodResolveError:
+      enum:
+      - MethodEmptyName
+      - MethodNotFound
+      - MethodInvalidSignature
+      type: string

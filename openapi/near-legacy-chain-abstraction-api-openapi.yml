@@ -1,13 +1,13 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  description: Low-latency indexed account, token, and public-key lookup APIs for wallets and explorers. Embedded portal clients may forward an optional `apiKey` query parameter, but the public FastNEAR API does not require it.
-  title: FastNEAR accounts Legacy / Chain Abstraction API
-  version: 3.0.3
+  description: NearBlocks REST API for the NEAR Protocol block explorer. Provides endpoints to access blockchain data including accounts, transactions, blocks, tokens, NFTs, and staking.
+  title: NearBlocks Explorer Legacy / Chain Abstraction API
+  version: 1.0.0
 servers:
 - description: Mainnet
-  url: https://api.fastnear.com
+  url: https://api.nearblocks.io
 - description: Testnet
-  url: https://test.api.fastnear.com
+  url: https://api-testnet.nearblocks.io
 tags:
 - description: Deprecated.
   name: Legacy / Chain Abstraction
@@ -30,6 +30,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1ChainAbstractionByAccountMultiChainAccounts
+      x-operation-id-source: derived
   /v1/chain-abstraction/{account}/txns:
     get:
       summary: Get multi chain txns of the account by pagination
@@ -113,6 +115,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1ChainAbstractionByAccountTxns
+      x-operation-id-source: derived
   /v1/chain-abstraction/{account}/txns/count:
     get:
       summary: Get estimated multi chain txns count of the account
@@ -166,6 +170,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1ChainAbstractionByAccountTxnsCount
+      x-operation-id-source: derived
   /v1/chain-abstraction/txns:
     get:
       summary: Get multi chain txns by pagination
@@ -246,6 +252,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1ChainAbstractionTxns
+      x-operation-id-source: derived
   /v1/chain-abstraction/txns/count:
     get:
       summary: Get estimated multi chain txns count
@@ -296,3 +304,10 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1ChainAbstractionTxnsCount
+      x-operation-id-source: derived
+components:
+  securitySchemes:
+    BearerAuth:
+      scheme: bearer
+      type: http

@@ -1,13 +1,7 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  description: Low-latency indexed account, token, and public-key lookup APIs for wallets and explorers. Embedded portal clients may forward an optional `apiKey` query parameter, but the public FastNEAR API does not require it.
-  title: FastNEAR accounts Network Info API
-  version: 3.0.3
-servers:
-- description: Mainnet
-  url: https://api.fastnear.com
-- description: Testnet
-  url: https://test.api.fastnear.com
+  title: NEAR Protocol JSON RPC Network Info API
+  version: 1.2.11
 tags:
 - name: Network Info
 paths:
@@ -30,13 +24,10 @@ paths:
                 $ref: '#/components/schemas/JsonRpcResponse_for_RpcNetworkInfoResponse_and_RpcNetworkInfoError'
       tags:
       - Network Info
+      summary: Network info
+      x-summary-source: derived
 components:
   schemas:
-    RpcNetworkInfoRequest:
-      enum:
-      - null
-      nullable: true
-      title: RpcNetworkInfoRequest
     JsonRpcResponse_for_RpcNetworkInfoResponse_and_RpcNetworkInfoError:
       oneOf:
       - properties:
@@ -61,28 +52,6 @@ components:
       - id
       title: JsonRpcResponse_for_RpcNetworkInfoResponse_and_RpcNetworkInfoError
       type: object
-    PeerId:
-      allOf:
-      - $ref: '#/components/schemas/PublicKey'
-      description: Peer id is the public key.
-    RpcNetworkInfoError:
-      oneOf:
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
-          name:
-            enum:
-            - INTERNAL_ERROR
-            type: string
-        required:
-        - name
-        - info
-        type: object
     RpcNetworkInfoResponse:
       properties:
         active_peers:
@@ -118,101 +87,6 @@ components:
       - received_bytes_per_sec
       - known_producers
       type: object
-    RpcKnownProducer:
-      properties:
-        account_id:
-          $ref: '#/components/schemas/AccountId'
-        addr:
-          nullable: true
-          type: string
-        peer_id:
-          $ref: '#/components/schemas/PeerId'
-      required:
-      - account_id
-      - peer_id
-      type: object
-    InternalError:
-      oneOf:
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
-          name:
-            enum:
-            - INTERNAL_ERROR
-            type: string
-        required:
-        - name
-        - info
-        type: object
-    RpcRequestValidationErrorKind:
-      oneOf:
-      - properties:
-          info:
-            properties:
-              method_name:
-                type: string
-            required:
-            - method_name
-            type: object
-          name:
-            enum:
-            - METHOD_NOT_FOUND
-            type: string
-        required:
-        - name
-        - info
-        type: object
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
-          name:
-            enum:
-            - PARSE_ERROR
-            type: string
-        required:
-        - name
-        - info
-        type: object
-    AccountId:
-      $schema: https://json-schema.org/draft/2020-12/schema
-      description: 'NEAR Account Identifier.
-
-
-        This is a unique, syntactically valid, human-readable account identifier on the NEAR network.
-
-
-        [See the crate-level docs for information about validation.](index.html#account-id-rules)
-
-
-        Also see [Error kind precedence](AccountId#error-kind-precedence).
-
-
-        ## Examples
-
-
-        ```
-
-        use near_account_id::AccountId;
-
-
-        let alice: AccountId = "alice.near".parse().unwrap();
-
-
-        assert!("ƒelicia.near".parse::<AccountId>().is_err()); // (ƒ is not f)
-
-        ```'
-      title: AccountId
-      type: string
     ErrorWrapper_for_RpcNetworkInfoError:
       oneOf:
       - properties:
@@ -248,24 +122,108 @@ components:
         - name
         - cause
         type: object
-    RpcPeerInfo:
-      properties:
-        account_id:
-          anyOf:
-          - $ref: '#/components/schemas/AccountId'
-          - enum:
-            - null
-            nullable: true
-        addr:
-          nullable: true
-          type: string
-        id:
-          $ref: '#/components/schemas/PeerId'
-      required:
-      - id
-      type: object
+    RpcRequestValidationErrorKind:
+      oneOf:
+      - properties:
+          info:
+            properties:
+              method_name:
+                type: string
+            required:
+            - method_name
+            type: object
+          name:
+            enum:
+            - METHOD_NOT_FOUND
+            type: string
+        required:
+        - name
+        - info
+        type: object
+      - properties:
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - PARSE_ERROR
+            type: string
+        required:
+        - name
+        - info
+        type: object
     PublicKey:
       type: string
+    RpcNetworkInfoError:
+      oneOf:
+      - properties:
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
+        required:
+        - name
+        - info
+        type: object
+    AccountId:
+      $schema: https://json-schema.org/draft/2020-12/schema
+      description: 'NEAR Account Identifier.
+
+
+        This is a unique, syntactically valid, human-readable account identifier on the NEAR network.
+
+
+        [See the crate-level docs for information about validation.](index.html#account-id-rules)
+
+
+        Also see [Error kind precedence](AccountId#error-kind-precedence).
+
+
+        ## Examples
+
+
+        ```
+
+        use near_account_id::AccountId;
+
+
+        let alice: AccountId = "alice.near".parse().unwrap();
+
+
+        assert!("ƒelicia.near".parse::<AccountId>().is_err()); // (ƒ is not f)
+
+        ```'
+      title: AccountId
+      type: string
+    RpcKnownProducer:
+      properties:
+        account_id:
+          $ref: '#/components/schemas/AccountId'
+        addr:
+          type:
+          - string
+          - 'null'
+        peer_id:
+          $ref: '#/components/schemas/PeerId'
+      required:
+      - account_id
+      - peer_id
+      type: object
+    PeerId:
+      allOf:
+      - $ref: '#/components/schemas/PublicKey'
+      description: Peer id is the public key.
     JsonRpcRequest_for_network_info:
       properties:
         id:
@@ -284,4 +242,42 @@ components:
       - params
       - method
       title: JsonRpcRequest_for_network_info
+      type: object
+    InternalError:
+      oneOf:
+      - properties:
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
+        required:
+        - name
+        - info
+        type: object
+    RpcNetworkInfoRequest:
+      enum:
+      - null
+      title: RpcNetworkInfoRequest
+    RpcPeerInfo:
+      properties:
+        account_id:
+          anyOf:
+          - $ref: '#/components/schemas/AccountId'
+          - enum:
+            - null
+        addr:
+          type:
+          - string
+          - 'null'
+        id:
+          $ref: '#/components/schemas/PeerId'
+      required:
+      - id
       type: object

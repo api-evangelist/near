@@ -1,13 +1,7 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  description: Low-latency indexed account, token, and public-key lookup APIs for wallets and explorers. Embedded portal clients may forward an optional `apiKey` query parameter, but the public FastNEAR API does not require it.
-  title: FastNEAR accounts EXPERIMENTAL Validators Ordered API
-  version: 3.0.3
-servers:
-- description: Mainnet
-  url: https://api.fastnear.com
-- description: Testnet
-  url: https://test.api.fastnear.com
+  title: NEAR Protocol JSON RPC EXPERIMENTAL Validators Ordered API
+  version: 1.2.11
 tags:
 - name: EXPERIMENTAL Validators Ordered
 paths:
@@ -30,8 +24,46 @@ paths:
                 $ref: '#/components/schemas/JsonRpcResponse_for_Array_of_ValidatorStakeView_and_RpcValidatorError'
       tags:
       - EXPERIMENTAL Validators Ordered
+      summary: EXPERIMENTAL validators ordered
+      x-summary-source: derived
 components:
   schemas:
+    RpcValidatorError:
+      oneOf:
+      - properties:
+          name:
+            enum:
+            - UNKNOWN_EPOCH
+            type: string
+        required:
+        - name
+        type: object
+      - properties:
+          name:
+            enum:
+            - VALIDATOR_INFO_UNAVAILABLE
+            type: string
+        required:
+        - name
+        type: object
+      - properties:
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
+        required:
+        - name
+        - info
+        type: object
+    NearToken:
+      type: string
     RpcValidatorsOrderedRequest:
       properties:
         block_id:
@@ -39,18 +71,8 @@ components:
           - $ref: '#/components/schemas/BlockId'
           - enum:
             - null
-            nullable: true
       title: RpcValidatorsOrderedRequest
       type: object
-    CryptoHash:
-      type: string
-    BlockId:
-      anyOf:
-      - format: uint64
-        minimum: 0
-        title: block_height
-        type: integer
-      - $ref: '#/components/schemas/CryptoHash'
     JsonRpcRequest_for_EXPERIMENTAL_validators_ordered:
       properties:
         id:
@@ -70,77 +92,43 @@ components:
       - method
       title: JsonRpcRequest_for_EXPERIMENTAL_validators_ordered
       type: object
-    NearToken:
-      type: string
-    ValidatorStakeViewV1:
-      properties:
-        account_id:
-          $ref: '#/components/schemas/AccountId'
-        public_key:
-          $ref: '#/components/schemas/PublicKey'
-        stake:
-          $ref: '#/components/schemas/NearToken'
-      required:
-      - account_id
-      - public_key
-      - stake
-      type: object
-    ValidatorStakeView:
+    ErrorWrapper_for_RpcValidatorError:
       oneOf:
-      - allOf:
-        - $ref: '#/components/schemas/ValidatorStakeViewV1'
-        properties:
-          validator_stake_struct_version:
+      - properties:
+          cause:
+            $ref: '#/components/schemas/RpcRequestValidationErrorKind'
+          name:
             enum:
-            - V1
+            - REQUEST_VALIDATION_ERROR
             type: string
         required:
-        - validator_stake_struct_version
+        - name
+        - cause
         type: object
-    JsonRpcResponse_for_Array_of_ValidatorStakeView_and_RpcValidatorError:
-      oneOf:
       - properties:
-          result:
-            items:
-              $ref: '#/components/schemas/ValidatorStakeView'
-            type: array
+          cause:
+            $ref: '#/components/schemas/RpcValidatorError'
+          name:
+            enum:
+            - HANDLER_ERROR
+            type: string
         required:
-        - result
+        - name
+        - cause
         type: object
       - properties:
-          error:
-            $ref: '#/components/schemas/ErrorWrapper_for_RpcValidatorError'
-        required:
-        - error
-        type: object
-      properties:
-        id:
-          type: string
-        jsonrpc:
-          type: string
-      required:
-      - jsonrpc
-      - id
-      title: JsonRpcResponse_for_Array_of_ValidatorStakeView_and_RpcValidatorError
-      type: object
-    InternalError:
-      oneOf:
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
+          cause:
+            $ref: '#/components/schemas/InternalError'
           name:
             enum:
             - INTERNAL_ERROR
             type: string
         required:
         - name
-        - info
+        - cause
         type: object
+    PublicKey:
+      type: string
     RpcRequestValidationErrorKind:
       oneOf:
       - properties:
@@ -205,61 +193,56 @@ components:
         ```'
       title: AccountId
       type: string
-    ErrorWrapper_for_RpcValidatorError:
+    JsonRpcResponse_for_Array_of_ValidatorStakeView_and_RpcValidatorError:
       oneOf:
       - properties:
-          cause:
-            $ref: '#/components/schemas/RpcRequestValidationErrorKind'
-          name:
-            enum:
-            - REQUEST_VALIDATION_ERROR
-            type: string
+          result:
+            items:
+              $ref: '#/components/schemas/ValidatorStakeView'
+            type: array
         required:
-        - name
-        - cause
+        - result
         type: object
       - properties:
-          cause:
-            $ref: '#/components/schemas/RpcValidatorError'
-          name:
-            enum:
-            - HANDLER_ERROR
-            type: string
+          error:
+            $ref: '#/components/schemas/ErrorWrapper_for_RpcValidatorError'
         required:
-        - name
-        - cause
+        - error
         type: object
-      - properties:
-          cause:
-            $ref: '#/components/schemas/InternalError'
-          name:
-            enum:
-            - INTERNAL_ERROR
-            type: string
-        required:
-        - name
-        - cause
-        type: object
-    PublicKey:
+      properties:
+        id:
+          type: string
+        jsonrpc:
+          type: string
+      required:
+      - jsonrpc
+      - id
+      title: JsonRpcResponse_for_Array_of_ValidatorStakeView_and_RpcValidatorError
+      type: object
+    CryptoHash:
       type: string
-    RpcValidatorError:
+    BlockId:
+      anyOf:
+      - format: uint64
+        minimum: 0
+        title: block_height
+        type: integer
+      - $ref: '#/components/schemas/CryptoHash'
+    ValidatorStakeViewV1:
+      properties:
+        account_id:
+          $ref: '#/components/schemas/AccountId'
+        public_key:
+          $ref: '#/components/schemas/PublicKey'
+        stake:
+          $ref: '#/components/schemas/NearToken'
+      required:
+      - account_id
+      - public_key
+      - stake
+      type: object
+    InternalError:
       oneOf:
-      - properties:
-          name:
-            enum:
-            - UNKNOWN_EPOCH
-            type: string
-        required:
-        - name
-        type: object
-      - properties:
-          name:
-            enum:
-            - VALIDATOR_INFO_UNAVAILABLE
-            type: string
-        required:
-        - name
-        type: object
       - properties:
           info:
             properties:
@@ -275,4 +258,16 @@ components:
         required:
         - name
         - info
+        type: object
+    ValidatorStakeView:
+      oneOf:
+      - allOf:
+        - $ref: '#/components/schemas/ValidatorStakeViewV1'
+        properties:
+          validator_stake_struct_version:
+            enum:
+            - V1
+            type: string
+        required:
+        - validator_stake_struct_version
         type: object

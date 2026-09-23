@@ -1,13 +1,13 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  description: Low-latency indexed account, token, and public-key lookup APIs for wallets and explorers. Embedded portal clients may forward an optional `apiKey` query parameter, but the public FastNEAR API does not require it.
-  title: FastNEAR accounts Legacy / DEX API
-  version: 3.0.3
+  description: NearBlocks REST API for the NEAR Protocol block explorer. Provides endpoints to access blockchain data including accounts, transactions, blocks, tokens, NFTs, and staking.
+  title: NearBlocks Explorer Legacy / DEX API
+  version: 1.0.0
 servers:
 - description: Mainnet
-  url: https://api.fastnear.com
+  url: https://api.nearblocks.io
 - description: Testnet
-  url: https://test.api.fastnear.com
+  url: https://api-testnet.nearblocks.io
 tags:
 - description: Deprecated.
   name: Legacy / DEX
@@ -61,6 +61,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1Dex
+      x-operation-id-source: derived
   /v1/dex/count:
     get:
       summary: Get top dex pairs count
@@ -75,6 +77,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1DexCount
+      x-operation-id-source: derived
   /v1/dex/pairs/{pair}:
     get:
       summary: Get dex pair info
@@ -93,6 +97,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1DexPairsByPair
+      x-operation-id-source: derived
   /v1/dex/pairs/{pair}/txns:
     get:
       summary: Get dex pair txns by pagination
@@ -129,6 +135,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1DexPairsByPairTxns
+      x-operation-id-source: derived
   /v1/dex/pairs/{pair}/txns/count:
     get:
       summary: Get dex pair txns count
@@ -152,6 +160,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1DexPairsByPairTxnsCount
+      x-operation-id-source: derived
   /v1/dex/pairs/{pair}/charts:
     get:
       summary: Get dex pair chart data
@@ -193,3 +203,10 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1DexPairsByPairCharts
+      x-operation-id-source: derived
+components:
+  securitySchemes:
+    BearerAuth:
+      scheme: bearer
+      type: http

@@ -1,20 +1,20 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  description: Low-latency indexed account, token, and public-key lookup APIs for wallets and explorers. Embedded portal clients may forward an optional `apiKey` query parameter, but the public FastNEAR API does not require it.
-  title: FastNEAR accounts Legacy / Search API
-  version: 3.0.3
+  description: NearBlocks REST API for the NEAR Protocol block explorer. Provides endpoints to access blockchain data including accounts, transactions, blocks, tokens, NFTs, and staking.
+  title: NearBlocks Explorer Legacy / Search API
+  version: 1.0.0
 servers:
 - description: Mainnet
-  url: https://api.fastnear.com
+  url: https://api.nearblocks.io
 - description: Testnet
-  url: https://test.api.fastnear.com
+  url: https://api-testnet.nearblocks.io
 tags:
 - description: Deprecated.
   name: Legacy / Search
 paths:
   /v1/search:
     get:
-      summary: Search txn by hash, block by height/hash, account by id, receipt by id, tokens by hex address
+      summary: Search txn by hash, block by height/hash, account by id, receipt by id, tokens…
       tags:
       - Legacy / Search
       parameters:
@@ -27,6 +27,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1Search
+      x-operation-id-source: derived
   /v1/search/txns:
     get:
       summary: Search txns by hash
@@ -42,6 +44,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1SearchTxns
+      x-operation-id-source: derived
   /v1/search/blocks:
     get:
       summary: Search blocks by hash/height
@@ -62,6 +66,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1SearchBlocks
+      x-operation-id-source: derived
   /v1/search/accounts:
     get:
       summary: Search accounts by id
@@ -77,6 +83,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1SearchAccounts
+      x-operation-id-source: derived
   /v1/search/receipts:
     get:
       summary: Search receipts by id
@@ -92,6 +100,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1SearchReceipts
+      x-operation-id-source: derived
   /v1/search/tokens:
     get:
       summary: Search tokens by hex address
@@ -107,3 +117,10 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1SearchTokens
+      x-operation-id-source: derived
+components:
+  securitySchemes:
+    BearerAuth:
+      scheme: bearer
+      type: http

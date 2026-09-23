@@ -1,7 +1,7 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
   description: Low-latency indexed account, token, and public-key lookup APIs for wallets and explorers. Embedded portal clients may forward an optional `apiKey` query parameter, but the public FastNEAR API does not require it.
-  title: FastNEAR accounts public-key API
+  title: FastNEAR Public Key API
   version: 3.0.3
 servers:
 - description: Mainnet
@@ -9,7 +9,7 @@ servers:
 - description: Testnet
   url: https://test.api.fastnear.com
 tags:
-- name: public-key
+- name: Public Key
 paths:
   /v0/public_key/{public_key}:
     get:
@@ -54,7 +54,7 @@ paths:
           description: Internal Server Error
       summary: Lookup full-access accounts by public key
       tags:
-      - public-key
+      - Public Key
       x-fastnear-slug: public_key_lookup
       x-fastnear-title: FastNEAR API - V0 Public Key Lookup
   /v0/public_key/{public_key}/all:
@@ -100,7 +100,7 @@ paths:
           description: Internal Server Error
       summary: Lookup all indexed accounts by public key
       tags:
-      - public-key
+      - Public Key
       x-fastnear-slug: public_key_lookup_all
       x-fastnear-title: FastNEAR API - V0 Public Key Lookup (All)
   /v1/public_key/{public_key}:
@@ -146,7 +146,7 @@ paths:
           description: Internal Server Error
       summary: Lookup full-access accounts by public key
       tags:
-      - public-key
+      - Public Key
       x-fastnear-slug: public_key_lookup
       x-fastnear-title: FastNEAR API - V1 Public Key Lookup
   /v1/public_key/{public_key}/all:
@@ -192,7 +192,7 @@ paths:
           description: Internal Server Error
       summary: Lookup all indexed accounts by public key
       tags:
-      - public-key
+      - Public Key
       x-fastnear-slug: public_key_lookup_all
       x-fastnear-title: FastNEAR API - V1 Public Key Lookup (All)
 components:

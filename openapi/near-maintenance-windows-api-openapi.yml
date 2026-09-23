@@ -1,13 +1,7 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  description: Low-latency indexed account, token, and public-key lookup APIs for wallets and explorers. Embedded portal clients may forward an optional `apiKey` query parameter, but the public FastNEAR API does not require it.
-  title: FastNEAR accounts Maintenance Windows API
-  version: 3.0.3
-servers:
-- description: Mainnet
-  url: https://api.fastnear.com
-- description: Testnet
-  url: https://test.api.fastnear.com
+  title: NEAR Protocol JSON RPC Maintenance Windows API
+  version: 1.2.11
 tags:
 - name: Maintenance Windows
 paths:
@@ -30,8 +24,36 @@ paths:
                 $ref: '#/components/schemas/JsonRpcResponse_for_Array_of_Range_of_uint64_and_RpcMaintenanceWindowsError'
       tags:
       - Maintenance Windows
+      summary: Maintenance windows
+      x-summary-source: derived
 components:
   schemas:
+    JsonRpcResponse_for_Array_of_Range_of_uint64_and_RpcMaintenanceWindowsError:
+      oneOf:
+      - properties:
+          result:
+            items:
+              $ref: '#/components/schemas/Range_of_uint64'
+            type: array
+        required:
+        - result
+        type: object
+      - properties:
+          error:
+            $ref: '#/components/schemas/ErrorWrapper_for_RpcMaintenanceWindowsError'
+        required:
+        - error
+        type: object
+      properties:
+        id:
+          type: string
+        jsonrpc:
+          type: string
+      required:
+      - jsonrpc
+      - id
+      title: JsonRpcResponse_for_Array_of_Range_of_uint64_and_RpcMaintenanceWindowsError
+      type: object
     ErrorWrapper_for_RpcMaintenanceWindowsError:
       oneOf:
       - properties:
@@ -67,65 +89,40 @@ components:
         - name
         - cause
         type: object
-    Range_of_uint64:
-      properties:
-        end:
-          format: uint64
-          minimum: 0
-          type: integer
-        start:
-          format: uint64
-          minimum: 0
-          type: integer
-      required:
-      - start
-      - end
-      type: object
-    JsonRpcResponse_for_Array_of_Range_of_uint64_and_RpcMaintenanceWindowsError:
+    RpcRequestValidationErrorKind:
       oneOf:
       - properties:
-          result:
-            items:
-              $ref: '#/components/schemas/Range_of_uint64'
-            type: array
+          info:
+            properties:
+              method_name:
+                type: string
+            required:
+            - method_name
+            type: object
+          name:
+            enum:
+            - METHOD_NOT_FOUND
+            type: string
         required:
-        - result
+        - name
+        - info
         type: object
       - properties:
-          error:
-            $ref: '#/components/schemas/ErrorWrapper_for_RpcMaintenanceWindowsError'
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - PARSE_ERROR
+            type: string
         required:
-        - error
+        - name
+        - info
         type: object
-      properties:
-        id:
-          type: string
-        jsonrpc:
-          type: string
-      required:
-      - jsonrpc
-      - id
-      title: JsonRpcResponse_for_Array_of_Range_of_uint64_and_RpcMaintenanceWindowsError
-      type: object
-    JsonRpcRequest_for_maintenance_windows:
-      properties:
-        id:
-          type: string
-        jsonrpc:
-          type: string
-        method:
-          enum:
-          - maintenance_windows
-          type: string
-        params:
-          $ref: '#/components/schemas/RpcMaintenanceWindowsRequest'
-      required:
-      - jsonrpc
-      - id
-      - params
-      - method
-      title: JsonRpcRequest_for_maintenance_windows
-      type: object
     RpcMaintenanceWindowsRequest:
       properties:
         account_id:
@@ -164,24 +161,27 @@ components:
         ```'
       title: AccountId
       type: string
-    RpcRequestValidationErrorKind:
+    JsonRpcRequest_for_maintenance_windows:
+      properties:
+        id:
+          type: string
+        jsonrpc:
+          type: string
+        method:
+          enum:
+          - maintenance_windows
+          type: string
+        params:
+          $ref: '#/components/schemas/RpcMaintenanceWindowsRequest'
+      required:
+      - jsonrpc
+      - id
+      - params
+      - method
+      title: JsonRpcRequest_for_maintenance_windows
+      type: object
+    RpcMaintenanceWindowsError:
       oneOf:
-      - properties:
-          info:
-            properties:
-              method_name:
-                type: string
-            required:
-            - method_name
-            type: object
-          name:
-            enum:
-            - METHOD_NOT_FOUND
-            type: string
-        required:
-        - name
-        - info
-        type: object
       - properties:
           info:
             properties:
@@ -192,7 +192,7 @@ components:
             type: object
           name:
             enum:
-            - PARSE_ERROR
+            - INTERNAL_ERROR
             type: string
         required:
         - name
@@ -216,21 +216,17 @@ components:
         - name
         - info
         type: object
-    RpcMaintenanceWindowsError:
-      oneOf:
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
-          name:
-            enum:
-            - INTERNAL_ERROR
-            type: string
-        required:
-        - name
-        - info
-        type: object
+    Range_of_uint64:
+      properties:
+        end:
+          format: uint64
+          minimum: 0
+          type: integer
+        start:
+          format: uint64
+          minimum: 0
+          type: integer
+      required:
+      - start
+      - end
+      type: object

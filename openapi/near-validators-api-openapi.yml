@@ -1,13 +1,7 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  description: Low-latency indexed account, token, and public-key lookup APIs for wallets and explorers. Embedded portal clients may forward an optional `apiKey` query parameter, but the public FastNEAR API does not require it.
-  title: FastNEAR accounts Validators API
-  version: 3.0.3
-servers:
-- description: Mainnet
-  url: https://api.fastnear.com
-- description: Testnet
-  url: https://test.api.fastnear.com
+  title: NEAR Protocol JSON RPC Validators API
+  version: 1.2.11
 tags:
 - name: Validators
 paths:
@@ -30,10 +24,84 @@ paths:
                 $ref: '#/components/schemas/JsonRpcResponse_for_RpcValidatorResponse_and_RpcValidatorError'
       tags:
       - Validators
+      summary: Validators
+      x-summary-source: derived
 components:
   schemas:
-    NearToken:
+    JsonRpcRequest_for_validators:
+      properties:
+        id:
+          type: string
+        jsonrpc:
+          type: string
+        method:
+          enum:
+          - validators
+          type: string
+        params:
+          $ref: '#/components/schemas/RpcValidatorRequest'
+      required:
+      - jsonrpc
+      - id
+      - params
+      - method
+      title: JsonRpcRequest_for_validators
+      type: object
+    NextEpochValidatorInfo:
+      properties:
+        account_id:
+          $ref: '#/components/schemas/AccountId'
+        public_key:
+          $ref: '#/components/schemas/PublicKey'
+        shards:
+          items:
+            $ref: '#/components/schemas/ShardId'
+          type: array
+        stake:
+          $ref: '#/components/schemas/NearToken'
+      required:
+      - account_id
+      - public_key
+      - stake
+      - shards
+      type: object
+    AccountId:
+      $schema: https://json-schema.org/draft/2020-12/schema
+      description: 'NEAR Account Identifier.
+
+
+        This is a unique, syntactically valid, human-readable account identifier on the NEAR network.
+
+
+        [See the crate-level docs for information about validation.](index.html#account-id-rules)
+
+
+        Also see [Error kind precedence](AccountId#error-kind-precedence).
+
+
+        ## Examples
+
+
+        ```
+
+        use near_account_id::AccountId;
+
+
+        let alice: AccountId = "alice.near".parse().unwrap();
+
+
+        assert!("ƒelicia.near".parse::<AccountId>().is_err()); // (ƒ is not f)
+
+        ```'
+      title: AccountId
       type: string
+    BlockId:
+      anyOf:
+      - format: uint64
+        minimum: 0
+        title: block_height
+        type: integer
+      - $ref: '#/components/schemas/CryptoHash'
     ValidatorStakeViewV1:
       properties:
         account_id:
@@ -47,6 +115,119 @@ components:
       - public_key
       - stake
       type: object
+    CurrentEpochValidatorInfo:
+      description: Describes information about the current epoch validator
+      properties:
+        account_id:
+          $ref: '#/components/schemas/AccountId'
+        is_slashed:
+          type: boolean
+        num_expected_blocks:
+          format: uint64
+          minimum: 0
+          type: integer
+        num_expected_chunks:
+          default: 0
+          format: uint64
+          minimum: 0
+          type: integer
+        num_expected_chunks_per_shard:
+          default: []
+          description: 'Number of chunks this validator was expected to produce in each shard.
+
+            Each entry in the array corresponds to the shard in the `shards_produced` array.'
+          items:
+            format: uint64
+            minimum: 0
+            type: integer
+          type: array
+        num_expected_endorsements:
+          default: 0
+          format: uint64
+          minimum: 0
+          type: integer
+        num_expected_endorsements_per_shard:
+          default: []
+          description: 'Number of chunks this validator was expected to validate and endorse in each shard.
+
+            Each entry in the array corresponds to the shard in the `shards_endorsed` array.'
+          items:
+            format: uint64
+            minimum: 0
+            type: integer
+          type: array
+        num_produced_blocks:
+          format: uint64
+          minimum: 0
+          type: integer
+        num_produced_chunks:
+          default: 0
+          format: uint64
+          minimum: 0
+          type: integer
+        num_produced_chunks_per_shard:
+          default: []
+          items:
+            format: uint64
+            minimum: 0
+            type: integer
+          type: array
+        num_produced_endorsements:
+          default: 0
+          format: uint64
+          minimum: 0
+          type: integer
+        num_produced_endorsements_per_shard:
+          default: []
+          items:
+            format: uint64
+            minimum: 0
+            type: integer
+          type: array
+        public_key:
+          $ref: '#/components/schemas/PublicKey'
+        shards:
+          description: Shards this validator is assigned to as chunk producer in the current epoch.
+          items:
+            $ref: '#/components/schemas/ShardId'
+          type: array
+        shards_endorsed:
+          default: []
+          description: Shards this validator is assigned to as chunk validator in the current epoch.
+          items:
+            $ref: '#/components/schemas/ShardId'
+          type: array
+        stake:
+          $ref: '#/components/schemas/NearToken'
+      required:
+      - account_id
+      - public_key
+      - is_slashed
+      - stake
+      - shards
+      - num_produced_blocks
+      - num_expected_blocks
+      type: object
+    InternalError:
+      oneOf:
+      - properties:
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
+        required:
+        - name
+        - info
+        type: object
+    NearToken:
+      type: string
     RpcValidatorResponse:
       description: Information about this epoch validators and next epoch validators
       properties:
@@ -112,38 +293,6 @@ components:
       - epoch_start_height
       - epoch_height
       type: object
-    EpochId:
-      allOf:
-      - $ref: '#/components/schemas/CryptoHash'
-      description: 'Epoch identifier -- wrapped hash, to make it easier to distinguish.
-
-        EpochId of epoch T is the hash of last block in T-2
-
-        EpochId of first two epochs is 0'
-    JsonRpcResponse_for_RpcValidatorResponse_and_RpcValidatorError:
-      oneOf:
-      - properties:
-          result:
-            $ref: '#/components/schemas/RpcValidatorResponse'
-        required:
-        - result
-        type: object
-      - properties:
-          error:
-            $ref: '#/components/schemas/ErrorWrapper_for_RpcValidatorError'
-        required:
-        - error
-        type: object
-      properties:
-        id:
-          type: string
-        jsonrpc:
-          type: string
-      required:
-      - jsonrpc
-      - id
-      title: JsonRpcResponse_for_RpcValidatorResponse_and_RpcValidatorError
-      type: object
     RpcValidatorRequest:
       oneOf:
       - properties:
@@ -162,12 +311,164 @@ components:
           latest:
             enum:
             - null
-            nullable: true
         required:
         - latest
         type: object
       title: RpcValidatorRequest
       type: object
+    RpcRequestValidationErrorKind:
+      oneOf:
+      - properties:
+          info:
+            properties:
+              method_name:
+                type: string
+            required:
+            - method_name
+            type: object
+          name:
+            enum:
+            - METHOD_NOT_FOUND
+            type: string
+        required:
+        - name
+        - info
+        type: object
+      - properties:
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - PARSE_ERROR
+            type: string
+        required:
+        - name
+        - info
+        type: object
+    EpochId:
+      allOf:
+      - $ref: '#/components/schemas/CryptoHash'
+      description: 'Epoch identifier -- wrapped hash, to make it easier to distinguish.
+
+        EpochId of epoch T is the hash of last block in T-2
+
+        EpochId of first two epochs is 0'
+    ShardId:
+      description: 'The shard identifier. It may be an arbitrary number - it does not need to be
+
+        a number in the range 0..NUM_SHARDS. The shard ids do not need to be
+
+        sequential or contiguous.
+
+
+        The shard id is wrapped in a new type to prevent the old pattern of using
+
+        indices in range 0..NUM_SHARDS and casting to ShardId. Once the transition
+
+        if fully complete it potentially may be simplified to a regular type alias.'
+      format: uint64
+      minimum: 0
+      type: integer
+    CryptoHash:
+      type: string
+    ValidatorKickoutView:
+      properties:
+        account_id:
+          $ref: '#/components/schemas/AccountId'
+        reason:
+          $ref: '#/components/schemas/ValidatorKickoutReason'
+      required:
+      - account_id
+      - reason
+      type: object
+    ValidatorStakeView:
+      oneOf:
+      - allOf:
+        - $ref: '#/components/schemas/ValidatorStakeViewV1'
+        properties:
+          validator_stake_struct_version:
+            enum:
+            - V1
+            type: string
+        required:
+        - validator_stake_struct_version
+        type: object
+    RpcValidatorError:
+      oneOf:
+      - properties:
+          name:
+            enum:
+            - UNKNOWN_EPOCH
+            type: string
+        required:
+        - name
+        type: object
+      - properties:
+          name:
+            enum:
+            - VALIDATOR_INFO_UNAVAILABLE
+            type: string
+        required:
+        - name
+        type: object
+      - properties:
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
+        required:
+        - name
+        - info
+        type: object
+    ErrorWrapper_for_RpcValidatorError:
+      oneOf:
+      - properties:
+          cause:
+            $ref: '#/components/schemas/RpcRequestValidationErrorKind'
+          name:
+            enum:
+            - REQUEST_VALIDATION_ERROR
+            type: string
+        required:
+        - name
+        - cause
+        type: object
+      - properties:
+          cause:
+            $ref: '#/components/schemas/RpcValidatorError'
+          name:
+            enum:
+            - HANDLER_ERROR
+            type: string
+        required:
+        - name
+        - cause
+        type: object
+      - properties:
+          cause:
+            $ref: '#/components/schemas/InternalError'
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
+        required:
+        - name
+        - cause
+        type: object
+    PublicKey:
+      type: string
     ValidatorKickoutReason:
       description: Reasons for removing a validator from the validator set.
       oneOf:
@@ -281,333 +582,27 @@ components:
         required:
         - ProtocolVersionTooOld
         type: object
-    ValidatorKickoutView:
-      properties:
-        account_id:
-          $ref: '#/components/schemas/AccountId'
-        reason:
-          $ref: '#/components/schemas/ValidatorKickoutReason'
-      required:
-      - account_id
-      - reason
-      type: object
-    AccountId:
-      $schema: https://json-schema.org/draft/2020-12/schema
-      description: 'NEAR Account Identifier.
-
-
-        This is a unique, syntactically valid, human-readable account identifier on the NEAR network.
-
-
-        [See the crate-level docs for information about validation.](index.html#account-id-rules)
-
-
-        Also see [Error kind precedence](AccountId#error-kind-precedence).
-
-
-        ## Examples
-
-
-        ```
-
-        use near_account_id::AccountId;
-
-
-        let alice: AccountId = "alice.near".parse().unwrap();
-
-
-        assert!("ƒelicia.near".parse::<AccountId>().is_err()); // (ƒ is not f)
-
-        ```'
-      title: AccountId
-      type: string
-    JsonRpcRequest_for_validators:
+    JsonRpcResponse_for_RpcValidatorResponse_and_RpcValidatorError:
+      oneOf:
+      - properties:
+          result:
+            $ref: '#/components/schemas/RpcValidatorResponse'
+        required:
+        - result
+        type: object
+      - properties:
+          error:
+            $ref: '#/components/schemas/ErrorWrapper_for_RpcValidatorError'
+        required:
+        - error
+        type: object
       properties:
         id:
           type: string
         jsonrpc:
           type: string
-        method:
-          enum:
-          - validators
-          type: string
-        params:
-          $ref: '#/components/schemas/RpcValidatorRequest'
       required:
       - jsonrpc
       - id
-      - params
-      - method
-      title: JsonRpcRequest_for_validators
+      title: JsonRpcResponse_for_RpcValidatorResponse_and_RpcValidatorError
       type: object
-    ValidatorStakeView:
-      oneOf:
-      - allOf:
-        - $ref: '#/components/schemas/ValidatorStakeViewV1'
-        properties:
-          validator_stake_struct_version:
-            enum:
-            - V1
-            type: string
-        required:
-        - validator_stake_struct_version
-        type: object
-    InternalError:
-      oneOf:
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
-          name:
-            enum:
-            - INTERNAL_ERROR
-            type: string
-        required:
-        - name
-        - info
-        type: object
-    ErrorWrapper_for_RpcValidatorError:
-      oneOf:
-      - properties:
-          cause:
-            $ref: '#/components/schemas/RpcRequestValidationErrorKind'
-          name:
-            enum:
-            - REQUEST_VALIDATION_ERROR
-            type: string
-        required:
-        - name
-        - cause
-        type: object
-      - properties:
-          cause:
-            $ref: '#/components/schemas/RpcValidatorError'
-          name:
-            enum:
-            - HANDLER_ERROR
-            type: string
-        required:
-        - name
-        - cause
-        type: object
-      - properties:
-          cause:
-            $ref: '#/components/schemas/InternalError'
-          name:
-            enum:
-            - INTERNAL_ERROR
-            type: string
-        required:
-        - name
-        - cause
-        type: object
-    ShardId:
-      description: 'The shard identifier. It may be an arbitrary number - it does not need to be
-
-        a number in the range 0..NUM_SHARDS. The shard ids do not need to be
-
-        sequential or contiguous.
-
-
-        The shard id is wrapped in a new type to prevent the old pattern of using
-
-        indices in range 0..NUM_SHARDS and casting to ShardId. Once the transition
-
-        if fully complete it potentially may be simplified to a regular type alias.'
-      format: uint64
-      minimum: 0
-      type: integer
-    CurrentEpochValidatorInfo:
-      description: Describes information about the current epoch validator
-      properties:
-        account_id:
-          $ref: '#/components/schemas/AccountId'
-        is_slashed:
-          type: boolean
-        num_expected_blocks:
-          format: uint64
-          minimum: 0
-          type: integer
-        num_expected_chunks:
-          default: 0
-          format: uint64
-          minimum: 0
-          type: integer
-        num_expected_chunks_per_shard:
-          default: []
-          description: 'Number of chunks this validator was expected to produce in each shard.
-
-            Each entry in the array corresponds to the shard in the `shards_produced` array.'
-          items:
-            format: uint64
-            minimum: 0
-            type: integer
-          type: array
-        num_expected_endorsements:
-          default: 0
-          format: uint64
-          minimum: 0
-          type: integer
-        num_expected_endorsements_per_shard:
-          default: []
-          description: 'Number of chunks this validator was expected to validate and endorse in each shard.
-
-            Each entry in the array corresponds to the shard in the `shards_endorsed` array.'
-          items:
-            format: uint64
-            minimum: 0
-            type: integer
-          type: array
-        num_produced_blocks:
-          format: uint64
-          minimum: 0
-          type: integer
-        num_produced_chunks:
-          default: 0
-          format: uint64
-          minimum: 0
-          type: integer
-        num_produced_chunks_per_shard:
-          default: []
-          items:
-            format: uint64
-            minimum: 0
-            type: integer
-          type: array
-        num_produced_endorsements:
-          default: 0
-          format: uint64
-          minimum: 0
-          type: integer
-        num_produced_endorsements_per_shard:
-          default: []
-          items:
-            format: uint64
-            minimum: 0
-            type: integer
-          type: array
-        public_key:
-          $ref: '#/components/schemas/PublicKey'
-        shards:
-          description: Shards this validator is assigned to as chunk producer in the current epoch.
-          items:
-            $ref: '#/components/schemas/ShardId'
-          type: array
-        shards_endorsed:
-          default: []
-          description: Shards this validator is assigned to as chunk validator in the current epoch.
-          items:
-            $ref: '#/components/schemas/ShardId'
-          type: array
-        stake:
-          $ref: '#/components/schemas/NearToken'
-      required:
-      - account_id
-      - public_key
-      - is_slashed
-      - stake
-      - shards
-      - num_produced_blocks
-      - num_expected_blocks
-      type: object
-    PublicKey:
-      type: string
-    RpcValidatorError:
-      oneOf:
-      - properties:
-          name:
-            enum:
-            - UNKNOWN_EPOCH
-            type: string
-        required:
-        - name
-        type: object
-      - properties:
-          name:
-            enum:
-            - VALIDATOR_INFO_UNAVAILABLE
-            type: string
-        required:
-        - name
-        type: object
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
-          name:
-            enum:
-            - INTERNAL_ERROR
-            type: string
-        required:
-        - name
-        - info
-        type: object
-    CryptoHash:
-      type: string
-    BlockId:
-      anyOf:
-      - format: uint64
-        minimum: 0
-        title: block_height
-        type: integer
-      - $ref: '#/components/schemas/CryptoHash'
-    NextEpochValidatorInfo:
-      properties:
-        account_id:
-          $ref: '#/components/schemas/AccountId'
-        public_key:
-          $ref: '#/components/schemas/PublicKey'
-        shards:
-          items:
-            $ref: '#/components/schemas/ShardId'
-          type: array
-        stake:
-          $ref: '#/components/schemas/NearToken'
-      required:
-      - account_id
-      - public_key
-      - stake
-      - shards
-      type: object
-    RpcRequestValidationErrorKind:
-      oneOf:
-      - properties:
-          info:
-            properties:
-              method_name:
-                type: string
-            required:
-            - method_name
-            type: object
-          name:
-            enum:
-            - METHOD_NOT_FOUND
-            type: string
-        required:
-        - name
-        - info
-        type: object
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
-          name:
-            enum:
-            - PARSE_ERROR
-            type: string
-        required:
-        - name
-        - info
-        type: object

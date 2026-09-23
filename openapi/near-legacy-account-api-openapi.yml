@@ -1,13 +1,13 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  description: Low-latency indexed account, token, and public-key lookup APIs for wallets and explorers. Embedded portal clients may forward an optional `apiKey` query parameter, but the public FastNEAR API does not require it.
-  title: FastNEAR accounts Legacy / Account API
-  version: 3.0.3
+  description: NearBlocks REST API for the NEAR Protocol block explorer. Provides endpoints to access blockchain data including accounts, transactions, blocks, tokens, NFTs, and staking.
+  title: NearBlocks Explorer Legacy / Account API
+  version: 1.0.0
 servers:
 - description: Mainnet
-  url: https://api.fastnear.com
+  url: https://api.nearblocks.io
 - description: Testnet
-  url: https://test.api.fastnear.com
+  url: https://api-testnet.nearblocks.io
 tags:
 - description: Deprecated.
   name: Legacy / Account
@@ -30,6 +30,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1AccountByAccount
+      x-operation-id-source: derived
   /v1/account/{account}/contract:
     get:
       summary: Get contract info
@@ -48,6 +50,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1AccountByAccountContract
+      x-operation-id-source: derived
   /v1/account/{account}/contract/deployments:
     get:
       summary: Get contract deployment records (first & last)
@@ -66,6 +70,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1AccountByAccountContractDeployments
+      x-operation-id-source: derived
   /v1/account/{account}/contract/parse:
     get:
       summary: Get parsed contract info
@@ -84,6 +90,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1AccountByAccountContractParse
+      x-operation-id-source: derived
   /v1/account/{account}/contract/{method}:
     get:
       summary: Get latest action args for contract method
@@ -111,6 +119,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1AccountByAccountContractByMethod
+      x-operation-id-source: derived
   /v1/account/{account}/inventory:
     get:
       summary: Get account ft/nft token inventory
@@ -129,6 +139,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1AccountByAccountInventory
+      x-operation-id-source: derived
   /v1/account/{account}/tokens:
     get:
       summary: Get possible ft/nft token contracts
@@ -147,6 +159,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1AccountByAccountTokens
+      x-operation-id-source: derived
   /v1/account/{account}/keys:
     get:
       summary: Get access keys by pagination
@@ -190,6 +204,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1AccountByAccountKeys
+      x-operation-id-source: derived
   /v1/account/{account}/keys/count:
     get:
       summary: Get estimated access keys count
@@ -208,6 +224,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1AccountByAccountKeysCount
+      x-operation-id-source: derived
   /v1/account/{account}/txns:
     get:
       summary: Get account txns by pagination (NOT RECOMMENDED)
@@ -217,9 +235,7 @@ paths:
 
         - account/{account_id}/txns-only
 
-        - account/{account_id}/receipts
-
-        '
+        - account/{account_id}/receipts'
       tags:
       - Legacy / Account
       parameters:
@@ -305,6 +321,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1AccountByAccountTxns
+      x-operation-id-source: derived
   /v1/account/{account}/txns/count:
     get:
       summary: Get estimated account txns count
@@ -363,6 +381,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1AccountByAccountTxnsCount
+      x-operation-id-source: derived
   /v1/account/{account}/txns-only:
     get:
       summary: Get account txns without receipts by pagination
@@ -423,6 +443,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1AccountByAccountTxnsOnly
+      x-operation-id-source: derived
   /v1/account/{account}/txns-only/count:
     get:
       summary: Get estimated account txns without receipts count
@@ -461,6 +483,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1AccountByAccountTxnsOnlyCount
+      x-operation-id-source: derived
   /v1/account/{account}/receipts:
     get:
       summary: Get account receipts by pagination
@@ -531,6 +555,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1AccountByAccountReceipts
+      x-operation-id-source: derived
   /v1/account/{account}/receipts/count:
     get:
       summary: Get estimated account receipts count
@@ -579,6 +605,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1AccountByAccountReceiptsCount
+      x-operation-id-source: derived
   /v1/account/{account}/ft-txns:
     get:
       summary: Get account token txns by pagination
@@ -654,6 +682,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1AccountByAccountFtTxns
+      x-operation-id-source: derived
   /v1/account/{account}/ft-txns/count:
     get:
       summary: Get estimated account token txns count
@@ -697,6 +727,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1AccountByAccountFtTxnsCount
+      x-operation-id-source: derived
   /v1/account/{account}/nft-txns:
     get:
       summary: Get account nft txns by pagination
@@ -767,6 +799,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1AccountByAccountNftTxns
+      x-operation-id-source: derived
   /v1/account/{account}/nft-txns/count:
     get:
       summary: Get estimated account nft txns count
@@ -805,6 +839,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1AccountByAccountNftTxnsCount
+      x-operation-id-source: derived
   /v1/account/{account}/stake-txns:
     get:
       summary: Get account stake txns by pagination
@@ -873,6 +909,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1AccountByAccountStakeTxns
+      x-operation-id-source: derived
   /v1/account/{account}/stake-txns/count:
     get:
       summary: Get estimated account stake txns count
@@ -911,6 +949,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1AccountByAccountStakeTxnsCount
+      x-operation-id-source: derived
   /v1/account/{account}/activities:
     get:
       summary: Get account balance change activities by pagination
@@ -944,6 +984,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1AccountByAccountActivities
+      x-operation-id-source: derived
   /v1/account/{account}/activities/count:
     get:
       summary: Get estimated account balance change activities count
@@ -962,3 +1004,10 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1AccountByAccountActivitiesCount
+      x-operation-id-source: derived
+components:
+  securitySchemes:
+    BearerAuth:
+      scheme: bearer
+      type: http

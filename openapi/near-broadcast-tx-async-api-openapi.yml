@@ -1,13 +1,7 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  description: Low-latency indexed account, token, and public-key lookup APIs for wallets and explorers. Embedded portal clients may forward an optional `apiKey` query parameter, but the public FastNEAR API does not require it.
-  title: FastNEAR accounts Broadcast Tx Async API
-  version: 3.0.3
-servers:
-- description: Mainnet
-  url: https://api.fastnear.com
-- description: Testnet
-  url: https://test.api.fastnear.com
+  title: NEAR Protocol JSON RPC Broadcast Tx Async API
+  version: 1.2.11
 tags:
 - name: Broadcast Tx Async
 paths:
@@ -30,9 +24,48 @@ paths:
                 $ref: '#/components/schemas/JsonRpcResponse_for_CryptoHash_and_RpcTransactionError'
       tags:
       - Broadcast Tx Async
+      summary: Broadcast tx async
+      x-summary-source: derived
 components:
   schemas:
-    CryptoHash:
+    RpcSendTransactionRequest:
+      properties:
+        signed_tx_base64:
+          $ref: '#/components/schemas/SignedTransaction'
+        wait_until:
+          allOf:
+          - $ref: '#/components/schemas/TxExecutionStatus'
+          default: EXECUTED_OPTIMISTIC
+      required:
+      - signed_tx_base64
+      title: RpcSendTransactionRequest
+      type: object
+    JsonRpcResponse_for_CryptoHash_and_RpcTransactionError:
+      oneOf:
+      - properties:
+          result:
+            $ref: '#/components/schemas/CryptoHash'
+        required:
+        - result
+        type: object
+      - properties:
+          error:
+            $ref: '#/components/schemas/ErrorWrapper_for_RpcTransactionError'
+        required:
+        - error
+        type: object
+      properties:
+        id:
+          type: string
+        jsonrpc:
+          type: string
+      required:
+      - jsonrpc
+      - id
+      title: JsonRpcResponse_for_CryptoHash_and_RpcTransactionError
+      type: object
+    SignedTransaction:
+      format: byte
       type: string
     RpcTransactionError:
       oneOf:
@@ -111,33 +144,42 @@ components:
         required:
         - name
         type: object
-    SignedTransaction:
-      format: byte
-      type: string
-    JsonRpcResponse_for_CryptoHash_and_RpcTransactionError:
+    RpcRequestValidationErrorKind:
       oneOf:
       - properties:
-          result:
-            $ref: '#/components/schemas/CryptoHash'
+          info:
+            properties:
+              method_name:
+                type: string
+            required:
+            - method_name
+            type: object
+          name:
+            enum:
+            - METHOD_NOT_FOUND
+            type: string
         required:
-        - result
+        - name
+        - info
         type: object
       - properties:
-          error:
-            $ref: '#/components/schemas/ErrorWrapper_for_RpcTransactionError'
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - PARSE_ERROR
+            type: string
         required:
-        - error
+        - name
+        - info
         type: object
-      properties:
-        id:
-          type: string
-        jsonrpc:
-          type: string
-      required:
-      - jsonrpc
-      - id
-      title: JsonRpcResponse_for_CryptoHash_and_RpcTransactionError
-      type: object
+    CryptoHash:
+      type: string
     ErrorWrapper_for_RpcTransactionError:
       oneOf:
       - properties:
@@ -173,25 +215,6 @@ components:
         - name
         - cause
         type: object
-    JsonRpcRequest_for_broadcast_tx_async:
-      properties:
-        id:
-          type: string
-        jsonrpc:
-          type: string
-        method:
-          enum:
-          - broadcast_tx_async
-          type: string
-        params:
-          $ref: '#/components/schemas/RpcSendTransactionRequest'
-      required:
-      - jsonrpc
-      - id
-      - params
-      - method
-      title: JsonRpcRequest_for_broadcast_tx_async
-      type: object
     TxExecutionStatus:
       oneOf:
       - description: Transaction is waiting to be included into the block
@@ -228,6 +251,25 @@ components:
         enum:
         - FINAL
         type: string
+    JsonRpcRequest_for_broadcast_tx_async:
+      properties:
+        id:
+          type: string
+        jsonrpc:
+          type: string
+        method:
+          enum:
+          - broadcast_tx_async
+          type: string
+        params:
+          $ref: '#/components/schemas/RpcSendTransactionRequest'
+      required:
+      - jsonrpc
+      - id
+      - params
+      - method
+      title: JsonRpcRequest_for_broadcast_tx_async
+      type: object
     InternalError:
       oneOf:
       - properties:
@@ -246,49 +288,3 @@ components:
         - name
         - info
         type: object
-    RpcRequestValidationErrorKind:
-      oneOf:
-      - properties:
-          info:
-            properties:
-              method_name:
-                type: string
-            required:
-            - method_name
-            type: object
-          name:
-            enum:
-            - METHOD_NOT_FOUND
-            type: string
-        required:
-        - name
-        - info
-        type: object
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
-          name:
-            enum:
-            - PARSE_ERROR
-            type: string
-        required:
-        - name
-        - info
-        type: object
-    RpcSendTransactionRequest:
-      properties:
-        signed_tx_base64:
-          $ref: '#/components/schemas/SignedTransaction'
-        wait_until:
-          allOf:
-          - $ref: '#/components/schemas/TxExecutionStatus'
-          default: EXECUTED_OPTIMISTIC
-      required:
-      - signed_tx_base64
-      title: RpcSendTransactionRequest
-      type: object

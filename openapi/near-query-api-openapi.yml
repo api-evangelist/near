@@ -1,19 +1,34 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  description: Low-latency indexed account, token, and public-key lookup APIs for wallets and explorers. Embedded portal clients may forward an optional `apiKey` query parameter, but the public FastNEAR API does not require it.
-  title: FastNEAR accounts Query API
-  version: 3.0.3
-servers:
-- description: Mainnet
-  url: https://api.fastnear.com
-- description: Testnet
-  url: https://test.api.fastnear.com
+  title: NEAR Protocol JSON RPC Query API
+  version: 1.2.11
 tags:
 - name: Query
 paths:
   /query:
     post:
-      description: "This module allows you to make generic requests to the network.\n\nThe `RpcQueryRequest` struct takes in a [`BlockReference`](https://docs.rs/near-primitives/0.12.0/near_primitives/types/enum.BlockReference.html) and a [`QueryRequest`](https://docs.rs/near-primitives/0.12.0/near_primitives/views/enum.QueryRequest.html).\n\nThe `BlockReference` enum allows you to specify a block by `Finality`, `BlockId` or `SyncCheckpoint`.\n\nThe `QueryRequest` enum provides multiple variants for performing the following actions:\n - View an account's details\n - View a contract's code\n - View the state of an account\n - View the `AccessKey` of an account\n - View the `AccessKeyList` of an account\n - Call a function in a contract deployed on the network."
+      description: 'This module allows you to make generic requests to the network.
+
+
+        The `RpcQueryRequest` struct takes in a `BlockReference` and a `QueryRequest`.
+
+
+        The `BlockReference` enum allows you to specify a block by `Finality`, `BlockId` or `SyncCheckpoint`.
+
+
+        The `QueryRequest` enum provides multiple variants for performing the following actions:
+
+        - View an account''s details
+
+        - View a contract''s code
+
+        - View the state of an account
+
+        - View the `AccessKey` of an account
+
+        - View the `AccessKeyList` of an account
+
+        - Call a function in a contract deployed on the network.'
       operationId: query
       requestBody:
         content:
@@ -30,8 +45,167 @@ paths:
                 $ref: '#/components/schemas/JsonRpcResponse_for_RpcQueryResponse_and_RpcQueryError'
       tags:
       - Query
+      summary: Query
+      x-summary-source: derived
 components:
   schemas:
+    JsonRpcRequest_for_query:
+      properties:
+        id:
+          type: string
+        jsonrpc:
+          type: string
+        method:
+          enum:
+          - query
+          type: string
+        params:
+          $ref: '#/components/schemas/RpcQueryRequest'
+      required:
+      - jsonrpc
+      - id
+      - params
+      - method
+      title: JsonRpcRequest_for_query
+      type: object
+    AccessKeyPermissionView:
+      description: Describes the permission scope for an access key. Whether it is a function call or a full access key.
+      oneOf:
+      - enum:
+        - FullAccess
+        type: string
+      - additionalProperties: false
+        properties:
+          FunctionCall:
+            properties:
+              allowance:
+                anyOf:
+                - $ref: '#/components/schemas/NearToken'
+                - enum:
+                  - null
+              method_names:
+                items:
+                  type: string
+                type: array
+              receiver_id:
+                type: string
+            required:
+            - receiver_id
+            - method_names
+            type: object
+        required:
+        - FunctionCall
+        type: object
+      - additionalProperties: false
+        properties:
+          GasKeyFunctionCall:
+            properties:
+              allowance:
+                anyOf:
+                - $ref: '#/components/schemas/NearToken'
+                - enum:
+                  - null
+              balance:
+                $ref: '#/components/schemas/NearToken'
+              method_names:
+                items:
+                  type: string
+                type: array
+              num_nonces:
+                format: uint16
+                maximum: 65535
+                minimum: 0
+                type: integer
+              receiver_id:
+                type: string
+            required:
+            - balance
+            - num_nonces
+            - receiver_id
+            - method_names
+            type: object
+        required:
+        - GasKeyFunctionCall
+        type: object
+      - additionalProperties: false
+        properties:
+          GasKeyFullAccess:
+            properties:
+              balance:
+                $ref: '#/components/schemas/NearToken'
+              num_nonces:
+                format: uint16
+                maximum: 65535
+                minimum: 0
+                type: integer
+            required:
+            - balance
+            - num_nonces
+            type: object
+        required:
+        - GasKeyFullAccess
+        type: object
+    AccountId:
+      $schema: https://json-schema.org/draft/2020-12/schema
+      description: 'NEAR Account Identifier.
+
+
+        This is a unique, syntactically valid, human-readable account identifier on the NEAR network.
+
+
+        [See the crate-level docs for information about validation.](index.html#account-id-rules)
+
+
+        Also see [Error kind precedence](AccountId#error-kind-precedence).
+
+
+        ## Examples
+
+
+        ```
+
+        use near_account_id::AccountId;
+
+
+        let alice: AccountId = "alice.near".parse().unwrap();
+
+
+        assert!("ƒelicia.near".parse::<AccountId>().is_err()); // (ƒ is not f)
+
+        ```'
+      title: AccountId
+      type: string
+    BlockId:
+      anyOf:
+      - format: uint64
+        minimum: 0
+        title: block_height
+        type: integer
+      - $ref: '#/components/schemas/CryptoHash'
+    JsonRpcResponse_for_RpcQueryResponse_and_RpcQueryError:
+      oneOf:
+      - properties:
+          result:
+            $ref: '#/components/schemas/RpcQueryResponse'
+        required:
+        - result
+        type: object
+      - properties:
+          error:
+            $ref: '#/components/schemas/ErrorWrapper_for_RpcQueryError'
+        required:
+        - error
+        type: object
+      properties:
+        id:
+          type: string
+        jsonrpc:
+          type: string
+      required:
+      - jsonrpc
+      - id
+      title: JsonRpcResponse_for_RpcQueryResponse_and_RpcQueryError
+      type: object
     PrepareError:
       description: Error that can occur while preparing or executing Wasm smart-contract.
       oneOf:
@@ -124,8 +298,569 @@ components:
         enum:
         - OperandStackTooLarge
         type: string
+    AccessKeyInfoView:
+      description: 'Describes information about an access key including its on-trie
+
+        identifier. For ed25519/secp256k1 access keys the `public_key` field
+
+        is the full public key (string form unchanged from before); for
+
+        ML-DSA-65 access keys it is a `ml-dsa-65-hash:...` SHA3-256 digest
+
+        (the full pubkey is not stored on-chain).'
+      properties:
+        access_key:
+          $ref: '#/components/schemas/AccessKeyView'
+        public_key:
+          $ref: '#/components/schemas/PublicKeyHandle'
+      required:
+      - public_key
+      - access_key
+      type: object
+    InternalError:
+      oneOf:
+      - properties:
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
+        required:
+        - name
+        - info
+        type: object
+    RpcQueryError:
+      oneOf:
+      - properties:
+          name:
+            enum:
+            - NO_SYNCED_BLOCKS
+            type: string
+        required:
+        - name
+        type: object
+      - properties:
+          info:
+            properties:
+              requested_shard_id:
+                $ref: '#/components/schemas/ShardId'
+            required:
+            - requested_shard_id
+            type: object
+          name:
+            enum:
+            - UNAVAILABLE_SHARD
+            type: string
+        required:
+        - name
+        - info
+        type: object
+      - properties:
+          info:
+            properties:
+              block_hash:
+                $ref: '#/components/schemas/CryptoHash'
+              block_height:
+                format: uint64
+                minimum: 0
+                type: integer
+            required:
+            - block_height
+            - block_hash
+            type: object
+          name:
+            enum:
+            - GARBAGE_COLLECTED_BLOCK
+            type: string
+        required:
+        - name
+        - info
+        type: object
+      - properties:
+          info:
+            properties:
+              block_reference:
+                $ref: '#/components/schemas/BlockReference'
+            required:
+            - block_reference
+            type: object
+          name:
+            enum:
+            - UNKNOWN_BLOCK
+            type: string
+        required:
+        - name
+        - info
+        type: object
+      - properties:
+          info:
+            properties:
+              block_hash:
+                $ref: '#/components/schemas/CryptoHash'
+              block_height:
+                format: uint64
+                minimum: 0
+                type: integer
+              requested_account_id:
+                $ref: '#/components/schemas/AccountId'
+            required:
+            - requested_account_id
+            - block_height
+            - block_hash
+            type: object
+          name:
+            enum:
+            - INVALID_ACCOUNT
+            type: string
+        required:
+        - name
+        - info
+        type: object
+      - properties:
+          info:
+            properties:
+              block_hash:
+                $ref: '#/components/schemas/CryptoHash'
+              block_height:
+                format: uint64
+                minimum: 0
+                type: integer
+              requested_account_id:
+                $ref: '#/components/schemas/AccountId'
+            required:
+            - requested_account_id
+            - block_height
+            - block_hash
+            type: object
+          name:
+            enum:
+            - UNKNOWN_ACCOUNT
+            type: string
+        required:
+        - name
+        - info
+        type: object
+      - properties:
+          info:
+            properties:
+              block_hash:
+                $ref: '#/components/schemas/CryptoHash'
+              block_height:
+                format: uint64
+                minimum: 0
+                type: integer
+              contract_account_id:
+                $ref: '#/components/schemas/AccountId'
+            required:
+            - contract_account_id
+            - block_height
+            - block_hash
+            type: object
+          name:
+            enum:
+            - NO_CONTRACT_CODE
+            type: string
+        required:
+        - name
+        - info
+        type: object
+      - properties:
+          info:
+            properties:
+              block_hash:
+                $ref: '#/components/schemas/CryptoHash'
+              block_height:
+                format: uint64
+                minimum: 0
+                type: integer
+              contract_account_id:
+                $ref: '#/components/schemas/AccountId'
+            required:
+            - contract_account_id
+            - block_height
+            - block_hash
+            type: object
+          name:
+            enum:
+            - TOO_LARGE_CONTRACT_STATE
+            type: string
+        required:
+        - name
+        - info
+        type: object
+      - properties:
+          info:
+            properties:
+              block_hash:
+                $ref: '#/components/schemas/CryptoHash'
+              block_height:
+                format: uint64
+                minimum: 0
+                type: integer
+              public_key:
+                $ref: '#/components/schemas/PublicKey'
+            required:
+            - public_key
+            - block_height
+            - block_hash
+            type: object
+          name:
+            enum:
+            - UNKNOWN_ACCESS_KEY
+            type: string
+        required:
+        - name
+        - info
+        type: object
+      - properties:
+          info:
+            properties:
+              block_hash:
+                $ref: '#/components/schemas/CryptoHash'
+              block_height:
+                format: uint64
+                minimum: 0
+                type: integer
+              public_key:
+                $ref: '#/components/schemas/PublicKey'
+            required:
+            - public_key
+            - block_height
+            - block_hash
+            type: object
+          name:
+            enum:
+            - UNKNOWN_GAS_KEY
+            type: string
+        required:
+        - name
+        - info
+        type: object
+      - properties:
+          info:
+            properties:
+              block_hash:
+                $ref: '#/components/schemas/CryptoHash'
+              block_height:
+                format: uint64
+                minimum: 0
+                type: integer
+              error:
+                $ref: '#/components/schemas/FunctionCallError'
+              vm_error:
+                type: string
+            required:
+            - vm_error
+            - error
+            - block_height
+            - block_hash
+            type: object
+          name:
+            enum:
+            - CONTRACT_EXECUTION_ERROR
+            type: string
+        required:
+        - name
+        - info
+        type: object
+      - properties:
+          info:
+            properties:
+              block_hash:
+                $ref: '#/components/schemas/CryptoHash'
+              block_height:
+                format: uint64
+                minimum: 0
+                type: integer
+              identifier:
+                $ref: '#/components/schemas/GlobalContractIdentifier'
+            required:
+            - identifier
+            - block_height
+            - block_hash
+            type: object
+          name:
+            enum:
+            - NO_GLOBAL_CONTRACT_CODE
+            type: string
+        required:
+        - name
+        - info
+        type: object
+      - properties:
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
+        required:
+        - name
+        - info
+        type: object
+    AccountView:
+      description: A view of the account
+      properties:
+        amount:
+          $ref: '#/components/schemas/NearToken'
+        code_hash:
+          $ref: '#/components/schemas/CryptoHash'
+        global_contract_account_id:
+          anyOf:
+          - $ref: '#/components/schemas/AccountId'
+          - enum:
+            - null
+        global_contract_hash:
+          anyOf:
+          - $ref: '#/components/schemas/CryptoHash'
+          - enum:
+            - null
+        locked:
+          $ref: '#/components/schemas/NearToken'
+        storage_paid_at:
+          default: 0
+          description: 'TODO(2271): deprecated.'
+          format: uint64
+          minimum: 0
+          type: integer
+        storage_usage:
+          format: uint64
+          minimum: 0
+          type: integer
+      required:
+      - amount
+      - locked
+      - code_hash
+      - storage_usage
+      type: object
+    StoreKey:
+      description: 'This type is used to mark keys (arrays of bytes) that are queried from store.
+
+
+        NOTE: Currently, this type is only used in the view_client and RPC to be able to transparently
+
+        pretty-serialize the bytes arrays as base64-encoded strings (see `serialize.rs`).'
+      format: bytes
+      type: string
+    ErrorWrapper_for_RpcQueryError:
+      oneOf:
+      - properties:
+          cause:
+            $ref: '#/components/schemas/RpcRequestValidationErrorKind'
+          name:
+            enum:
+            - REQUEST_VALIDATION_ERROR
+            type: string
+        required:
+        - name
+        - cause
+        type: object
+      - properties:
+          cause:
+            $ref: '#/components/schemas/RpcQueryError'
+          name:
+            enum:
+            - HANDLER_ERROR
+            type: string
+        required:
+        - name
+        - cause
+        type: object
+      - properties:
+          cause:
+            $ref: '#/components/schemas/InternalError'
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
+        required:
+        - name
+        - cause
+        type: object
     NearToken:
       type: string
+    AccessKeyView:
+      description: Describes access key permission scope and nonce.
+      properties:
+        nonce:
+          format: uint64
+          minimum: 0
+          type: integer
+        permission:
+          $ref: '#/components/schemas/AccessKeyPermissionView'
+      required:
+      - nonce
+      - permission
+      type: object
+    RpcQueryResponse:
+      anyOf:
+      - $ref: '#/components/schemas/AccountView'
+      - $ref: '#/components/schemas/ContractCodeView'
+      - $ref: '#/components/schemas/ViewStateResult'
+      - $ref: '#/components/schemas/CallResult'
+      - $ref: '#/components/schemas/AccessKeyView'
+      - $ref: '#/components/schemas/AccessKeyList'
+      - $ref: '#/components/schemas/GasKeyNoncesView'
+      properties:
+        block_hash:
+          $ref: '#/components/schemas/CryptoHash'
+        block_height:
+          format: uint64
+          minimum: 0
+          type: integer
+      required:
+      - block_height
+      - block_hash
+      type: object
+    GlobalContractIdentifier:
+      oneOf:
+      - additionalProperties: false
+        properties:
+          hash:
+            $ref: '#/components/schemas/CryptoHash'
+        required:
+        - hash
+        type: object
+      - additionalProperties: false
+        properties:
+          account_id:
+            $ref: '#/components/schemas/AccountId'
+        required:
+        - account_id
+        type: object
+    RpcRequestValidationErrorKind:
+      oneOf:
+      - properties:
+          info:
+            properties:
+              method_name:
+                type: string
+            required:
+            - method_name
+            type: object
+          name:
+            enum:
+            - METHOD_NOT_FOUND
+            type: string
+        required:
+        - name
+        - info
+        type: object
+      - properties:
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - PARSE_ERROR
+            type: string
+        required:
+        - name
+        - info
+        type: object
+    CallResult:
+      description: A result returned by contract method
+      properties:
+        logs:
+          items:
+            type: string
+          type: array
+        result:
+          items:
+            format: uint8
+            maximum: 255
+            minimum: 0
+            type: integer
+          type: array
+      required:
+      - result
+      - logs
+      type: object
+    FunctionCallError:
+      description: 'Serializable version of `near-vm-runner::FunctionCallError`.
+
+
+        Must never reorder/remove elements, can only add new variants at the end (but do that very
+
+        carefully). It describes stable serialization format, and only used by serialization logic.'
+      oneOf:
+      - enum:
+        - WasmUnknownError
+        - _EVMError
+        type: string
+      - additionalProperties: false
+        description: Wasm compilation error
+        properties:
+          CompilationError:
+            $ref: '#/components/schemas/CompilationError'
+        required:
+        - CompilationError
+        type: object
+      - additionalProperties: false
+        description: 'Wasm binary env link error
+
+
+          Note: this is only to deserialize old data, use execution error for new data'
+        properties:
+          LinkError:
+            properties:
+              msg:
+                type: string
+            required:
+            - msg
+            type: object
+        required:
+        - LinkError
+        type: object
+      - additionalProperties: false
+        description: Import/export resolve error
+        properties:
+          MethodResolveError:
+            $ref: '#/components/schemas/MethodResolveError'
+        required:
+        - MethodResolveError
+        type: object
+      - additionalProperties: false
+        description: 'A trap happened during execution of a binary
+
+
+          Note: this is only to deserialize old data, use execution error for new data'
+        properties:
+          WasmTrap:
+            $ref: '#/components/schemas/WasmTrap'
+        required:
+        - WasmTrap
+        type: object
+      - additionalProperties: false
+        description: 'Note: this is only to deserialize old data, use execution error for new data'
+        properties:
+          HostError:
+            $ref: '#/components/schemas/HostError'
+        required:
+        - HostError
+        type: object
+      - additionalProperties: false
+        properties:
+          ExecutionError:
+            type: string
+        required:
+        - ExecutionError
+        type: object
     AccessKeyList:
       description: Lists access keys
       properties:
@@ -145,6 +880,674 @@ components:
         pretty-serialize the bytes arrays as base64-encoded strings (see `serialize.rs`).'
       format: bytes
       type: string
+    WasmTrap:
+      description: A kind of a trap happened during execution of a binary
+      oneOf:
+      - description: An `unreachable` opcode was executed.
+        enum:
+        - Unreachable
+        type: string
+      - description: Call indirect incorrect signature trap.
+        enum:
+        - IncorrectCallIndirectSignature
+        type: string
+      - description: Memory out of bounds trap.
+        enum:
+        - MemoryOutOfBounds
+        type: string
+      - description: Call indirect out of bounds trap.
+        enum:
+        - CallIndirectOOB
+        type: string
+      - description: An arithmetic exception, e.g. divided by zero.
+        enum:
+        - IllegalArithmetic
+        type: string
+      - description: Misaligned atomic access trap.
+        enum:
+        - MisalignedAtomicAccess
+        type: string
+      - description: Indirect call to null.
+        enum:
+        - IndirectCallToNull
+        type: string
+      - description: Stack overflow.
+        enum:
+        - StackOverflow
+        type: string
+      - description: Generic trap.
+        enum:
+        - GenericTrap
+        type: string
+    GasKeyNoncesView:
+      description: Gas key nonces view returned by the `view_gas_key_nonces` RPC query.
+      properties:
+        nonces:
+          items:
+            format: uint64
+            minimum: 0
+            type: integer
+          type: array
+      required:
+      - nonces
+      type: object
+    ShardId:
+      description: 'The shard identifier. It may be an arbitrary number - it does not need to be
+
+        a number in the range 0..NUM_SHARDS. The shard ids do not need to be
+
+        sequential or contiguous.
+
+
+        The shard id is wrapped in a new type to prevent the old pattern of using
+
+        indices in range 0..NUM_SHARDS and casting to ShardId. Once the transition
+
+        if fully complete it potentially may be simplified to a regular type alias.'
+      format: uint64
+      minimum: 0
+      type: integer
+    RpcQueryRequest:
+      oneOf:
+      - allOf:
+        - properties:
+            block_id:
+              $ref: '#/components/schemas/BlockId'
+          required:
+          - block_id
+          type: object
+        - properties:
+            account_id:
+              $ref: '#/components/schemas/AccountId'
+            request_type:
+              enum:
+              - view_account
+              type: string
+          required:
+          - request_type
+          - account_id
+          type: object
+        title: view_account_by_block_id
+      - allOf:
+        - properties:
+            block_id:
+              $ref: '#/components/schemas/BlockId'
+          required:
+          - block_id
+          type: object
+        - properties:
+            account_id:
+              $ref: '#/components/schemas/AccountId'
+            request_type:
+              enum:
+              - view_code
+              type: string
+          required:
+          - request_type
+          - account_id
+          type: object
+        title: view_code_by_block_id
+      - allOf:
+        - properties:
+            block_id:
+              $ref: '#/components/schemas/BlockId'
+          required:
+          - block_id
+          type: object
+        - properties:
+            account_id:
+              $ref: '#/components/schemas/AccountId'
+            after_key_base64:
+              anyOf:
+              - $ref: '#/components/schemas/StoreKey'
+              - enum:
+                - null
+            include_proof:
+              type: boolean
+            limit:
+              format: uint32
+              minimum: 1
+              type:
+              - integer
+              - 'null'
+            prefix_base64:
+              $ref: '#/components/schemas/StoreKey'
+            request_type:
+              enum:
+              - view_state
+              type: string
+          required:
+          - request_type
+          - account_id
+          - prefix_base64
+          type: object
+        title: view_state_by_block_id
+      - allOf:
+        - properties:
+            block_id:
+              $ref: '#/components/schemas/BlockId'
+          required:
+          - block_id
+          type: object
+        - properties:
+            account_id:
+              $ref: '#/components/schemas/AccountId'
+            public_key:
+              $ref: '#/components/schemas/PublicKey'
+            request_type:
+              enum:
+              - view_access_key
+              type: string
+          required:
+          - request_type
+          - account_id
+          - public_key
+          type: object
+        title: view_access_key_by_block_id
+      - allOf:
+        - properties:
+            block_id:
+              $ref: '#/components/schemas/BlockId'
+          required:
+          - block_id
+          type: object
+        - properties:
+            account_id:
+              $ref: '#/components/schemas/AccountId'
+            request_type:
+              enum:
+              - view_access_key_list
+              type: string
+          required:
+          - request_type
+          - account_id
+          type: object
+        title: view_access_key_list_by_block_id
+      - allOf:
+        - properties:
+            block_id:
+              $ref: '#/components/schemas/BlockId'
+          required:
+          - block_id
+          type: object
+        - properties:
+            account_id:
+              $ref: '#/components/schemas/AccountId'
+            public_key:
+              $ref: '#/components/schemas/PublicKey'
+            request_type:
+              enum:
+              - view_gas_key_nonces
+              type: string
+          required:
+          - request_type
+          - account_id
+          - public_key
+          type: object
+        title: view_gas_key_nonces_by_block_id
+      - allOf:
+        - properties:
+            block_id:
+              $ref: '#/components/schemas/BlockId'
+          required:
+          - block_id
+          type: object
+        - properties:
+            account_id:
+              $ref: '#/components/schemas/AccountId'
+            args_base64:
+              $ref: '#/components/schemas/FunctionArgs'
+            method_name:
+              type: string
+            request_type:
+              enum:
+              - call_function
+              type: string
+          required:
+          - request_type
+          - account_id
+          - method_name
+          - args_base64
+          type: object
+        title: call_function_by_block_id
+      - allOf:
+        - properties:
+            block_id:
+              $ref: '#/components/schemas/BlockId'
+          required:
+          - block_id
+          type: object
+        - properties:
+            code_hash:
+              $ref: '#/components/schemas/CryptoHash'
+            request_type:
+              enum:
+              - view_global_contract_code
+              type: string
+          required:
+          - request_type
+          - code_hash
+          type: object
+        title: view_global_contract_code_by_block_id
+      - allOf:
+        - properties:
+            block_id:
+              $ref: '#/components/schemas/BlockId'
+          required:
+          - block_id
+          type: object
+        - properties:
+            account_id:
+              $ref: '#/components/schemas/AccountId'
+            request_type:
+              enum:
+              - view_global_contract_code_by_account_id
+              type: string
+          required:
+          - request_type
+          - account_id
+          type: object
+        title: view_global_contract_code_by_account_id_by_block_id
+      - allOf:
+        - properties:
+            finality:
+              $ref: '#/components/schemas/Finality'
+          required:
+          - finality
+          type: object
+        - properties:
+            account_id:
+              $ref: '#/components/schemas/AccountId'
+            request_type:
+              enum:
+              - view_account
+              type: string
+          required:
+          - request_type
+          - account_id
+          type: object
+        title: view_account_by_finality
+      - allOf:
+        - properties:
+            finality:
+              $ref: '#/components/schemas/Finality'
+          required:
+          - finality
+          type: object
+        - properties:
+            account_id:
+              $ref: '#/components/schemas/AccountId'
+            request_type:
+              enum:
+              - view_code
+              type: string
+          required:
+          - request_type
+          - account_id
+          type: object
+        title: view_code_by_finality
+      - allOf:
+        - properties:
+            finality:
+              $ref: '#/components/schemas/Finality'
+          required:
+          - finality
+          type: object
+        - properties:
+            account_id:
+              $ref: '#/components/schemas/AccountId'
+            after_key_base64:
+              anyOf:
+              - $ref: '#/components/schemas/StoreKey'
+              - enum:
+                - null
+            include_proof:
+              type: boolean
+            limit:
+              format: uint32
+              minimum: 1
+              type:
+              - integer
+              - 'null'
+            prefix_base64:
+              $ref: '#/components/schemas/StoreKey'
+            request_type:
+              enum:
+              - view_state
+              type: string
+          required:
+          - request_type
+          - account_id
+          - prefix_base64
+          type: object
+        title: view_state_by_finality
+      - allOf:
+        - properties:
+            finality:
+              $ref: '#/components/schemas/Finality'
+          required:
+          - finality
+          type: object
+        - properties:
+            account_id:
+              $ref: '#/components/schemas/AccountId'
+            public_key:
+              $ref: '#/components/schemas/PublicKey'
+            request_type:
+              enum:
+              - view_access_key
+              type: string
+          required:
+          - request_type
+          - account_id
+          - public_key
+          type: object
+        title: view_access_key_by_finality
+      - allOf:
+        - properties:
+            finality:
+              $ref: '#/components/schemas/Finality'
+          required:
+          - finality
+          type: object
+        - properties:
+            account_id:
+              $ref: '#/components/schemas/AccountId'
+            request_type:
+              enum:
+              - view_access_key_list
+              type: string
+          required:
+          - request_type
+          - account_id
+          type: object
+        title: view_access_key_list_by_finality
+      - allOf:
+        - properties:
+            finality:
+              $ref: '#/components/schemas/Finality'
+          required:
+          - finality
+          type: object
+        - properties:
+            account_id:
+              $ref: '#/components/schemas/AccountId'
+            public_key:
+              $ref: '#/components/schemas/PublicKey'
+            request_type:
+              enum:
+              - view_gas_key_nonces
+              type: string
+          required:
+          - request_type
+          - account_id
+          - public_key
+          type: object
+        title: view_gas_key_nonces_by_finality
+      - allOf:
+        - properties:
+            finality:
+              $ref: '#/components/schemas/Finality'
+          required:
+          - finality
+          type: object
+        - properties:
+            account_id:
+              $ref: '#/components/schemas/AccountId'
+            args_base64:
+              $ref: '#/components/schemas/FunctionArgs'
+            method_name:
+              type: string
+            request_type:
+              enum:
+              - call_function
+              type: string
+          required:
+          - request_type
+          - account_id
+          - method_name
+          - args_base64
+          type: object
+        title: call_function_by_finality
+      - allOf:
+        - properties:
+            finality:
+              $ref: '#/components/schemas/Finality'
+          required:
+          - finality
+          type: object
+        - properties:
+            code_hash:
+              $ref: '#/components/schemas/CryptoHash'
+            request_type:
+              enum:
+              - view_global_contract_code
+              type: string
+          required:
+          - request_type
+          - code_hash
+          type: object
+        title: view_global_contract_code_by_finality
+      - allOf:
+        - properties:
+            finality:
+              $ref: '#/components/schemas/Finality'
+          required:
+          - finality
+          type: object
+        - properties:
+            account_id:
+              $ref: '#/components/schemas/AccountId'
+            request_type:
+              enum:
+              - view_global_contract_code_by_account_id
+              type: string
+          required:
+          - request_type
+          - account_id
+          type: object
+        title: view_global_contract_code_by_account_id_by_finality
+      - allOf:
+        - properties:
+            sync_checkpoint:
+              $ref: '#/components/schemas/SyncCheckpoint'
+          required:
+          - sync_checkpoint
+          type: object
+        - properties:
+            account_id:
+              $ref: '#/components/schemas/AccountId'
+            request_type:
+              enum:
+              - view_account
+              type: string
+          required:
+          - request_type
+          - account_id
+          type: object
+        title: view_account_by_sync_checkpoint
+      - allOf:
+        - properties:
+            sync_checkpoint:
+              $ref: '#/components/schemas/SyncCheckpoint'
+          required:
+          - sync_checkpoint
+          type: object
+        - properties:
+            account_id:
+              $ref: '#/components/schemas/AccountId'
+            request_type:
+              enum:
+              - view_code
+              type: string
+          required:
+          - request_type
+          - account_id
+          type: object
+        title: view_code_by_sync_checkpoint
+      - allOf:
+        - properties:
+            sync_checkpoint:
+              $ref: '#/components/schemas/SyncCheckpoint'
+          required:
+          - sync_checkpoint
+          type: object
+        - properties:
+            account_id:
+              $ref: '#/components/schemas/AccountId'
+            after_key_base64:
+              anyOf:
+              - $ref: '#/components/schemas/StoreKey'
+              - enum:
+                - null
+            include_proof:
+              type: boolean
+            limit:
+              format: uint32
+              minimum: 1
+              type:
+              - integer
+              - 'null'
+            prefix_base64:
+              $ref: '#/components/schemas/StoreKey'
+            request_type:
+              enum:
+              - view_state
+              type: string
+          required:
+          - request_type
+          - account_id
+          - prefix_base64
+          type: object
+        title: view_state_by_sync_checkpoint
+      - allOf:
+        - properties:
+            sync_checkpoint:
+              $ref: '#/components/schemas/SyncCheckpoint'
+          required:
+          - sync_checkpoint
+          type: object
+        - properties:
+            account_id:
+              $ref: '#/components/schemas/AccountId'
+            public_key:
+              $ref: '#/components/schemas/PublicKey'
+            request_type:
+              enum:
+              - view_access_key
+              type: string
+          required:
+          - request_type
+          - account_id
+          - public_key
+          type: object
+        title: view_access_key_by_sync_checkpoint
+      - allOf:
+        - properties:
+            sync_checkpoint:
+              $ref: '#/components/schemas/SyncCheckpoint'
+          required:
+          - sync_checkpoint
+          type: object
+        - properties:
+            account_id:
+              $ref: '#/components/schemas/AccountId'
+            request_type:
+              enum:
+              - view_access_key_list
+              type: string
+          required:
+          - request_type
+          - account_id
+          type: object
+        title: view_access_key_list_by_sync_checkpoint
+      - allOf:
+        - properties:
+            sync_checkpoint:
+              $ref: '#/components/schemas/SyncCheckpoint'
+          required:
+          - sync_checkpoint
+          type: object
+        - properties:
+            account_id:
+              $ref: '#/components/schemas/AccountId'
+            public_key:
+              $ref: '#/components/schemas/PublicKey'
+            request_type:
+              enum:
+              - view_gas_key_nonces
+              type: string
+          required:
+          - request_type
+          - account_id
+          - public_key
+          type: object
+        title: view_gas_key_nonces_by_sync_checkpoint
+      - allOf:
+        - properties:
+            sync_checkpoint:
+              $ref: '#/components/schemas/SyncCheckpoint'
+          required:
+          - sync_checkpoint
+          type: object
+        - properties:
+            account_id:
+              $ref: '#/components/schemas/AccountId'
+            args_base64:
+              $ref: '#/components/schemas/FunctionArgs'
+            method_name:
+              type: string
+            request_type:
+              enum:
+              - call_function
+              type: string
+          required:
+          - request_type
+          - account_id
+          - method_name
+          - args_base64
+          type: object
+        title: call_function_by_sync_checkpoint
+      - allOf:
+        - properties:
+            sync_checkpoint:
+              $ref: '#/components/schemas/SyncCheckpoint'
+          required:
+          - sync_checkpoint
+          type: object
+        - properties:
+            code_hash:
+              $ref: '#/components/schemas/CryptoHash'
+            request_type:
+              enum:
+              - view_global_contract_code
+              type: string
+          required:
+          - request_type
+          - code_hash
+          type: object
+        title: view_global_contract_code_by_sync_checkpoint
+      - allOf:
+        - properties:
+            sync_checkpoint:
+              $ref: '#/components/schemas/SyncCheckpoint'
+          required:
+          - sync_checkpoint
+          type: object
+        - properties:
+            account_id:
+              $ref: '#/components/schemas/AccountId'
+            request_type:
+              enum:
+              - view_global_contract_code_by_account_id
+              type: string
+          required:
+          - request_type
+          - account_id
+          type: object
+        title: view_global_contract_code_by_account_id_by_sync_checkpoint
+      title: RpcQueryRequest
+      type: object
     Finality:
       description: Different types of finality.
       enum:
@@ -152,46 +1555,41 @@ components:
       - near-final
       - final
       type: string
-    FunctionArgs:
-      description: 'This type is used to mark function arguments.
-
-
-        NOTE: The main reason for this to exist (except the type-safety) is that the value is
-
-        transparently serialized and deserialized as a base64-encoded string when serde is used
-
-        (serde_json).'
-      format: bytes
-      type: string
-    AccountId:
-      $schema: https://json-schema.org/draft/2020-12/schema
-      description: 'NEAR Account Identifier.
-
-
-        This is a unique, syntactically valid, human-readable account identifier on the NEAR network.
-
-
-        [See the crate-level docs for information about validation.](index.html#account-id-rules)
-
-
-        Also see [Error kind precedence](AccountId#error-kind-precedence).
-
-
-        ## Examples
-
-
-        ```
-
-        use near_account_id::AccountId;
-
-
-        let alice: AccountId = "alice.near".parse().unwrap();
-
-
-        assert!("ƒelicia.near".parse::<AccountId>().is_err()); // (ƒ is not f)
-
-        ```'
-      title: AccountId
+    BlockReference:
+      oneOf:
+      - additionalProperties: false
+        properties:
+          block_id:
+            $ref: '#/components/schemas/BlockId'
+        required:
+        - block_id
+        type: object
+      - additionalProperties: false
+        properties:
+          finality:
+            $ref: '#/components/schemas/Finality'
+        required:
+        - finality
+        type: object
+      - additionalProperties: false
+        properties:
+          sync_checkpoint:
+            $ref: '#/components/schemas/SyncCheckpoint'
+        required:
+        - sync_checkpoint
+        type: object
+    ContractCodeView:
+      description: A view of the contract code.
+      properties:
+        code_base64:
+          type: string
+        hash:
+          $ref: '#/components/schemas/CryptoHash'
+      required:
+      - code_base64
+      - hash
+      type: object
+    CryptoHash:
       type: string
     HostError:
       oneOf:
@@ -591,53 +1989,55 @@ components:
         required:
         - P256VerifyInvalidInput
         type: object
-    ContractCodeView:
-      description: A view of the contract code.
+    PublicKey:
+      type: string
+    FunctionArgs:
+      description: 'This type is used to mark function arguments.
+
+
+        NOTE: The main reason for this to exist (except the type-safety) is that the value is
+
+        transparently serialized and deserialized as a base64-encoded string when serde is used
+
+        (serde_json).'
+      format: bytes
+      type: string
+    PublicKeyHandle:
+      type: string
+    StateItem:
+      description: Item of the state, key and value are serialized in base64 and proof for inclusion of given state item.
       properties:
-        code_base64:
-          type: string
-        hash:
-          $ref: '#/components/schemas/CryptoHash'
+        key:
+          $ref: '#/components/schemas/StoreKey'
+        value:
+          $ref: '#/components/schemas/StoreValue'
       required:
-      - code_base64
-      - hash
+      - key
+      - value
       type: object
-    JsonRpcResponse_for_RpcQueryResponse_and_RpcQueryError:
-      oneOf:
-      - properties:
-          result:
-            $ref: '#/components/schemas/RpcQueryResponse'
-        required:
-        - result
-        type: object
-      - properties:
-          error:
-            $ref: '#/components/schemas/ErrorWrapper_for_RpcQueryError'
-        required:
-        - error
-        type: object
+    SyncCheckpoint:
+      enum:
+      - genesis
+      - earliest_available
+      type: string
+    ViewStateResult:
+      description: Resulting state values for a view state query request
       properties:
-        id:
-          type: string
-        jsonrpc:
-          type: string
+        last_key:
+          anyOf:
+          - $ref: '#/components/schemas/StoreKey'
+          - enum:
+            - null
+        proof:
+          items:
+            type: string
+          type: array
+        values:
+          items:
+            $ref: '#/components/schemas/StateItem'
+          type: array
       required:
-      - jsonrpc
-      - id
-      title: JsonRpcResponse_for_RpcQueryResponse_and_RpcQueryError
-      type: object
-    AccessKeyView:
-      description: Describes access key permission scope and nonce.
-      properties:
-        nonce:
-          format: uint64
-          minimum: 0
-          type: integer
-        permission:
-          $ref: '#/components/schemas/AccessKeyPermissionView'
-      required:
-      - nonce
-      - permission
+      - values
       type: object
     CompilationError:
       oneOf:
@@ -677,1397 +2077,9 @@ components:
         required:
         - WasmerCompileError
         type: object
-    ErrorWrapper_for_RpcQueryError:
-      oneOf:
-      - properties:
-          cause:
-            $ref: '#/components/schemas/RpcRequestValidationErrorKind'
-          name:
-            enum:
-            - REQUEST_VALIDATION_ERROR
-            type: string
-        required:
-        - name
-        - cause
-        type: object
-      - properties:
-          cause:
-            $ref: '#/components/schemas/RpcQueryError'
-          name:
-            enum:
-            - HANDLER_ERROR
-            type: string
-        required:
-        - name
-        - cause
-        type: object
-      - properties:
-          cause:
-            $ref: '#/components/schemas/InternalError'
-          name:
-            enum:
-            - INTERNAL_ERROR
-            type: string
-        required:
-        - name
-        - cause
-        type: object
-    InternalError:
-      oneOf:
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
-          name:
-            enum:
-            - INTERNAL_ERROR
-            type: string
-        required:
-        - name
-        - info
-        type: object
-    SyncCheckpoint:
-      enum:
-      - genesis
-      - earliest_available
-      type: string
-    BlockReference:
-      oneOf:
-      - additionalProperties: false
-        properties:
-          block_id:
-            $ref: '#/components/schemas/BlockId'
-        required:
-        - block_id
-        type: object
-      - additionalProperties: false
-        properties:
-          finality:
-            $ref: '#/components/schemas/Finality'
-        required:
-        - finality
-        type: object
-      - additionalProperties: false
-        properties:
-          sync_checkpoint:
-            $ref: '#/components/schemas/SyncCheckpoint'
-        required:
-        - sync_checkpoint
-        type: object
-    ShardId:
-      description: 'The shard identifier. It may be an arbitrary number - it does not need to be
-
-        a number in the range 0..NUM_SHARDS. The shard ids do not need to be
-
-        sequential or contiguous.
-
-
-        The shard id is wrapped in a new type to prevent the old pattern of using
-
-        indices in range 0..NUM_SHARDS and casting to ShardId. Once the transition
-
-        if fully complete it potentially may be simplified to a regular type alias.'
-      format: uint64
-      minimum: 0
-      type: integer
-    CallResult:
-      description: A result returned by contract method
-      properties:
-        logs:
-          items:
-            type: string
-          type: array
-        result:
-          items:
-            format: uint8
-            maximum: 255
-            minimum: 0
-            type: integer
-          type: array
-      required:
-      - result
-      - logs
-      type: object
-    PublicKeyHandle:
-      type: string
-    AccountView:
-      description: A view of the account
-      properties:
-        amount:
-          $ref: '#/components/schemas/NearToken'
-        code_hash:
-          $ref: '#/components/schemas/CryptoHash'
-        global_contract_account_id:
-          anyOf:
-          - $ref: '#/components/schemas/AccountId'
-          - enum:
-            - null
-            nullable: true
-        global_contract_hash:
-          anyOf:
-          - $ref: '#/components/schemas/CryptoHash'
-          - enum:
-            - null
-            nullable: true
-        locked:
-          $ref: '#/components/schemas/NearToken'
-        storage_paid_at:
-          default: 0
-          description: 'TODO(2271): deprecated.'
-          format: uint64
-          minimum: 0
-          type: integer
-        storage_usage:
-          format: uint64
-          minimum: 0
-          type: integer
-      required:
-      - amount
-      - locked
-      - code_hash
-      - storage_usage
-      type: object
-    StoreKey:
-      description: 'This type is used to mark keys (arrays of bytes) that are queried from store.
-
-
-        NOTE: Currently, this type is only used in the view_client and RPC to be able to transparently
-
-        pretty-serialize the bytes arrays as base64-encoded strings (see `serialize.rs`).'
-      format: bytes
-      type: string
-    WasmTrap:
-      description: A kind of a trap happened during execution of a binary
-      oneOf:
-      - description: An `unreachable` opcode was executed.
-        enum:
-        - Unreachable
-        type: string
-      - description: Call indirect incorrect signature trap.
-        enum:
-        - IncorrectCallIndirectSignature
-        type: string
-      - description: Memory out of bounds trap.
-        enum:
-        - MemoryOutOfBounds
-        type: string
-      - description: Call indirect out of bounds trap.
-        enum:
-        - CallIndirectOOB
-        type: string
-      - description: An arithmetic exception, e.g. divided by zero.
-        enum:
-        - IllegalArithmetic
-        type: string
-      - description: Misaligned atomic access trap.
-        enum:
-        - MisalignedAtomicAccess
-        type: string
-      - description: Indirect call to null.
-        enum:
-        - IndirectCallToNull
-        type: string
-      - description: Stack overflow.
-        enum:
-        - StackOverflow
-        type: string
-      - description: Generic trap.
-        enum:
-        - GenericTrap
-        type: string
-    FunctionCallError:
-      description: 'Serializable version of `near-vm-runner::FunctionCallError`.
-
-
-        Must never reorder/remove elements, can only add new variants at the end (but do that very
-
-        carefully). It describes stable serialization format, and only used by serialization logic.'
-      oneOf:
-      - enum:
-        - WasmUnknownError
-        - _EVMError
-        type: string
-      - additionalProperties: false
-        description: Wasm compilation error
-        properties:
-          CompilationError:
-            $ref: '#/components/schemas/CompilationError'
-        required:
-        - CompilationError
-        type: object
-      - additionalProperties: false
-        description: 'Wasm binary env link error
-
-
-          Note: this is only to deserialize old data, use execution error for new data'
-        properties:
-          LinkError:
-            properties:
-              msg:
-                type: string
-            required:
-            - msg
-            type: object
-        required:
-        - LinkError
-        type: object
-      - additionalProperties: false
-        description: Import/export resolve error
-        properties:
-          MethodResolveError:
-            $ref: '#/components/schemas/MethodResolveError'
-        required:
-        - MethodResolveError
-        type: object
-      - additionalProperties: false
-        description: 'A trap happened during execution of a binary
-
-
-          Note: this is only to deserialize old data, use execution error for new data'
-        properties:
-          WasmTrap:
-            $ref: '#/components/schemas/WasmTrap'
-        required:
-        - WasmTrap
-        type: object
-      - additionalProperties: false
-        description: 'Note: this is only to deserialize old data, use execution error for new data'
-        properties:
-          HostError:
-            $ref: '#/components/schemas/HostError'
-        required:
-        - HostError
-        type: object
-      - additionalProperties: false
-        properties:
-          ExecutionError:
-            type: string
-        required:
-        - ExecutionError
-        type: object
-    AccessKeyInfoView:
-      description: 'Describes information about an access key including its on-trie
-
-        identifier. For ed25519/secp256k1 access keys the `public_key` field
-
-        is the full public key (string form unchanged from before); for
-
-        ML-DSA-65 access keys it is a `ml-dsa-65-hash:...` SHA3-256 digest
-
-        (the full pubkey is not stored on-chain).'
-      properties:
-        access_key:
-          $ref: '#/components/schemas/AccessKeyView'
-        public_key:
-          $ref: '#/components/schemas/PublicKeyHandle'
-      required:
-      - public_key
-      - access_key
-      type: object
-    PublicKey:
-      type: string
-    JsonRpcRequest_for_query:
-      properties:
-        id:
-          type: string
-        jsonrpc:
-          type: string
-        method:
-          enum:
-          - query
-          type: string
-        params:
-          $ref: '#/components/schemas/RpcQueryRequest'
-      required:
-      - jsonrpc
-      - id
-      - params
-      - method
-      title: JsonRpcRequest_for_query
-      type: object
-    StateItem:
-      description: Item of the state, key and value are serialized in base64 and proof for inclusion of given state item.
-      properties:
-        key:
-          $ref: '#/components/schemas/StoreKey'
-        value:
-          $ref: '#/components/schemas/StoreValue'
-      required:
-      - key
-      - value
-      type: object
-    ViewStateResult:
-      description: Resulting state values for a view state query request
-      properties:
-        last_key:
-          anyOf:
-          - $ref: '#/components/schemas/StoreKey'
-          - enum:
-            - null
-            nullable: true
-        proof:
-          items:
-            type: string
-          type: array
-        values:
-          items:
-            $ref: '#/components/schemas/StateItem'
-          type: array
-      required:
-      - values
-      type: object
-    CryptoHash:
-      type: string
-    BlockId:
-      anyOf:
-      - format: uint64
-        minimum: 0
-        title: block_height
-        type: integer
-      - $ref: '#/components/schemas/CryptoHash'
-    AccessKeyPermissionView:
-      description: Describes the permission scope for an access key. Whether it is a function call or a full access key.
-      oneOf:
-      - enum:
-        - FullAccess
-        type: string
-      - additionalProperties: false
-        properties:
-          FunctionCall:
-            properties:
-              allowance:
-                anyOf:
-                - $ref: '#/components/schemas/NearToken'
-                - enum:
-                  - null
-                  nullable: true
-              method_names:
-                items:
-                  type: string
-                type: array
-              receiver_id:
-                type: string
-            required:
-            - receiver_id
-            - method_names
-            type: object
-        required:
-        - FunctionCall
-        type: object
-      - additionalProperties: false
-        properties:
-          GasKeyFunctionCall:
-            properties:
-              allowance:
-                anyOf:
-                - $ref: '#/components/schemas/NearToken'
-                - enum:
-                  - null
-                  nullable: true
-              balance:
-                $ref: '#/components/schemas/NearToken'
-              method_names:
-                items:
-                  type: string
-                type: array
-              num_nonces:
-                format: uint16
-                maximum: 65535
-                minimum: 0
-                type: integer
-              receiver_id:
-                type: string
-            required:
-            - balance
-            - num_nonces
-            - receiver_id
-            - method_names
-            type: object
-        required:
-        - GasKeyFunctionCall
-        type: object
-      - additionalProperties: false
-        properties:
-          GasKeyFullAccess:
-            properties:
-              balance:
-                $ref: '#/components/schemas/NearToken'
-              num_nonces:
-                format: uint16
-                maximum: 65535
-                minimum: 0
-                type: integer
-            required:
-            - balance
-            - num_nonces
-            type: object
-        required:
-        - GasKeyFullAccess
-        type: object
-    RpcQueryResponse:
-      anyOf:
-      - $ref: '#/components/schemas/AccountView'
-      - $ref: '#/components/schemas/ContractCodeView'
-      - $ref: '#/components/schemas/ViewStateResult'
-      - $ref: '#/components/schemas/CallResult'
-      - $ref: '#/components/schemas/AccessKeyView'
-      - $ref: '#/components/schemas/AccessKeyList'
-      - $ref: '#/components/schemas/GasKeyNoncesView'
-      properties:
-        block_hash:
-          $ref: '#/components/schemas/CryptoHash'
-        block_height:
-          format: uint64
-          minimum: 0
-          type: integer
-      required:
-      - block_height
-      - block_hash
-      type: object
-    GasKeyNoncesView:
-      description: Gas key nonces view returned by the `view_gas_key_nonces` RPC query.
-      properties:
-        nonces:
-          items:
-            format: uint64
-            minimum: 0
-            type: integer
-          type: array
-      required:
-      - nonces
-      type: object
     MethodResolveError:
       enum:
       - MethodEmptyName
       - MethodNotFound
       - MethodInvalidSignature
       type: string
-    RpcRequestValidationErrorKind:
-      oneOf:
-      - properties:
-          info:
-            properties:
-              method_name:
-                type: string
-            required:
-            - method_name
-            type: object
-          name:
-            enum:
-            - METHOD_NOT_FOUND
-            type: string
-        required:
-        - name
-        - info
-        type: object
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
-          name:
-            enum:
-            - PARSE_ERROR
-            type: string
-        required:
-        - name
-        - info
-        type: object
-    RpcQueryRequest:
-      oneOf:
-      - allOf:
-        - properties:
-            block_id:
-              $ref: '#/components/schemas/BlockId'
-          required:
-          - block_id
-          type: object
-        - properties:
-            account_id:
-              $ref: '#/components/schemas/AccountId'
-            request_type:
-              enum:
-              - view_account
-              type: string
-          required:
-          - request_type
-          - account_id
-          type: object
-        title: view_account_by_block_id
-      - allOf:
-        - properties:
-            block_id:
-              $ref: '#/components/schemas/BlockId'
-          required:
-          - block_id
-          type: object
-        - properties:
-            account_id:
-              $ref: '#/components/schemas/AccountId'
-            request_type:
-              enum:
-              - view_code
-              type: string
-          required:
-          - request_type
-          - account_id
-          type: object
-        title: view_code_by_block_id
-      - allOf:
-        - properties:
-            block_id:
-              $ref: '#/components/schemas/BlockId'
-          required:
-          - block_id
-          type: object
-        - properties:
-            account_id:
-              $ref: '#/components/schemas/AccountId'
-            after_key_base64:
-              anyOf:
-              - $ref: '#/components/schemas/StoreKey'
-              - enum:
-                - null
-                nullable: true
-            include_proof:
-              type: boolean
-            limit:
-              format: uint32
-              minimum: 1
-              nullable: true
-              type: integer
-            prefix_base64:
-              $ref: '#/components/schemas/StoreKey'
-            request_type:
-              enum:
-              - view_state
-              type: string
-          required:
-          - request_type
-          - account_id
-          - prefix_base64
-          type: object
-        title: view_state_by_block_id
-      - allOf:
-        - properties:
-            block_id:
-              $ref: '#/components/schemas/BlockId'
-          required:
-          - block_id
-          type: object
-        - properties:
-            account_id:
-              $ref: '#/components/schemas/AccountId'
-            public_key:
-              $ref: '#/components/schemas/PublicKey'
-            request_type:
-              enum:
-              - view_access_key
-              type: string
-          required:
-          - request_type
-          - account_id
-          - public_key
-          type: object
-        title: view_access_key_by_block_id
-      - allOf:
-        - properties:
-            block_id:
-              $ref: '#/components/schemas/BlockId'
-          required:
-          - block_id
-          type: object
-        - properties:
-            account_id:
-              $ref: '#/components/schemas/AccountId'
-            request_type:
-              enum:
-              - view_access_key_list
-              type: string
-          required:
-          - request_type
-          - account_id
-          type: object
-        title: view_access_key_list_by_block_id
-      - allOf:
-        - properties:
-            block_id:
-              $ref: '#/components/schemas/BlockId'
-          required:
-          - block_id
-          type: object
-        - properties:
-            account_id:
-              $ref: '#/components/schemas/AccountId'
-            public_key:
-              $ref: '#/components/schemas/PublicKey'
-            request_type:
-              enum:
-              - view_gas_key_nonces
-              type: string
-          required:
-          - request_type
-          - account_id
-          - public_key
-          type: object
-        title: view_gas_key_nonces_by_block_id
-      - allOf:
-        - properties:
-            block_id:
-              $ref: '#/components/schemas/BlockId'
-          required:
-          - block_id
-          type: object
-        - properties:
-            account_id:
-              $ref: '#/components/schemas/AccountId'
-            args_base64:
-              $ref: '#/components/schemas/FunctionArgs'
-            method_name:
-              type: string
-            request_type:
-              enum:
-              - call_function
-              type: string
-          required:
-          - request_type
-          - account_id
-          - method_name
-          - args_base64
-          type: object
-        title: call_function_by_block_id
-      - allOf:
-        - properties:
-            block_id:
-              $ref: '#/components/schemas/BlockId'
-          required:
-          - block_id
-          type: object
-        - properties:
-            code_hash:
-              $ref: '#/components/schemas/CryptoHash'
-            request_type:
-              enum:
-              - view_global_contract_code
-              type: string
-          required:
-          - request_type
-          - code_hash
-          type: object
-        title: view_global_contract_code_by_block_id
-      - allOf:
-        - properties:
-            block_id:
-              $ref: '#/components/schemas/BlockId'
-          required:
-          - block_id
-          type: object
-        - properties:
-            account_id:
-              $ref: '#/components/schemas/AccountId'
-            request_type:
-              enum:
-              - view_global_contract_code_by_account_id
-              type: string
-          required:
-          - request_type
-          - account_id
-          type: object
-        title: view_global_contract_code_by_account_id_by_block_id
-      - allOf:
-        - properties:
-            finality:
-              $ref: '#/components/schemas/Finality'
-          required:
-          - finality
-          type: object
-        - properties:
-            account_id:
-              $ref: '#/components/schemas/AccountId'
-            request_type:
-              enum:
-              - view_account
-              type: string
-          required:
-          - request_type
-          - account_id
-          type: object
-        title: view_account_by_finality
-      - allOf:
-        - properties:
-            finality:
-              $ref: '#/components/schemas/Finality'
-          required:
-          - finality
-          type: object
-        - properties:
-            account_id:
-              $ref: '#/components/schemas/AccountId'
-            request_type:
-              enum:
-              - view_code
-              type: string
-          required:
-          - request_type
-          - account_id
-          type: object
-        title: view_code_by_finality
-      - allOf:
-        - properties:
-            finality:
-              $ref: '#/components/schemas/Finality'
-          required:
-          - finality
-          type: object
-        - properties:
-            account_id:
-              $ref: '#/components/schemas/AccountId'
-            after_key_base64:
-              anyOf:
-              - $ref: '#/components/schemas/StoreKey'
-              - enum:
-                - null
-                nullable: true
-            include_proof:
-              type: boolean
-            limit:
-              format: uint32
-              minimum: 1
-              nullable: true
-              type: integer
-            prefix_base64:
-              $ref: '#/components/schemas/StoreKey'
-            request_type:
-              enum:
-              - view_state
-              type: string
-          required:
-          - request_type
-          - account_id
-          - prefix_base64
-          type: object
-        title: view_state_by_finality
-      - allOf:
-        - properties:
-            finality:
-              $ref: '#/components/schemas/Finality'
-          required:
-          - finality
-          type: object
-        - properties:
-            account_id:
-              $ref: '#/components/schemas/AccountId'
-            public_key:
-              $ref: '#/components/schemas/PublicKey'
-            request_type:
-              enum:
-              - view_access_key
-              type: string
-          required:
-          - request_type
-          - account_id
-          - public_key
-          type: object
-        title: view_access_key_by_finality
-      - allOf:
-        - properties:
-            finality:
-              $ref: '#/components/schemas/Finality'
-          required:
-          - finality
-          type: object
-        - properties:
-            account_id:
-              $ref: '#/components/schemas/AccountId'
-            request_type:
-              enum:
-              - view_access_key_list
-              type: string
-          required:
-          - request_type
-          - account_id
-          type: object
-        title: view_access_key_list_by_finality
-      - allOf:
-        - properties:
-            finality:
-              $ref: '#/components/schemas/Finality'
-          required:
-          - finality
-          type: object
-        - properties:
-            account_id:
-              $ref: '#/components/schemas/AccountId'
-            public_key:
-              $ref: '#/components/schemas/PublicKey'
-            request_type:
-              enum:
-              - view_gas_key_nonces
-              type: string
-          required:
-          - request_type
-          - account_id
-          - public_key
-          type: object
-        title: view_gas_key_nonces_by_finality
-      - allOf:
-        - properties:
-            finality:
-              $ref: '#/components/schemas/Finality'
-          required:
-          - finality
-          type: object
-        - properties:
-            account_id:
-              $ref: '#/components/schemas/AccountId'
-            args_base64:
-              $ref: '#/components/schemas/FunctionArgs'
-            method_name:
-              type: string
-            request_type:
-              enum:
-              - call_function
-              type: string
-          required:
-          - request_type
-          - account_id
-          - method_name
-          - args_base64
-          type: object
-        title: call_function_by_finality
-      - allOf:
-        - properties:
-            finality:
-              $ref: '#/components/schemas/Finality'
-          required:
-          - finality
-          type: object
-        - properties:
-            code_hash:
-              $ref: '#/components/schemas/CryptoHash'
-            request_type:
-              enum:
-              - view_global_contract_code
-              type: string
-          required:
-          - request_type
-          - code_hash
-          type: object
-        title: view_global_contract_code_by_finality
-      - allOf:
-        - properties:
-            finality:
-              $ref: '#/components/schemas/Finality'
-          required:
-          - finality
-          type: object
-        - properties:
-            account_id:
-              $ref: '#/components/schemas/AccountId'
-            request_type:
-              enum:
-              - view_global_contract_code_by_account_id
-              type: string
-          required:
-          - request_type
-          - account_id
-          type: object
-        title: view_global_contract_code_by_account_id_by_finality
-      - allOf:
-        - properties:
-            sync_checkpoint:
-              $ref: '#/components/schemas/SyncCheckpoint'
-          required:
-          - sync_checkpoint
-          type: object
-        - properties:
-            account_id:
-              $ref: '#/components/schemas/AccountId'
-            request_type:
-              enum:
-              - view_account
-              type: string
-          required:
-          - request_type
-          - account_id
-          type: object
-        title: view_account_by_sync_checkpoint
-      - allOf:
-        - properties:
-            sync_checkpoint:
-              $ref: '#/components/schemas/SyncCheckpoint'
-          required:
-          - sync_checkpoint
-          type: object
-        - properties:
-            account_id:
-              $ref: '#/components/schemas/AccountId'
-            request_type:
-              enum:
-              - view_code
-              type: string
-          required:
-          - request_type
-          - account_id
-          type: object
-        title: view_code_by_sync_checkpoint
-      - allOf:
-        - properties:
-            sync_checkpoint:
-              $ref: '#/components/schemas/SyncCheckpoint'
-          required:
-          - sync_checkpoint
-          type: object
-        - properties:
-            account_id:
-              $ref: '#/components/schemas/AccountId'
-            after_key_base64:
-              anyOf:
-              - $ref: '#/components/schemas/StoreKey'
-              - enum:
-                - null
-                nullable: true
-            include_proof:
-              type: boolean
-            limit:
-              format: uint32
-              minimum: 1
-              nullable: true
-              type: integer
-            prefix_base64:
-              $ref: '#/components/schemas/StoreKey'
-            request_type:
-              enum:
-              - view_state
-              type: string
-          required:
-          - request_type
-          - account_id
-          - prefix_base64
-          type: object
-        title: view_state_by_sync_checkpoint
-      - allOf:
-        - properties:
-            sync_checkpoint:
-              $ref: '#/components/schemas/SyncCheckpoint'
-          required:
-          - sync_checkpoint
-          type: object
-        - properties:
-            account_id:
-              $ref: '#/components/schemas/AccountId'
-            public_key:
-              $ref: '#/components/schemas/PublicKey'
-            request_type:
-              enum:
-              - view_access_key
-              type: string
-          required:
-          - request_type
-          - account_id
-          - public_key
-          type: object
-        title: view_access_key_by_sync_checkpoint
-      - allOf:
-        - properties:
-            sync_checkpoint:
-              $ref: '#/components/schemas/SyncCheckpoint'
-          required:
-          - sync_checkpoint
-          type: object
-        - properties:
-            account_id:
-              $ref: '#/components/schemas/AccountId'
-            request_type:
-              enum:
-              - view_access_key_list
-              type: string
-          required:
-          - request_type
-          - account_id
-          type: object
-        title: view_access_key_list_by_sync_checkpoint
-      - allOf:
-        - properties:
-            sync_checkpoint:
-              $ref: '#/components/schemas/SyncCheckpoint'
-          required:
-          - sync_checkpoint
-          type: object
-        - properties:
-            account_id:
-              $ref: '#/components/schemas/AccountId'
-            public_key:
-              $ref: '#/components/schemas/PublicKey'
-            request_type:
-              enum:
-              - view_gas_key_nonces
-              type: string
-          required:
-          - request_type
-          - account_id
-          - public_key
-          type: object
-        title: view_gas_key_nonces_by_sync_checkpoint
-      - allOf:
-        - properties:
-            sync_checkpoint:
-              $ref: '#/components/schemas/SyncCheckpoint'
-          required:
-          - sync_checkpoint
-          type: object
-        - properties:
-            account_id:
-              $ref: '#/components/schemas/AccountId'
-            args_base64:
-              $ref: '#/components/schemas/FunctionArgs'
-            method_name:
-              type: string
-            request_type:
-              enum:
-              - call_function
-              type: string
-          required:
-          - request_type
-          - account_id
-          - method_name
-          - args_base64
-          type: object
-        title: call_function_by_sync_checkpoint
-      - allOf:
-        - properties:
-            sync_checkpoint:
-              $ref: '#/components/schemas/SyncCheckpoint'
-          required:
-          - sync_checkpoint
-          type: object
-        - properties:
-            code_hash:
-              $ref: '#/components/schemas/CryptoHash'
-            request_type:
-              enum:
-              - view_global_contract_code
-              type: string
-          required:
-          - request_type
-          - code_hash
-          type: object
-        title: view_global_contract_code_by_sync_checkpoint
-      - allOf:
-        - properties:
-            sync_checkpoint:
-              $ref: '#/components/schemas/SyncCheckpoint'
-          required:
-          - sync_checkpoint
-          type: object
-        - properties:
-            account_id:
-              $ref: '#/components/schemas/AccountId'
-            request_type:
-              enum:
-              - view_global_contract_code_by_account_id
-              type: string
-          required:
-          - request_type
-          - account_id
-          type: object
-        title: view_global_contract_code_by_account_id_by_sync_checkpoint
-      title: RpcQueryRequest
-      type: object
-    RpcQueryError:
-      oneOf:
-      - properties:
-          name:
-            enum:
-            - NO_SYNCED_BLOCKS
-            type: string
-        required:
-        - name
-        type: object
-      - properties:
-          info:
-            properties:
-              requested_shard_id:
-                $ref: '#/components/schemas/ShardId'
-            required:
-            - requested_shard_id
-            type: object
-          name:
-            enum:
-            - UNAVAILABLE_SHARD
-            type: string
-        required:
-        - name
-        - info
-        type: object
-      - properties:
-          info:
-            properties:
-              block_hash:
-                $ref: '#/components/schemas/CryptoHash'
-              block_height:
-                format: uint64
-                minimum: 0
-                type: integer
-            required:
-            - block_height
-            - block_hash
-            type: object
-          name:
-            enum:
-            - GARBAGE_COLLECTED_BLOCK
-            type: string
-        required:
-        - name
-        - info
-        type: object
-      - properties:
-          info:
-            properties:
-              block_reference:
-                $ref: '#/components/schemas/BlockReference'
-            required:
-            - block_reference
-            type: object
-          name:
-            enum:
-            - UNKNOWN_BLOCK
-            type: string
-        required:
-        - name
-        - info
-        type: object
-      - properties:
-          info:
-            properties:
-              block_hash:
-                $ref: '#/components/schemas/CryptoHash'
-              block_height:
-                format: uint64
-                minimum: 0
-                type: integer
-              requested_account_id:
-                $ref: '#/components/schemas/AccountId'
-            required:
-            - requested_account_id
-            - block_height
-            - block_hash
-            type: object
-          name:
-            enum:
-            - INVALID_ACCOUNT
-            type: string
-        required:
-        - name
-        - info
-        type: object
-      - properties:
-          info:
-            properties:
-              block_hash:
-                $ref: '#/components/schemas/CryptoHash'
-              block_height:
-                format: uint64
-                minimum: 0
-                type: integer
-              requested_account_id:
-                $ref: '#/components/schemas/AccountId'
-            required:
-            - requested_account_id
-            - block_height
-            - block_hash
-            type: object
-          name:
-            enum:
-            - UNKNOWN_ACCOUNT
-            type: string
-        required:
-        - name
-        - info
-        type: object
-      - properties:
-          info:
-            properties:
-              block_hash:
-                $ref: '#/components/schemas/CryptoHash'
-              block_height:
-                format: uint64
-                minimum: 0
-                type: integer
-              contract_account_id:
-                $ref: '#/components/schemas/AccountId'
-            required:
-            - contract_account_id
-            - block_height
-            - block_hash
-            type: object
-          name:
-            enum:
-            - NO_CONTRACT_CODE
-            type: string
-        required:
-        - name
-        - info
-        type: object
-      - properties:
-          info:
-            properties:
-              block_hash:
-                $ref: '#/components/schemas/CryptoHash'
-              block_height:
-                format: uint64
-                minimum: 0
-                type: integer
-              contract_account_id:
-                $ref: '#/components/schemas/AccountId'
-            required:
-            - contract_account_id
-            - block_height
-            - block_hash
-            type: object
-          name:
-            enum:
-            - TOO_LARGE_CONTRACT_STATE
-            type: string
-        required:
-        - name
-        - info
-        type: object
-      - properties:
-          info:
-            properties:
-              block_hash:
-                $ref: '#/components/schemas/CryptoHash'
-              block_height:
-                format: uint64
-                minimum: 0
-                type: integer
-              public_key:
-                $ref: '#/components/schemas/PublicKey'
-            required:
-            - public_key
-            - block_height
-            - block_hash
-            type: object
-          name:
-            enum:
-            - UNKNOWN_ACCESS_KEY
-            type: string
-        required:
-        - name
-        - info
-        type: object
-      - properties:
-          info:
-            properties:
-              block_hash:
-                $ref: '#/components/schemas/CryptoHash'
-              block_height:
-                format: uint64
-                minimum: 0
-                type: integer
-              public_key:
-                $ref: '#/components/schemas/PublicKey'
-            required:
-            - public_key
-            - block_height
-            - block_hash
-            type: object
-          name:
-            enum:
-            - UNKNOWN_GAS_KEY
-            type: string
-        required:
-        - name
-        - info
-        type: object
-      - properties:
-          info:
-            properties:
-              block_hash:
-                $ref: '#/components/schemas/CryptoHash'
-              block_height:
-                format: uint64
-                minimum: 0
-                type: integer
-              error:
-                $ref: '#/components/schemas/FunctionCallError'
-              vm_error:
-                type: string
-            required:
-            - vm_error
-            - error
-            - block_height
-            - block_hash
-            type: object
-          name:
-            enum:
-            - CONTRACT_EXECUTION_ERROR
-            type: string
-        required:
-        - name
-        - info
-        type: object
-      - properties:
-          info:
-            properties:
-              block_hash:
-                $ref: '#/components/schemas/CryptoHash'
-              block_height:
-                format: uint64
-                minimum: 0
-                type: integer
-              identifier:
-                $ref: '#/components/schemas/GlobalContractIdentifier'
-            required:
-            - identifier
-            - block_height
-            - block_hash
-            type: object
-          name:
-            enum:
-            - NO_GLOBAL_CONTRACT_CODE
-            type: string
-        required:
-        - name
-        - info
-        type: object
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
-          name:
-            enum:
-            - INTERNAL_ERROR
-            type: string
-        required:
-        - name
-        - info
-        type: object
-    GlobalContractIdentifier:
-      oneOf:
-      - additionalProperties: false
-        properties:
-          hash:
-            $ref: '#/components/schemas/CryptoHash'
-        required:
-        - hash
-        type: object
-      - additionalProperties: false
-        properties:
-          account_id:
-            $ref: '#/components/schemas/AccountId'
-        required:
-        - account_id
-        type: object

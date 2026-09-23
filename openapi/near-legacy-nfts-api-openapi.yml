@@ -1,13 +1,13 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  description: Low-latency indexed account, token, and public-key lookup APIs for wallets and explorers. Embedded portal clients may forward an optional `apiKey` query parameter, but the public FastNEAR API does not require it.
-  title: FastNEAR accounts Legacy / NFTs API
-  version: 3.0.3
+  description: NearBlocks REST API for the NEAR Protocol block explorer. Provides endpoints to access blockchain data including accounts, transactions, blocks, tokens, NFTs, and staking.
+  title: NearBlocks Explorer Legacy / NFTs API
+  version: 1.0.0
 servers:
 - description: Mainnet
-  url: https://api.fastnear.com
+  url: https://api.nearblocks.io
 - description: Testnet
-  url: https://test.api.fastnear.com
+  url: https://api-testnet.nearblocks.io
 tags:
 - description: Deprecated.
   name: Legacy / NFTs
@@ -61,6 +61,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1Nfts
+      x-operation-id-source: derived
   /v1/nfts/count:
     get:
       summary: Get top NFTs count
@@ -75,6 +77,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1NftsCount
+      x-operation-id-source: derived
   /v1/nfts/txns:
     get:
       summary: Get NFT transactions by pagination
@@ -107,6 +111,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1NftsTxns
+      x-operation-id-source: derived
   /v1/nfts/txns/count:
     get:
       summary: Get estimated NFT transactions count
@@ -115,6 +121,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1NftsTxnsCount
+      x-operation-id-source: derived
   /v1/nfts/{contract}:
     get:
       summary: Get NFT info
@@ -133,6 +141,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1NftsByContract
+      x-operation-id-source: derived
   /v1/nfts/{contract}/txns:
     get:
       summary: Get NFT transactions by pagination
@@ -197,6 +207,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1NftsByContractTxns
+      x-operation-id-source: derived
   /v1/nfts/{contract}/txns/count:
     get:
       summary: Get estimated NFT transaction count
@@ -229,6 +241,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1NftsByContractTxnsCount
+      x-operation-id-source: derived
   /v1/nfts/{contract}/holders:
     get:
       summary: Get NFT holders by pagination
@@ -272,6 +286,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1NftsByContractHolders
+      x-operation-id-source: derived
   /v1/nfts/{contract}/holders/count:
     get:
       summary: Get estimated NFT holders count
@@ -290,6 +306,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1NftsByContractHoldersCount
+      x-operation-id-source: derived
   /v1/nfts/{contract}/tokens:
     get:
       summary: Get NFT tokens list by pagination
@@ -324,6 +342,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1NftsByContractTokens
+      x-operation-id-source: derived
   /v1/nfts/{contract}/tokens/count:
     get:
       summary: Get estimated NFT tokens count
@@ -342,6 +362,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1NftsByContractTokensCount
+      x-operation-id-source: derived
   /v1/nfts/{contract}/tokens/{token}:
     get:
       summary: Get NFT token info
@@ -369,6 +391,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1NftsByContractTokensByToken
+      x-operation-id-source: derived
   /v1/nfts/{contract}/tokens/{token}/txns:
     get:
       summary: Get NFT token transactions by pagination
@@ -437,6 +461,8 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1NftsByContractTokensByTokenTxns
+      x-operation-id-source: derived
   /v1/nfts/{contract}/tokens/{token}/txns/count:
     get:
       summary: Get estimated NFT token transactions count
@@ -473,3 +499,10 @@ paths:
       responses:
         '200':
           description: Success response
+      operationId: getV1NftsByContractTokensByTokenTxnsCount
+      x-operation-id-source: derived
+components:
+  securitySchemes:
+    BearerAuth:
+      scheme: bearer
+      type: http

@@ -1,7 +1,7 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
   description: Low-latency indexed account, token, and public-key lookup APIs for wallets and explorers. Embedded portal clients may forward an optional `apiKey` query parameter, but the public FastNEAR API does not require it.
-  title: FastNEAR accounts fungible-tokens API
+  title: FastNEAR Fungible Tokens API
   version: 3.0.3
 servers:
 - description: Mainnet
@@ -9,7 +9,7 @@ servers:
 - description: Testnet
   url: https://test.api.fastnear.com
 tags:
-- name: fungible-tokens
+- name: Fungible Tokens
 paths:
   /v0/account/{account_id}/ft:
     get:
@@ -55,7 +55,7 @@ paths:
           description: Internal Server Error
       summary: Lookup fungible token contract IDs for an account
       tags:
-      - fungible-tokens
+      - Fungible Tokens
       x-fastnear-slug: account_ft
       x-fastnear-title: FastNEAR API - V0 Account FT
   /v1/account/{account_id}/ft:
@@ -103,7 +103,7 @@ paths:
           description: Internal Server Error
       summary: Lookup indexed fungible token rows for an account
       tags:
-      - fungible-tokens
+      - Fungible Tokens
       x-fastnear-slug: account_ft
       x-fastnear-title: FastNEAR API - V1 Account FT
   /v1/ft/{token_id}/top:
@@ -150,7 +150,7 @@ paths:
           description: Internal Server Error
       summary: Lookup top indexed holders for a fungible token
       tags:
-      - fungible-tokens
+      - Fungible Tokens
       x-fastnear-slug: ft_top
       x-fastnear-title: FastNEAR API - V1 FT Top Holders
 components:
@@ -167,37 +167,6 @@ components:
       required:
       - account_id
       - contract_ids
-      type: object
-    TokenRow:
-      additionalProperties: false
-      properties:
-        balance:
-          nullable: true
-          type: string
-        contract_id:
-          type: string
-        last_update_block_height:
-          format: uint64
-          minimum: 0
-          nullable: true
-          type: integer
-      required:
-      - contract_id
-      - last_update_block_height
-      - balance
-      type: object
-    V1FtResponse:
-      additionalProperties: false
-      properties:
-        account_id:
-          type: string
-        tokens:
-          items:
-            $ref: '#/components/schemas/TokenRow'
-          type: array
-      required:
-      - account_id
-      - tokens
       type: object
     TokenAccountsResponse:
       additionalProperties: false
@@ -218,9 +187,43 @@ components:
         account_id:
           type: string
         balance:
-          nullable: true
-          type: string
+          type:
+          - string
+          - 'null'
       required:
       - account_id
       - balance
+      type: object
+    TokenRow:
+      additionalProperties: false
+      properties:
+        balance:
+          type:
+          - string
+          - 'null'
+        contract_id:
+          type: string
+        last_update_block_height:
+          format: uint64
+          minimum: 0
+          type:
+          - integer
+          - 'null'
+      required:
+      - contract_id
+      - last_update_block_height
+      - balance
+      type: object
+    V1FtResponse:
+      additionalProperties: false
+      properties:
+        account_id:
+          type: string
+        tokens:
+          items:
+            $ref: '#/components/schemas/TokenRow'
+          type: array
+      required:
+      - account_id
+      - tokens
       type: object
