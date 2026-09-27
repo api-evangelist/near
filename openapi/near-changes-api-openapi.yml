@@ -28,6 +28,47 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    BlockId:
+      anyOf:
+      - format: uint64
+        minimum: 0
+        title: block_height
+        type: integer
+      - $ref: '#/components/schemas/CryptoHash'
+    AccountId:
+      $schema: https://json-schema.org/draft/2020-12/schema
+      description: 'NEAR Account Identifier.
+
+
+        This is a unique, syntactically valid, human-readable account identifier on the NEAR network.
+
+
+        [See the crate-level docs for information about validation.](index.html#account-id-rules)
+
+
+        Also see [Error kind precedence](AccountId#error-kind-precedence).
+
+
+        ## Examples
+
+
+        ```
+
+        use near_account_id::AccountId;
+
+
+        let alice: AccountId = "alice.near".parse().unwrap();
+
+
+        assert!("ƒelicia.near".parse::<AccountId>().is_err()); // (ƒ is not f)
+
+        ```'
+      title: AccountId
+      type: string
+    CryptoHash:
+      type: string
+    PublicKeyHandle:
+      type: string
     AccessKeyPermissionView:
       description: Describes the permission scope for an access key. Whether it is a function call or a full access key.
       oneOf:
@@ -105,156 +146,6 @@ components:
         required:
         - GasKeyFullAccess
         type: object
-    AccountId:
-      $schema: https://json-schema.org/draft/2020-12/schema
-      description: 'NEAR Account Identifier.
-
-
-        This is a unique, syntactically valid, human-readable account identifier on the NEAR network.
-
-
-        [See the crate-level docs for information about validation.](index.html#account-id-rules)
-
-
-        Also see [Error kind precedence](AccountId#error-kind-precedence).
-
-
-        ## Examples
-
-
-        ```
-
-        use near_account_id::AccountId;
-
-
-        let alice: AccountId = "alice.near".parse().unwrap();
-
-
-        assert!("ƒelicia.near".parse::<AccountId>().is_err()); // (ƒ is not f)
-
-        ```'
-      title: AccountId
-      type: string
-    BlockId:
-      anyOf:
-      - format: uint64
-        minimum: 0
-        title: block_height
-        type: integer
-      - $ref: '#/components/schemas/CryptoHash'
-    InternalError:
-      oneOf:
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
-          name:
-            enum:
-            - INTERNAL_ERROR
-            type: string
-        required:
-        - name
-        - info
-        type: object
-    NearToken:
-      type: string
-    ErrorWrapper_for_RpcStateChangesError:
-      oneOf:
-      - properties:
-          cause:
-            $ref: '#/components/schemas/RpcRequestValidationErrorKind'
-          name:
-            enum:
-            - REQUEST_VALIDATION_ERROR
-            type: string
-        required:
-        - name
-        - cause
-        type: object
-      - properties:
-          cause:
-            $ref: '#/components/schemas/RpcStateChangesError'
-          name:
-            enum:
-            - HANDLER_ERROR
-            type: string
-        required:
-        - name
-        - cause
-        type: object
-      - properties:
-          cause:
-            $ref: '#/components/schemas/InternalError'
-          name:
-            enum:
-            - INTERNAL_ERROR
-            type: string
-        required:
-        - name
-        - cause
-        type: object
-    AccountWithPublicKey:
-      description: Account ID with its public key.
-      properties:
-        account_id:
-          $ref: '#/components/schemas/AccountId'
-        public_key:
-          $ref: '#/components/schemas/PublicKey'
-      required:
-      - account_id
-      - public_key
-      type: object
-    AccessKeyView:
-      description: Describes access key permission scope and nonce.
-      properties:
-        nonce:
-          format: uint64
-          minimum: 0
-          type: integer
-        permission:
-          $ref: '#/components/schemas/AccessKeyPermissionView'
-      required:
-      - nonce
-      - permission
-      type: object
-    RpcRequestValidationErrorKind:
-      oneOf:
-      - properties:
-          info:
-            properties:
-              method_name:
-                type: string
-            required:
-            - method_name
-            type: object
-          name:
-            enum:
-            - METHOD_NOT_FOUND
-            type: string
-        required:
-        - name
-        - info
-        type: object
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
-          name:
-            enum:
-            - PARSE_ERROR
-            type: string
-        required:
-        - name
-        - info
-        type: object
     RpcStateChangesInBlockResponse:
       properties:
         block_hash:
@@ -267,59 +158,6 @@ components:
       - block_hash
       - changes
       type: object
-    StoreValue:
-      description: 'This type is used to mark values returned from store (arrays of bytes).
-
-
-        NOTE: Currently, this type is only used in the view_client and RPC to be able to transparently
-
-        pretty-serialize the bytes arrays as base64-encoded strings (see `serialize.rs`).'
-      format: bytes
-      type: string
-    JsonRpcRequest_for_changes:
-      properties:
-        id:
-          type: string
-        jsonrpc:
-          type: string
-        method:
-          enum:
-          - changes
-          type: string
-        params:
-          $ref: '#/components/schemas/RpcStateChangesInBlockByTypeRequest'
-      required:
-      - jsonrpc
-      - id
-      - params
-      - method
-      title: JsonRpcRequest_for_changes
-      type: object
-    ShardId:
-      description: 'The shard identifier. It may be an arbitrary number - it does not need to be
-
-        a number in the range 0..NUM_SHARDS. The shard ids do not need to be
-
-        sequential or contiguous.
-
-
-        The shard id is wrapped in a new type to prevent the old pattern of using
-
-        indices in range 0..NUM_SHARDS and casting to ShardId. Once the transition
-
-        if fully complete it potentially may be simplified to a regular type alias.'
-      format: uint64
-      minimum: 0
-      type: integer
-    Finality:
-      description: Different types of finality.
-      enum:
-      - optimistic
-      - near-final
-      - final
-      type: string
-    CryptoHash:
-      type: string
     RpcStateChangesError:
       oneOf:
       - properties:
@@ -373,6 +211,52 @@ components:
         - name
         - info
         type: object
+    ErrorWrapper_for_RpcStateChangesError:
+      oneOf:
+      - properties:
+          cause:
+            $ref: '#/components/schemas/RpcRequestValidationErrorKind'
+          name:
+            enum:
+            - REQUEST_VALIDATION_ERROR
+            type: string
+        required:
+        - name
+        - cause
+        type: object
+      - properties:
+          cause:
+            $ref: '#/components/schemas/RpcStateChangesError'
+          name:
+            enum:
+            - HANDLER_ERROR
+            type: string
+        required:
+        - name
+        - cause
+        type: object
+      - properties:
+          cause:
+            $ref: '#/components/schemas/InternalError'
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
+        required:
+        - name
+        - cause
+        type: object
+    StoreValue:
+      description: 'This type is used to mark values returned from store (arrays of bytes).
+
+
+        NOTE: Currently, this type is only used in the view_client and RPC to be able to transparently
+
+        pretty-serialize the bytes arrays as base64-encoded strings (see `serialize.rs`).'
+      format: bytes
+      type: string
+    NearToken:
+      type: string
     StateChangeCauseView:
       description: See crate::types::StateChangeCause for details.
       oneOf:
@@ -479,6 +363,65 @@ components:
         required:
         - type
         type: object
+    JsonRpcResponse_for_RpcStateChangesInBlockResponse_and_RpcStateChangesError:
+      oneOf:
+      - properties:
+          result:
+            $ref: '#/components/schemas/RpcStateChangesInBlockResponse'
+        required:
+        - result
+        type: object
+      - properties:
+          error:
+            $ref: '#/components/schemas/ErrorWrapper_for_RpcStateChangesError'
+        required:
+        - error
+        type: object
+      properties:
+        id:
+          type: string
+        jsonrpc:
+          type: string
+      required:
+      - jsonrpc
+      - id
+      title: JsonRpcResponse_for_RpcStateChangesInBlockResponse_and_RpcStateChangesError
+      type: object
+    ShardId:
+      description: 'The shard identifier. It may be an arbitrary number - it does not need to be
+
+        a number in the range 0..NUM_SHARDS. The shard ids do not need to be
+
+        sequential or contiguous.
+
+
+        The shard id is wrapped in a new type to prevent the old pattern of using
+
+        indices in range 0..NUM_SHARDS and casting to ShardId. Once the transition
+
+        if fully complete it potentially may be simplified to a regular type alias.'
+      format: uint64
+      minimum: 0
+      type: integer
+    JsonRpcRequest_for_changes:
+      properties:
+        id:
+          type: string
+        jsonrpc:
+          type: string
+        method:
+          enum:
+          - changes
+          type: string
+        params:
+          $ref: '#/components/schemas/RpcStateChangesInBlockByTypeRequest'
+      required:
+      - jsonrpc
+      - id
+      - params
+      - method
+      title: JsonRpcRequest_for_changes
+      type: object
     RpcStateChangesInBlockByTypeRequest:
       description: 'It is a [serializable view] of [`StateChangesRequest`].
 
@@ -813,30 +756,103 @@ components:
         title: data_changes_by_sync_checkpoint
       title: RpcStateChangesInBlockByTypeRequest
       type: object
-    JsonRpcResponse_for_RpcStateChangesInBlockResponse_and_RpcStateChangesError:
+    RpcRequestValidationErrorKind:
       oneOf:
       - properties:
-          result:
-            $ref: '#/components/schemas/RpcStateChangesInBlockResponse'
+          info:
+            properties:
+              method_name:
+                type: string
+            required:
+            - method_name
+            type: object
+          name:
+            enum:
+            - METHOD_NOT_FOUND
+            type: string
         required:
-        - result
+        - name
+        - info
         type: object
       - properties:
-          error:
-            $ref: '#/components/schemas/ErrorWrapper_for_RpcStateChangesError'
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - PARSE_ERROR
+            type: string
         required:
-        - error
+        - name
+        - info
         type: object
+    AccessKeyView:
+      description: Describes access key permission scope and nonce.
       properties:
-        id:
-          type: string
-        jsonrpc:
-          type: string
+        nonce:
+          format: uint64
+          minimum: 0
+          type: integer
+        permission:
+          $ref: '#/components/schemas/AccessKeyPermissionView'
       required:
-      - jsonrpc
-      - id
-      title: JsonRpcResponse_for_RpcStateChangesInBlockResponse_and_RpcStateChangesError
+      - nonce
+      - permission
       type: object
+    StoreKey:
+      description: 'This type is used to mark keys (arrays of bytes) that are queried from store.
+
+
+        NOTE: Currently, this type is only used in the view_client and RPC to be able to transparently
+
+        pretty-serialize the bytes arrays as base64-encoded strings (see `serialize.rs`).'
+      format: bytes
+      type: string
+    SyncCheckpoint:
+      enum:
+      - genesis
+      - earliest_available
+      type: string
+    AccountWithPublicKey:
+      description: Account ID with its public key.
+      properties:
+        account_id:
+          $ref: '#/components/schemas/AccountId'
+        public_key:
+          $ref: '#/components/schemas/PublicKey'
+      required:
+      - account_id
+      - public_key
+      type: object
+    Finality:
+      description: Different types of finality.
+      enum:
+      - optimistic
+      - near-final
+      - final
+      type: string
+    InternalError:
+      oneOf:
+      - properties:
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
+        required:
+        - name
+        - info
+        type: object
     StateChangeWithCauseView:
       oneOf:
       - properties:
@@ -1056,20 +1072,4 @@ components:
       - cause
       type: object
     PublicKey:
-      type: string
-    PublicKeyHandle:
-      type: string
-    SyncCheckpoint:
-      enum:
-      - genesis
-      - earliest_available
-      type: string
-    StoreKey:
-      description: 'This type is used to mark keys (arrays of bytes) that are queried from store.
-
-
-        NOTE: Currently, this type is only used in the view_client and RPC to be able to transparently
-
-        pretty-serialize the bytes arrays as base64-encoded strings (see `serialize.rs`).'
-      format: bytes
       type: string

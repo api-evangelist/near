@@ -43,7 +43,7 @@ modified: '2026-09-16'
 specificationVersion: '0.23'
 apis:
 - aid: near:near-accounts-api
-  name: NEAR Protocol accounts API
+  name: NEAR Protocol Accounts API
   description: The accounts API from NEAR Protocol — 1 operation(s) for accounts.
   humanURL: https://docs.near.org/api/rpc/introduction
   baseURL: https://rpc.mainnet.near.org
@@ -872,7 +872,7 @@ apis:
   - type: FinOps
     url: https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/finops/nearblocks-api.yml
 - aid: near:near-fungible-tokens-api
-  name: NEAR Protocol fungible-tokens API
+  name: NEAR Protocol Fungible Tokens API
   description: The fungible-tokens API from NEAR Protocol — 3 operation(s) for fungible-tokens.
   humanURL: https://docs.near.org/api/rpc/introduction
   baseURL: https://rpc.mainnet.near.org
@@ -1595,7 +1595,7 @@ apis:
   - type: FinOps
     url: https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/finops/nearblocks-api.yml
 - aid: near:near-non-fungible-tokens-api
-  name: NEAR Protocol non-fungible-tokens API
+  name: NEAR Protocol Non Fungible Tokens API
   description: The non-fungible-tokens API from NEAR Protocol — 2 operation(s) for non-fungible-tokens.
   humanURL: https://docs.near.org/api/rpc/introduction
   baseURL: https://rpc.mainnet.near.org
@@ -1627,7 +1627,7 @@ apis:
   - type: FinOps
     url: https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/finops/nearblocks-api.yml
 - aid: near:near-public-key-api
-  name: NEAR Protocol public-key API
+  name: NEAR Protocol Public Key API
   description: The public-key API from NEAR Protocol — 4 operation(s) for public-key.
   humanURL: https://docs.near.org/api/rpc/introduction
   baseURL: https://rpc.mainnet.near.org
@@ -1719,7 +1719,7 @@ apis:
   - type: FinOps
     url: https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/finops/nearblocks-api.yml
 - aid: near:near-staking-api
-  name: NEAR Protocol staking API
+  name: NEAR Protocol Staking API
   description: The staking API from NEAR Protocol — 2 operation(s) for staking.
   humanURL: https://docs.near.org/api/rpc/introduction
   baseURL: https://rpc.mainnet.near.org
@@ -1781,7 +1781,7 @@ apis:
   - type: FinOps
     url: https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/finops/nearblocks-api.yml
 - aid: near:near-system-api
-  name: NEAR Protocol system API
+  name: NEAR Protocol System API
   description: The system API from NEAR Protocol — 2 operation(s) for system.
   humanURL: https://docs.near.org/api/rpc/introduction
   baseURL: https://rpc.mainnet.near.org

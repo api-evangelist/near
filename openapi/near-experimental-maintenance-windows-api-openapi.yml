@@ -28,32 +28,68 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    JsonRpcResponse_for_Array_of_Range_of_uint64_and_RpcMaintenanceWindowsError:
+    RpcMaintenanceWindowsError:
       oneOf:
       - properties:
-          result:
-            items:
-              $ref: '#/components/schemas/Range_of_uint64'
-            type: array
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
         required:
-        - result
+        - name
+        - info
         type: object
-      - properties:
-          error:
-            $ref: '#/components/schemas/ErrorWrapper_for_RpcMaintenanceWindowsError'
-        required:
-        - error
-        type: object
+    Range_of_uint64:
       properties:
-        id:
-          type: string
-        jsonrpc:
-          type: string
+        end:
+          format: uint64
+          minimum: 0
+          type: integer
+        start:
+          format: uint64
+          minimum: 0
+          type: integer
       required:
-      - jsonrpc
-      - id
-      title: JsonRpcResponse_for_Array_of_Range_of_uint64_and_RpcMaintenanceWindowsError
+      - start
+      - end
       type: object
+    AccountId:
+      $schema: https://json-schema.org/draft/2020-12/schema
+      description: 'NEAR Account Identifier.
+
+
+        This is a unique, syntactically valid, human-readable account identifier on the NEAR network.
+
+
+        [See the crate-level docs for information about validation.](index.html#account-id-rules)
+
+
+        Also see [Error kind precedence](AccountId#error-kind-precedence).
+
+
+        ## Examples
+
+
+        ```
+
+        use near_account_id::AccountId;
+
+
+        let alice: AccountId = "alice.near".parse().unwrap();
+
+
+        assert!("ƒelicia.near".parse::<AccountId>().is_err()); // (ƒ is not f)
+
+        ```'
+      title: AccountId
+      type: string
     ErrorWrapper_for_RpcMaintenanceWindowsError:
       oneOf:
       - properties:
@@ -88,6 +124,24 @@ components:
         required:
         - name
         - cause
+        type: object
+    InternalError:
+      oneOf:
+      - properties:
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
+        required:
+        - name
+        - info
         type: object
     RpcRequestValidationErrorKind:
       oneOf:
@@ -131,72 +185,6 @@ components:
       - account_id
       title: RpcMaintenanceWindowsRequest
       type: object
-    AccountId:
-      $schema: https://json-schema.org/draft/2020-12/schema
-      description: 'NEAR Account Identifier.
-
-
-        This is a unique, syntactically valid, human-readable account identifier on the NEAR network.
-
-
-        [See the crate-level docs for information about validation.](index.html#account-id-rules)
-
-
-        Also see [Error kind precedence](AccountId#error-kind-precedence).
-
-
-        ## Examples
-
-
-        ```
-
-        use near_account_id::AccountId;
-
-
-        let alice: AccountId = "alice.near".parse().unwrap();
-
-
-        assert!("ƒelicia.near".parse::<AccountId>().is_err()); // (ƒ is not f)
-
-        ```'
-      title: AccountId
-      type: string
-    RpcMaintenanceWindowsError:
-      oneOf:
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
-          name:
-            enum:
-            - INTERNAL_ERROR
-            type: string
-        required:
-        - name
-        - info
-        type: object
-    InternalError:
-      oneOf:
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
-          name:
-            enum:
-            - INTERNAL_ERROR
-            type: string
-        required:
-        - name
-        - info
-        type: object
     JsonRpcRequest_for_EXPERIMENTAL_maintenance_windows:
       properties:
         id:
@@ -216,17 +204,29 @@ components:
       - method
       title: JsonRpcRequest_for_EXPERIMENTAL_maintenance_windows
       type: object
-    Range_of_uint64:
+    JsonRpcResponse_for_Array_of_Range_of_uint64_and_RpcMaintenanceWindowsError:
+      oneOf:
+      - properties:
+          result:
+            items:
+              $ref: '#/components/schemas/Range_of_uint64'
+            type: array
+        required:
+        - result
+        type: object
+      - properties:
+          error:
+            $ref: '#/components/schemas/ErrorWrapper_for_RpcMaintenanceWindowsError'
+        required:
+        - error
+        type: object
       properties:
-        end:
-          format: uint64
-          minimum: 0
-          type: integer
-        start:
-          format: uint64
-          minimum: 0
-          type: integer
+        id:
+          type: string
+        jsonrpc:
+          type: string
       required:
-      - start
-      - end
+      - jsonrpc
+      - id
+      title: JsonRpcResponse_for_Array_of_Range_of_uint64_and_RpcMaintenanceWindowsError
       type: object

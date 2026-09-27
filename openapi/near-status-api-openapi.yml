@@ -28,22 +28,30 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    Version:
-      description: Data structure for semver version and github tag or commit.
+    CatchupStatusView:
+      description: Status of the [catchup](https://near.github.io/nearcore/architecture/how/sync.html#catchup) process
       properties:
-        build:
-          type: string
-        commit:
-          type: string
-        rustc_version:
-          default: ''
-          type: string
-        version:
-          type: string
+        blocks_to_catchup:
+          items:
+            $ref: '#/components/schemas/BlockStatusView'
+          type: array
+        shard_sync_status:
+          additionalProperties: false
+          patternProperties:
+            ^\d+$:
+              type: string
+          type: object
+        sync_block_hash:
+          $ref: '#/components/schemas/CryptoHash'
+        sync_block_height:
+          format: uint64
+          minimum: 0
+          type: integer
       required:
-      - version
-      - build
-      - commit
+      - sync_block_hash
+      - sync_block_height
+      - shard_sync_status
+      - blocks_to_catchup
       type: object
     AccountId:
       $schema: https://json-schema.org/draft/2020-12/schema
@@ -75,25 +83,8 @@ components:
         ```'
       title: AccountId
       type: string
-    JsonRpcRequest_for_status:
-      properties:
-        id:
-          type: string
-        jsonrpc:
-          type: string
-        method:
-          enum:
-          - status
-          type: string
-        params:
-          $ref: '#/components/schemas/RpcStatusRequest'
-      required:
-      - jsonrpc
-      - id
-      - params
-      - method
-      title: JsonRpcRequest_for_status
-      type: object
+    CryptoHash:
+      type: string
     AccountDataView:
       description: 'AccountData is a piece of global state that a validator
 
@@ -144,8 +135,151 @@ components:
       - account_key
       - timestamp
       type: object
-    InternalError:
+    ErrorWrapper_for_RpcStatusError:
       oneOf:
+      - properties:
+          cause:
+            $ref: '#/components/schemas/RpcRequestValidationErrorKind'
+          name:
+            enum:
+            - REQUEST_VALIDATION_ERROR
+            type: string
+        required:
+        - name
+        - cause
+        type: object
+      - properties:
+          cause:
+            $ref: '#/components/schemas/RpcStatusError'
+          name:
+            enum:
+            - HANDLER_ERROR
+            type: string
+        required:
+        - name
+        - cause
+        type: object
+      - properties:
+          cause:
+            $ref: '#/components/schemas/InternalError'
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
+        required:
+        - name
+        - cause
+        type: object
+    DetailedDebugStatus:
+      properties:
+        block_production_delay_millis:
+          format: uint64
+          minimum: 0
+          type: integer
+        catchup_status:
+          items:
+            $ref: '#/components/schemas/CatchupStatusView'
+          type: array
+        current_head_status:
+          $ref: '#/components/schemas/BlockStatusView'
+        current_header_head_status:
+          $ref: '#/components/schemas/BlockStatusView'
+        network_info:
+          $ref: '#/components/schemas/NetworkInfoView'
+        sync_status:
+          type: string
+      required:
+      - network_info
+      - sync_status
+      - catchup_status
+      - current_head_status
+      - current_header_head_status
+      - block_production_delay_millis
+      type: object
+    KnownProducerView:
+      description: 'Information about a Producer: its account name, peer_id and a list of connected peers that
+
+        the node can use to send message for this producer.'
+      properties:
+        account_id:
+          $ref: '#/components/schemas/AccountId'
+        next_hops:
+          items:
+            $ref: '#/components/schemas/PublicKey'
+          type:
+          - array
+          - 'null'
+        peer_id:
+          $ref: '#/components/schemas/PublicKey'
+      required:
+      - account_id
+      - peer_id
+      type: object
+    Version:
+      description: Data structure for semver version and github tag or commit.
+      properties:
+        build:
+          type: string
+        commit:
+          type: string
+        rustc_version:
+          default: ''
+          type: string
+        version:
+          type: string
+      required:
+      - version
+      - build
+      - commit
+      type: object
+    RpcStatusError:
+      oneOf:
+      - properties:
+          name:
+            enum:
+            - NODE_IS_SYNCING
+            type: string
+        required:
+        - name
+        type: object
+      - properties:
+          info:
+            properties:
+              elapsed:
+                items:
+                  format: uint64
+                  minimum: 0
+                  type: integer
+                maxItems: 2
+                minItems: 2
+                type: array
+            required:
+            - elapsed
+            type: object
+          name:
+            enum:
+            - NO_NEW_BLOCKS
+            type: string
+        required:
+        - name
+        - info
+        type: object
+      - properties:
+          info:
+            properties:
+              epoch_id:
+                $ref: '#/components/schemas/EpochId'
+            required:
+            - epoch_id
+            type: object
+          name:
+            enum:
+            - EPOCH_OUT_OF_BOUNDS
+            type: string
+        required:
+        - name
+        - info
+        type: object
       - properties:
           info:
             properties:
@@ -162,6 +296,298 @@ components:
         - name
         - info
         type: object
+    RpcStatusRequest:
+      enum:
+      - null
+      title: RpcStatusRequest
+    PeerInfoView:
+      properties:
+        account_id:
+          anyOf:
+          - $ref: '#/components/schemas/AccountId'
+          - enum:
+            - null
+        addr:
+          type: string
+        archival:
+          type: boolean
+        block_hash:
+          anyOf:
+          - $ref: '#/components/schemas/CryptoHash'
+          - enum:
+            - null
+        connection_established_time_millis:
+          format: uint64
+          minimum: 0
+          type: integer
+        height:
+          format: uint64
+          minimum: 0
+          type:
+          - integer
+          - 'null'
+        is_highest_block_invalid:
+          type: boolean
+        is_outbound_peer:
+          type: boolean
+        last_time_peer_requested_millis:
+          format: uint64
+          minimum: 0
+          type: integer
+        last_time_received_message_millis:
+          format: uint64
+          minimum: 0
+          type: integer
+        nonce:
+          description: Connection nonce.
+          format: uint64
+          minimum: 0
+          type: integer
+        peer_id:
+          $ref: '#/components/schemas/PublicKey'
+        received_bytes_per_sec:
+          format: uint64
+          minimum: 0
+          type: integer
+        sent_bytes_per_sec:
+          format: uint64
+          minimum: 0
+          type: integer
+        tracked_shards:
+          items:
+            $ref: '#/components/schemas/ShardId'
+          type: array
+      required:
+      - addr
+      - is_highest_block_invalid
+      - tracked_shards
+      - archival
+      - peer_id
+      - received_bytes_per_sec
+      - sent_bytes_per_sec
+      - last_time_peer_requested_millis
+      - last_time_received_message_millis
+      - connection_established_time_millis
+      - is_outbound_peer
+      - nonce
+      type: object
+    ValidatorInfo:
+      properties:
+        account_id:
+          $ref: '#/components/schemas/AccountId'
+      required:
+      - account_id
+      type: object
+    Tier1ProxyView:
+      properties:
+        addr:
+          type: string
+        peer_id:
+          $ref: '#/components/schemas/PublicKey'
+      required:
+      - addr
+      - peer_id
+      type: object
+    ShardId:
+      description: 'The shard identifier. It may be an arbitrary number - it does not need to be
+
+        a number in the range 0..NUM_SHARDS. The shard ids do not need to be
+
+        sequential or contiguous.
+
+
+        The shard id is wrapped in a new type to prevent the old pattern of using
+
+        indices in range 0..NUM_SHARDS and casting to ShardId. Once the transition
+
+        if fully complete it potentially may be simplified to a regular type alias.'
+      format: uint64
+      minimum: 0
+      type: integer
+    RpcRequestValidationErrorKind:
+      oneOf:
+      - properties:
+          info:
+            properties:
+              method_name:
+                type: string
+            required:
+            - method_name
+            type: object
+          name:
+            enum:
+            - METHOD_NOT_FOUND
+            type: string
+        required:
+        - name
+        - info
+        type: object
+      - properties:
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - PARSE_ERROR
+            type: string
+        required:
+        - name
+        - info
+        type: object
+    EpochId:
+      allOf:
+      - $ref: '#/components/schemas/CryptoHash'
+      description: 'Epoch identifier -- wrapped hash, to make it easier to distinguish.
+
+        EpochId of epoch T is the hash of last block in T-2
+
+        EpochId of first two epochs is 0'
+    NetworkInfoView:
+      properties:
+        connected_peers:
+          items:
+            $ref: '#/components/schemas/PeerInfoView'
+          type: array
+        known_producers:
+          items:
+            $ref: '#/components/schemas/KnownProducerView'
+          type: array
+        num_connected_peers:
+          format: uint
+          minimum: 0
+          type: integer
+        peer_max_count:
+          format: uint32
+          minimum: 0
+          type: integer
+        tier1_accounts_data:
+          items:
+            $ref: '#/components/schemas/AccountDataView'
+          type: array
+        tier1_accounts_keys:
+          items:
+            $ref: '#/components/schemas/PublicKey'
+          type: array
+        tier1_connections:
+          items:
+            $ref: '#/components/schemas/PeerInfoView'
+          type: array
+      required:
+      - peer_max_count
+      - num_connected_peers
+      - connected_peers
+      - known_producers
+      - tier1_accounts_keys
+      - tier1_accounts_data
+      - tier1_connections
+      type: object
+    JsonRpcResponse_for_RpcStatusResponse_and_RpcStatusError:
+      oneOf:
+      - properties:
+          result:
+            $ref: '#/components/schemas/RpcStatusResponse'
+        required:
+        - result
+        type: object
+      - properties:
+          error:
+            $ref: '#/components/schemas/ErrorWrapper_for_RpcStatusError'
+        required:
+        - error
+        type: object
+      properties:
+        id:
+          type: string
+        jsonrpc:
+          type: string
+      required:
+      - jsonrpc
+      - id
+      title: JsonRpcResponse_for_RpcStatusResponse_and_RpcStatusError
+      type: object
+    BlockStatusView:
+      description: Height and hash of a block
+      properties:
+        hash:
+          $ref: '#/components/schemas/CryptoHash'
+        height:
+          format: uint64
+          minimum: 0
+          type: integer
+      required:
+      - height
+      - hash
+      type: object
+    JsonRpcRequest_for_status:
+      properties:
+        id:
+          type: string
+        jsonrpc:
+          type: string
+        method:
+          enum:
+          - status
+          type: string
+        params:
+          $ref: '#/components/schemas/RpcStatusRequest'
+      required:
+      - jsonrpc
+      - id
+      - params
+      - method
+      title: JsonRpcRequest_for_status
+      type: object
+    StatusSyncInfo:
+      properties:
+        earliest_block_hash:
+          anyOf:
+          - $ref: '#/components/schemas/CryptoHash'
+          - enum:
+            - null
+        earliest_block_height:
+          format: uint64
+          minimum: 0
+          type:
+          - integer
+          - 'null'
+        earliest_block_time:
+          type:
+          - string
+          - 'null'
+        epoch_id:
+          anyOf:
+          - $ref: '#/components/schemas/EpochId'
+          - enum:
+            - null
+        epoch_start_height:
+          format: uint64
+          minimum: 0
+          type:
+          - integer
+          - 'null'
+        latest_block_hash:
+          $ref: '#/components/schemas/CryptoHash'
+        latest_block_height:
+          format: uint64
+          minimum: 0
+          type: integer
+        latest_block_time:
+          type: string
+        latest_state_root:
+          $ref: '#/components/schemas/CryptoHash'
+        syncing:
+          type: boolean
+      required:
+      - latest_block_hash
+      - latest_block_height
+      - latest_state_root
+      - latest_block_time
+      - syncing
+      type: object
     RpcStatusResponse:
       properties:
         chain_id:
@@ -242,73 +668,8 @@ components:
       - uptime_sec
       - genesis_hash
       type: object
-    CatchupStatusView:
-      description: Status of the [catchup](https://near.github.io/nearcore/architecture/how/sync.html#catchup) process
-      properties:
-        blocks_to_catchup:
-          items:
-            $ref: '#/components/schemas/BlockStatusView'
-          type: array
-        shard_sync_status:
-          additionalProperties: false
-          patternProperties:
-            ^\d+$:
-              type: string
-          type: object
-        sync_block_hash:
-          $ref: '#/components/schemas/CryptoHash'
-        sync_block_height:
-          format: uint64
-          minimum: 0
-          type: integer
-      required:
-      - sync_block_hash
-      - sync_block_height
-      - shard_sync_status
-      - blocks_to_catchup
-      type: object
-    JsonRpcResponse_for_RpcStatusResponse_and_RpcStatusError:
+    InternalError:
       oneOf:
-      - properties:
-          result:
-            $ref: '#/components/schemas/RpcStatusResponse'
-        required:
-        - result
-        type: object
-      - properties:
-          error:
-            $ref: '#/components/schemas/ErrorWrapper_for_RpcStatusError'
-        required:
-        - error
-        type: object
-      properties:
-        id:
-          type: string
-        jsonrpc:
-          type: string
-      required:
-      - jsonrpc
-      - id
-      title: JsonRpcResponse_for_RpcStatusResponse_and_RpcStatusError
-      type: object
-    RpcRequestValidationErrorKind:
-      oneOf:
-      - properties:
-          info:
-            properties:
-              method_name:
-                type: string
-            required:
-            - method_name
-            type: object
-          name:
-            enum:
-            - METHOD_NOT_FOUND
-            type: string
-        required:
-        - name
-        - info
-        type: object
       - properties:
           info:
             properties:
@@ -319,372 +680,11 @@ components:
             type: object
           name:
             enum:
-            - PARSE_ERROR
-            type: string
-        required:
-        - name
-        - info
-        type: object
-    StatusSyncInfo:
-      properties:
-        earliest_block_hash:
-          anyOf:
-          - $ref: '#/components/schemas/CryptoHash'
-          - enum:
-            - null
-        earliest_block_height:
-          format: uint64
-          minimum: 0
-          type:
-          - integer
-          - 'null'
-        earliest_block_time:
-          type:
-          - string
-          - 'null'
-        epoch_id:
-          anyOf:
-          - $ref: '#/components/schemas/EpochId'
-          - enum:
-            - null
-        epoch_start_height:
-          format: uint64
-          minimum: 0
-          type:
-          - integer
-          - 'null'
-        latest_block_hash:
-          $ref: '#/components/schemas/CryptoHash'
-        latest_block_height:
-          format: uint64
-          minimum: 0
-          type: integer
-        latest_block_time:
-          type: string
-        latest_state_root:
-          $ref: '#/components/schemas/CryptoHash'
-        syncing:
-          type: boolean
-      required:
-      - latest_block_hash
-      - latest_block_height
-      - latest_state_root
-      - latest_block_time
-      - syncing
-      type: object
-    BlockStatusView:
-      description: Height and hash of a block
-      properties:
-        hash:
-          $ref: '#/components/schemas/CryptoHash'
-        height:
-          format: uint64
-          minimum: 0
-          type: integer
-      required:
-      - height
-      - hash
-      type: object
-    ValidatorInfo:
-      properties:
-        account_id:
-          $ref: '#/components/schemas/AccountId'
-      required:
-      - account_id
-      type: object
-    EpochId:
-      allOf:
-      - $ref: '#/components/schemas/CryptoHash'
-      description: 'Epoch identifier -- wrapped hash, to make it easier to distinguish.
-
-        EpochId of epoch T is the hash of last block in T-2
-
-        EpochId of first two epochs is 0'
-    ShardId:
-      description: 'The shard identifier. It may be an arbitrary number - it does not need to be
-
-        a number in the range 0..NUM_SHARDS. The shard ids do not need to be
-
-        sequential or contiguous.
-
-
-        The shard id is wrapped in a new type to prevent the old pattern of using
-
-        indices in range 0..NUM_SHARDS and casting to ShardId. Once the transition
-
-        if fully complete it potentially may be simplified to a regular type alias.'
-      format: uint64
-      minimum: 0
-      type: integer
-    KnownProducerView:
-      description: 'Information about a Producer: its account name, peer_id and a list of connected peers that
-
-        the node can use to send message for this producer.'
-      properties:
-        account_id:
-          $ref: '#/components/schemas/AccountId'
-        next_hops:
-          items:
-            $ref: '#/components/schemas/PublicKey'
-          type:
-          - array
-          - 'null'
-        peer_id:
-          $ref: '#/components/schemas/PublicKey'
-      required:
-      - account_id
-      - peer_id
-      type: object
-    Tier1ProxyView:
-      properties:
-        addr:
-          type: string
-        peer_id:
-          $ref: '#/components/schemas/PublicKey'
-      required:
-      - addr
-      - peer_id
-      type: object
-    CryptoHash:
-      type: string
-    DetailedDebugStatus:
-      properties:
-        block_production_delay_millis:
-          format: uint64
-          minimum: 0
-          type: integer
-        catchup_status:
-          items:
-            $ref: '#/components/schemas/CatchupStatusView'
-          type: array
-        current_head_status:
-          $ref: '#/components/schemas/BlockStatusView'
-        current_header_head_status:
-          $ref: '#/components/schemas/BlockStatusView'
-        network_info:
-          $ref: '#/components/schemas/NetworkInfoView'
-        sync_status:
-          type: string
-      required:
-      - network_info
-      - sync_status
-      - catchup_status
-      - current_head_status
-      - current_header_head_status
-      - block_production_delay_millis
-      type: object
-    NetworkInfoView:
-      properties:
-        connected_peers:
-          items:
-            $ref: '#/components/schemas/PeerInfoView'
-          type: array
-        known_producers:
-          items:
-            $ref: '#/components/schemas/KnownProducerView'
-          type: array
-        num_connected_peers:
-          format: uint
-          minimum: 0
-          type: integer
-        peer_max_count:
-          format: uint32
-          minimum: 0
-          type: integer
-        tier1_accounts_data:
-          items:
-            $ref: '#/components/schemas/AccountDataView'
-          type: array
-        tier1_accounts_keys:
-          items:
-            $ref: '#/components/schemas/PublicKey'
-          type: array
-        tier1_connections:
-          items:
-            $ref: '#/components/schemas/PeerInfoView'
-          type: array
-      required:
-      - peer_max_count
-      - num_connected_peers
-      - connected_peers
-      - known_producers
-      - tier1_accounts_keys
-      - tier1_accounts_data
-      - tier1_connections
-      type: object
-    PeerInfoView:
-      properties:
-        account_id:
-          anyOf:
-          - $ref: '#/components/schemas/AccountId'
-          - enum:
-            - null
-        addr:
-          type: string
-        archival:
-          type: boolean
-        block_hash:
-          anyOf:
-          - $ref: '#/components/schemas/CryptoHash'
-          - enum:
-            - null
-        connection_established_time_millis:
-          format: uint64
-          minimum: 0
-          type: integer
-        height:
-          format: uint64
-          minimum: 0
-          type:
-          - integer
-          - 'null'
-        is_highest_block_invalid:
-          type: boolean
-        is_outbound_peer:
-          type: boolean
-        last_time_peer_requested_millis:
-          format: uint64
-          minimum: 0
-          type: integer
-        last_time_received_message_millis:
-          format: uint64
-          minimum: 0
-          type: integer
-        nonce:
-          description: Connection nonce.
-          format: uint64
-          minimum: 0
-          type: integer
-        peer_id:
-          $ref: '#/components/schemas/PublicKey'
-        received_bytes_per_sec:
-          format: uint64
-          minimum: 0
-          type: integer
-        sent_bytes_per_sec:
-          format: uint64
-          minimum: 0
-          type: integer
-        tracked_shards:
-          items:
-            $ref: '#/components/schemas/ShardId'
-          type: array
-      required:
-      - addr
-      - is_highest_block_invalid
-      - tracked_shards
-      - archival
-      - peer_id
-      - received_bytes_per_sec
-      - sent_bytes_per_sec
-      - last_time_peer_requested_millis
-      - last_time_received_message_millis
-      - connection_established_time_millis
-      - is_outbound_peer
-      - nonce
-      type: object
-    RpcStatusRequest:
-      enum:
-      - null
-      title: RpcStatusRequest
-    ErrorWrapper_for_RpcStatusError:
-      oneOf:
-      - properties:
-          cause:
-            $ref: '#/components/schemas/RpcRequestValidationErrorKind'
-          name:
-            enum:
-            - REQUEST_VALIDATION_ERROR
-            type: string
-        required:
-        - name
-        - cause
-        type: object
-      - properties:
-          cause:
-            $ref: '#/components/schemas/RpcStatusError'
-          name:
-            enum:
-            - HANDLER_ERROR
-            type: string
-        required:
-        - name
-        - cause
-        type: object
-      - properties:
-          cause:
-            $ref: '#/components/schemas/InternalError'
-          name:
-            enum:
             - INTERNAL_ERROR
             type: string
         required:
         - name
-        - cause
+        - info
         type: object
     PublicKey:
       type: string
-    RpcStatusError:
-      oneOf:
-      - properties:
-          name:
-            enum:
-            - NODE_IS_SYNCING
-            type: string
-        required:
-        - name
-        type: object
-      - properties:
-          info:
-            properties:
-              elapsed:
-                items:
-                  format: uint64
-                  minimum: 0
-                  type: integer
-                maxItems: 2
-                minItems: 2
-                type: array
-            required:
-            - elapsed
-            type: object
-          name:
-            enum:
-            - NO_NEW_BLOCKS
-            type: string
-        required:
-        - name
-        - info
-        type: object
-      - properties:
-          info:
-            properties:
-              epoch_id:
-                $ref: '#/components/schemas/EpochId'
-            required:
-            - epoch_id
-            type: object
-          name:
-            enum:
-            - EPOCH_OUT_OF_BOUNDS
-            type: string
-        required:
-        - name
-        - info
-        type: object
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
-          name:
-            enum:
-            - INTERNAL_ERROR
-            type: string
-        required:
-        - name
-        - info
-        type: object

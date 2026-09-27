@@ -28,79 +28,13 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    ActionCreationConfigView:
-      description: Describes the cost of creating a specific action, `Action`. Includes all variants.
-      properties:
-        add_key_cost:
-          allOf:
-          - $ref: '#/components/schemas/AccessKeyCreationConfigView'
-          description: Base cost of adding a key.
-        create_account_cost:
-          allOf:
-          - $ref: '#/components/schemas/Fee'
-          description: Base cost of creating an account.
-        delegate_cost:
-          allOf:
-          - $ref: '#/components/schemas/Fee'
-          description: 'Base cost for processing a delegate action.
-
-
-            This is on top of the costs for the actions inside the delegate action.'
-        delete_account_cost:
-          allOf:
-          - $ref: '#/components/schemas/Fee'
-          description: Base cost of deleting an account.
-        delete_key_cost:
-          allOf:
-          - $ref: '#/components/schemas/Fee'
-          description: Base cost of deleting a key.
-        deploy_contract_cost:
-          allOf:
-          - $ref: '#/components/schemas/Fee'
-          description: Base cost of deploying a contract.
-        deploy_contract_cost_per_byte:
-          allOf:
-          - $ref: '#/components/schemas/Fee'
-          description: Cost per byte of deploying a contract.
-        function_call_cost:
-          allOf:
-          - $ref: '#/components/schemas/Fee'
-          description: Base cost of calling a function.
-        function_call_cost_per_byte:
-          allOf:
-          - $ref: '#/components/schemas/Fee'
-          description: Cost per byte of method name and arguments of calling a function.
-        stake_cost:
-          allOf:
-          - $ref: '#/components/schemas/Fee'
-          description: Base cost of staking.
-        transfer_cost:
-          allOf:
-          - $ref: '#/components/schemas/Fee'
-          description: Base cost of making a transfer.
-      type: object
-    RpcProtocolConfigRequest:
-      oneOf:
-      - properties:
-          block_id:
-            $ref: '#/components/schemas/BlockId'
-        required:
-        - block_id
-        type: object
-      - properties:
-          finality:
-            $ref: '#/components/schemas/Finality'
-        required:
-        - finality
-        type: object
-      - properties:
-          sync_checkpoint:
-            $ref: '#/components/schemas/SyncCheckpoint'
-        required:
-        - sync_checkpoint
-        type: object
-      title: RpcProtocolConfigRequest
-      type: object
+    BlockId:
+      anyOf:
+      - format: uint64
+        minimum: 0
+        title: block_height
+        type: integer
+      - $ref: '#/components/schemas/CryptoHash'
     AccountId:
       $schema: https://json-schema.org/draft/2020-12/schema
       description: 'NEAR Account Identifier.
@@ -386,62 +320,77 @@ components:
           minimum: 0
           type: integer
       type: object
-    StorageGetMode:
-      description: This enum represents if a storage_get call will be performed through flat storage or trie
-      enum:
-      - FlatStorage
-      - Trie
+    CryptoHash:
       type: string
-    BlockId:
-      anyOf:
-      - format: uint64
-        minimum: 0
-        title: block_height
-        type: integer
-      - $ref: '#/components/schemas/CryptoHash'
-    ShardLayoutV1:
+    ShardLayout:
+      description: 'A versioned struct that contains all information needed to assign accounts to shards.
+
+
+        Because of re-sharding, the chain may use different shard layout to split shards at different
+
+        times. Currently, `ShardLayout` is stored as part of `EpochConfig`, which is generated each
+
+        epoch given the epoch protocol version. In mainnet/testnet, we use two shard layouts since
+
+        re-sharding has only happened once. It is stored as part of genesis config, see
+
+        default_simple_nightshade_shard_layout() Below is an overview for some important
+
+        functionalities of ShardLayout interface.'
+      oneOf:
+      - additionalProperties: false
+        properties:
+          V0:
+            $ref: '#/components/schemas/ShardLayoutV0'
+        required:
+        - V0
+        type: object
+      - additionalProperties: false
+        properties:
+          V1:
+            $ref: '#/components/schemas/ShardLayoutV1'
+        required:
+        - V1
+        type: object
+      - additionalProperties: false
+        properties:
+          V2:
+            $ref: '#/components/schemas/ShardLayoutV2'
+        required:
+        - V2
+        type: object
+      - additionalProperties: false
+        properties:
+          V3:
+            $ref: '#/components/schemas/ShardLayoutV3'
+        required:
+        - V3
+        type: object
+    WitnessConfigView:
+      description: Configuration specific to ChunkStateWitness.
       properties:
-        boundary_accounts:
-          description: 'The boundary accounts are the accounts on boundaries between shards.
+        combined_transactions_size_limit:
+          description: 'Maximum size of transactions contained inside ChunkStateWitness.
 
-            Each shard contains a range of accounts from one boundary account to
 
-            another - or the smallest or largest account possible. The total
+            A witness contains transactions from both the previous chunk and the current one.
 
-            number of shards is equal to the number of boundary accounts plus 1.'
-          items:
-            $ref: '#/components/schemas/AccountId'
-          type: array
-        shards_split_map:
-          description: 'Maps shards from the last shard layout to shards that it splits to in this shard layout,
-
-            Useful for constructing states for the shards.
-
-            None for the genesis shard layout'
-          items:
-            items:
-              $ref: '#/components/schemas/ShardId'
-            type: array
-          type:
-          - array
-          - 'null'
-        to_parent_shard_map:
-          description: 'Maps shard in this shard layout to their parent shard
-
-            Since shard_ids always range from 0 to num_shards - 1, we use vec instead of a hashmap'
-          items:
-            $ref: '#/components/schemas/ShardId'
-          type:
-          - array
-          - 'null'
-        version:
-          description: Version of the shard layout, this is useful for uniquely identify the shard layout
-          format: uint32
+            This parameter limits the sum of sizes of transactions from both of those chunks.'
+          format: uint
           minimum: 0
           type: integer
-      required:
-      - boundary_accounts
-      - version
+        main_storage_proof_size_soft_limit:
+          description: 'Size limit for storage proof generated while executing receipts in a chunk.
+
+            After this limit is reached we defer execution of any new receipts.'
+          format: uint64
+          minimum: 0
+          type: integer
+        new_transactions_validation_state_size_soft_limit:
+          description: Soft size limit of storage proof used to validate new transactions in ChunkStateWitness.
+          format: uint64
+          minimum: 0
+          type: integer
       type: object
     ShardLayoutV2:
       description: 'Counterpart to `ShardLayoutV2` composed of maps with string keys to aid
@@ -491,105 +440,24 @@ components:
       - index_to_id_map
       - version
       type: object
-    InternalError:
-      oneOf:
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
-          name:
-            enum:
-            - INTERNAL_ERROR
-            type: string
-        required:
-        - name
-        - info
-        type: object
-    NearGas:
-      format: uint64
-      minimum: 0
-      type: integer
-    NearToken:
-      type: string
-    ShardLayoutV3:
-      description: 'Counterpart to `ShardLayoutV3` composed of maps with string keys to aid
-
-        serde serialization.'
+    JsonRpcRequest_for_EXPERIMENTAL_protocol_config:
       properties:
-        boundary_accounts:
-          items:
-            $ref: '#/components/schemas/AccountId'
-          type: array
-        id_to_index_map:
-          additionalProperties:
-            format: uint
-            minimum: 0
-            type: integer
-          type: object
-        last_split:
-          $ref: '#/components/schemas/ShardId'
-        shard_ids:
-          items:
-            $ref: '#/components/schemas/ShardId'
-          type: array
-        shards_split_map:
-          additionalProperties:
-            items:
-              $ref: '#/components/schemas/ShardId'
-            type: array
-          type: object
+        id:
+          type: string
+        jsonrpc:
+          type: string
+        method:
+          enum:
+          - EXPERIMENTAL_protocol_config
+          type: string
+        params:
+          $ref: '#/components/schemas/RpcProtocolConfigRequest'
       required:
-      - boundary_accounts
-      - shard_ids
-      - id_to_index_map
-      - shards_split_map
-      - last_split
-      type: object
-    RuntimeFeesConfigView:
-      description: Describes different fees for the runtime
-      properties:
-        action_creation_config:
-          allOf:
-          - $ref: '#/components/schemas/ActionCreationConfigView'
-          description: Describes the cost of creating a certain action, `Action`. Includes all variants.
-        action_receipt_creation_config:
-          allOf:
-          - $ref: '#/components/schemas/Fee'
-          description: "Describes the cost of creating an action receipt, `ActionReceipt`, excluding the actual cost\nof actions.\n- `send` cost is burned when a receipt is created using `promise_create` or\n    `promise_batch_create`\n- `exec` cost is burned when the receipt is being executed."
-        burnt_gas_reward:
-          description: Fraction of the burnt gas to reward to the contract account for execution.
-          items:
-            format: int32
-            type: integer
-          maxItems: 2
-          minItems: 2
-          type: array
-        data_receipt_creation_config:
-          allOf:
-          - $ref: '#/components/schemas/DataReceiptCreationConfigView'
-          description: Describes the cost of creating a data receipt, `DataReceipt`.
-        ml_dsa_65_verification_cost:
-          allOf:
-          - $ref: '#/components/schemas/NearGas'
-          description: 'Describes the extra cost of verifying an ML-DSA-65 signature above the
-
-            cost of verifying the standard signature types.'
-        pessimistic_gas_price_inflation_ratio:
-          description: Pessimistic gas price inflation ratio.
-          items:
-            format: int32
-            type: integer
-          maxItems: 2
-          minItems: 2
-          type: array
-        storage_usage_config:
-          allOf:
-          - $ref: '#/components/schemas/StorageUsageConfigView'
-          description: Describes fees for storage.
+      - jsonrpc
+      - id
+      - params
+      - method
+      title: JsonRpcRequest_for_EXPERIMENTAL_protocol_config
       type: object
     JsonRpcResponse_for_RpcProtocolConfigResponse_and_RpcProtocolConfigError:
       oneOf:
@@ -615,234 +483,33 @@ components:
       - id
       title: JsonRpcResponse_for_RpcProtocolConfigResponse_and_RpcProtocolConfigError
       type: object
-    RpcRequestValidationErrorKind:
-      oneOf:
-      - properties:
-          info:
-            properties:
-              method_name:
-                type: string
-            required:
-            - method_name
-            type: object
-          name:
-            enum:
-            - METHOD_NOT_FOUND
-            type: string
-        required:
-        - name
-        - info
-        type: object
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
-          name:
-            enum:
-            - PARSE_ERROR
-            type: string
-        required:
-        - name
-        - info
-        type: object
-    RpcProtocolConfigResponse:
-      properties:
-        block_producer_kickout_threshold:
-          description: Threshold for kicking out block producers, between 0 and 100.
-          format: uint8
-          maximum: 255
-          minimum: 0
-          type: integer
-        chain_id:
-          description: 'ID of the blockchain. This must be unique for every blockchain.
+    Fee:
+      description: 'Costs associated with an object that can only be sent over the network (and executed
 
-            If your testnet blockchains do not have unique chain IDs, you will have a bad time.'
-          type: string
-        chunk_producer_kickout_threshold:
-          description: Threshold for kicking out chunk producers, between 0 and 100.
-          format: uint8
-          maximum: 255
-          minimum: 0
-          type: integer
-        chunk_validator_only_kickout_threshold:
-          description: Threshold for kicking out nodes which are only chunk validators, between 0 and 100.
-          format: uint8
-          maximum: 255
-          minimum: 0
-          type: integer
-        dynamic_resharding:
-          description: Enable dynamic re-sharding.
-          type: boolean
-        epoch_length:
-          description: Epoch length counted in block heights.
-          format: uint64
-          minimum: 0
-          type: integer
-        fishermen_threshold:
-          allOf:
-          - $ref: '#/components/schemas/NearToken'
-          description: Fishermen stake threshold.
-        gas_limit:
+        by the receiver).
+
+        NOTE: `send_sir` or `send_not_sir` fees are usually burned when the item is being created.
+
+        And `execution` fee is burned when the item is being executed.'
+      properties:
+        execution:
           allOf:
           - $ref: '#/components/schemas/NearGas'
-          description: Initial gas limit.
-        gas_price_adjustment_rate:
-          description: Gas price adjustment rate
-          items:
-            format: int32
-            type: integer
-          maxItems: 2
-          minItems: 2
-          type: array
-        genesis_height:
-          description: Height of genesis block.
-          format: uint64
-          minimum: 0
-          type: integer
-        genesis_time:
-          description: Official time of blockchain start.
-          format: date-time
-          type: string
-        max_gas_price:
+          description: Fee for executing the object.
+        send_not_sir:
           allOf:
-          - $ref: '#/components/schemas/NearToken'
-          description: Maximum gas price.
-        max_inflation_rate:
-          description: Maximum inflation on the total supply every epoch.
-          items:
-            format: int32
-            type: integer
-          maxItems: 2
-          minItems: 2
-          type: array
-        max_kickout_stake_perc:
-          description: Max stake percentage of the validators we will kick out.
-          format: uint8
-          maximum: 255
-          minimum: 0
-          type: integer
-        min_gas_price:
+          - $ref: '#/components/schemas/NearGas'
+          description: Fee for sending an object potentially across the shards.
+        send_sir:
           allOf:
-          - $ref: '#/components/schemas/NearToken'
-          description: Minimum gas price. It is also the initial gas price.
-        minimum_stake_divisor:
-          description: The minimum stake required for staking is last seat price divided by this number.
-          format: uint64
-          minimum: 0
-          type: integer
-        minimum_stake_ratio:
-          description: 'The lowest ratio s/s_total any block producer can have.
+          - $ref: '#/components/schemas/NearGas'
+          description: 'Fee for sending an object from the sender to itself, guaranteeing that it does not leave
 
-            See <https://github.com/near/NEPs/pull/167> for details'
-          items:
-            format: int32
-            type: integer
-          maxItems: 2
-          minItems: 2
-          type: array
-        minimum_validators_per_shard:
-          description: The minimum number of validators each shard must have
-          format: uint64
-          minimum: 0
-          type: integer
-        num_block_producer_seats:
-          description: Number of block producer seats at genesis.
-          format: uint64
-          minimum: 0
-          type: integer
-        num_blocks_per_year:
-          description: Expected number of blocks per year
-          format: uint64
-          minimum: 0
-          type: integer
-        online_max_threshold:
-          description: Online maximum threshold above which validator gets full reward.
-          items:
-            format: int32
-            type: integer
-          maxItems: 2
-          minItems: 2
-          type: array
-        online_min_threshold:
-          description: Online minimum threshold below which validator doesn't receive reward.
-          items:
-            format: int32
-            type: integer
-          maxItems: 2
-          minItems: 2
-          type: array
-        protocol_reward_rate:
-          description: Protocol treasury rate
-          items:
-            format: int32
-            type: integer
-          maxItems: 2
-          minItems: 2
-          type: array
-        protocol_treasury_account:
-          allOf:
-          - $ref: '#/components/schemas/AccountId'
-          description: Protocol treasury account
-        protocol_upgrade_stake_threshold:
-          description: Threshold of stake that needs to indicate that they ready for upgrade.
-          items:
-            format: int32
-            type: integer
-          maxItems: 2
-          minItems: 2
-          type: array
-        protocol_version:
-          description: Current Protocol Version
-          format: uint32
-          minimum: 0
-          type: integer
-        runtime_config:
-          allOf:
-          - $ref: '#/components/schemas/RuntimeConfigView'
-          description: Runtime configuration (mostly economics constants).
-        shard_layout:
-          allOf:
-          - $ref: '#/components/schemas/ShardLayout'
-          description: Layout information regarding how to split accounts to shards
-        shuffle_shard_assignment_for_chunk_producers:
-          description: 'If true, shuffle the chunk producers across shards. In other words, if
-
-            the shard assignments were `[S_0, S_1, S_2, S_3]` where `S_i` represents
-
-            the set of chunk producers for shard `i`, if this flag were true, the
-
-            shard assignments might become, for example, `[S_2, S_0, S_3, S_1]`.'
-          type: boolean
-        target_validator_mandates_per_shard:
-          description: Number of target chunk validator mandates for each shard.
-          format: uint64
-          minimum: 0
-          type: integer
-        transaction_validity_period:
-          description: Number of blocks for which a given transaction is valid
-          format: uint64
-          minimum: 0
-          type: integer
-      type: object
-    AccountCreationConfigView:
-      description: The structure describes configuration for creation of new accounts.
-      properties:
-        min_allowed_top_level_account_length:
-          description: The minimum length of the top-level account ID that is allowed to be created by any account.
-          format: uint8
-          maximum: 255
-          minimum: 0
-          type: integer
-        registrar_account_id:
-          allOf:
-          - $ref: '#/components/schemas/AccountId'
-          description: 'The account ID of the account registrar. This account ID allowed to create top-level
-
-            accounts of any valid length.'
+            the shard.'
+      required:
+      - send_sir
+      - send_not_sir
+      - execution
       type: object
     ExtCostsConfigView:
       description: 'Typed view of ExtCostsConfig to preserve JSON output field names in protocol
@@ -1172,6 +839,89 @@ components:
           - $ref: '#/components/schemas/NearGas'
           description: Per byte cost of resume payload.
       type: object
+    VMConfigView:
+      properties:
+        bls12381_not_in_group_fix:
+          description: See [VMConfig::bls12381_not_in_group_fix](crate::vm::Config::bls12381_not_in_group_fix).
+          type: boolean
+        chain_id_host_fn:
+          description: See [VMConfig::chain_id_host_fn](crate::vm::Config::chain_id_host_fn).
+          type: boolean
+        discard_custom_sections:
+          description: See [VMConfig::discard_custom_sections](crate::vm::Config::discard_custom_sections).
+          type: boolean
+        eth_implicit_accounts:
+          description: See [VMConfig::eth_implicit_accounts](crate::vm::Config::eth_implicit_accounts).
+          type: boolean
+        eth_implicit_global_contract:
+          description: See [VMConfig::eth_implicit_global_contract](crate::vm::Config::eth_implicit_global_contract).
+          type: boolean
+        ext_costs:
+          allOf:
+          - $ref: '#/components/schemas/ExtCostsConfigView'
+          description: Costs for runtime externals
+        fix_contract_loading_cost:
+          description: See [VMConfig::fix_contract_loading_cost](crate::vm::Config::fix_contract_loading_cost).
+          type: boolean
+        gas_key_host_fns:
+          description: See [VMConfig::gas_key_host_fns](crate::vm::Config::gas_key_host_fns).
+          type: boolean
+        global_contract_host_fns:
+          description: See [VMConfig::global_contract_host_fns](crate::vm::Config::global_contract_host_fns).
+          type: boolean
+        grow_mem_cost:
+          description: Gas cost of a growing memory by single page.
+          format: uint32
+          minimum: 0
+          type: integer
+        implicit_account_creation:
+          description: Deprecated
+          type: boolean
+        limit_config:
+          allOf:
+          - $ref: '#/components/schemas/LimitConfig'
+          description: 'Describes limits for VM and Runtime.
+
+
+            TODO: Consider changing this to `VMLimitConfigView` to avoid dependency
+
+            on runtime.'
+        linear_op_base_cost:
+          description: Base gas cost of a linear operation
+          format: uint64
+          minimum: 0
+          type: integer
+        linear_op_unit_cost:
+          description: Unit gas cost of a linear operation
+          format: uint64
+          minimum: 0
+          type: integer
+        one_yocto_on_promise:
+          description: See [VMConfig::one_yocto_on_promise](crate::vm::Config::one_yocto_on_promise).
+          type: boolean
+        p256_verify_host_fn:
+          description: See [VMConfig::p256_verify_host_fn](crate::vm::Config::p256_verify_host_fn).
+          type: boolean
+        reftypes_bulk_memory:
+          description: See [VMConfig::reftypes_bulk_memory](crate::vm::Config::reftypes_bulk_memory).
+          type: boolean
+        regular_op_cost:
+          description: Gas cost of a regular operation.
+          format: uint32
+          minimum: 0
+          type: integer
+        storage_get_mode:
+          allOf:
+          - $ref: '#/components/schemas/StorageGetMode'
+          description: See [VMConfig::storage_get_mode](crate::vm::Config::storage_get_mode).
+        vm_kind:
+          allOf:
+          - $ref: '#/components/schemas/VMKind'
+          description: See [VMConfig::vm_kind](crate::vm::Config::vm_kind).
+        yield_with_id_host_fns:
+          description: See [VMConfig::yield_with_id_host_fns](crate::vm::Config::yield_with_id_host_fns).
+          type: boolean
+      type: object
     RpcProtocolConfigError:
       oneOf:
       - properties:
@@ -1201,90 +951,26 @@ components:
         - name
         - info
         type: object
-    ErrorWrapper_for_RpcProtocolConfigError:
+    NearToken:
+      type: string
+    VMKind:
       oneOf:
-      - properties:
-          cause:
-            $ref: '#/components/schemas/RpcRequestValidationErrorKind'
-          name:
-            enum:
-            - REQUEST_VALIDATION_ERROR
-            type: string
-        required:
-        - name
-        - cause
-        type: object
-      - properties:
-          cause:
-            $ref: '#/components/schemas/RpcProtocolConfigError'
-          name:
-            enum:
-            - HANDLER_ERROR
-            type: string
-        required:
-        - name
-        - cause
-        type: object
-      - properties:
-          cause:
-            $ref: '#/components/schemas/InternalError'
-          name:
-            enum:
-            - INTERNAL_ERROR
-            type: string
-        required:
-        - name
-        - cause
-        type: object
-    StorageUsageConfigView:
-      description: Describes cost of storage per block
-      properties:
-        num_bytes_account:
-          description: Number of bytes for an account record, including rounding up for account id.
-          format: uint64
-          minimum: 0
-          type: integer
-        num_extra_bytes_record:
-          description: Additional number of bytes for a k/v record
-          format: uint64
-          minimum: 0
-          type: integer
-      type: object
-    JsonRpcRequest_for_EXPERIMENTAL_protocol_config:
-      properties:
-        id:
-          type: string
-        jsonrpc:
-          type: string
-        method:
-          enum:
-          - EXPERIMENTAL_protocol_config
-          type: string
-        params:
-          $ref: '#/components/schemas/RpcProtocolConfigRequest'
-      required:
-      - jsonrpc
-      - id
-      - params
-      - method
-      title: JsonRpcRequest_for_EXPERIMENTAL_protocol_config
-      type: object
-    ShardId:
-      description: 'The shard identifier. It may be an arbitrary number - it does not need to be
-
-        a number in the range 0..NUM_SHARDS. The shard ids do not need to be
-
-        sequential or contiguous.
-
-
-        The shard id is wrapped in a new type to prevent the old pattern of using
-
-        indices in range 0..NUM_SHARDS and casting to ShardId. Once the transition
-
-        if fully complete it potentially may be simplified to a regular type alias.'
-      format: uint64
-      minimum: 0
-      type: integer
+      - description: Wasmer 0.17.x VM. Gone now.
+        enum:
+        - Wasmer0
+        type: string
+      - description: Wasmtime VM.
+        enum:
+        - Wasmtime
+        type: string
+      - description: Wasmer 2.x VM.
+        enum:
+        - Wasmer2
+        type: string
+      - description: NearVM.
+        enum:
+        - NearVm
+        type: string
     AccessKeyCreationConfigView:
       description: Describes the cost of creating an access key.
       properties:
@@ -1305,38 +991,515 @@ components:
       - function_call_cost
       - function_call_cost_per_byte
       type: object
-    Finality:
-      description: Different types of finality.
-      enum:
-      - optimistic
-      - near-final
-      - final
-      type: string
-    ShardLayoutV0:
-      description: 'A shard layout that maps accounts evenly across all shards -- by calculate the hash of account
-
-        id and mod number of shards. This is added to capture the old `account_id_to_shard_id` algorithm,
-
-        to keep backward compatibility for some existing tests.
-
-        `parent_shards` for `ShardLayoutV1` is always `None`, meaning it can only be the first shard layout
-
-        a chain uses.'
+    ActionCreationConfigView:
+      description: Describes the cost of creating a specific action, `Action`. Includes all variants.
       properties:
-        num_shards:
-          description: Map accounts evenly across all shards
+        add_key_cost:
+          allOf:
+          - $ref: '#/components/schemas/AccessKeyCreationConfigView'
+          description: Base cost of adding a key.
+        create_account_cost:
+          allOf:
+          - $ref: '#/components/schemas/Fee'
+          description: Base cost of creating an account.
+        delegate_cost:
+          allOf:
+          - $ref: '#/components/schemas/Fee'
+          description: 'Base cost for processing a delegate action.
+
+
+            This is on top of the costs for the actions inside the delegate action.'
+        delete_account_cost:
+          allOf:
+          - $ref: '#/components/schemas/Fee'
+          description: Base cost of deleting an account.
+        delete_key_cost:
+          allOf:
+          - $ref: '#/components/schemas/Fee'
+          description: Base cost of deleting a key.
+        deploy_contract_cost:
+          allOf:
+          - $ref: '#/components/schemas/Fee'
+          description: Base cost of deploying a contract.
+        deploy_contract_cost_per_byte:
+          allOf:
+          - $ref: '#/components/schemas/Fee'
+          description: Cost per byte of deploying a contract.
+        function_call_cost:
+          allOf:
+          - $ref: '#/components/schemas/Fee'
+          description: Base cost of calling a function.
+        function_call_cost_per_byte:
+          allOf:
+          - $ref: '#/components/schemas/Fee'
+          description: Cost per byte of method name and arguments of calling a function.
+        stake_cost:
+          allOf:
+          - $ref: '#/components/schemas/Fee'
+          description: Base cost of staking.
+        transfer_cost:
+          allOf:
+          - $ref: '#/components/schemas/Fee'
+          description: Base cost of making a transfer.
+      type: object
+    RpcProtocolConfigResponse:
+      properties:
+        block_producer_kickout_threshold:
+          description: Threshold for kicking out block producers, between 0 and 100.
+          format: uint8
+          maximum: 255
+          minimum: 0
+          type: integer
+        chain_id:
+          description: 'ID of the blockchain. This must be unique for every blockchain.
+
+            If your testnet blockchains do not have unique chain IDs, you will have a bad time.'
+          type: string
+        chunk_producer_kickout_threshold:
+          description: Threshold for kicking out chunk producers, between 0 and 100.
+          format: uint8
+          maximum: 255
+          minimum: 0
+          type: integer
+        chunk_validator_only_kickout_threshold:
+          description: Threshold for kicking out nodes which are only chunk validators, between 0 and 100.
+          format: uint8
+          maximum: 255
+          minimum: 0
+          type: integer
+        dynamic_resharding:
+          description: Enable dynamic re-sharding.
+          type: boolean
+        epoch_length:
+          description: Epoch length counted in block heights.
           format: uint64
           minimum: 0
           type: integer
+        fishermen_threshold:
+          allOf:
+          - $ref: '#/components/schemas/NearToken'
+          description: Fishermen stake threshold.
+        gas_limit:
+          allOf:
+          - $ref: '#/components/schemas/NearGas'
+          description: Initial gas limit.
+        gas_price_adjustment_rate:
+          description: Gas price adjustment rate
+          items:
+            format: int32
+            type: integer
+          maxItems: 2
+          minItems: 2
+          type: array
+        genesis_height:
+          description: Height of genesis block.
+          format: uint64
+          minimum: 0
+          type: integer
+        genesis_time:
+          description: Official time of blockchain start.
+          format: date-time
+          type: string
+        max_gas_price:
+          allOf:
+          - $ref: '#/components/schemas/NearToken'
+          description: Maximum gas price.
+        max_inflation_rate:
+          description: Maximum inflation on the total supply every epoch.
+          items:
+            format: int32
+            type: integer
+          maxItems: 2
+          minItems: 2
+          type: array
+        max_kickout_stake_perc:
+          description: Max stake percentage of the validators we will kick out.
+          format: uint8
+          maximum: 255
+          minimum: 0
+          type: integer
+        min_gas_price:
+          allOf:
+          - $ref: '#/components/schemas/NearToken'
+          description: Minimum gas price. It is also the initial gas price.
+        minimum_stake_divisor:
+          description: The minimum stake required for staking is last seat price divided by this number.
+          format: uint64
+          minimum: 0
+          type: integer
+        minimum_stake_ratio:
+          description: 'The lowest ratio s/s_total any block producer can have.
+
+            See <https://github.com/near/NEPs/pull/167> for details'
+          items:
+            format: int32
+            type: integer
+          maxItems: 2
+          minItems: 2
+          type: array
+        minimum_validators_per_shard:
+          description: The minimum number of validators each shard must have
+          format: uint64
+          minimum: 0
+          type: integer
+        num_block_producer_seats:
+          description: Number of block producer seats at genesis.
+          format: uint64
+          minimum: 0
+          type: integer
+        num_blocks_per_year:
+          description: Expected number of blocks per year
+          format: uint64
+          minimum: 0
+          type: integer
+        online_max_threshold:
+          description: Online maximum threshold above which validator gets full reward.
+          items:
+            format: int32
+            type: integer
+          maxItems: 2
+          minItems: 2
+          type: array
+        online_min_threshold:
+          description: Online minimum threshold below which validator doesn't receive reward.
+          items:
+            format: int32
+            type: integer
+          maxItems: 2
+          minItems: 2
+          type: array
+        protocol_reward_rate:
+          description: Protocol treasury rate
+          items:
+            format: int32
+            type: integer
+          maxItems: 2
+          minItems: 2
+          type: array
+        protocol_treasury_account:
+          allOf:
+          - $ref: '#/components/schemas/AccountId'
+          description: Protocol treasury account
+        protocol_upgrade_stake_threshold:
+          description: Threshold of stake that needs to indicate that they ready for upgrade.
+          items:
+            format: int32
+            type: integer
+          maxItems: 2
+          minItems: 2
+          type: array
+        protocol_version:
+          description: Current Protocol Version
+          format: uint32
+          minimum: 0
+          type: integer
+        runtime_config:
+          allOf:
+          - $ref: '#/components/schemas/RuntimeConfigView'
+          description: Runtime configuration (mostly economics constants).
+        shard_layout:
+          allOf:
+          - $ref: '#/components/schemas/ShardLayout'
+          description: Layout information regarding how to split accounts to shards
+        shuffle_shard_assignment_for_chunk_producers:
+          description: 'If true, shuffle the chunk producers across shards. In other words, if
+
+            the shard assignments were `[S_0, S_1, S_2, S_3]` where `S_i` represents
+
+            the set of chunk producers for shard `i`, if this flag were true, the
+
+            shard assignments might become, for example, `[S_2, S_0, S_3, S_1]`.'
+          type: boolean
+        target_validator_mandates_per_shard:
+          description: Number of target chunk validator mandates for each shard.
+          format: uint64
+          minimum: 0
+          type: integer
+        transaction_validity_period:
+          description: Number of blocks for which a given transaction is valid
+          format: uint64
+          minimum: 0
+          type: integer
+      type: object
+    DataReceiptCreationConfigView:
+      description: The fees settings for a data receipt creation
+      properties:
+        base_cost:
+          allOf:
+          - $ref: '#/components/schemas/Fee'
+          description: 'Base cost of creating a data receipt.
+
+            Both `send` and `exec` costs are burned when a new receipt has input dependencies. The gas
+
+            is charged for each input dependency. The dependencies are specified when a receipt is
+
+            created using `promise_then` and `promise_batch_then`.
+
+            NOTE: Any receipt with output dependencies will produce data receipts. Even if it fails.
+
+            Even if the last action is not a function call (in case of success it will return empty
+
+            value).'
+        cost_per_byte:
+          allOf:
+          - $ref: '#/components/schemas/Fee'
+          description: 'Additional cost per byte sent.
+
+            Both `send` and `exec` costs are burned when a function call finishes execution and returns
+
+            `N` bytes of data to every output dependency. For each output dependency the cost is
+
+            `(send(sir) + exec()) * N`.'
+      type: object
+    RuntimeConfigView:
+      description: View that preserves JSON format of the runtime config.
+      properties:
+        account_creation_config:
+          allOf:
+          - $ref: '#/components/schemas/AccountCreationConfigView'
+          description: Config that defines rules for account creation.
+        congestion_control_config:
+          allOf:
+          - $ref: '#/components/schemas/CongestionControlConfigView'
+          description: The configuration for congestion control.
+        storage_amount_per_byte:
+          allOf:
+          - $ref: '#/components/schemas/NearToken'
+          description: 'Amount of yN per byte required to have on the account.  See
+
+            <https://nomicon.io/Economics/Economics.html#state-stake> for details.'
+        transaction_costs:
+          allOf:
+          - $ref: '#/components/schemas/RuntimeFeesConfigView'
+          description: 'Costs of different actions that need to be performed when sending and
+
+            processing transaction and receipts.'
+        wasm_config:
+          allOf:
+          - $ref: '#/components/schemas/VMConfigView'
+          description: Config of wasm operations.
+        witness_config:
+          allOf:
+          - $ref: '#/components/schemas/WitnessConfigView'
+          description: Configuration specific to ChunkStateWitness.
+      type: object
+    ShardId:
+      description: 'The shard identifier. It may be an arbitrary number - it does not need to be
+
+        a number in the range 0..NUM_SHARDS. The shard ids do not need to be
+
+        sequential or contiguous.
+
+
+        The shard id is wrapped in a new type to prevent the old pattern of using
+
+        indices in range 0..NUM_SHARDS and casting to ShardId. Once the transition
+
+        if fully complete it potentially may be simplified to a regular type alias.'
+      format: uint64
+      minimum: 0
+      type: integer
+    StorageUsageConfigView:
+      description: Describes cost of storage per block
+      properties:
+        num_bytes_account:
+          description: Number of bytes for an account record, including rounding up for account id.
+          format: uint64
+          minimum: 0
+          type: integer
+        num_extra_bytes_record:
+          description: Additional number of bytes for a k/v record
+          format: uint64
+          minimum: 0
+          type: integer
+      type: object
+    RuntimeFeesConfigView:
+      description: Describes different fees for the runtime
+      properties:
+        action_creation_config:
+          allOf:
+          - $ref: '#/components/schemas/ActionCreationConfigView'
+          description: Describes the cost of creating a certain action, `Action`. Includes all variants.
+        action_receipt_creation_config:
+          allOf:
+          - $ref: '#/components/schemas/Fee'
+          description: "Describes the cost of creating an action receipt, `ActionReceipt`, excluding the actual cost\nof actions.\n- `send` cost is burned when a receipt is created using `promise_create` or\n    `promise_batch_create`\n- `exec` cost is burned when the receipt is being executed."
+        burnt_gas_reward:
+          description: Fraction of the burnt gas to reward to the contract account for execution.
+          items:
+            format: int32
+            type: integer
+          maxItems: 2
+          minItems: 2
+          type: array
+        data_receipt_creation_config:
+          allOf:
+          - $ref: '#/components/schemas/DataReceiptCreationConfigView'
+          description: Describes the cost of creating a data receipt, `DataReceipt`.
+        ml_dsa_65_verification_cost:
+          allOf:
+          - $ref: '#/components/schemas/NearGas'
+          description: 'Describes the extra cost of verifying an ML-DSA-65 signature above the
+
+            cost of verifying the standard signature types.'
+        pessimistic_gas_price_inflation_ratio:
+          description: Pessimistic gas price inflation ratio.
+          items:
+            format: int32
+            type: integer
+          maxItems: 2
+          minItems: 2
+          type: array
+        storage_usage_config:
+          allOf:
+          - $ref: '#/components/schemas/StorageUsageConfigView'
+          description: Describes fees for storage.
+      type: object
+    RpcRequestValidationErrorKind:
+      oneOf:
+      - properties:
+          info:
+            properties:
+              method_name:
+                type: string
+            required:
+            - method_name
+            type: object
+          name:
+            enum:
+            - METHOD_NOT_FOUND
+            type: string
+        required:
+        - name
+        - info
+        type: object
+      - properties:
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - PARSE_ERROR
+            type: string
+        required:
+        - name
+        - info
+        type: object
+    RpcProtocolConfigRequest:
+      oneOf:
+      - properties:
+          block_id:
+            $ref: '#/components/schemas/BlockId'
+        required:
+        - block_id
+        type: object
+      - properties:
+          finality:
+            $ref: '#/components/schemas/Finality'
+        required:
+        - finality
+        type: object
+      - properties:
+          sync_checkpoint:
+            $ref: '#/components/schemas/SyncCheckpoint'
+        required:
+        - sync_checkpoint
+        type: object
+      title: RpcProtocolConfigRequest
+      type: object
+    ShardLayoutV1:
+      properties:
+        boundary_accounts:
+          description: 'The boundary accounts are the accounts on boundaries between shards.
+
+            Each shard contains a range of accounts from one boundary account to
+
+            another - or the smallest or largest account possible. The total
+
+            number of shards is equal to the number of boundary accounts plus 1.'
+          items:
+            $ref: '#/components/schemas/AccountId'
+          type: array
+        shards_split_map:
+          description: 'Maps shards from the last shard layout to shards that it splits to in this shard layout,
+
+            Useful for constructing states for the shards.
+
+            None for the genesis shard layout'
+          items:
+            items:
+              $ref: '#/components/schemas/ShardId'
+            type: array
+          type:
+          - array
+          - 'null'
+        to_parent_shard_map:
+          description: 'Maps shard in this shard layout to their parent shard
+
+            Since shard_ids always range from 0 to num_shards - 1, we use vec instead of a hashmap'
+          items:
+            $ref: '#/components/schemas/ShardId'
+          type:
+          - array
+          - 'null'
         version:
           description: Version of the shard layout, this is useful for uniquely identify the shard layout
           format: uint32
           minimum: 0
           type: integer
       required:
-      - num_shards
+      - boundary_accounts
       - version
       type: object
+    ShardLayoutV3:
+      description: 'Counterpart to `ShardLayoutV3` composed of maps with string keys to aid
+
+        serde serialization.'
+      properties:
+        boundary_accounts:
+          items:
+            $ref: '#/components/schemas/AccountId'
+          type: array
+        id_to_index_map:
+          additionalProperties:
+            format: uint
+            minimum: 0
+            type: integer
+          type: object
+        last_split:
+          $ref: '#/components/schemas/ShardId'
+        shard_ids:
+          items:
+            $ref: '#/components/schemas/ShardId'
+          type: array
+        shards_split_map:
+          additionalProperties:
+            items:
+              $ref: '#/components/schemas/ShardId'
+            type: array
+          type: object
+      required:
+      - boundary_accounts
+      - shard_ids
+      - id_to_index_map
+      - shards_split_map
+      - last_split
+      type: object
+    StorageGetMode:
+      description: This enum represents if a storage_get call will be performed through flat storage or trie
+      enum:
+      - FlatStorage
+      - Trie
+      type: string
+    SyncCheckpoint:
+      enum:
+      - genesis
+      - earliest_available
+      type: string
     CongestionControlConfigView:
       description: The configuration for congestion control. More info about congestion [here](https://near.github.io/nearcore/architecture/how/receipt-congestion.html?highlight=congestion#receipt-congestion)
       properties:
@@ -1437,276 +1600,113 @@ components:
           format: double
           type: number
       type: object
-    CryptoHash:
+    Finality:
+      description: Different types of finality.
+      enum:
+      - optimistic
+      - near-final
+      - final
       type: string
-    ShardLayout:
-      description: 'A versioned struct that contains all information needed to assign accounts to shards.
+    ShardLayoutV0:
+      description: 'A shard layout that maps accounts evenly across all shards -- by calculate the hash of account
 
+        id and mod number of shards. This is added to capture the old `account_id_to_shard_id` algorithm,
 
-        Because of re-sharding, the chain may use different shard layout to split shards at different
+        to keep backward compatibility for some existing tests.
 
-        times. Currently, `ShardLayout` is stored as part of `EpochConfig`, which is generated each
+        `parent_shards` for `ShardLayoutV1` is always `None`, meaning it can only be the first shard layout
 
-        epoch given the epoch protocol version. In mainnet/testnet, we use two shard layouts since
-
-        re-sharding has only happened once. It is stored as part of genesis config, see
-
-        default_simple_nightshade_shard_layout() Below is an overview for some important
-
-        functionalities of ShardLayout interface.'
-      oneOf:
-      - additionalProperties: false
-        properties:
-          V0:
-            $ref: '#/components/schemas/ShardLayoutV0'
-        required:
-        - V0
-        type: object
-      - additionalProperties: false
-        properties:
-          V1:
-            $ref: '#/components/schemas/ShardLayoutV1'
-        required:
-        - V1
-        type: object
-      - additionalProperties: false
-        properties:
-          V2:
-            $ref: '#/components/schemas/ShardLayoutV2'
-        required:
-        - V2
-        type: object
-      - additionalProperties: false
-        properties:
-          V3:
-            $ref: '#/components/schemas/ShardLayoutV3'
-        required:
-        - V3
-        type: object
-    DataReceiptCreationConfigView:
-      description: The fees settings for a data receipt creation
+        a chain uses.'
       properties:
-        base_cost:
-          allOf:
-          - $ref: '#/components/schemas/Fee'
-          description: 'Base cost of creating a data receipt.
-
-            Both `send` and `exec` costs are burned when a new receipt has input dependencies. The gas
-
-            is charged for each input dependency. The dependencies are specified when a receipt is
-
-            created using `promise_then` and `promise_batch_then`.
-
-            NOTE: Any receipt with output dependencies will produce data receipts. Even if it fails.
-
-            Even if the last action is not a function call (in case of success it will return empty
-
-            value).'
-        cost_per_byte:
-          allOf:
-          - $ref: '#/components/schemas/Fee'
-          description: 'Additional cost per byte sent.
-
-            Both `send` and `exec` costs are burned when a function call finishes execution and returns
-
-            `N` bytes of data to every output dependency. For each output dependency the cost is
-
-            `(send(sir) + exec()) * N`.'
+        num_shards:
+          description: Map accounts evenly across all shards
+          format: uint64
+          minimum: 0
+          type: integer
+        version:
+          description: Version of the shard layout, this is useful for uniquely identify the shard layout
+          format: uint32
+          minimum: 0
+          type: integer
+      required:
+      - num_shards
+      - version
       type: object
+    ErrorWrapper_for_RpcProtocolConfigError:
+      oneOf:
+      - properties:
+          cause:
+            $ref: '#/components/schemas/RpcRequestValidationErrorKind'
+          name:
+            enum:
+            - REQUEST_VALIDATION_ERROR
+            type: string
+        required:
+        - name
+        - cause
+        type: object
+      - properties:
+          cause:
+            $ref: '#/components/schemas/RpcProtocolConfigError'
+          name:
+            enum:
+            - HANDLER_ERROR
+            type: string
+        required:
+        - name
+        - cause
+        type: object
+      - properties:
+          cause:
+            $ref: '#/components/schemas/InternalError'
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
+        required:
+        - name
+        - cause
+        type: object
+    InternalError:
+      oneOf:
+      - properties:
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
+        required:
+        - name
+        - info
+        type: object
+    NearGas:
+      format: uint64
+      minimum: 0
+      type: integer
     AccountIdValidityRulesVersion:
       format: uint8
       maximum: 255
       minimum: 0
       type: integer
-    WitnessConfigView:
-      description: Configuration specific to ChunkStateWitness.
+    AccountCreationConfigView:
+      description: The structure describes configuration for creation of new accounts.
       properties:
-        combined_transactions_size_limit:
-          description: 'Maximum size of transactions contained inside ChunkStateWitness.
-
-
-            A witness contains transactions from both the previous chunk and the current one.
-
-            This parameter limits the sum of sizes of transactions from both of those chunks.'
-          format: uint
+        min_allowed_top_level_account_length:
+          description: The minimum length of the top-level account ID that is allowed to be created by any account.
+          format: uint8
+          maximum: 255
           minimum: 0
           type: integer
-        main_storage_proof_size_soft_limit:
-          description: 'Size limit for storage proof generated while executing receipts in a chunk.
+        registrar_account_id:
+          allOf:
+          - $ref: '#/components/schemas/AccountId'
+          description: 'The account ID of the account registrar. This account ID allowed to create top-level
 
-            After this limit is reached we defer execution of any new receipts.'
-          format: uint64
-          minimum: 0
-          type: integer
-        new_transactions_validation_state_size_soft_limit:
-          description: Soft size limit of storage proof used to validate new transactions in ChunkStateWitness.
-          format: uint64
-          minimum: 0
-          type: integer
+            accounts of any valid length.'
       type: object
-    VMConfigView:
-      properties:
-        bls12381_not_in_group_fix:
-          description: See [VMConfig::bls12381_not_in_group_fix](crate::vm::Config::bls12381_not_in_group_fix).
-          type: boolean
-        chain_id_host_fn:
-          description: See [VMConfig::chain_id_host_fn](crate::vm::Config::chain_id_host_fn).
-          type: boolean
-        discard_custom_sections:
-          description: See [VMConfig::discard_custom_sections](crate::vm::Config::discard_custom_sections).
-          type: boolean
-        eth_implicit_accounts:
-          description: See [VMConfig::eth_implicit_accounts](crate::vm::Config::eth_implicit_accounts).
-          type: boolean
-        eth_implicit_global_contract:
-          description: See [VMConfig::eth_implicit_global_contract](crate::vm::Config::eth_implicit_global_contract).
-          type: boolean
-        ext_costs:
-          allOf:
-          - $ref: '#/components/schemas/ExtCostsConfigView'
-          description: Costs for runtime externals
-        fix_contract_loading_cost:
-          description: See [VMConfig::fix_contract_loading_cost](crate::vm::Config::fix_contract_loading_cost).
-          type: boolean
-        gas_key_host_fns:
-          description: See [VMConfig::gas_key_host_fns](crate::vm::Config::gas_key_host_fns).
-          type: boolean
-        global_contract_host_fns:
-          description: See [VMConfig::global_contract_host_fns](crate::vm::Config::global_contract_host_fns).
-          type: boolean
-        grow_mem_cost:
-          description: Gas cost of a growing memory by single page.
-          format: uint32
-          minimum: 0
-          type: integer
-        implicit_account_creation:
-          description: Deprecated
-          type: boolean
-        limit_config:
-          allOf:
-          - $ref: '#/components/schemas/LimitConfig'
-          description: 'Describes limits for VM and Runtime.
-
-
-            TODO: Consider changing this to `VMLimitConfigView` to avoid dependency
-
-            on runtime.'
-        linear_op_base_cost:
-          description: Base gas cost of a linear operation
-          format: uint64
-          minimum: 0
-          type: integer
-        linear_op_unit_cost:
-          description: Unit gas cost of a linear operation
-          format: uint64
-          minimum: 0
-          type: integer
-        one_yocto_on_promise:
-          description: See [VMConfig::one_yocto_on_promise](crate::vm::Config::one_yocto_on_promise).
-          type: boolean
-        p256_verify_host_fn:
-          description: See [VMConfig::p256_verify_host_fn](crate::vm::Config::p256_verify_host_fn).
-          type: boolean
-        reftypes_bulk_memory:
-          description: See [VMConfig::reftypes_bulk_memory](crate::vm::Config::reftypes_bulk_memory).
-          type: boolean
-        regular_op_cost:
-          description: Gas cost of a regular operation.
-          format: uint32
-          minimum: 0
-          type: integer
-        storage_get_mode:
-          allOf:
-          - $ref: '#/components/schemas/StorageGetMode'
-          description: See [VMConfig::storage_get_mode](crate::vm::Config::storage_get_mode).
-        vm_kind:
-          allOf:
-          - $ref: '#/components/schemas/VMKind'
-          description: See [VMConfig::vm_kind](crate::vm::Config::vm_kind).
-        yield_with_id_host_fns:
-          description: See [VMConfig::yield_with_id_host_fns](crate::vm::Config::yield_with_id_host_fns).
-          type: boolean
-      type: object
-    Fee:
-      description: 'Costs associated with an object that can only be sent over the network (and executed
-
-        by the receiver).
-
-        NOTE: `send_sir` or `send_not_sir` fees are usually burned when the item is being created.
-
-        And `execution` fee is burned when the item is being executed.'
-      properties:
-        execution:
-          allOf:
-          - $ref: '#/components/schemas/NearGas'
-          description: Fee for executing the object.
-        send_not_sir:
-          allOf:
-          - $ref: '#/components/schemas/NearGas'
-          description: Fee for sending an object potentially across the shards.
-        send_sir:
-          allOf:
-          - $ref: '#/components/schemas/NearGas'
-          description: 'Fee for sending an object from the sender to itself, guaranteeing that it does not leave
-
-            the shard.'
-      required:
-      - send_sir
-      - send_not_sir
-      - execution
-      type: object
-    SyncCheckpoint:
-      enum:
-      - genesis
-      - earliest_available
-      type: string
-    RuntimeConfigView:
-      description: View that preserves JSON format of the runtime config.
-      properties:
-        account_creation_config:
-          allOf:
-          - $ref: '#/components/schemas/AccountCreationConfigView'
-          description: Config that defines rules for account creation.
-        congestion_control_config:
-          allOf:
-          - $ref: '#/components/schemas/CongestionControlConfigView'
-          description: The configuration for congestion control.
-        storage_amount_per_byte:
-          allOf:
-          - $ref: '#/components/schemas/NearToken'
-          description: 'Amount of yN per byte required to have on the account.  See
-
-            <https://nomicon.io/Economics/Economics.html#state-stake> for details.'
-        transaction_costs:
-          allOf:
-          - $ref: '#/components/schemas/RuntimeFeesConfigView'
-          description: 'Costs of different actions that need to be performed when sending and
-
-            processing transaction and receipts.'
-        wasm_config:
-          allOf:
-          - $ref: '#/components/schemas/VMConfigView'
-          description: Config of wasm operations.
-        witness_config:
-          allOf:
-          - $ref: '#/components/schemas/WitnessConfigView'
-          description: Configuration specific to ChunkStateWitness.
-      type: object
-    VMKind:
-      oneOf:
-      - description: Wasmer 0.17.x VM. Gone now.
-        enum:
-        - Wasmer0
-        type: string
-      - description: Wasmtime VM.
-        enum:
-        - Wasmtime
-        type: string
-      - description: Wasmer 2.x VM.
-        enum:
-        - Wasmer2
-        type: string
-      - description: NearVM.
-        enum:
-        - NearVm
-        type: string

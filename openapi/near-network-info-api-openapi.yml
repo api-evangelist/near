@@ -28,30 +28,163 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    JsonRpcResponse_for_RpcNetworkInfoResponse_and_RpcNetworkInfoError:
+    PeerId:
+      allOf:
+      - $ref: '#/components/schemas/PublicKey'
+      description: Peer id is the public key.
+    RpcPeerInfo:
+      properties:
+        account_id:
+          anyOf:
+          - $ref: '#/components/schemas/AccountId'
+          - enum:
+            - null
+        addr:
+          type:
+          - string
+          - 'null'
+        id:
+          $ref: '#/components/schemas/PeerId'
+      required:
+      - id
+      type: object
+    AccountId:
+      $schema: https://json-schema.org/draft/2020-12/schema
+      description: 'NEAR Account Identifier.
+
+
+        This is a unique, syntactically valid, human-readable account identifier on the NEAR network.
+
+
+        [See the crate-level docs for information about validation.](index.html#account-id-rules)
+
+
+        Also see [Error kind precedence](AccountId#error-kind-precedence).
+
+
+        ## Examples
+
+
+        ```
+
+        use near_account_id::AccountId;
+
+
+        let alice: AccountId = "alice.near".parse().unwrap();
+
+
+        assert!("ƒelicia.near".parse::<AccountId>().is_err()); // (ƒ is not f)
+
+        ```'
+      title: AccountId
+      type: string
+    RpcNetworkInfoError:
       oneOf:
       - properties:
-          result:
-            $ref: '#/components/schemas/RpcNetworkInfoResponse'
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
         required:
-        - result
+        - name
+        - info
         type: object
+    RpcKnownProducer:
+      properties:
+        account_id:
+          $ref: '#/components/schemas/AccountId'
+        addr:
+          type:
+          - string
+          - 'null'
+        peer_id:
+          $ref: '#/components/schemas/PeerId'
+      required:
+      - account_id
+      - peer_id
+      type: object
+    InternalError:
+      oneOf:
       - properties:
-          error:
-            $ref: '#/components/schemas/ErrorWrapper_for_RpcNetworkInfoError'
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
         required:
-        - error
+        - name
+        - info
         type: object
+    RpcNetworkInfoRequest:
+      enum:
+      - null
+      title: RpcNetworkInfoRequest
+    JsonRpcRequest_for_network_info:
       properties:
         id:
           type: string
         jsonrpc:
           type: string
+        method:
+          enum:
+          - network_info
+          type: string
+        params:
+          $ref: '#/components/schemas/RpcNetworkInfoRequest'
       required:
       - jsonrpc
       - id
-      title: JsonRpcResponse_for_RpcNetworkInfoResponse_and_RpcNetworkInfoError
+      - params
+      - method
+      title: JsonRpcRequest_for_network_info
       type: object
+    RpcRequestValidationErrorKind:
+      oneOf:
+      - properties:
+          info:
+            properties:
+              method_name:
+                type: string
+            required:
+            - method_name
+            type: object
+          name:
+            enum:
+            - METHOD_NOT_FOUND
+            type: string
+        required:
+        - name
+        - info
+        type: object
+      - properties:
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - PARSE_ERROR
+            type: string
+        required:
+        - name
+        - info
+        type: object
     RpcNetworkInfoResponse:
       properties:
         active_peers:
@@ -86,6 +219,32 @@ components:
       - sent_bytes_per_sec
       - received_bytes_per_sec
       - known_producers
+      type: object
+    PublicKey:
+      type: string
+    JsonRpcResponse_for_RpcNetworkInfoResponse_and_RpcNetworkInfoError:
+      oneOf:
+      - properties:
+          result:
+            $ref: '#/components/schemas/RpcNetworkInfoResponse'
+        required:
+        - result
+        type: object
+      - properties:
+          error:
+            $ref: '#/components/schemas/ErrorWrapper_for_RpcNetworkInfoError'
+        required:
+        - error
+        type: object
+      properties:
+        id:
+          type: string
+        jsonrpc:
+          type: string
+      required:
+      - jsonrpc
+      - id
+      title: JsonRpcResponse_for_RpcNetworkInfoResponse_and_RpcNetworkInfoError
       type: object
     ErrorWrapper_for_RpcNetworkInfoError:
       oneOf:
@@ -122,162 +281,3 @@ components:
         - name
         - cause
         type: object
-    RpcRequestValidationErrorKind:
-      oneOf:
-      - properties:
-          info:
-            properties:
-              method_name:
-                type: string
-            required:
-            - method_name
-            type: object
-          name:
-            enum:
-            - METHOD_NOT_FOUND
-            type: string
-        required:
-        - name
-        - info
-        type: object
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
-          name:
-            enum:
-            - PARSE_ERROR
-            type: string
-        required:
-        - name
-        - info
-        type: object
-    PublicKey:
-      type: string
-    RpcNetworkInfoError:
-      oneOf:
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
-          name:
-            enum:
-            - INTERNAL_ERROR
-            type: string
-        required:
-        - name
-        - info
-        type: object
-    AccountId:
-      $schema: https://json-schema.org/draft/2020-12/schema
-      description: 'NEAR Account Identifier.
-
-
-        This is a unique, syntactically valid, human-readable account identifier on the NEAR network.
-
-
-        [See the crate-level docs for information about validation.](index.html#account-id-rules)
-
-
-        Also see [Error kind precedence](AccountId#error-kind-precedence).
-
-
-        ## Examples
-
-
-        ```
-
-        use near_account_id::AccountId;
-
-
-        let alice: AccountId = "alice.near".parse().unwrap();
-
-
-        assert!("ƒelicia.near".parse::<AccountId>().is_err()); // (ƒ is not f)
-
-        ```'
-      title: AccountId
-      type: string
-    RpcKnownProducer:
-      properties:
-        account_id:
-          $ref: '#/components/schemas/AccountId'
-        addr:
-          type:
-          - string
-          - 'null'
-        peer_id:
-          $ref: '#/components/schemas/PeerId'
-      required:
-      - account_id
-      - peer_id
-      type: object
-    PeerId:
-      allOf:
-      - $ref: '#/components/schemas/PublicKey'
-      description: Peer id is the public key.
-    JsonRpcRequest_for_network_info:
-      properties:
-        id:
-          type: string
-        jsonrpc:
-          type: string
-        method:
-          enum:
-          - network_info
-          type: string
-        params:
-          $ref: '#/components/schemas/RpcNetworkInfoRequest'
-      required:
-      - jsonrpc
-      - id
-      - params
-      - method
-      title: JsonRpcRequest_for_network_info
-      type: object
-    InternalError:
-      oneOf:
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
-          name:
-            enum:
-            - INTERNAL_ERROR
-            type: string
-        required:
-        - name
-        - info
-        type: object
-    RpcNetworkInfoRequest:
-      enum:
-      - null
-      title: RpcNetworkInfoRequest
-    RpcPeerInfo:
-      properties:
-        account_id:
-          anyOf:
-          - $ref: '#/components/schemas/AccountId'
-          - enum:
-            - null
-        addr:
-          type:
-          - string
-          - 'null'
-        id:
-          $ref: '#/components/schemas/PeerId'
-      required:
-      - id
-      type: object

@@ -62,36 +62,6 @@ components:
         - name
         - info
         type: object
-    NearToken:
-      type: string
-    RpcValidatorsOrderedRequest:
-      properties:
-        block_id:
-          anyOf:
-          - $ref: '#/components/schemas/BlockId'
-          - enum:
-            - null
-      title: RpcValidatorsOrderedRequest
-      type: object
-    JsonRpcRequest_for_EXPERIMENTAL_validators_ordered:
-      properties:
-        id:
-          type: string
-        jsonrpc:
-          type: string
-        method:
-          enum:
-          - EXPERIMENTAL_validators_ordered
-          type: string
-        params:
-          $ref: '#/components/schemas/RpcValidatorsOrderedRequest'
-      required:
-      - jsonrpc
-      - id
-      - params
-      - method
-      title: JsonRpcRequest_for_EXPERIMENTAL_validators_ordered
-      type: object
     ErrorWrapper_for_RpcValidatorError:
       oneOf:
       - properties:
@@ -127,8 +97,96 @@ components:
         - name
         - cause
         type: object
-    PublicKey:
+    BlockId:
+      anyOf:
+      - format: uint64
+        minimum: 0
+        title: block_height
+        type: integer
+      - $ref: '#/components/schemas/CryptoHash'
+    AccountId:
+      $schema: https://json-schema.org/draft/2020-12/schema
+      description: 'NEAR Account Identifier.
+
+
+        This is a unique, syntactically valid, human-readable account identifier on the NEAR network.
+
+
+        [See the crate-level docs for information about validation.](index.html#account-id-rules)
+
+
+        Also see [Error kind precedence](AccountId#error-kind-precedence).
+
+
+        ## Examples
+
+
+        ```
+
+        use near_account_id::AccountId;
+
+
+        let alice: AccountId = "alice.near".parse().unwrap();
+
+
+        assert!("ƒelicia.near".parse::<AccountId>().is_err()); // (ƒ is not f)
+
+        ```'
+      title: AccountId
       type: string
+    ValidatorStakeView:
+      oneOf:
+      - allOf:
+        - $ref: '#/components/schemas/ValidatorStakeViewV1'
+        properties:
+          validator_stake_struct_version:
+            enum:
+            - V1
+            type: string
+        required:
+        - validator_stake_struct_version
+        type: object
+    JsonRpcRequest_for_EXPERIMENTAL_validators_ordered:
+      properties:
+        id:
+          type: string
+        jsonrpc:
+          type: string
+        method:
+          enum:
+          - EXPERIMENTAL_validators_ordered
+          type: string
+        params:
+          $ref: '#/components/schemas/RpcValidatorsOrderedRequest'
+      required:
+      - jsonrpc
+      - id
+      - params
+      - method
+      title: JsonRpcRequest_for_EXPERIMENTAL_validators_ordered
+      type: object
+    CryptoHash:
+      type: string
+    NearToken:
+      type: string
+    InternalError:
+      oneOf:
+      - properties:
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
+        required:
+        - name
+        - info
+        type: object
     RpcRequestValidationErrorKind:
       oneOf:
       - properties:
@@ -163,36 +221,30 @@ components:
         - name
         - info
         type: object
-    AccountId:
-      $schema: https://json-schema.org/draft/2020-12/schema
-      description: 'NEAR Account Identifier.
-
-
-        This is a unique, syntactically valid, human-readable account identifier on the NEAR network.
-
-
-        [See the crate-level docs for information about validation.](index.html#account-id-rules)
-
-
-        Also see [Error kind precedence](AccountId#error-kind-precedence).
-
-
-        ## Examples
-
-
-        ```
-
-        use near_account_id::AccountId;
-
-
-        let alice: AccountId = "alice.near".parse().unwrap();
-
-
-        assert!("ƒelicia.near".parse::<AccountId>().is_err()); // (ƒ is not f)
-
-        ```'
-      title: AccountId
+    RpcValidatorsOrderedRequest:
+      properties:
+        block_id:
+          anyOf:
+          - $ref: '#/components/schemas/BlockId'
+          - enum:
+            - null
+      title: RpcValidatorsOrderedRequest
+      type: object
+    PublicKey:
       type: string
+    ValidatorStakeViewV1:
+      properties:
+        account_id:
+          $ref: '#/components/schemas/AccountId'
+        public_key:
+          $ref: '#/components/schemas/PublicKey'
+        stake:
+          $ref: '#/components/schemas/NearToken'
+      required:
+      - account_id
+      - public_key
+      - stake
+      type: object
     JsonRpcResponse_for_Array_of_ValidatorStakeView_and_RpcValidatorError:
       oneOf:
       - properties:
@@ -219,55 +271,3 @@ components:
       - id
       title: JsonRpcResponse_for_Array_of_ValidatorStakeView_and_RpcValidatorError
       type: object
-    CryptoHash:
-      type: string
-    BlockId:
-      anyOf:
-      - format: uint64
-        minimum: 0
-        title: block_height
-        type: integer
-      - $ref: '#/components/schemas/CryptoHash'
-    ValidatorStakeViewV1:
-      properties:
-        account_id:
-          $ref: '#/components/schemas/AccountId'
-        public_key:
-          $ref: '#/components/schemas/PublicKey'
-        stake:
-          $ref: '#/components/schemas/NearToken'
-      required:
-      - account_id
-      - public_key
-      - stake
-      type: object
-    InternalError:
-      oneOf:
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
-          name:
-            enum:
-            - INTERNAL_ERROR
-            type: string
-        required:
-        - name
-        - info
-        type: object
-    ValidatorStakeView:
-      oneOf:
-      - allOf:
-        - $ref: '#/components/schemas/ValidatorStakeViewV1'
-        properties:
-          validator_stake_struct_version:
-            enum:
-            - V1
-            type: string
-        required:
-        - validator_stake_struct_version
-        type: object

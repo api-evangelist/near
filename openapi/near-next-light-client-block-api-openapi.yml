@@ -28,10 +28,14 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    NearToken:
-      type: string
-    Signature:
-      type: string
+    RpcLightClientNextBlockRequest:
+      properties:
+        last_block_hash:
+          $ref: '#/components/schemas/CryptoHash'
+      required:
+      - last_block_hash
+      title: RpcLightClientNextBlockRequest
+      type: object
     RpcLightClientNextBlockError:
       oneOf:
       - properties:
@@ -77,32 +81,6 @@ components:
         - name
         - info
         type: object
-    PublicKey:
-      type: string
-    JsonRpcResponse_for_RpcLightClientNextBlockResponse_and_RpcLightClientNextBlockError:
-      oneOf:
-      - properties:
-          result:
-            $ref: '#/components/schemas/RpcLightClientNextBlockResponse'
-        required:
-        - result
-        type: object
-      - properties:
-          error:
-            $ref: '#/components/schemas/ErrorWrapper_for_RpcLightClientNextBlockError'
-        required:
-        - error
-        type: object
-      properties:
-        id:
-          type: string
-        jsonrpc:
-          type: string
-      required:
-      - jsonrpc
-      - id
-      title: JsonRpcResponse_for_RpcLightClientNextBlockResponse_and_RpcLightClientNextBlockError
-      type: object
     AccountId:
       $schema: https://json-schema.org/draft/2020-12/schema
       description: 'NEAR Account Identifier.
@@ -133,82 +111,18 @@ components:
         ```'
       title: AccountId
       type: string
-    RpcRequestValidationErrorKind:
+    ValidatorStakeView:
       oneOf:
-      - properties:
-          info:
-            properties:
-              method_name:
-                type: string
-            required:
-            - method_name
-            type: object
-          name:
+      - allOf:
+        - $ref: '#/components/schemas/ValidatorStakeViewV1'
+        properties:
+          validator_stake_struct_version:
             enum:
-            - METHOD_NOT_FOUND
+            - V1
             type: string
         required:
-        - name
-        - info
+        - validator_stake_struct_version
         type: object
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
-          name:
-            enum:
-            - PARSE_ERROR
-            type: string
-        required:
-        - name
-        - info
-        type: object
-    CryptoHash:
-      type: string
-    JsonRpcRequest_for_next_light_client_block:
-      properties:
-        id:
-          type: string
-        jsonrpc:
-          type: string
-        method:
-          enum:
-          - next_light_client_block
-          type: string
-        params:
-          $ref: '#/components/schemas/RpcLightClientNextBlockRequest'
-      required:
-      - jsonrpc
-      - id
-      - params
-      - method
-      title: JsonRpcRequest_for_next_light_client_block
-      type: object
-    RpcLightClientNextBlockRequest:
-      properties:
-        last_block_hash:
-          $ref: '#/components/schemas/CryptoHash'
-      required:
-      - last_block_hash
-      title: RpcLightClientNextBlockRequest
-      type: object
-    ValidatorStakeViewV1:
-      properties:
-        account_id:
-          $ref: '#/components/schemas/AccountId'
-        public_key:
-          $ref: '#/components/schemas/PublicKey'
-        stake:
-          $ref: '#/components/schemas/NearToken'
-      required:
-      - account_id
-      - public_key
-      - stake
-      type: object
     RpcLightClientNextBlockResponse:
       description: A state for the current head of a light client. More info [here](https://nomicon.io/ChainSpec/LightClient).
       properties:
@@ -236,41 +150,36 @@ components:
         prev_block_hash:
           $ref: '#/components/schemas/CryptoHash'
       type: object
-    ErrorWrapper_for_RpcLightClientNextBlockError:
+    JsonRpcResponse_for_RpcLightClientNextBlockResponse_and_RpcLightClientNextBlockError:
       oneOf:
       - properties:
-          cause:
-            $ref: '#/components/schemas/RpcRequestValidationErrorKind'
-          name:
-            enum:
-            - REQUEST_VALIDATION_ERROR
-            type: string
+          result:
+            $ref: '#/components/schemas/RpcLightClientNextBlockResponse'
         required:
-        - name
-        - cause
+        - result
         type: object
       - properties:
-          cause:
-            $ref: '#/components/schemas/RpcLightClientNextBlockError'
-          name:
-            enum:
-            - HANDLER_ERROR
-            type: string
+          error:
+            $ref: '#/components/schemas/ErrorWrapper_for_RpcLightClientNextBlockError'
         required:
-        - name
-        - cause
+        - error
         type: object
-      - properties:
-          cause:
-            $ref: '#/components/schemas/InternalError'
-          name:
-            enum:
-            - INTERNAL_ERROR
-            type: string
-        required:
-        - name
-        - cause
-        type: object
+      properties:
+        id:
+          type: string
+        jsonrpc:
+          type: string
+      required:
+      - jsonrpc
+      - id
+      title: JsonRpcResponse_for_RpcLightClientNextBlockResponse_and_RpcLightClientNextBlockError
+      type: object
+    CryptoHash:
+      type: string
+    Signature:
+      type: string
+    NearToken:
+      type: string
     InternalError:
       oneOf:
       - properties:
@@ -334,6 +243,41 @@ components:
       - next_bp_hash
       - block_merkle_root
       type: object
+    ErrorWrapper_for_RpcLightClientNextBlockError:
+      oneOf:
+      - properties:
+          cause:
+            $ref: '#/components/schemas/RpcRequestValidationErrorKind'
+          name:
+            enum:
+            - REQUEST_VALIDATION_ERROR
+            type: string
+        required:
+        - name
+        - cause
+        type: object
+      - properties:
+          cause:
+            $ref: '#/components/schemas/RpcLightClientNextBlockError'
+          name:
+            enum:
+            - HANDLER_ERROR
+            type: string
+        required:
+        - name
+        - cause
+        type: object
+      - properties:
+          cause:
+            $ref: '#/components/schemas/InternalError'
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
+        required:
+        - name
+        - cause
+        type: object
     EpochId:
       allOf:
       - $ref: '#/components/schemas/CryptoHash'
@@ -342,15 +286,71 @@ components:
         EpochId of epoch T is the hash of last block in T-2
 
         EpochId of first two epochs is 0'
-    ValidatorStakeView:
+    RpcRequestValidationErrorKind:
       oneOf:
-      - allOf:
-        - $ref: '#/components/schemas/ValidatorStakeViewV1'
-        properties:
-          validator_stake_struct_version:
+      - properties:
+          info:
+            properties:
+              method_name:
+                type: string
+            required:
+            - method_name
+            type: object
+          name:
             enum:
-            - V1
+            - METHOD_NOT_FOUND
             type: string
         required:
-        - validator_stake_struct_version
+        - name
+        - info
         type: object
+      - properties:
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - PARSE_ERROR
+            type: string
+        required:
+        - name
+        - info
+        type: object
+    JsonRpcRequest_for_next_light_client_block:
+      properties:
+        id:
+          type: string
+        jsonrpc:
+          type: string
+        method:
+          enum:
+          - next_light_client_block
+          type: string
+        params:
+          $ref: '#/components/schemas/RpcLightClientNextBlockRequest'
+      required:
+      - jsonrpc
+      - id
+      - params
+      - method
+      title: JsonRpcRequest_for_next_light_client_block
+      type: object
+    PublicKey:
+      type: string
+    ValidatorStakeViewV1:
+      properties:
+        account_id:
+          $ref: '#/components/schemas/AccountId'
+        public_key:
+          $ref: '#/components/schemas/PublicKey'
+        stake:
+          $ref: '#/components/schemas/NearToken'
+      required:
+      - account_id
+      - public_key
+      - stake
+      type: object

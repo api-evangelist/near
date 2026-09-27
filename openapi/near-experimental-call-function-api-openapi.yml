@@ -28,30 +28,13 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    JsonRpcResponse_for_RpcCallFunctionResponse_and_RpcCallFunctionError:
-      oneOf:
-      - properties:
-          result:
-            $ref: '#/components/schemas/RpcCallFunctionResponse'
-        required:
-        - result
-        type: object
-      - properties:
-          error:
-            $ref: '#/components/schemas/ErrorWrapper_for_RpcCallFunctionError'
-        required:
-        - error
-        type: object
-      properties:
-        id:
-          type: string
-        jsonrpc:
-          type: string
-      required:
-      - jsonrpc
-      - id
-      title: JsonRpcResponse_for_RpcCallFunctionResponse_and_RpcCallFunctionError
-      type: object
+    BlockId:
+      anyOf:
+      - format: uint64
+        minimum: 0
+        title: block_height
+        type: integer
+      - $ref: '#/components/schemas/CryptoHash'
     AccountId:
       $schema: https://json-schema.org/draft/2020-12/schema
       description: 'NEAR Account Identifier.
@@ -82,122 +65,68 @@ components:
         ```'
       title: AccountId
       type: string
-    BlockId:
-      anyOf:
-      - format: uint64
-        minimum: 0
-        title: block_height
-        type: integer
-      - $ref: '#/components/schemas/CryptoHash'
-    PrepareError:
-      description: Error that can occur while preparing or executing Wasm smart-contract.
+    CryptoHash:
+      type: string
+    CompilationError:
       oneOf:
-      - description: Error happened while serializing the module.
-        enum:
-        - Serialization
-        type: string
-      - description: Error happened while deserializing the module.
-        enum:
-        - Deserialization
-        type: string
-      - description: Internal memory declaration has been found in the module.
-        enum:
-        - InternalMemoryDeclared
-        type: string
-      - description: 'Gas instrumentation failed.
-
-
-          This most likely indicates the module isn''t valid.'
-        enum:
-        - GasInstrumentation
-        type: string
-      - description: 'Stack instrumentation failed.
-
-
-          This  most likely indicates the module isn''t valid.'
-        enum:
-        - StackHeightInstrumentation
-        type: string
-      - description: 'Error happened during instantiation.
-
-
-          This might indicate that `start` function trapped, or module isn''t
-
-          instantiable and/or un-linkable.'
-        enum:
-        - Instantiate
-        type: string
-      - description: Error creating memory.
-        enum:
-        - Memory
-        type: string
-      - description: Contract contains too many functions.
-        enum:
-        - TooManyFunctions
-        type: string
-      - description: Contract contains too many locals.
-        enum:
-        - TooManyLocals
-        type: string
-      - description: Contract contains too many tables.
-        enum:
-        - TooManyTables
-        type: string
-      - description: Contract contains too many table elements.
-        enum:
-        - TooManyTableElements
-        type: string
-      - description: A function body in the contract exceeds the size limit.
-        enum:
-        - FunctionBodyTooLarge
-        type: string
-      - description: The instrumented code exceeds the size limit.
-        enum:
-        - InstrumentedCodeTooLarge
-        type: string
-      - description: A function contains too many basic blocks.
-        enum:
-        - TooManyBlocksPerFunction
-        type: string
-      - description: A contract contains too many basic blocks.
-        enum:
-        - TooManyBlocksPerContract
-        type: string
-      - description: Contract declares too many entries in the wasm type section.
-        enum:
-        - TooManyTypes
-        type: string
-      - description: All contract functions combined have more than `max_params_per_contract` parameters.
-        enum:
-        - TooManyParamsPerFunction
-        type: string
-      - description: A function has more than `max_params_per_function` parameters.
-        enum:
-        - TooManyParamsPerContract
-        type: string
-      - description: 'A function''s max operand-stack size (in bytes) exceeds
-
-          `max_operand_stack_bytes_per_function`.'
-        enum:
-        - OperandStackTooLarge
-        type: string
-    InternalError:
-      oneOf:
-      - properties:
-          info:
+      - additionalProperties: false
+        properties:
+          CodeDoesNotExist:
             properties:
-              error_message:
+              account_id:
+                $ref: '#/components/schemas/AccountId'
+            required:
+            - account_id
+            type: object
+        required:
+        - CodeDoesNotExist
+        type: object
+      - additionalProperties: false
+        properties:
+          PrepareError:
+            $ref: '#/components/schemas/PrepareError'
+        required:
+        - PrepareError
+        type: object
+      - additionalProperties: false
+        description: 'This is for defense in depth.
+
+          We expect our runtime-independent preparation code to fully catch all invalid wasms,
+
+          but, if it ever misses something we’ll emit this error'
+        properties:
+          WasmerCompileError:
+            properties:
+              msg:
                 type: string
             required:
-            - error_message
+            - msg
             type: object
-          name:
-            enum:
-            - INTERNAL_ERROR
-            type: string
         required:
-        - name
-        - info
+        - WasmerCompileError
+        type: object
+    BlockReference:
+      oneOf:
+      - additionalProperties: false
+        properties:
+          block_id:
+            $ref: '#/components/schemas/BlockId'
+        required:
+        - block_id
+        type: object
+      - additionalProperties: false
+        properties:
+          finality:
+            $ref: '#/components/schemas/Finality'
+        required:
+        - finality
+        type: object
+      - additionalProperties: false
+        properties:
+          sync_checkpoint:
+            $ref: '#/components/schemas/SyncCheckpoint'
+        required:
+        - sync_checkpoint
         type: object
     RpcCallFunctionError:
       oneOf:
@@ -329,66 +258,6 @@ components:
         - name
         - info
         type: object
-    RpcCallFunctionResponse:
-      description: A result returned by contract method
-      properties:
-        block_hash:
-          $ref: '#/components/schemas/CryptoHash'
-        block_height:
-          format: uint64
-          minimum: 0
-          type: integer
-        logs:
-          items:
-            type: string
-          type: array
-        result:
-          items:
-            format: uint8
-            maximum: 255
-            minimum: 0
-            type: integer
-          type: array
-      required:
-      - result
-      - logs
-      - block_height
-      - block_hash
-      type: object
-    RpcRequestValidationErrorKind:
-      oneOf:
-      - properties:
-          info:
-            properties:
-              method_name:
-                type: string
-            required:
-            - method_name
-            type: object
-          name:
-            enum:
-            - METHOD_NOT_FOUND
-            type: string
-        required:
-        - name
-        - info
-        type: object
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
-          name:
-            enum:
-            - PARSE_ERROR
-            type: string
-        required:
-        - name
-        - info
-        type: object
     FunctionCallError:
       description: 'Serializable version of `near-vm-runner::FunctionCallError`.
 
@@ -459,77 +328,122 @@ components:
         required:
         - ExecutionError
         type: object
-    WasmTrap:
-      description: A kind of a trap happened during execution of a binary
+    JsonRpcResponse_for_RpcCallFunctionResponse_and_RpcCallFunctionError:
       oneOf:
-      - description: An `unreachable` opcode was executed.
-        enum:
-        - Unreachable
-        type: string
-      - description: Call indirect incorrect signature trap.
-        enum:
-        - IncorrectCallIndirectSignature
-        type: string
-      - description: Memory out of bounds trap.
-        enum:
-        - MemoryOutOfBounds
-        type: string
-      - description: Call indirect out of bounds trap.
-        enum:
-        - CallIndirectOOB
-        type: string
-      - description: An arithmetic exception, e.g. divided by zero.
-        enum:
-        - IllegalArithmetic
-        type: string
-      - description: Misaligned atomic access trap.
-        enum:
-        - MisalignedAtomicAccess
-        type: string
-      - description: Indirect call to null.
-        enum:
-        - IndirectCallToNull
-        type: string
-      - description: Stack overflow.
-        enum:
-        - StackOverflow
-        type: string
-      - description: Generic trap.
-        enum:
-        - GenericTrap
-        type: string
-    Finality:
-      description: Different types of finality.
-      enum:
-      - optimistic
-      - near-final
-      - final
-      type: string
-    BlockReference:
+      - properties:
+          result:
+            $ref: '#/components/schemas/RpcCallFunctionResponse'
+        required:
+        - result
+        type: object
+      - properties:
+          error:
+            $ref: '#/components/schemas/ErrorWrapper_for_RpcCallFunctionError'
+        required:
+        - error
+        type: object
+      properties:
+        id:
+          type: string
+        jsonrpc:
+          type: string
+      required:
+      - jsonrpc
+      - id
+      title: JsonRpcResponse_for_RpcCallFunctionResponse_and_RpcCallFunctionError
+      type: object
+    PrepareError:
+      description: Error that can occur while preparing or executing Wasm smart-contract.
       oneOf:
-      - additionalProperties: false
-        properties:
-          block_id:
-            $ref: '#/components/schemas/BlockId'
-        required:
-        - block_id
-        type: object
-      - additionalProperties: false
-        properties:
-          finality:
-            $ref: '#/components/schemas/Finality'
-        required:
-        - finality
-        type: object
-      - additionalProperties: false
-        properties:
-          sync_checkpoint:
-            $ref: '#/components/schemas/SyncCheckpoint'
-        required:
-        - sync_checkpoint
-        type: object
-    CryptoHash:
-      type: string
+      - description: Error happened while serializing the module.
+        enum:
+        - Serialization
+        type: string
+      - description: Error happened while deserializing the module.
+        enum:
+        - Deserialization
+        type: string
+      - description: Internal memory declaration has been found in the module.
+        enum:
+        - InternalMemoryDeclared
+        type: string
+      - description: 'Gas instrumentation failed.
+
+
+          This most likely indicates the module isn''t valid.'
+        enum:
+        - GasInstrumentation
+        type: string
+      - description: 'Stack instrumentation failed.
+
+
+          This  most likely indicates the module isn''t valid.'
+        enum:
+        - StackHeightInstrumentation
+        type: string
+      - description: 'Error happened during instantiation.
+
+
+          This might indicate that `start` function trapped, or module isn''t
+
+          instantiable and/or un-linkable.'
+        enum:
+        - Instantiate
+        type: string
+      - description: Error creating memory.
+        enum:
+        - Memory
+        type: string
+      - description: Contract contains too many functions.
+        enum:
+        - TooManyFunctions
+        type: string
+      - description: Contract contains too many locals.
+        enum:
+        - TooManyLocals
+        type: string
+      - description: Contract contains too many tables.
+        enum:
+        - TooManyTables
+        type: string
+      - description: Contract contains too many table elements.
+        enum:
+        - TooManyTableElements
+        type: string
+      - description: A function body in the contract exceeds the size limit.
+        enum:
+        - FunctionBodyTooLarge
+        type: string
+      - description: The instrumented code exceeds the size limit.
+        enum:
+        - InstrumentedCodeTooLarge
+        type: string
+      - description: A function contains too many basic blocks.
+        enum:
+        - TooManyBlocksPerFunction
+        type: string
+      - description: A contract contains too many basic blocks.
+        enum:
+        - TooManyBlocksPerContract
+        type: string
+      - description: Contract declares too many entries in the wasm type section.
+        enum:
+        - TooManyTypes
+        type: string
+      - description: All contract functions combined have more than `max_params_per_contract` parameters.
+        enum:
+        - TooManyParamsPerFunction
+        type: string
+      - description: A function has more than `max_params_per_function` parameters.
+        enum:
+        - TooManyParamsPerContract
+        type: string
+      - description: 'A function''s max operand-stack size (in bytes) exceeds
+
+          `max_operand_stack_bytes_per_function`.'
+        enum:
+        - OperandStackTooLarge
+        type: string
     RpcCallFunctionRequest:
       oneOf:
       - properties:
@@ -562,6 +476,86 @@ components:
       - method_name
       - args_base64
       title: RpcCallFunctionRequest
+      type: object
+    ErrorWrapper_for_RpcCallFunctionError:
+      oneOf:
+      - properties:
+          cause:
+            $ref: '#/components/schemas/RpcRequestValidationErrorKind'
+          name:
+            enum:
+            - REQUEST_VALIDATION_ERROR
+            type: string
+        required:
+        - name
+        - cause
+        type: object
+      - properties:
+          cause:
+            $ref: '#/components/schemas/RpcCallFunctionError'
+          name:
+            enum:
+            - HANDLER_ERROR
+            type: string
+        required:
+        - name
+        - cause
+        type: object
+      - properties:
+          cause:
+            $ref: '#/components/schemas/InternalError'
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
+        required:
+        - name
+        - cause
+        type: object
+    RpcCallFunctionResponse:
+      description: A result returned by contract method
+      properties:
+        block_hash:
+          $ref: '#/components/schemas/CryptoHash'
+        block_height:
+          format: uint64
+          minimum: 0
+          type: integer
+        logs:
+          items:
+            type: string
+          type: array
+        result:
+          items:
+            format: uint8
+            maximum: 255
+            minimum: 0
+            type: integer
+          type: array
+      required:
+      - result
+      - logs
+      - block_height
+      - block_hash
+      type: object
+    JsonRpcRequest_for_EXPERIMENTAL_call_function:
+      properties:
+        id:
+          type: string
+        jsonrpc:
+          type: string
+        method:
+          enum:
+          - EXPERIMENTAL_call_function
+          type: string
+        params:
+          $ref: '#/components/schemas/RpcCallFunctionRequest'
+      required:
+      - jsonrpc
+      - id
+      - params
+      - method
+      title: JsonRpcRequest_for_EXPERIMENTAL_call_function
       type: object
     HostError:
       oneOf:
@@ -961,41 +955,84 @@ components:
         required:
         - P256VerifyInvalidInput
         type: object
-    ErrorWrapper_for_RpcCallFunctionError:
+    WasmTrap:
+      description: A kind of a trap happened during execution of a binary
+      oneOf:
+      - description: An `unreachable` opcode was executed.
+        enum:
+        - Unreachable
+        type: string
+      - description: Call indirect incorrect signature trap.
+        enum:
+        - IncorrectCallIndirectSignature
+        type: string
+      - description: Memory out of bounds trap.
+        enum:
+        - MemoryOutOfBounds
+        type: string
+      - description: Call indirect out of bounds trap.
+        enum:
+        - CallIndirectOOB
+        type: string
+      - description: An arithmetic exception, e.g. divided by zero.
+        enum:
+        - IllegalArithmetic
+        type: string
+      - description: Misaligned atomic access trap.
+        enum:
+        - MisalignedAtomicAccess
+        type: string
+      - description: Indirect call to null.
+        enum:
+        - IndirectCallToNull
+        type: string
+      - description: Stack overflow.
+        enum:
+        - StackOverflow
+        type: string
+      - description: Generic trap.
+        enum:
+        - GenericTrap
+        type: string
+    RpcRequestValidationErrorKind:
       oneOf:
       - properties:
-          cause:
-            $ref: '#/components/schemas/RpcRequestValidationErrorKind'
+          info:
+            properties:
+              method_name:
+                type: string
+            required:
+            - method_name
+            type: object
           name:
             enum:
-            - REQUEST_VALIDATION_ERROR
+            - METHOD_NOT_FOUND
             type: string
         required:
         - name
-        - cause
+        - info
         type: object
       - properties:
-          cause:
-            $ref: '#/components/schemas/RpcCallFunctionError'
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
           name:
             enum:
-            - HANDLER_ERROR
+            - PARSE_ERROR
             type: string
         required:
         - name
-        - cause
+        - info
         type: object
-      - properties:
-          cause:
-            $ref: '#/components/schemas/InternalError'
-          name:
-            enum:
-            - INTERNAL_ERROR
-            type: string
-        required:
-        - name
-        - cause
-        type: object
+    SyncCheckpoint:
+      enum:
+      - genesis
+      - earliest_available
+      type: string
     FunctionArgs:
       description: 'This type is used to mark function arguments.
 
@@ -1007,67 +1044,30 @@ components:
         (serde_json).'
       format: bytes
       type: string
-    SyncCheckpoint:
+    Finality:
+      description: Different types of finality.
       enum:
-      - genesis
-      - earliest_available
+      - optimistic
+      - near-final
+      - final
       type: string
-    JsonRpcRequest_for_EXPERIMENTAL_call_function:
-      properties:
-        id:
-          type: string
-        jsonrpc:
-          type: string
-        method:
-          enum:
-          - EXPERIMENTAL_call_function
-          type: string
-        params:
-          $ref: '#/components/schemas/RpcCallFunctionRequest'
-      required:
-      - jsonrpc
-      - id
-      - params
-      - method
-      title: JsonRpcRequest_for_EXPERIMENTAL_call_function
-      type: object
-    CompilationError:
+    InternalError:
       oneOf:
-      - additionalProperties: false
-        properties:
-          CodeDoesNotExist:
+      - properties:
+          info:
             properties:
-              account_id:
-                $ref: '#/components/schemas/AccountId'
-            required:
-            - account_id
-            type: object
-        required:
-        - CodeDoesNotExist
-        type: object
-      - additionalProperties: false
-        properties:
-          PrepareError:
-            $ref: '#/components/schemas/PrepareError'
-        required:
-        - PrepareError
-        type: object
-      - additionalProperties: false
-        description: 'This is for defense in depth.
-
-          We expect our runtime-independent preparation code to fully catch all invalid wasms,
-
-          but, if it ever misses something we’ll emit this error'
-        properties:
-          WasmerCompileError:
-            properties:
-              msg:
+              error_message:
                 type: string
             required:
-            - msg
+            - error_message
             type: object
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
         required:
-        - WasmerCompileError
+        - name
+        - info
         type: object
     MethodResolveError:
       enum:

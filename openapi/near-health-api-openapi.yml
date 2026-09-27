@@ -31,37 +31,94 @@ components:
     RpcHealthResponse:
       enum:
       - null
-    JsonRpcResponse_for_Nullable_RpcHealthResponse_and_RpcStatusError:
+    RpcStatusError:
       oneOf:
       - properties:
-          result:
-            anyOf:
-            - $ref: '#/components/schemas/RpcHealthResponse'
-            - enum:
-              - null
+          name:
+            enum:
+            - NODE_IS_SYNCING
+            type: string
         required:
-        - result
+        - name
         type: object
       - properties:
-          error:
-            $ref: '#/components/schemas/ErrorWrapper_for_RpcStatusError'
+          info:
+            properties:
+              elapsed:
+                items:
+                  format: uint64
+                  minimum: 0
+                  type: integer
+                maxItems: 2
+                minItems: 2
+                type: array
+            required:
+            - elapsed
+            type: object
+          name:
+            enum:
+            - NO_NEW_BLOCKS
+            type: string
         required:
-        - error
+        - name
+        - info
         type: object
-      properties:
-        id:
-          type: string
-        jsonrpc:
-          type: string
-      required:
-      - jsonrpc
-      - id
-      title: JsonRpcResponse_for_Nullable_RpcHealthResponse_and_RpcStatusError
-      type: object
+      - properties:
+          info:
+            properties:
+              epoch_id:
+                $ref: '#/components/schemas/EpochId'
+            required:
+            - epoch_id
+            type: object
+          name:
+            enum:
+            - EPOCH_OUT_OF_BOUNDS
+            type: string
+        required:
+        - name
+        - info
+        type: object
+      - properties:
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
+        required:
+        - name
+        - info
+        type: object
     RpcHealthRequest:
       enum:
       - null
       title: RpcHealthRequest
+    CryptoHash:
+      type: string
+    InternalError:
+      oneOf:
+      - properties:
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
+        required:
+        - name
+        - info
+        type: object
     ErrorWrapper_for_RpcStatusError:
       oneOf:
       - properties:
@@ -131,8 +188,41 @@ components:
         - name
         - info
         type: object
-    CryptoHash:
-      type: string
+    EpochId:
+      allOf:
+      - $ref: '#/components/schemas/CryptoHash'
+      description: 'Epoch identifier -- wrapped hash, to make it easier to distinguish.
+
+        EpochId of epoch T is the hash of last block in T-2
+
+        EpochId of first two epochs is 0'
+    JsonRpcResponse_for_Nullable_RpcHealthResponse_and_RpcStatusError:
+      oneOf:
+      - properties:
+          result:
+            anyOf:
+            - $ref: '#/components/schemas/RpcHealthResponse'
+            - enum:
+              - null
+        required:
+        - result
+        type: object
+      - properties:
+          error:
+            $ref: '#/components/schemas/ErrorWrapper_for_RpcStatusError'
+        required:
+        - error
+        type: object
+      properties:
+        id:
+          type: string
+        jsonrpc:
+          type: string
+      required:
+      - jsonrpc
+      - id
+      title: JsonRpcResponse_for_Nullable_RpcHealthResponse_and_RpcStatusError
+      type: object
     JsonRpcRequest_for_health:
       properties:
         id:
@@ -152,93 +242,3 @@ components:
       - method
       title: JsonRpcRequest_for_health
       type: object
-    RpcStatusError:
-      oneOf:
-      - properties:
-          name:
-            enum:
-            - NODE_IS_SYNCING
-            type: string
-        required:
-        - name
-        type: object
-      - properties:
-          info:
-            properties:
-              elapsed:
-                items:
-                  format: uint64
-                  minimum: 0
-                  type: integer
-                maxItems: 2
-                minItems: 2
-                type: array
-            required:
-            - elapsed
-            type: object
-          name:
-            enum:
-            - NO_NEW_BLOCKS
-            type: string
-        required:
-        - name
-        - info
-        type: object
-      - properties:
-          info:
-            properties:
-              epoch_id:
-                $ref: '#/components/schemas/EpochId'
-            required:
-            - epoch_id
-            type: object
-          name:
-            enum:
-            - EPOCH_OUT_OF_BOUNDS
-            type: string
-        required:
-        - name
-        - info
-        type: object
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
-          name:
-            enum:
-            - INTERNAL_ERROR
-            type: string
-        required:
-        - name
-        - info
-        type: object
-    InternalError:
-      oneOf:
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
-          name:
-            enum:
-            - INTERNAL_ERROR
-            type: string
-        required:
-        - name
-        - info
-        type: object
-    EpochId:
-      allOf:
-      - $ref: '#/components/schemas/CryptoHash'
-      description: 'Epoch identifier -- wrapped hash, to make it easier to distinguish.
-
-        EpochId of epoch T is the hash of last block in T-2
-
-        EpochId of first two epochs is 0'

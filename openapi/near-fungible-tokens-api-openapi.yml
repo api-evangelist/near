@@ -155,44 +155,18 @@ paths:
       x-fastnear-title: FastNEAR API - V1 FT Top Holders
 components:
   schemas:
-    V0ContractsResponse:
+    V1FtResponse:
       additionalProperties: false
       properties:
         account_id:
           type: string
-        contract_ids:
+        tokens:
           items:
-            type: string
+            $ref: '#/components/schemas/TokenRow'
           type: array
       required:
       - account_id
-      - contract_ids
-      type: object
-    TokenAccountsResponse:
-      additionalProperties: false
-      properties:
-        accounts:
-          items:
-            $ref: '#/components/schemas/AccountBalanceRow'
-          type: array
-        token_id:
-          type: string
-      required:
-      - token_id
-      - accounts
-      type: object
-    AccountBalanceRow:
-      additionalProperties: false
-      properties:
-        account_id:
-          type: string
-        balance:
-          type:
-          - string
-          - 'null'
-      required:
-      - account_id
-      - balance
+      - tokens
       type: object
     TokenRow:
       additionalProperties: false
@@ -214,16 +188,42 @@ components:
       - last_update_block_height
       - balance
       type: object
-    V1FtResponse:
+    V0ContractsResponse:
       additionalProperties: false
       properties:
         account_id:
           type: string
-        tokens:
+        contract_ids:
           items:
-            $ref: '#/components/schemas/TokenRow'
+            type: string
           type: array
       required:
       - account_id
-      - tokens
+      - contract_ids
+      type: object
+    AccountBalanceRow:
+      additionalProperties: false
+      properties:
+        account_id:
+          type: string
+        balance:
+          type:
+          - string
+          - 'null'
+      required:
+      - account_id
+      - balance
+      type: object
+    TokenAccountsResponse:
+      additionalProperties: false
+      properties:
+        accounts:
+          items:
+            $ref: '#/components/schemas/AccountBalanceRow'
+          type: array
+        token_id:
+          type: string
+      required:
+      - token_id
+      - accounts
       type: object

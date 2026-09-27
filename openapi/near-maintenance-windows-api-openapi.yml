@@ -28,85 +28,8 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    JsonRpcResponse_for_Array_of_Range_of_uint64_and_RpcMaintenanceWindowsError:
+    RpcMaintenanceWindowsError:
       oneOf:
-      - properties:
-          result:
-            items:
-              $ref: '#/components/schemas/Range_of_uint64'
-            type: array
-        required:
-        - result
-        type: object
-      - properties:
-          error:
-            $ref: '#/components/schemas/ErrorWrapper_for_RpcMaintenanceWindowsError'
-        required:
-        - error
-        type: object
-      properties:
-        id:
-          type: string
-        jsonrpc:
-          type: string
-      required:
-      - jsonrpc
-      - id
-      title: JsonRpcResponse_for_Array_of_Range_of_uint64_and_RpcMaintenanceWindowsError
-      type: object
-    ErrorWrapper_for_RpcMaintenanceWindowsError:
-      oneOf:
-      - properties:
-          cause:
-            $ref: '#/components/schemas/RpcRequestValidationErrorKind'
-          name:
-            enum:
-            - REQUEST_VALIDATION_ERROR
-            type: string
-        required:
-        - name
-        - cause
-        type: object
-      - properties:
-          cause:
-            $ref: '#/components/schemas/RpcMaintenanceWindowsError'
-          name:
-            enum:
-            - HANDLER_ERROR
-            type: string
-        required:
-        - name
-        - cause
-        type: object
-      - properties:
-          cause:
-            $ref: '#/components/schemas/InternalError'
-          name:
-            enum:
-            - INTERNAL_ERROR
-            type: string
-        required:
-        - name
-        - cause
-        type: object
-    RpcRequestValidationErrorKind:
-      oneOf:
-      - properties:
-          info:
-            properties:
-              method_name:
-                type: string
-            required:
-            - method_name
-            type: object
-          name:
-            enum:
-            - METHOD_NOT_FOUND
-            type: string
-        required:
-        - name
-        - info
-        type: object
       - properties:
           info:
             properties:
@@ -117,19 +40,25 @@ components:
             type: object
           name:
             enum:
-            - PARSE_ERROR
+            - INTERNAL_ERROR
             type: string
         required:
         - name
         - info
         type: object
-    RpcMaintenanceWindowsRequest:
+    Range_of_uint64:
       properties:
-        account_id:
-          $ref: '#/components/schemas/AccountId'
+        end:
+          format: uint64
+          minimum: 0
+          type: integer
+        start:
+          format: uint64
+          minimum: 0
+          type: integer
       required:
-      - account_id
-      title: RpcMaintenanceWindowsRequest
+      - start
+      - end
       type: object
     AccountId:
       $schema: https://json-schema.org/draft/2020-12/schema
@@ -180,23 +109,40 @@ components:
       - method
       title: JsonRpcRequest_for_maintenance_windows
       type: object
-    RpcMaintenanceWindowsError:
+    ErrorWrapper_for_RpcMaintenanceWindowsError:
       oneOf:
       - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
+          cause:
+            $ref: '#/components/schemas/RpcRequestValidationErrorKind'
+          name:
+            enum:
+            - REQUEST_VALIDATION_ERROR
+            type: string
+        required:
+        - name
+        - cause
+        type: object
+      - properties:
+          cause:
+            $ref: '#/components/schemas/RpcMaintenanceWindowsError'
+          name:
+            enum:
+            - HANDLER_ERROR
+            type: string
+        required:
+        - name
+        - cause
+        type: object
+      - properties:
+          cause:
+            $ref: '#/components/schemas/InternalError'
           name:
             enum:
             - INTERNAL_ERROR
             type: string
         required:
         - name
-        - info
+        - cause
         type: object
     InternalError:
       oneOf:
@@ -216,17 +162,71 @@ components:
         - name
         - info
         type: object
-    Range_of_uint64:
+    RpcRequestValidationErrorKind:
+      oneOf:
+      - properties:
+          info:
+            properties:
+              method_name:
+                type: string
+            required:
+            - method_name
+            type: object
+          name:
+            enum:
+            - METHOD_NOT_FOUND
+            type: string
+        required:
+        - name
+        - info
+        type: object
+      - properties:
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - PARSE_ERROR
+            type: string
+        required:
+        - name
+        - info
+        type: object
+    RpcMaintenanceWindowsRequest:
       properties:
-        end:
-          format: uint64
-          minimum: 0
-          type: integer
-        start:
-          format: uint64
-          minimum: 0
-          type: integer
+        account_id:
+          $ref: '#/components/schemas/AccountId'
       required:
-      - start
-      - end
+      - account_id
+      title: RpcMaintenanceWindowsRequest
+      type: object
+    JsonRpcResponse_for_Array_of_Range_of_uint64_and_RpcMaintenanceWindowsError:
+      oneOf:
+      - properties:
+          result:
+            items:
+              $ref: '#/components/schemas/Range_of_uint64'
+            type: array
+        required:
+        - result
+        type: object
+      - properties:
+          error:
+            $ref: '#/components/schemas/ErrorWrapper_for_RpcMaintenanceWindowsError'
+        required:
+        - error
+        type: object
+      properties:
+        id:
+          type: string
+        jsonrpc:
+          type: string
+      required:
+      - jsonrpc
+      - id
+      title: JsonRpcResponse_for_Array_of_Range_of_uint64_and_RpcMaintenanceWindowsError
       type: object

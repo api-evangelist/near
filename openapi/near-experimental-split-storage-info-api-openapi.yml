@@ -28,6 +28,32 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    RpcSplitStorageInfoResponse:
+      description: Contains the split storage information.
+      properties:
+        cold_head_height:
+          format: uint64
+          minimum: 0
+          type:
+          - integer
+          - 'null'
+        final_head_height:
+          format: uint64
+          minimum: 0
+          type:
+          - integer
+          - 'null'
+        head_height:
+          format: uint64
+          minimum: 0
+          type:
+          - integer
+          - 'null'
+        hot_db_kind:
+          type:
+          - string
+          - 'null'
+      type: object
     JsonRpcRequest_for_EXPERIMENTAL_split_storage_info:
       properties:
         id:
@@ -47,6 +73,59 @@ components:
       - method
       title: JsonRpcRequest_for_EXPERIMENTAL_split_storage_info
       type: object
+    ErrorWrapper_for_RpcSplitStorageInfoError:
+      oneOf:
+      - properties:
+          cause:
+            $ref: '#/components/schemas/RpcRequestValidationErrorKind'
+          name:
+            enum:
+            - REQUEST_VALIDATION_ERROR
+            type: string
+        required:
+        - name
+        - cause
+        type: object
+      - properties:
+          cause:
+            $ref: '#/components/schemas/RpcSplitStorageInfoError'
+          name:
+            enum:
+            - HANDLER_ERROR
+            type: string
+        required:
+        - name
+        - cause
+        type: object
+      - properties:
+          cause:
+            $ref: '#/components/schemas/InternalError'
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
+        required:
+        - name
+        - cause
+        type: object
+    InternalError:
+      oneOf:
+      - properties:
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
+        required:
+        - name
+        - info
+        type: object
     RpcRequestValidationErrorKind:
       oneOf:
       - properties:
@@ -108,86 +187,7 @@ components:
       - id
       title: JsonRpcResponse_for_RpcSplitStorageInfoResponse_and_RpcSplitStorageInfoError
       type: object
-    ErrorWrapper_for_RpcSplitStorageInfoError:
-      oneOf:
-      - properties:
-          cause:
-            $ref: '#/components/schemas/RpcRequestValidationErrorKind'
-          name:
-            enum:
-            - REQUEST_VALIDATION_ERROR
-            type: string
-        required:
-        - name
-        - cause
-        type: object
-      - properties:
-          cause:
-            $ref: '#/components/schemas/RpcSplitStorageInfoError'
-          name:
-            enum:
-            - HANDLER_ERROR
-            type: string
-        required:
-        - name
-        - cause
-        type: object
-      - properties:
-          cause:
-            $ref: '#/components/schemas/InternalError'
-          name:
-            enum:
-            - INTERNAL_ERROR
-            type: string
-        required:
-        - name
-        - cause
-        type: object
     RpcSplitStorageInfoError:
-      oneOf:
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
-          name:
-            enum:
-            - INTERNAL_ERROR
-            type: string
-        required:
-        - name
-        - info
-        type: object
-    RpcSplitStorageInfoResponse:
-      description: Contains the split storage information.
-      properties:
-        cold_head_height:
-          format: uint64
-          minimum: 0
-          type:
-          - integer
-          - 'null'
-        final_head_height:
-          format: uint64
-          minimum: 0
-          type:
-          - integer
-          - 'null'
-        head_height:
-          format: uint64
-          minimum: 0
-          type:
-          - integer
-          - 'null'
-        hot_db_kind:
-          type:
-          - string
-          - 'null'
-      type: object
-    InternalError:
       oneOf:
       - properties:
           info:

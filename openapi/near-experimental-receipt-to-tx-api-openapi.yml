@@ -52,161 +52,6 @@ components:
       - id
       title: JsonRpcResponse_for_RpcReceiptToTxResponse_and_RpcReceiptToTxError
       type: object
-    RpcReceiptToTxResponse:
-      properties:
-        sender_account_id:
-          $ref: '#/components/schemas/AccountId'
-        transaction_hash:
-          $ref: '#/components/schemas/CryptoHash'
-      required:
-      - transaction_hash
-      - sender_account_id
-      type: object
-    RpcRequestValidationErrorKind:
-      oneOf:
-      - properties:
-          info:
-            properties:
-              method_name:
-                type: string
-            required:
-            - method_name
-            type: object
-          name:
-            enum:
-            - METHOD_NOT_FOUND
-            type: string
-        required:
-        - name
-        - info
-        type: object
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
-          name:
-            enum:
-            - PARSE_ERROR
-            type: string
-        required:
-        - name
-        - info
-        type: object
-    AccountId:
-      $schema: https://json-schema.org/draft/2020-12/schema
-      description: 'NEAR Account Identifier.
-
-
-        This is a unique, syntactically valid, human-readable account identifier on the NEAR network.
-
-
-        [See the crate-level docs for information about validation.](index.html#account-id-rules)
-
-
-        Also see [Error kind precedence](AccountId#error-kind-precedence).
-
-
-        ## Examples
-
-
-        ```
-
-        use near_account_id::AccountId;
-
-
-        let alice: AccountId = "alice.near".parse().unwrap();
-
-
-        assert!("ƒelicia.near".parse::<AccountId>().is_err()); // (ƒ is not f)
-
-        ```'
-      title: AccountId
-      type: string
-    CryptoHash:
-      type: string
-    RpcReceiptToTxRequest:
-      properties:
-        block_height:
-          description: "Block height near where receipt was created. Enables hint fallback\nscan on column miss. Anchor refreshes to each scan-resolved parent's\nexact execution height; later ancestors bounded via causality\n(emit before execute), so subsequent column-miss scans go\n`Ancestor`. Bump `receipt_to_tx_max_hop_distance` if cold archival\ngaps exceed default 20.\n\nCold-storage cost: per-row latency orders of magnitude over hot. To\nbound request cost:\n  - Supply `block_height` within parent's `±window` (default 5).\n  - Supply `shard_id`. Omit → all-shards enumeration until walker\n    crosses `FromReceipt` hop, multiplying cold-read cost.\n  - Don't widen `window` beyond indexer's accuracy; budget shared\n    across full ancestry walk.\n\nReceipt-id-only queries against periods with `save_receipt_to_tx`\ndisabled stay unsupported: column never written, no self-locating."
-          format: uint64
-          minimum: 0
-          type:
-          - integer
-          - 'null'
-        receipt_id:
-          $ref: '#/components/schemas/CryptoHash'
-        shard_id:
-          anyOf:
-          - $ref: '#/components/schemas/ShardId'
-          - enum:
-            - null
-          description: 'Shard hint. Narrows scan to this shard at hint height. Omit to
-
-            enumerate all tracked shards (higher cost). After walker crosses a
-
-            receipt-origin hop, shard derived from parent''s predecessor account
-
-            and hint no longer applies. Best-effort across resharding: layout
-
-            shifts can miss producer, walk returns `UnknownReceipt`.'
-        window:
-          description: 'Pre-first-scan width: `±window` heights around hint. Caps at
-
-            `receipt_to_tx_max_hint_window` (default 20). Ignored after first
-
-            scan-resolved hop — walker switches to `Ancestor` mode at
-
-            `receipt_to_tx_max_hop_distance` width.'
-          format: uint64
-          minimum: 0
-          type:
-          - integer
-          - 'null'
-      required:
-      - receipt_id
-      title: RpcReceiptToTxRequest
-      type: object
-    JsonRpcRequest_for_EXPERIMENTAL_receipt_to_tx:
-      properties:
-        id:
-          type: string
-        jsonrpc:
-          type: string
-        method:
-          enum:
-          - EXPERIMENTAL_receipt_to_tx
-          type: string
-        params:
-          $ref: '#/components/schemas/RpcReceiptToTxRequest'
-      required:
-      - jsonrpc
-      - id
-      - params
-      - method
-      title: JsonRpcRequest_for_EXPERIMENTAL_receipt_to_tx
-      type: object
-    InternalError:
-      oneOf:
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
-          name:
-            enum:
-            - INTERNAL_ERROR
-            type: string
-        required:
-        - name
-        - info
-        type: object
     RpcReceiptToTxError:
       oneOf:
       - properties:
@@ -348,6 +193,91 @@ components:
         - name
         - info
         type: object
+    AccountId:
+      $schema: https://json-schema.org/draft/2020-12/schema
+      description: 'NEAR Account Identifier.
+
+
+        This is a unique, syntactically valid, human-readable account identifier on the NEAR network.
+
+
+        [See the crate-level docs for information about validation.](index.html#account-id-rules)
+
+
+        Also see [Error kind precedence](AccountId#error-kind-precedence).
+
+
+        ## Examples
+
+
+        ```
+
+        use near_account_id::AccountId;
+
+
+        let alice: AccountId = "alice.near".parse().unwrap();
+
+
+        assert!("ƒelicia.near".parse::<AccountId>().is_err()); // (ƒ is not f)
+
+        ```'
+      title: AccountId
+      type: string
+    CryptoHash:
+      type: string
+    ShardId:
+      description: 'The shard identifier. It may be an arbitrary number - it does not need to be
+
+        a number in the range 0..NUM_SHARDS. The shard ids do not need to be
+
+        sequential or contiguous.
+
+
+        The shard id is wrapped in a new type to prevent the old pattern of using
+
+        indices in range 0..NUM_SHARDS and casting to ShardId. Once the transition
+
+        if fully complete it potentially may be simplified to a regular type alias.'
+      format: uint64
+      minimum: 0
+      type: integer
+    InternalError:
+      oneOf:
+      - properties:
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
+        required:
+        - name
+        - info
+        type: object
+    JsonRpcRequest_for_EXPERIMENTAL_receipt_to_tx:
+      properties:
+        id:
+          type: string
+        jsonrpc:
+          type: string
+        method:
+          enum:
+          - EXPERIMENTAL_receipt_to_tx
+          type: string
+        params:
+          $ref: '#/components/schemas/RpcReceiptToTxRequest'
+      required:
+      - jsonrpc
+      - id
+      - params
+      - method
+      title: JsonRpcRequest_for_EXPERIMENTAL_receipt_to_tx
+      type: object
     ErrorWrapper_for_RpcReceiptToTxError:
       oneOf:
       - properties:
@@ -383,19 +313,89 @@ components:
         - name
         - cause
         type: object
-    ShardId:
-      description: 'The shard identifier. It may be an arbitrary number - it does not need to be
+    RpcRequestValidationErrorKind:
+      oneOf:
+      - properties:
+          info:
+            properties:
+              method_name:
+                type: string
+            required:
+            - method_name
+            type: object
+          name:
+            enum:
+            - METHOD_NOT_FOUND
+            type: string
+        required:
+        - name
+        - info
+        type: object
+      - properties:
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - PARSE_ERROR
+            type: string
+        required:
+        - name
+        - info
+        type: object
+    RpcReceiptToTxRequest:
+      properties:
+        block_height:
+          description: "Block height near where receipt was created. Enables hint fallback\nscan on column miss. Anchor refreshes to each scan-resolved parent's\nexact execution height; later ancestors bounded via causality\n(emit before execute), so subsequent column-miss scans go\n`Ancestor`. Bump `receipt_to_tx_max_hop_distance` if cold archival\ngaps exceed default 20.\n\nCold-storage cost: per-row latency orders of magnitude over hot. To\nbound request cost:\n  - Supply `block_height` within parent's `±window` (default 5).\n  - Supply `shard_id`. Omit → all-shards enumeration until walker\n    crosses `FromReceipt` hop, multiplying cold-read cost.\n  - Don't widen `window` beyond indexer's accuracy; budget shared\n    across full ancestry walk.\n\nReceipt-id-only queries against periods with `save_receipt_to_tx`\ndisabled stay unsupported: column never written, no self-locating."
+          format: uint64
+          minimum: 0
+          type:
+          - integer
+          - 'null'
+        receipt_id:
+          $ref: '#/components/schemas/CryptoHash'
+        shard_id:
+          anyOf:
+          - $ref: '#/components/schemas/ShardId'
+          - enum:
+            - null
+          description: 'Shard hint. Narrows scan to this shard at hint height. Omit to
 
-        a number in the range 0..NUM_SHARDS. The shard ids do not need to be
+            enumerate all tracked shards (higher cost). After walker crosses a
 
-        sequential or contiguous.
+            receipt-origin hop, shard derived from parent''s predecessor account
 
+            and hint no longer applies. Best-effort across resharding: layout
 
-        The shard id is wrapped in a new type to prevent the old pattern of using
+            shifts can miss producer, walk returns `UnknownReceipt`.'
+        window:
+          description: 'Pre-first-scan width: `±window` heights around hint. Caps at
 
-        indices in range 0..NUM_SHARDS and casting to ShardId. Once the transition
+            `receipt_to_tx_max_hint_window` (default 20). Ignored after first
 
-        if fully complete it potentially may be simplified to a regular type alias.'
-      format: uint64
-      minimum: 0
-      type: integer
+            scan-resolved hop — walker switches to `Ancestor` mode at
+
+            `receipt_to_tx_max_hop_distance` width.'
+          format: uint64
+          minimum: 0
+          type:
+          - integer
+          - 'null'
+      required:
+      - receipt_id
+      title: RpcReceiptToTxRequest
+      type: object
+    RpcReceiptToTxResponse:
+      properties:
+        sender_account_id:
+          $ref: '#/components/schemas/AccountId'
+        transaction_hash:
+          $ref: '#/components/schemas/CryptoHash'
+      required:
+      - transaction_hash
+      - sender_account_id
+      type: object
