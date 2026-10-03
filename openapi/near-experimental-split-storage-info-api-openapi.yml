@@ -28,6 +28,30 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    JsonRpcResponse_for_RpcSplitStorageInfoResponse_and_RpcSplitStorageInfoError:
+      oneOf:
+      - properties:
+          result:
+            $ref: '#/components/schemas/RpcSplitStorageInfoResponse'
+        required:
+        - result
+        type: object
+      - properties:
+          error:
+            $ref: '#/components/schemas/ErrorWrapper_for_RpcSplitStorageInfoError'
+        required:
+        - error
+        type: object
+      properties:
+        id:
+          type: string
+        jsonrpc:
+          type: string
+      required:
+      - jsonrpc
+      - id
+      title: JsonRpcResponse_for_RpcSplitStorageInfoResponse_and_RpcSplitStorageInfoError
+      type: object
     RpcSplitStorageInfoResponse:
       description: Contains the split storage information.
       properties:
@@ -54,6 +78,24 @@ components:
           - string
           - 'null'
       type: object
+    InternalError:
+      oneOf:
+      - properties:
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
+        required:
+        - name
+        - info
+        type: object
     JsonRpcRequest_for_EXPERIMENTAL_split_storage_info:
       properties:
         id:
@@ -72,6 +114,9 @@ components:
       - params
       - method
       title: JsonRpcRequest_for_EXPERIMENTAL_split_storage_info
+      type: object
+    RpcSplitStorageInfoRequest:
+      title: RpcSplitStorageInfoRequest
       type: object
     ErrorWrapper_for_RpcSplitStorageInfoError:
       oneOf:
@@ -108,24 +153,6 @@ components:
         - name
         - cause
         type: object
-    InternalError:
-      oneOf:
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
-          name:
-            enum:
-            - INTERNAL_ERROR
-            type: string
-        required:
-        - name
-        - info
-        type: object
     RpcRequestValidationErrorKind:
       oneOf:
       - properties:
@@ -160,33 +187,6 @@ components:
         - name
         - info
         type: object
-    RpcSplitStorageInfoRequest:
-      title: RpcSplitStorageInfoRequest
-      type: object
-    JsonRpcResponse_for_RpcSplitStorageInfoResponse_and_RpcSplitStorageInfoError:
-      oneOf:
-      - properties:
-          result:
-            $ref: '#/components/schemas/RpcSplitStorageInfoResponse'
-        required:
-        - result
-        type: object
-      - properties:
-          error:
-            $ref: '#/components/schemas/ErrorWrapper_for_RpcSplitStorageInfoError'
-        required:
-        - error
-        type: object
-      properties:
-        id:
-          type: string
-        jsonrpc:
-          type: string
-      required:
-      - jsonrpc
-      - id
-      title: JsonRpcResponse_for_RpcSplitStorageInfoResponse_and_RpcSplitStorageInfoError
-      type: object
     RpcSplitStorageInfoError:
       oneOf:
       - properties:

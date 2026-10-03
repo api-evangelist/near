@@ -28,24 +28,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    RpcMaintenanceWindowsError:
-      oneOf:
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
-          name:
-            enum:
-            - INTERNAL_ERROR
-            type: string
-        required:
-        - name
-        - info
-        type: object
     Range_of_uint64:
       properties:
         end:
@@ -60,36 +42,6 @@ components:
       - start
       - end
       type: object
-    AccountId:
-      $schema: https://json-schema.org/draft/2020-12/schema
-      description: 'NEAR Account Identifier.
-
-
-        This is a unique, syntactically valid, human-readable account identifier on the NEAR network.
-
-
-        [See the crate-level docs for information about validation.](index.html#account-id-rules)
-
-
-        Also see [Error kind precedence](AccountId#error-kind-precedence).
-
-
-        ## Examples
-
-
-        ```
-
-        use near_account_id::AccountId;
-
-
-        let alice: AccountId = "alice.near".parse().unwrap();
-
-
-        assert!("ƒelicia.near".parse::<AccountId>().is_err()); // (ƒ is not f)
-
-        ```'
-      title: AccountId
-      type: string
     ErrorWrapper_for_RpcMaintenanceWindowsError:
       oneOf:
       - properties:
@@ -125,6 +77,36 @@ components:
         - name
         - cause
         type: object
+    AccountId:
+      $schema: https://json-schema.org/draft/2020-12/schema
+      description: 'NEAR Account Identifier.
+
+
+        This is a unique, syntactically valid, human-readable account identifier on the NEAR network.
+
+
+        [See the crate-level docs for information about validation.](index.html#account-id-rules)
+
+
+        Also see [Error kind precedence](AccountId#error-kind-precedence).
+
+
+        ## Examples
+
+
+        ```
+
+        use near_account_id::AccountId;
+
+
+        let alice: AccountId = "alice.near".parse().unwrap();
+
+
+        assert!("ƒelicia.near".parse::<AccountId>().is_err()); // (ƒ is not f)
+
+        ```'
+      title: AccountId
+      type: string
     InternalError:
       oneOf:
       - properties:
@@ -143,6 +125,77 @@ components:
         - name
         - info
         type: object
+    RpcMaintenanceWindowsRequest:
+      properties:
+        account_id:
+          $ref: '#/components/schemas/AccountId'
+      required:
+      - account_id
+      title: RpcMaintenanceWindowsRequest
+      type: object
+    RpcMaintenanceWindowsError:
+      oneOf:
+      - properties:
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
+        required:
+        - name
+        - info
+        type: object
+    JsonRpcResponse_for_Array_of_Range_of_uint64_and_RpcMaintenanceWindowsError:
+      oneOf:
+      - properties:
+          result:
+            items:
+              $ref: '#/components/schemas/Range_of_uint64'
+            type: array
+        required:
+        - result
+        type: object
+      - properties:
+          error:
+            $ref: '#/components/schemas/ErrorWrapper_for_RpcMaintenanceWindowsError'
+        required:
+        - error
+        type: object
+      properties:
+        id:
+          type: string
+        jsonrpc:
+          type: string
+      required:
+      - jsonrpc
+      - id
+      title: JsonRpcResponse_for_Array_of_Range_of_uint64_and_RpcMaintenanceWindowsError
+      type: object
+    JsonRpcRequest_for_EXPERIMENTAL_maintenance_windows:
+      properties:
+        id:
+          type: string
+        jsonrpc:
+          type: string
+        method:
+          enum:
+          - EXPERIMENTAL_maintenance_windows
+          type: string
+        params:
+          $ref: '#/components/schemas/RpcMaintenanceWindowsRequest'
+      required:
+      - jsonrpc
+      - id
+      - params
+      - method
+      title: JsonRpcRequest_for_EXPERIMENTAL_maintenance_windows
+      type: object
     RpcRequestValidationErrorKind:
       oneOf:
       - properties:
@@ -177,56 +230,3 @@ components:
         - name
         - info
         type: object
-    RpcMaintenanceWindowsRequest:
-      properties:
-        account_id:
-          $ref: '#/components/schemas/AccountId'
-      required:
-      - account_id
-      title: RpcMaintenanceWindowsRequest
-      type: object
-    JsonRpcRequest_for_EXPERIMENTAL_maintenance_windows:
-      properties:
-        id:
-          type: string
-        jsonrpc:
-          type: string
-        method:
-          enum:
-          - EXPERIMENTAL_maintenance_windows
-          type: string
-        params:
-          $ref: '#/components/schemas/RpcMaintenanceWindowsRequest'
-      required:
-      - jsonrpc
-      - id
-      - params
-      - method
-      title: JsonRpcRequest_for_EXPERIMENTAL_maintenance_windows
-      type: object
-    JsonRpcResponse_for_Array_of_Range_of_uint64_and_RpcMaintenanceWindowsError:
-      oneOf:
-      - properties:
-          result:
-            items:
-              $ref: '#/components/schemas/Range_of_uint64'
-            type: array
-        required:
-        - result
-        type: object
-      - properties:
-          error:
-            $ref: '#/components/schemas/ErrorWrapper_for_RpcMaintenanceWindowsError'
-        required:
-        - error
-        type: object
-      properties:
-        id:
-          type: string
-        jsonrpc:
-          type: string
-      required:
-      - jsonrpc
-      - id
-      title: JsonRpcResponse_for_Array_of_Range_of_uint64_and_RpcMaintenanceWindowsError
-      type: object

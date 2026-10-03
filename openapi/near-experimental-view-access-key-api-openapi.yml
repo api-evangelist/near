@@ -28,13 +28,72 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    BlockId:
-      anyOf:
-      - format: uint64
-        minimum: 0
-        title: block_height
-        type: integer
-      - $ref: '#/components/schemas/CryptoHash'
+    JsonRpcResponse_for_RpcViewAccessKeyResponse_and_RpcViewAccessKeyError:
+      oneOf:
+      - properties:
+          result:
+            $ref: '#/components/schemas/RpcViewAccessKeyResponse'
+        required:
+        - result
+        type: object
+      - properties:
+          error:
+            $ref: '#/components/schemas/ErrorWrapper_for_RpcViewAccessKeyError'
+        required:
+        - error
+        type: object
+      properties:
+        id:
+          type: string
+        jsonrpc:
+          type: string
+      required:
+      - jsonrpc
+      - id
+      title: JsonRpcResponse_for_RpcViewAccessKeyResponse_and_RpcViewAccessKeyError
+      type: object
+    JsonRpcRequest_for_EXPERIMENTAL_view_access_key:
+      properties:
+        id:
+          type: string
+        jsonrpc:
+          type: string
+        method:
+          enum:
+          - EXPERIMENTAL_view_access_key
+          type: string
+        params:
+          $ref: '#/components/schemas/RpcViewAccessKeyRequest'
+      required:
+      - jsonrpc
+      - id
+      - params
+      - method
+      title: JsonRpcRequest_for_EXPERIMENTAL_view_access_key
+      type: object
+    BlockReference:
+      oneOf:
+      - additionalProperties: false
+        properties:
+          block_id:
+            $ref: '#/components/schemas/BlockId'
+        required:
+        - block_id
+        type: object
+      - additionalProperties: false
+        properties:
+          finality:
+            $ref: '#/components/schemas/Finality'
+        required:
+        - finality
+        type: object
+      - additionalProperties: false
+        properties:
+          sync_checkpoint:
+            $ref: '#/components/schemas/SyncCheckpoint'
+        required:
+        - sync_checkpoint
+        type: object
     AccountId:
       $schema: https://json-schema.org/draft/2020-12/schema
       description: 'NEAR Account Identifier.
@@ -64,67 +123,6 @@ components:
 
         ```'
       title: AccountId
-      type: string
-    BlockReference:
-      oneOf:
-      - additionalProperties: false
-        properties:
-          block_id:
-            $ref: '#/components/schemas/BlockId'
-        required:
-        - block_id
-        type: object
-      - additionalProperties: false
-        properties:
-          finality:
-            $ref: '#/components/schemas/Finality'
-        required:
-        - finality
-        type: object
-      - additionalProperties: false
-        properties:
-          sync_checkpoint:
-            $ref: '#/components/schemas/SyncCheckpoint'
-        required:
-        - sync_checkpoint
-        type: object
-    SyncCheckpoint:
-      enum:
-      - genesis
-      - earliest_available
-      type: string
-    CryptoHash:
-      type: string
-    JsonRpcResponse_for_RpcViewAccessKeyResponse_and_RpcViewAccessKeyError:
-      oneOf:
-      - properties:
-          result:
-            $ref: '#/components/schemas/RpcViewAccessKeyResponse'
-        required:
-        - result
-        type: object
-      - properties:
-          error:
-            $ref: '#/components/schemas/ErrorWrapper_for_RpcViewAccessKeyError'
-        required:
-        - error
-        type: object
-      properties:
-        id:
-          type: string
-        jsonrpc:
-          type: string
-      required:
-      - jsonrpc
-      - id
-      title: JsonRpcResponse_for_RpcViewAccessKeyResponse_and_RpcViewAccessKeyError
-      type: object
-    Finality:
-      description: Different types of finality.
-      enum:
-      - optimistic
-      - near-final
-      - final
       type: string
     ErrorWrapper_for_RpcViewAccessKeyError:
       oneOf:
@@ -161,83 +159,6 @@ components:
         - name
         - cause
         type: object
-    AccessKeyPermissionView:
-      description: Describes the permission scope for an access key. Whether it is a function call or a full access key.
-      oneOf:
-      - enum:
-        - FullAccess
-        type: string
-      - additionalProperties: false
-        properties:
-          FunctionCall:
-            properties:
-              allowance:
-                anyOf:
-                - $ref: '#/components/schemas/NearToken'
-                - enum:
-                  - null
-              method_names:
-                items:
-                  type: string
-                type: array
-              receiver_id:
-                type: string
-            required:
-            - receiver_id
-            - method_names
-            type: object
-        required:
-        - FunctionCall
-        type: object
-      - additionalProperties: false
-        properties:
-          GasKeyFunctionCall:
-            properties:
-              allowance:
-                anyOf:
-                - $ref: '#/components/schemas/NearToken'
-                - enum:
-                  - null
-              balance:
-                $ref: '#/components/schemas/NearToken'
-              method_names:
-                items:
-                  type: string
-                type: array
-              num_nonces:
-                format: uint16
-                maximum: 65535
-                minimum: 0
-                type: integer
-              receiver_id:
-                type: string
-            required:
-            - balance
-            - num_nonces
-            - receiver_id
-            - method_names
-            type: object
-        required:
-        - GasKeyFunctionCall
-        type: object
-      - additionalProperties: false
-        properties:
-          GasKeyFullAccess:
-            properties:
-              balance:
-                $ref: '#/components/schemas/NearToken'
-              num_nonces:
-                format: uint16
-                maximum: 65535
-                minimum: 0
-                type: integer
-            required:
-            - balance
-            - num_nonces
-            type: object
-        required:
-        - GasKeyFullAccess
-        type: object
     InternalError:
       oneOf:
       - properties:
@@ -251,42 +172,6 @@ components:
           name:
             enum:
             - INTERNAL_ERROR
-            type: string
-        required:
-        - name
-        - info
-        type: object
-    NearToken:
-      type: string
-    RpcRequestValidationErrorKind:
-      oneOf:
-      - properties:
-          info:
-            properties:
-              method_name:
-                type: string
-            required:
-            - method_name
-            type: object
-          name:
-            enum:
-            - METHOD_NOT_FOUND
-            type: string
-        required:
-        - name
-        - info
-        type: object
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
-          name:
-            enum:
-            - PARSE_ERROR
             type: string
         required:
         - name
@@ -419,6 +304,85 @@ components:
       - block_height
       - block_hash
       type: object
+    AccessKeyPermissionView:
+      description: Describes the permission scope for an access key. Whether it is a function call or a full access key.
+      oneOf:
+      - enum:
+        - FullAccess
+        type: string
+      - additionalProperties: false
+        properties:
+          FunctionCall:
+            properties:
+              allowance:
+                anyOf:
+                - $ref: '#/components/schemas/NearToken'
+                - enum:
+                  - null
+              method_names:
+                items:
+                  type: string
+                type: array
+              receiver_id:
+                type: string
+            required:
+            - receiver_id
+            - method_names
+            type: object
+        required:
+        - FunctionCall
+        type: object
+      - additionalProperties: false
+        properties:
+          GasKeyFunctionCall:
+            properties:
+              allowance:
+                anyOf:
+                - $ref: '#/components/schemas/NearToken'
+                - enum:
+                  - null
+              balance:
+                $ref: '#/components/schemas/NearToken'
+              method_names:
+                items:
+                  type: string
+                type: array
+              num_nonces:
+                format: uint16
+                maximum: 65535
+                minimum: 0
+                type: integer
+              receiver_id:
+                type: string
+            required:
+            - balance
+            - num_nonces
+            - receiver_id
+            - method_names
+            type: object
+        required:
+        - GasKeyFunctionCall
+        type: object
+      - additionalProperties: false
+        properties:
+          GasKeyFullAccess:
+            properties:
+              balance:
+                $ref: '#/components/schemas/NearToken'
+              num_nonces:
+                format: uint16
+                maximum: 65535
+                minimum: 0
+                type: integer
+            required:
+            - balance
+            - num_nonces
+            type: object
+        required:
+        - GasKeyFullAccess
+        type: object
+    CryptoHash:
+      type: string
     RpcViewAccessKeyRequest:
       oneOf:
       - properties:
@@ -449,24 +413,60 @@ components:
       - public_key
       title: RpcViewAccessKeyRequest
       type: object
+    BlockId:
+      anyOf:
+      - format: uint64
+        minimum: 0
+        title: block_height
+        type: integer
+      - $ref: '#/components/schemas/CryptoHash'
+    SyncCheckpoint:
+      enum:
+      - genesis
+      - earliest_available
+      type: string
+    NearToken:
+      type: string
     PublicKey:
       type: string
-    JsonRpcRequest_for_EXPERIMENTAL_view_access_key:
-      properties:
-        id:
-          type: string
-        jsonrpc:
-          type: string
-        method:
-          enum:
-          - EXPERIMENTAL_view_access_key
-          type: string
-        params:
-          $ref: '#/components/schemas/RpcViewAccessKeyRequest'
-      required:
-      - jsonrpc
-      - id
-      - params
-      - method
-      title: JsonRpcRequest_for_EXPERIMENTAL_view_access_key
-      type: object
+    Finality:
+      description: Different types of finality.
+      enum:
+      - optimistic
+      - near-final
+      - final
+      type: string
+    RpcRequestValidationErrorKind:
+      oneOf:
+      - properties:
+          info:
+            properties:
+              method_name:
+                type: string
+            required:
+            - method_name
+            type: object
+          name:
+            enum:
+            - METHOD_NOT_FOUND
+            type: string
+        required:
+        - name
+        - info
+        type: object
+      - properties:
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - PARSE_ERROR
+            type: string
+        required:
+        - name
+        - info
+        type: object

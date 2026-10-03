@@ -28,6 +28,53 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    RpcGasPriceError:
+      oneOf:
+      - properties:
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
+        required:
+        - name
+        - info
+        type: object
+      - properties:
+          info:
+            type: object
+          name:
+            enum:
+            - UNKNOWN_BLOCK
+            type: string
+        required:
+        - name
+        - info
+        type: object
+    InternalError:
+      oneOf:
+      - properties:
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
+        required:
+        - name
+        - info
+        type: object
     ErrorWrapper_for_RpcGasPriceError:
       oneOf:
       - properties:
@@ -63,6 +110,25 @@ components:
         - name
         - cause
         type: object
+    JsonRpcRequest_for_gas_price:
+      properties:
+        id:
+          type: string
+        jsonrpc:
+          type: string
+        method:
+          enum:
+          - gas_price
+          type: string
+        params:
+          $ref: '#/components/schemas/RpcGasPriceRequest'
+      required:
+      - jsonrpc
+      - id
+      - params
+      - method
+      title: JsonRpcRequest_for_gas_price
+      type: object
     BlockId:
       anyOf:
       - format: uint64
@@ -70,6 +136,26 @@ components:
         title: block_height
         type: integer
       - $ref: '#/components/schemas/CryptoHash'
+    NearToken:
+      type: string
+    RpcGasPriceRequest:
+      properties:
+        block_id:
+          anyOf:
+          - $ref: '#/components/schemas/BlockId'
+          - enum:
+            - null
+      title: RpcGasPriceRequest
+      type: object
+    RpcGasPriceResponse:
+      properties:
+        gas_price:
+          $ref: '#/components/schemas/NearToken'
+      required:
+      - gas_price
+      type: object
+    CryptoHash:
+      type: string
     JsonRpcResponse_for_RpcGasPriceResponse_and_RpcGasPriceError:
       oneOf:
       - properties:
@@ -93,56 +179,6 @@ components:
       - jsonrpc
       - id
       title: JsonRpcResponse_for_RpcGasPriceResponse_and_RpcGasPriceError
-      type: object
-    CryptoHash:
-      type: string
-    JsonRpcRequest_for_gas_price:
-      properties:
-        id:
-          type: string
-        jsonrpc:
-          type: string
-        method:
-          enum:
-          - gas_price
-          type: string
-        params:
-          $ref: '#/components/schemas/RpcGasPriceRequest'
-      required:
-      - jsonrpc
-      - id
-      - params
-      - method
-      title: JsonRpcRequest_for_gas_price
-      type: object
-    InternalError:
-      oneOf:
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
-          name:
-            enum:
-            - INTERNAL_ERROR
-            type: string
-        required:
-        - name
-        - info
-        type: object
-    NearToken:
-      type: string
-    RpcGasPriceRequest:
-      properties:
-        block_id:
-          anyOf:
-          - $ref: '#/components/schemas/BlockId'
-          - enum:
-            - null
-      title: RpcGasPriceRequest
       type: object
     RpcRequestValidationErrorKind:
       oneOf:
@@ -178,39 +214,3 @@ components:
         - name
         - info
         type: object
-    RpcGasPriceError:
-      oneOf:
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
-          name:
-            enum:
-            - INTERNAL_ERROR
-            type: string
-        required:
-        - name
-        - info
-        type: object
-      - properties:
-          info:
-            type: object
-          name:
-            enum:
-            - UNKNOWN_BLOCK
-            type: string
-        required:
-        - name
-        - info
-        type: object
-    RpcGasPriceResponse:
-      properties:
-        gas_price:
-          $ref: '#/components/schemas/NearToken'
-      required:
-      - gas_price
-      type: object

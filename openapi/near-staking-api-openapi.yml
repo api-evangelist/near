@@ -121,19 +121,6 @@ components:
       - pool_id
       - last_update_block_height
       type: object
-    V1StakingResponse:
-      additionalProperties: false
-      properties:
-        account_id:
-          type: string
-        pools:
-          items:
-            $ref: '#/components/schemas/PoolRow'
-          type: array
-      required:
-      - account_id
-      - pools
-      type: object
     V0StakingResponse:
       additionalProperties: false
       properties:
@@ -142,6 +129,19 @@ components:
         pools:
           items:
             type: string
+          type: array
+      required:
+      - account_id
+      - pools
+      type: object
+    V1StakingResponse:
+      additionalProperties: false
+      properties:
+        account_id:
+          type: string
+        pools:
+          items:
+            $ref: '#/components/schemas/PoolRow'
           type: array
       required:
       - account_id

@@ -64,6 +64,36 @@ paths:
       x-fastnear-title: FastNEAR API - V1 Account Full
 components:
   schemas:
+    PoolRow:
+      additionalProperties: false
+      properties:
+        last_update_block_height:
+          format: uint64
+          minimum: 0
+          type:
+          - integer
+          - 'null'
+        pool_id:
+          type: string
+      required:
+      - pool_id
+      - last_update_block_height
+      type: object
+    NftRow:
+      additionalProperties: false
+      properties:
+        contract_id:
+          type: string
+        last_update_block_height:
+          format: uint64
+          minimum: 0
+          type:
+          - integer
+          - 'null'
+      required:
+      - contract_id
+      - last_update_block_height
+      type: object
     AccountFullResponse:
       additionalProperties: false
       properties:
@@ -94,6 +124,26 @@ components:
       - nfts
       - state
       type: object
+    TokenRow:
+      additionalProperties: false
+      properties:
+        balance:
+          type:
+          - string
+          - 'null'
+        contract_id:
+          type: string
+        last_update_block_height:
+          format: uint64
+          minimum: 0
+          type:
+          - integer
+          - 'null'
+      required:
+      - contract_id
+      - last_update_block_height
+      - balance
+      type: object
     AccountStateResponse:
       additionalProperties: false
       properties:
@@ -115,54 +165,4 @@ components:
       - balance
       - locked
       - storage_bytes
-      type: object
-    TokenRow:
-      additionalProperties: false
-      properties:
-        balance:
-          type:
-          - string
-          - 'null'
-        contract_id:
-          type: string
-        last_update_block_height:
-          format: uint64
-          minimum: 0
-          type:
-          - integer
-          - 'null'
-      required:
-      - contract_id
-      - last_update_block_height
-      - balance
-      type: object
-    NftRow:
-      additionalProperties: false
-      properties:
-        contract_id:
-          type: string
-        last_update_block_height:
-          format: uint64
-          minimum: 0
-          type:
-          - integer
-          - 'null'
-      required:
-      - contract_id
-      - last_update_block_height
-      type: object
-    PoolRow:
-      additionalProperties: false
-      properties:
-        last_update_block_height:
-          format: uint64
-          minimum: 0
-          type:
-          - integer
-          - 'null'
-        pool_id:
-          type: string
-      required:
-      - pool_id
-      - last_update_block_height
       type: object

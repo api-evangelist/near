@@ -119,6 +119,19 @@ components:
       - account_id
       - tokens
       type: object
+    V0ContractsResponse:
+      additionalProperties: false
+      properties:
+        account_id:
+          type: string
+        contract_ids:
+          items:
+            type: string
+          type: array
+      required:
+      - account_id
+      - contract_ids
+      type: object
     NftRow:
       additionalProperties: false
       properties:
@@ -133,17 +146,4 @@ components:
       required:
       - contract_id
       - last_update_block_height
-      type: object
-    V0ContractsResponse:
-      additionalProperties: false
-      properties:
-        account_id:
-          type: string
-        contract_ids:
-          items:
-            type: string
-          type: array
-      required:
-      - account_id
-      - contract_ids
       type: object

@@ -28,41 +28,18 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    ErrorWrapper_for_RpcLightClientProofError:
-      oneOf:
-      - properties:
-          cause:
-            $ref: '#/components/schemas/RpcRequestValidationErrorKind'
-          name:
-            enum:
-            - REQUEST_VALIDATION_ERROR
-            type: string
-        required:
-        - name
-        - cause
-        type: object
-      - properties:
-          cause:
-            $ref: '#/components/schemas/RpcLightClientProofError'
-          name:
-            enum:
-            - HANDLER_ERROR
-            type: string
-        required:
-        - name
-        - cause
-        type: object
-      - properties:
-          cause:
-            $ref: '#/components/schemas/InternalError'
-          name:
-            enum:
-            - INTERNAL_ERROR
-            type: string
-        required:
-        - name
-        - cause
-        type: object
+    RpcLightClientBlockProofResponse:
+      properties:
+        block_header_lite:
+          $ref: '#/components/schemas/LightClientBlockLiteView'
+        block_proof:
+          items:
+            $ref: '#/components/schemas/MerklePathItem'
+          type: array
+      required:
+      - block_header_lite
+      - block_proof
+      type: object
     JsonRpcRequest_for_EXPERIMENTAL_light_client_block_proof:
       properties:
         id:
@@ -82,30 +59,6 @@ components:
       - method
       title: JsonRpcRequest_for_EXPERIMENTAL_light_client_block_proof
       type: object
-    JsonRpcResponse_for_RpcLightClientBlockProofResponse_and_RpcLightClientProofError:
-      oneOf:
-      - properties:
-          result:
-            $ref: '#/components/schemas/RpcLightClientBlockProofResponse'
-        required:
-        - result
-        type: object
-      - properties:
-          error:
-            $ref: '#/components/schemas/ErrorWrapper_for_RpcLightClientProofError'
-        required:
-        - error
-        type: object
-      properties:
-        id:
-          type: string
-        jsonrpc:
-          type: string
-      required:
-      - jsonrpc
-      - id
-      title: JsonRpcResponse_for_RpcLightClientBlockProofResponse_and_RpcLightClientProofError
-      type: object
     LightClientBlockLiteView:
       properties:
         inner_lite:
@@ -119,8 +72,24 @@ components:
       - inner_rest_hash
       - inner_lite
       type: object
-    CryptoHash:
-      type: string
+    InternalError:
+      oneOf:
+      - properties:
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
+        required:
+        - name
+        - info
+        type: object
     RpcLightClientProofError:
       oneOf:
       - properties:
@@ -222,18 +191,6 @@ components:
         - name
         - info
         type: object
-    RpcLightClientBlockProofResponse:
-      properties:
-        block_header_lite:
-          $ref: '#/components/schemas/LightClientBlockLiteView'
-        block_proof:
-          items:
-            $ref: '#/components/schemas/MerklePathItem'
-          type: array
-      required:
-      - block_header_lite
-      - block_proof
-      type: object
     MerklePathItem:
       properties:
         direction:
@@ -244,24 +201,6 @@ components:
       - hash
       - direction
       type: object
-    InternalError:
-      oneOf:
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
-          name:
-            enum:
-            - INTERNAL_ERROR
-            type: string
-        required:
-        - name
-        - info
-        type: object
     ShardId:
       description: 'The shard identifier. It may be an arbitrary number - it does not need to be
 
@@ -323,6 +262,19 @@ components:
       - next_bp_hash
       - block_merkle_root
       type: object
+    CryptoHash:
+      type: string
+    RpcLightClientBlockProofRequest:
+      properties:
+        block_hash:
+          $ref: '#/components/schemas/CryptoHash'
+        light_client_head:
+          $ref: '#/components/schemas/CryptoHash'
+      required:
+      - block_hash
+      - light_client_head
+      title: RpcLightClientBlockProofRequest
+      type: object
     RpcRequestValidationErrorKind:
       oneOf:
       - properties:
@@ -357,16 +309,64 @@ components:
         - name
         - info
         type: object
-    RpcLightClientBlockProofRequest:
+    ErrorWrapper_for_RpcLightClientProofError:
+      oneOf:
+      - properties:
+          cause:
+            $ref: '#/components/schemas/RpcRequestValidationErrorKind'
+          name:
+            enum:
+            - REQUEST_VALIDATION_ERROR
+            type: string
+        required:
+        - name
+        - cause
+        type: object
+      - properties:
+          cause:
+            $ref: '#/components/schemas/RpcLightClientProofError'
+          name:
+            enum:
+            - HANDLER_ERROR
+            type: string
+        required:
+        - name
+        - cause
+        type: object
+      - properties:
+          cause:
+            $ref: '#/components/schemas/InternalError'
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
+        required:
+        - name
+        - cause
+        type: object
+    JsonRpcResponse_for_RpcLightClientBlockProofResponse_and_RpcLightClientProofError:
+      oneOf:
+      - properties:
+          result:
+            $ref: '#/components/schemas/RpcLightClientBlockProofResponse'
+        required:
+        - result
+        type: object
+      - properties:
+          error:
+            $ref: '#/components/schemas/ErrorWrapper_for_RpcLightClientProofError'
+        required:
+        - error
+        type: object
       properties:
-        block_hash:
-          $ref: '#/components/schemas/CryptoHash'
-        light_client_head:
-          $ref: '#/components/schemas/CryptoHash'
+        id:
+          type: string
+        jsonrpc:
+          type: string
       required:
-      - block_hash
-      - light_client_head
-      title: RpcLightClientBlockProofRequest
+      - jsonrpc
+      - id
+      title: JsonRpcResponse_for_RpcLightClientBlockProofResponse_and_RpcLightClientProofError
       type: object
     Direction:
       enum:

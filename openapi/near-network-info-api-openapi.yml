@@ -28,10 +28,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    PeerId:
-      allOf:
-      - $ref: '#/components/schemas/PublicKey'
-      description: Peer id is the public key.
     RpcPeerInfo:
       properties:
         account_id:
@@ -48,180 +44,6 @@ components:
       required:
       - id
       type: object
-    AccountId:
-      $schema: https://json-schema.org/draft/2020-12/schema
-      description: 'NEAR Account Identifier.
-
-
-        This is a unique, syntactically valid, human-readable account identifier on the NEAR network.
-
-
-        [See the crate-level docs for information about validation.](index.html#account-id-rules)
-
-
-        Also see [Error kind precedence](AccountId#error-kind-precedence).
-
-
-        ## Examples
-
-
-        ```
-
-        use near_account_id::AccountId;
-
-
-        let alice: AccountId = "alice.near".parse().unwrap();
-
-
-        assert!("ƒelicia.near".parse::<AccountId>().is_err()); // (ƒ is not f)
-
-        ```'
-      title: AccountId
-      type: string
-    RpcNetworkInfoError:
-      oneOf:
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
-          name:
-            enum:
-            - INTERNAL_ERROR
-            type: string
-        required:
-        - name
-        - info
-        type: object
-    RpcKnownProducer:
-      properties:
-        account_id:
-          $ref: '#/components/schemas/AccountId'
-        addr:
-          type:
-          - string
-          - 'null'
-        peer_id:
-          $ref: '#/components/schemas/PeerId'
-      required:
-      - account_id
-      - peer_id
-      type: object
-    InternalError:
-      oneOf:
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
-          name:
-            enum:
-            - INTERNAL_ERROR
-            type: string
-        required:
-        - name
-        - info
-        type: object
-    RpcNetworkInfoRequest:
-      enum:
-      - null
-      title: RpcNetworkInfoRequest
-    JsonRpcRequest_for_network_info:
-      properties:
-        id:
-          type: string
-        jsonrpc:
-          type: string
-        method:
-          enum:
-          - network_info
-          type: string
-        params:
-          $ref: '#/components/schemas/RpcNetworkInfoRequest'
-      required:
-      - jsonrpc
-      - id
-      - params
-      - method
-      title: JsonRpcRequest_for_network_info
-      type: object
-    RpcRequestValidationErrorKind:
-      oneOf:
-      - properties:
-          info:
-            properties:
-              method_name:
-                type: string
-            required:
-            - method_name
-            type: object
-          name:
-            enum:
-            - METHOD_NOT_FOUND
-            type: string
-        required:
-        - name
-        - info
-        type: object
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
-          name:
-            enum:
-            - PARSE_ERROR
-            type: string
-        required:
-        - name
-        - info
-        type: object
-    RpcNetworkInfoResponse:
-      properties:
-        active_peers:
-          items:
-            $ref: '#/components/schemas/RpcPeerInfo'
-          type: array
-        known_producers:
-          description: Accounts of known block and chunk producers from routing table.
-          items:
-            $ref: '#/components/schemas/RpcKnownProducer'
-          type: array
-        num_active_peers:
-          format: uint
-          minimum: 0
-          type: integer
-        peer_max_count:
-          format: uint32
-          minimum: 0
-          type: integer
-        received_bytes_per_sec:
-          format: uint64
-          minimum: 0
-          type: integer
-        sent_bytes_per_sec:
-          format: uint64
-          minimum: 0
-          type: integer
-      required:
-      - active_peers
-      - num_active_peers
-      - peer_max_count
-      - sent_bytes_per_sec
-      - received_bytes_per_sec
-      - known_producers
-      type: object
-    PublicKey:
-      type: string
     JsonRpcResponse_for_RpcNetworkInfoResponse_and_RpcNetworkInfoError:
       oneOf:
       - properties:
@@ -281,3 +103,181 @@ components:
         - name
         - cause
         type: object
+    PeerId:
+      allOf:
+      - $ref: '#/components/schemas/PublicKey'
+      description: Peer id is the public key.
+    AccountId:
+      $schema: https://json-schema.org/draft/2020-12/schema
+      description: 'NEAR Account Identifier.
+
+
+        This is a unique, syntactically valid, human-readable account identifier on the NEAR network.
+
+
+        [See the crate-level docs for information about validation.](index.html#account-id-rules)
+
+
+        Also see [Error kind precedence](AccountId#error-kind-precedence).
+
+
+        ## Examples
+
+
+        ```
+
+        use near_account_id::AccountId;
+
+
+        let alice: AccountId = "alice.near".parse().unwrap();
+
+
+        assert!("ƒelicia.near".parse::<AccountId>().is_err()); // (ƒ is not f)
+
+        ```'
+      title: AccountId
+      type: string
+    InternalError:
+      oneOf:
+      - properties:
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
+        required:
+        - name
+        - info
+        type: object
+    RpcNetworkInfoResponse:
+      properties:
+        active_peers:
+          items:
+            $ref: '#/components/schemas/RpcPeerInfo'
+          type: array
+        known_producers:
+          description: Accounts of known block and chunk producers from routing table.
+          items:
+            $ref: '#/components/schemas/RpcKnownProducer'
+          type: array
+        num_active_peers:
+          format: uint
+          minimum: 0
+          type: integer
+        peer_max_count:
+          format: uint32
+          minimum: 0
+          type: integer
+        received_bytes_per_sec:
+          format: uint64
+          minimum: 0
+          type: integer
+        sent_bytes_per_sec:
+          format: uint64
+          minimum: 0
+          type: integer
+      required:
+      - active_peers
+      - num_active_peers
+      - peer_max_count
+      - sent_bytes_per_sec
+      - received_bytes_per_sec
+      - known_producers
+      type: object
+    RpcNetworkInfoRequest:
+      enum:
+      - null
+      title: RpcNetworkInfoRequest
+    PublicKey:
+      type: string
+    RpcKnownProducer:
+      properties:
+        account_id:
+          $ref: '#/components/schemas/AccountId'
+        addr:
+          type:
+          - string
+          - 'null'
+        peer_id:
+          $ref: '#/components/schemas/PeerId'
+      required:
+      - account_id
+      - peer_id
+      type: object
+    RpcNetworkInfoError:
+      oneOf:
+      - properties:
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
+        required:
+        - name
+        - info
+        type: object
+    RpcRequestValidationErrorKind:
+      oneOf:
+      - properties:
+          info:
+            properties:
+              method_name:
+                type: string
+            required:
+            - method_name
+            type: object
+          name:
+            enum:
+            - METHOD_NOT_FOUND
+            type: string
+        required:
+        - name
+        - info
+        type: object
+      - properties:
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - PARSE_ERROR
+            type: string
+        required:
+        - name
+        - info
+        type: object
+    JsonRpcRequest_for_network_info:
+      properties:
+        id:
+          type: string
+        jsonrpc:
+          type: string
+        method:
+          enum:
+          - network_info
+          type: string
+        params:
+          $ref: '#/components/schemas/RpcNetworkInfoRequest'
+      required:
+      - jsonrpc
+      - id
+      - params
+      - method
+      title: JsonRpcRequest_for_network_info
+      type: object

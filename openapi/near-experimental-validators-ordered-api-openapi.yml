@@ -28,40 +28,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    RpcValidatorError:
-      oneOf:
-      - properties:
-          name:
-            enum:
-            - UNKNOWN_EPOCH
-            type: string
-        required:
-        - name
-        type: object
-      - properties:
-          name:
-            enum:
-            - VALIDATOR_INFO_UNAVAILABLE
-            type: string
-        required:
-        - name
-        type: object
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
-          name:
-            enum:
-            - INTERNAL_ERROR
-            type: string
-        required:
-        - name
-        - info
-        type: object
     ErrorWrapper_for_RpcValidatorError:
       oneOf:
       - properties:
@@ -97,13 +63,6 @@ components:
         - name
         - cause
         type: object
-    BlockId:
-      anyOf:
-      - format: uint64
-        minimum: 0
-        title: block_height
-        type: integer
-      - $ref: '#/components/schemas/CryptoHash'
     AccountId:
       $schema: https://json-schema.org/draft/2020-12/schema
       description: 'NEAR Account Identifier.
@@ -134,41 +93,6 @@ components:
         ```'
       title: AccountId
       type: string
-    ValidatorStakeView:
-      oneOf:
-      - allOf:
-        - $ref: '#/components/schemas/ValidatorStakeViewV1'
-        properties:
-          validator_stake_struct_version:
-            enum:
-            - V1
-            type: string
-        required:
-        - validator_stake_struct_version
-        type: object
-    JsonRpcRequest_for_EXPERIMENTAL_validators_ordered:
-      properties:
-        id:
-          type: string
-        jsonrpc:
-          type: string
-        method:
-          enum:
-          - EXPERIMENTAL_validators_ordered
-          type: string
-        params:
-          $ref: '#/components/schemas/RpcValidatorsOrderedRequest'
-      required:
-      - jsonrpc
-      - id
-      - params
-      - method
-      title: JsonRpcRequest_for_EXPERIMENTAL_validators_ordered
-      type: object
-    CryptoHash:
-      type: string
-    NearToken:
-      type: string
     InternalError:
       oneOf:
       - properties:
@@ -187,51 +111,6 @@ components:
         - name
         - info
         type: object
-    RpcRequestValidationErrorKind:
-      oneOf:
-      - properties:
-          info:
-            properties:
-              method_name:
-                type: string
-            required:
-            - method_name
-            type: object
-          name:
-            enum:
-            - METHOD_NOT_FOUND
-            type: string
-        required:
-        - name
-        - info
-        type: object
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
-          name:
-            enum:
-            - PARSE_ERROR
-            type: string
-        required:
-        - name
-        - info
-        type: object
-    RpcValidatorsOrderedRequest:
-      properties:
-        block_id:
-          anyOf:
-          - $ref: '#/components/schemas/BlockId'
-          - enum:
-            - null
-      title: RpcValidatorsOrderedRequest
-      type: object
-    PublicKey:
-      type: string
     ValidatorStakeViewV1:
       properties:
         account_id:
@@ -271,3 +150,124 @@ components:
       - id
       title: JsonRpcResponse_for_Array_of_ValidatorStakeView_and_RpcValidatorError
       type: object
+    BlockId:
+      anyOf:
+      - format: uint64
+        minimum: 0
+        title: block_height
+        type: integer
+      - $ref: '#/components/schemas/CryptoHash'
+    JsonRpcRequest_for_EXPERIMENTAL_validators_ordered:
+      properties:
+        id:
+          type: string
+        jsonrpc:
+          type: string
+        method:
+          enum:
+          - EXPERIMENTAL_validators_ordered
+          type: string
+        params:
+          $ref: '#/components/schemas/RpcValidatorsOrderedRequest'
+      required:
+      - jsonrpc
+      - id
+      - params
+      - method
+      title: JsonRpcRequest_for_EXPERIMENTAL_validators_ordered
+      type: object
+    RpcValidatorsOrderedRequest:
+      properties:
+        block_id:
+          anyOf:
+          - $ref: '#/components/schemas/BlockId'
+          - enum:
+            - null
+      title: RpcValidatorsOrderedRequest
+      type: object
+    NearToken:
+      type: string
+    RpcValidatorError:
+      oneOf:
+      - properties:
+          name:
+            enum:
+            - UNKNOWN_EPOCH
+            type: string
+        required:
+        - name
+        type: object
+      - properties:
+          name:
+            enum:
+            - VALIDATOR_INFO_UNAVAILABLE
+            type: string
+        required:
+        - name
+        type: object
+      - properties:
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
+        required:
+        - name
+        - info
+        type: object
+    PublicKey:
+      type: string
+    CryptoHash:
+      type: string
+    ValidatorStakeView:
+      oneOf:
+      - allOf:
+        - $ref: '#/components/schemas/ValidatorStakeViewV1'
+        properties:
+          validator_stake_struct_version:
+            enum:
+            - V1
+            type: string
+        required:
+        - validator_stake_struct_version
+        type: object
+    RpcRequestValidationErrorKind:
+      oneOf:
+      - properties:
+          info:
+            properties:
+              method_name:
+                type: string
+            required:
+            - method_name
+            type: object
+          name:
+            enum:
+            - METHOD_NOT_FOUND
+            type: string
+        required:
+        - name
+        - info
+        type: object
+      - properties:
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - PARSE_ERROR
+            type: string
+        required:
+        - name
+        - info
+        type: object
