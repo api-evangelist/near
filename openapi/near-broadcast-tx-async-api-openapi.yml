@@ -28,6 +28,52 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    RpcSendTransactionRequest:
+      properties:
+        signed_tx_base64:
+          $ref: '#/components/schemas/SignedTransaction'
+        wait_until:
+          allOf:
+          - $ref: '#/components/schemas/TxExecutionStatus'
+          default: EXECUTED_OPTIMISTIC
+      required:
+      - signed_tx_base64
+      title: RpcSendTransactionRequest
+      type: object
+    RpcRequestValidationErrorKind:
+      oneOf:
+      - properties:
+          info:
+            properties:
+              method_name:
+                type: string
+            required:
+            - method_name
+            type: object
+          name:
+            enum:
+            - METHOD_NOT_FOUND
+            type: string
+        required:
+        - name
+        - info
+        type: object
+      - properties:
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - PARSE_ERROR
+            type: string
+        required:
+        - name
+        - info
+        type: object
     TxExecutionStatus:
       oneOf:
       - description: Transaction is waiting to be included into the block
@@ -64,46 +110,6 @@ components:
         enum:
         - FINAL
         type: string
-    JsonRpcRequest_for_broadcast_tx_async:
-      properties:
-        id:
-          type: string
-        jsonrpc:
-          type: string
-        method:
-          enum:
-          - broadcast_tx_async
-          type: string
-        params:
-          $ref: '#/components/schemas/RpcSendTransactionRequest'
-      required:
-      - jsonrpc
-      - id
-      - params
-      - method
-      title: JsonRpcRequest_for_broadcast_tx_async
-      type: object
-    InternalError:
-      oneOf:
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
-          name:
-            enum:
-            - INTERNAL_ERROR
-            type: string
-        required:
-        - name
-        - info
-        type: object
-    SignedTransaction:
-      format: byte
-      type: string
     JsonRpcResponse_for_CryptoHash_and_RpcTransactionError:
       oneOf:
       - properties:
@@ -128,6 +134,48 @@ components:
       - id
       title: JsonRpcResponse_for_CryptoHash_and_RpcTransactionError
       type: object
+    JsonRpcRequest_for_broadcast_tx_async:
+      properties:
+        id:
+          type: string
+        jsonrpc:
+          type: string
+        method:
+          enum:
+          - broadcast_tx_async
+          type: string
+        params:
+          $ref: '#/components/schemas/RpcSendTransactionRequest'
+      required:
+      - jsonrpc
+      - id
+      - params
+      - method
+      title: JsonRpcRequest_for_broadcast_tx_async
+      type: object
+    CryptoHash:
+      type: string
+    InternalError:
+      oneOf:
+      - properties:
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
+        required:
+        - name
+        - info
+        type: object
+    SignedTransaction:
+      format: byte
+      type: string
     ErrorWrapper_for_RpcTransactionError:
       oneOf:
       - properties:
@@ -239,52 +287,4 @@ components:
             type: string
         required:
         - name
-        type: object
-    RpcSendTransactionRequest:
-      properties:
-        signed_tx_base64:
-          $ref: '#/components/schemas/SignedTransaction'
-        wait_until:
-          allOf:
-          - $ref: '#/components/schemas/TxExecutionStatus'
-          default: EXECUTED_OPTIMISTIC
-      required:
-      - signed_tx_base64
-      title: RpcSendTransactionRequest
-      type: object
-    CryptoHash:
-      type: string
-    RpcRequestValidationErrorKind:
-      oneOf:
-      - properties:
-          info:
-            properties:
-              method_name:
-                type: string
-            required:
-            - method_name
-            type: object
-          name:
-            enum:
-            - METHOD_NOT_FOUND
-            type: string
-        required:
-        - name
-        - info
-        type: object
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
-          name:
-            enum:
-            - PARSE_ERROR
-            type: string
-        required:
-        - name
-        - info
         type: object

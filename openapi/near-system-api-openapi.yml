@@ -79,6 +79,14 @@ paths:
       x-fastnear-title: FastNEAR API - Status
 components:
   schemas:
+    HealthResponse:
+      additionalProperties: false
+      properties:
+        status:
+          type: string
+      required:
+      - status
+      type: object
     StatusResponse:
       additionalProperties: false
       properties:
@@ -111,12 +119,4 @@ components:
       - sync_latency_sec
       - sync_block_timestamp_nanosec
       - sync_balance_block_height
-      type: object
-    HealthResponse:
-      additionalProperties: false
-      properties:
-        status:
-          type: string
-      required:
-      - status
       type: object

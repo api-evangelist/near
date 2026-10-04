@@ -28,15 +28,99 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    StoreValue:
-      description: 'This type is used to mark values returned from store (arrays of bytes).
+    ShardId:
+      description: 'The shard identifier. It may be an arbitrary number - it does not need to be
+
+        a number in the range 0..NUM_SHARDS. The shard ids do not need to be
+
+        sequential or contiguous.
 
 
-        NOTE: Currently, this type is only used in the view_client and RPC to be able to transparently
+        The shard id is wrapped in a new type to prevent the old pattern of using
 
-        pretty-serialize the bytes arrays as base64-encoded strings (see `serialize.rs`).'
-      format: bytes
-      type: string
+        indices in range 0..NUM_SHARDS and casting to ShardId. Once the transition
+
+        if fully complete it potentially may be simplified to a regular type alias.'
+      format: uint64
+      minimum: 0
+      type: integer
+    AccessKeyPermissionView:
+      description: Describes the permission scope for an access key. Whether it is a function call or a full access key.
+      oneOf:
+      - enum:
+        - FullAccess
+        type: string
+      - additionalProperties: false
+        properties:
+          FunctionCall:
+            properties:
+              allowance:
+                anyOf:
+                - $ref: '#/components/schemas/NearToken'
+                - enum:
+                  - null
+              method_names:
+                items:
+                  type: string
+                type: array
+              receiver_id:
+                type: string
+            required:
+            - receiver_id
+            - method_names
+            type: object
+        required:
+        - FunctionCall
+        type: object
+      - additionalProperties: false
+        properties:
+          GasKeyFunctionCall:
+            properties:
+              allowance:
+                anyOf:
+                - $ref: '#/components/schemas/NearToken'
+                - enum:
+                  - null
+              balance:
+                $ref: '#/components/schemas/NearToken'
+              method_names:
+                items:
+                  type: string
+                type: array
+              num_nonces:
+                format: uint16
+                maximum: 65535
+                minimum: 0
+                type: integer
+              receiver_id:
+                type: string
+            required:
+            - balance
+            - num_nonces
+            - receiver_id
+            - method_names
+            type: object
+        required:
+        - GasKeyFunctionCall
+        type: object
+      - additionalProperties: false
+        properties:
+          GasKeyFullAccess:
+            properties:
+              balance:
+                $ref: '#/components/schemas/NearToken'
+              num_nonces:
+                format: uint16
+                maximum: 65535
+                minimum: 0
+                type: integer
+            required:
+            - balance
+            - num_nonces
+            type: object
+        required:
+        - GasKeyFullAccess
+        type: object
     StoreKey:
       description: 'This type is used to mark keys (arrays of bytes) that are queried from store.
 
@@ -46,38 +130,76 @@ components:
         pretty-serialize the bytes arrays as base64-encoded strings (see `serialize.rs`).'
       format: bytes
       type: string
-    JsonRpcRequest_for_EXPERIMENTAL_changes:
+    BlockId:
+      anyOf:
+      - format: uint64
+        minimum: 0
+        title: block_height
+        type: integer
+      - $ref: '#/components/schemas/CryptoHash'
+    Finality:
+      description: Different types of finality.
+      enum:
+      - optimistic
+      - near-final
+      - final
+      type: string
+    JsonRpcResponse_for_RpcStateChangesInBlockResponse_and_RpcStateChangesError:
+      oneOf:
+      - properties:
+          result:
+            $ref: '#/components/schemas/RpcStateChangesInBlockResponse'
+        required:
+        - result
+        type: object
+      - properties:
+          error:
+            $ref: '#/components/schemas/ErrorWrapper_for_RpcStateChangesError'
+        required:
+        - error
+        type: object
       properties:
         id:
           type: string
         jsonrpc:
           type: string
-        method:
-          enum:
-          - EXPERIMENTAL_changes
-          type: string
-        params:
-          $ref: '#/components/schemas/RpcStateChangesInBlockByTypeRequest'
       required:
       - jsonrpc
       - id
-      - params
-      - method
-      title: JsonRpcRequest_for_EXPERIMENTAL_changes
+      title: JsonRpcResponse_for_RpcStateChangesInBlockResponse_and_RpcStateChangesError
       type: object
-    AccessKeyView:
-      description: Describes access key permission scope and nonce.
-      properties:
-        nonce:
-          format: uint64
-          minimum: 0
-          type: integer
-        permission:
-          $ref: '#/components/schemas/AccessKeyPermissionView'
-      required:
-      - nonce
-      - permission
-      type: object
+    CryptoHash:
+      type: string
+    AccountId:
+      $schema: https://json-schema.org/draft/2020-12/schema
+      description: 'NEAR Account Identifier.
+
+
+        This is a unique, syntactically valid, human-readable account identifier on the NEAR network.
+
+
+        [See the crate-level docs for information about validation.](index.html#account-id-rules)
+
+
+        Also see [Error kind precedence](AccountId#error-kind-precedence).
+
+
+        ## Examples
+
+
+        ```
+
+        use near_account_id::AccountId;
+
+
+        let alice: AccountId = "alice.near".parse().unwrap();
+
+
+        assert!("ƒelicia.near".parse::<AccountId>().is_err()); // (ƒ is not f)
+
+        ```'
+      title: AccountId
+      type: string
     RpcStateChangesError:
       oneOf:
       - properties:
@@ -131,8 +253,182 @@ components:
         - name
         - info
         type: object
+    RpcRequestValidationErrorKind:
+      oneOf:
+      - properties:
+          info:
+            properties:
+              method_name:
+                type: string
+            required:
+            - method_name
+            type: object
+          name:
+            enum:
+            - METHOD_NOT_FOUND
+            type: string
+        required:
+        - name
+        - info
+        type: object
+      - properties:
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - PARSE_ERROR
+            type: string
+        required:
+        - name
+        - info
+        type: object
+    SyncCheckpoint:
+      enum:
+      - genesis
+      - earliest_available
+      type: string
     NearToken:
       type: string
+    StateChangeCauseView:
+      description: See crate::types::StateChangeCause for details.
+      oneOf:
+      - properties:
+          type:
+            enum:
+            - not_writable_to_disk
+            type: string
+        required:
+        - type
+        type: object
+      - properties:
+          type:
+            enum:
+            - initial_state
+            type: string
+        required:
+        - type
+        type: object
+      - properties:
+          tx_hash:
+            $ref: '#/components/schemas/CryptoHash'
+          type:
+            enum:
+            - transaction_processing
+            type: string
+        required:
+        - type
+        - tx_hash
+        type: object
+      - properties:
+          receipt_hash:
+            $ref: '#/components/schemas/CryptoHash'
+          type:
+            enum:
+            - action_receipt_processing_started
+            type: string
+        required:
+        - type
+        - receipt_hash
+        type: object
+      - properties:
+          receipt_hash:
+            $ref: '#/components/schemas/CryptoHash'
+          type:
+            enum:
+            - action_receipt_gas_reward
+            type: string
+        required:
+        - type
+        - receipt_hash
+        type: object
+      - properties:
+          receipt_hash:
+            $ref: '#/components/schemas/CryptoHash'
+          type:
+            enum:
+            - receipt_processing
+            type: string
+        required:
+        - type
+        - receipt_hash
+        type: object
+      - properties:
+          receipt_hash:
+            $ref: '#/components/schemas/CryptoHash'
+          type:
+            enum:
+            - postponed_receipt
+            type: string
+        required:
+        - type
+        - receipt_hash
+        type: object
+      - properties:
+          type:
+            enum:
+            - updated_delayed_receipts
+            type: string
+        required:
+        - type
+        type: object
+      - properties:
+          type:
+            enum:
+            - validator_accounts_update
+            type: string
+        required:
+        - type
+        type: object
+      - properties:
+          type:
+            enum:
+            - migration
+            type: string
+        required:
+        - type
+        type: object
+      - properties:
+          type:
+            enum:
+            - bandwidth_scheduler_state_update
+            type: string
+        required:
+        - type
+        type: object
+    StoreValue:
+      description: 'This type is used to mark values returned from store (arrays of bytes).
+
+
+        NOTE: Currently, this type is only used in the view_client and RPC to be able to transparently
+
+        pretty-serialize the bytes arrays as base64-encoded strings (see `serialize.rs`).'
+      format: bytes
+      type: string
+    PublicKey:
+      type: string
+    InternalError:
+      oneOf:
+      - properties:
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
+        required:
+        - name
+        - info
+        type: object
     RpcStateChangesInBlockByTypeRequest:
       description: 'It is a [serializable view] of [`StateChangesRequest`].
 
@@ -467,228 +763,31 @@ components:
         title: data_changes_by_sync_checkpoint
       title: RpcStateChangesInBlockByTypeRequest
       type: object
-    Finality:
-      description: Different types of finality.
-      enum:
-      - optimistic
-      - near-final
-      - final
-      type: string
-    RpcRequestValidationErrorKind:
-      oneOf:
-      - properties:
-          info:
-            properties:
-              method_name:
-                type: string
-            required:
-            - method_name
-            type: object
-          name:
-            enum:
-            - METHOD_NOT_FOUND
-            type: string
-        required:
-        - name
-        - info
-        type: object
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
-          name:
-            enum:
-            - PARSE_ERROR
-            type: string
-        required:
-        - name
-        - info
-        type: object
-    InternalError:
-      oneOf:
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
-          name:
-            enum:
-            - INTERNAL_ERROR
-            type: string
-        required:
-        - name
-        - info
-        type: object
-    SyncCheckpoint:
-      enum:
-      - genesis
-      - earliest_available
-      type: string
-    CryptoHash:
-      type: string
-    AccountId:
-      $schema: https://json-schema.org/draft/2020-12/schema
-      description: 'NEAR Account Identifier.
-
-
-        This is a unique, syntactically valid, human-readable account identifier on the NEAR network.
-
-
-        [See the crate-level docs for information about validation.](index.html#account-id-rules)
-
-
-        Also see [Error kind precedence](AccountId#error-kind-precedence).
-
-
-        ## Examples
-
-
-        ```
-
-        use near_account_id::AccountId;
-
-
-        let alice: AccountId = "alice.near".parse().unwrap();
-
-
-        assert!("ƒelicia.near".parse::<AccountId>().is_err()); // (ƒ is not f)
-
-        ```'
-      title: AccountId
-      type: string
-    AccessKeyPermissionView:
-      description: Describes the permission scope for an access key. Whether it is a function call or a full access key.
-      oneOf:
-      - enum:
-        - FullAccess
-        type: string
-      - additionalProperties: false
-        properties:
-          FunctionCall:
-            properties:
-              allowance:
-                anyOf:
-                - $ref: '#/components/schemas/NearToken'
-                - enum:
-                  - null
-              method_names:
-                items:
-                  type: string
-                type: array
-              receiver_id:
-                type: string
-            required:
-            - receiver_id
-            - method_names
-            type: object
-        required:
-        - FunctionCall
-        type: object
-      - additionalProperties: false
-        properties:
-          GasKeyFunctionCall:
-            properties:
-              allowance:
-                anyOf:
-                - $ref: '#/components/schemas/NearToken'
-                - enum:
-                  - null
-              balance:
-                $ref: '#/components/schemas/NearToken'
-              method_names:
-                items:
-                  type: string
-                type: array
-              num_nonces:
-                format: uint16
-                maximum: 65535
-                minimum: 0
-                type: integer
-              receiver_id:
-                type: string
-            required:
-            - balance
-            - num_nonces
-            - receiver_id
-            - method_names
-            type: object
-        required:
-        - GasKeyFunctionCall
-        type: object
-      - additionalProperties: false
-        properties:
-          GasKeyFullAccess:
-            properties:
-              balance:
-                $ref: '#/components/schemas/NearToken'
-              num_nonces:
-                format: uint16
-                maximum: 65535
-                minimum: 0
-                type: integer
-            required:
-            - balance
-            - num_nonces
-            type: object
-        required:
-        - GasKeyFullAccess
-        type: object
-    ShardId:
-      description: 'The shard identifier. It may be an arbitrary number - it does not need to be
-
-        a number in the range 0..NUM_SHARDS. The shard ids do not need to be
-
-        sequential or contiguous.
-
-
-        The shard id is wrapped in a new type to prevent the old pattern of using
-
-        indices in range 0..NUM_SHARDS and casting to ShardId. Once the transition
-
-        if fully complete it potentially may be simplified to a regular type alias.'
-      format: uint64
-      minimum: 0
-      type: integer
-    BlockId:
-      anyOf:
-      - format: uint64
-        minimum: 0
-        title: block_height
-        type: integer
-      - $ref: '#/components/schemas/CryptoHash'
-    PublicKey:
-      type: string
-    JsonRpcResponse_for_RpcStateChangesInBlockResponse_and_RpcStateChangesError:
-      oneOf:
-      - properties:
-          result:
-            $ref: '#/components/schemas/RpcStateChangesInBlockResponse'
-        required:
-        - result
-        type: object
-      - properties:
-          error:
-            $ref: '#/components/schemas/ErrorWrapper_for_RpcStateChangesError'
-        required:
-        - error
-        type: object
+    AccountWithPublicKey:
+      description: Account ID with its public key.
       properties:
-        id:
-          type: string
-        jsonrpc:
-          type: string
+        account_id:
+          $ref: '#/components/schemas/AccountId'
+        public_key:
+          $ref: '#/components/schemas/PublicKey'
       required:
-      - jsonrpc
-      - id
-      title: JsonRpcResponse_for_RpcStateChangesInBlockResponse_and_RpcStateChangesError
+      - account_id
+      - public_key
       type: object
+    RpcStateChangesInBlockResponse:
+      properties:
+        block_hash:
+          $ref: '#/components/schemas/CryptoHash'
+        changes:
+          items:
+            $ref: '#/components/schemas/StateChangeWithCauseView'
+          type: array
+      required:
+      - block_hash
+      - changes
+      type: object
+    PublicKeyHandle:
+      type: string
     StateChangeWithCauseView:
       oneOf:
       - properties:
@@ -907,135 +1006,6 @@ components:
       required:
       - cause
       type: object
-    RpcStateChangesInBlockResponse:
-      properties:
-        block_hash:
-          $ref: '#/components/schemas/CryptoHash'
-        changes:
-          items:
-            $ref: '#/components/schemas/StateChangeWithCauseView'
-          type: array
-      required:
-      - block_hash
-      - changes
-      type: object
-    AccountWithPublicKey:
-      description: Account ID with its public key.
-      properties:
-        account_id:
-          $ref: '#/components/schemas/AccountId'
-        public_key:
-          $ref: '#/components/schemas/PublicKey'
-      required:
-      - account_id
-      - public_key
-      type: object
-    StateChangeCauseView:
-      description: See crate::types::StateChangeCause for details.
-      oneOf:
-      - properties:
-          type:
-            enum:
-            - not_writable_to_disk
-            type: string
-        required:
-        - type
-        type: object
-      - properties:
-          type:
-            enum:
-            - initial_state
-            type: string
-        required:
-        - type
-        type: object
-      - properties:
-          tx_hash:
-            $ref: '#/components/schemas/CryptoHash'
-          type:
-            enum:
-            - transaction_processing
-            type: string
-        required:
-        - type
-        - tx_hash
-        type: object
-      - properties:
-          receipt_hash:
-            $ref: '#/components/schemas/CryptoHash'
-          type:
-            enum:
-            - action_receipt_processing_started
-            type: string
-        required:
-        - type
-        - receipt_hash
-        type: object
-      - properties:
-          receipt_hash:
-            $ref: '#/components/schemas/CryptoHash'
-          type:
-            enum:
-            - action_receipt_gas_reward
-            type: string
-        required:
-        - type
-        - receipt_hash
-        type: object
-      - properties:
-          receipt_hash:
-            $ref: '#/components/schemas/CryptoHash'
-          type:
-            enum:
-            - receipt_processing
-            type: string
-        required:
-        - type
-        - receipt_hash
-        type: object
-      - properties:
-          receipt_hash:
-            $ref: '#/components/schemas/CryptoHash'
-          type:
-            enum:
-            - postponed_receipt
-            type: string
-        required:
-        - type
-        - receipt_hash
-        type: object
-      - properties:
-          type:
-            enum:
-            - updated_delayed_receipts
-            type: string
-        required:
-        - type
-        type: object
-      - properties:
-          type:
-            enum:
-            - validator_accounts_update
-            type: string
-        required:
-        - type
-        type: object
-      - properties:
-          type:
-            enum:
-            - migration
-            type: string
-        required:
-        - type
-        type: object
-      - properties:
-          type:
-            enum:
-            - bandwidth_scheduler_state_update
-            type: string
-        required:
-        - type
-        type: object
     ErrorWrapper_for_RpcStateChangesError:
       oneOf:
       - properties:
@@ -1071,5 +1041,35 @@ components:
         - name
         - cause
         type: object
-    PublicKeyHandle:
-      type: string
+    JsonRpcRequest_for_EXPERIMENTAL_changes:
+      properties:
+        id:
+          type: string
+        jsonrpc:
+          type: string
+        method:
+          enum:
+          - EXPERIMENTAL_changes
+          type: string
+        params:
+          $ref: '#/components/schemas/RpcStateChangesInBlockByTypeRequest'
+      required:
+      - jsonrpc
+      - id
+      - params
+      - method
+      title: JsonRpcRequest_for_EXPERIMENTAL_changes
+      type: object
+    AccessKeyView:
+      description: Describes access key permission scope and nonce.
+      properties:
+        nonce:
+          format: uint64
+          minimum: 0
+          type: integer
+        permission:
+          $ref: '#/components/schemas/AccessKeyPermissionView'
+      required:
+      - nonce
+      - permission
+      type: object

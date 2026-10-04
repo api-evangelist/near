@@ -49,131 +49,124 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    StoreValue:
-      description: 'This type is used to mark values returned from store (arrays of bytes).
+    GlobalContractIdentifier:
+      oneOf:
+      - additionalProperties: false
+        properties:
+          hash:
+            $ref: '#/components/schemas/CryptoHash'
+        required:
+        - hash
+        type: object
+      - additionalProperties: false
+        properties:
+          account_id:
+            $ref: '#/components/schemas/AccountId'
+        required:
+        - account_id
+        type: object
+    ShardId:
+      description: 'The shard identifier. It may be an arbitrary number - it does not need to be
+
+        a number in the range 0..NUM_SHARDS. The shard ids do not need to be
+
+        sequential or contiguous.
 
 
-        NOTE: Currently, this type is only used in the view_client and RPC to be able to transparently
+        The shard id is wrapped in a new type to prevent the old pattern of using
 
-        pretty-serialize the bytes arrays as base64-encoded strings (see `serialize.rs`).'
-      format: bytes
-      type: string
-    StoreKey:
-      description: 'This type is used to mark keys (arrays of bytes) that are queried from store.
+        indices in range 0..NUM_SHARDS and casting to ShardId. Once the transition
 
-
-        NOTE: Currently, this type is only used in the view_client and RPC to be able to transparently
-
-        pretty-serialize the bytes arrays as base64-encoded strings (see `serialize.rs`).'
-      format: bytes
-      type: string
-    GasKeyNoncesView:
-      description: Gas key nonces view returned by the `view_gas_key_nonces` RPC query.
-      properties:
-        nonces:
-          items:
-            format: uint64
-            minimum: 0
-            type: integer
-          type: array
-      required:
-      - nonces
-      type: object
-    FunctionCallError:
-      description: 'Serializable version of `near-vm-runner::FunctionCallError`.
-
-
-        Must never reorder/remove elements, can only add new variants at the end (but do that very
-
-        carefully). It describes stable serialization format, and only used by serialization logic.'
+        if fully complete it potentially may be simplified to a regular type alias.'
+      format: uint64
+      minimum: 0
+      type: integer
+    AccessKeyPermissionView:
+      description: Describes the permission scope for an access key. Whether it is a function call or a full access key.
       oneOf:
       - enum:
-        - WasmUnknownError
-        - _EVMError
+        - FullAccess
         type: string
       - additionalProperties: false
-        description: Wasm compilation error
         properties:
-          CompilationError:
-            $ref: '#/components/schemas/CompilationError'
-        required:
-        - CompilationError
-        type: object
-      - additionalProperties: false
-        description: 'Wasm binary env link error
-
-
-          Note: this is only to deserialize old data, use execution error for new data'
-        properties:
-          LinkError:
+          FunctionCall:
             properties:
-              msg:
+              allowance:
+                anyOf:
+                - $ref: '#/components/schemas/NearToken'
+                - enum:
+                  - null
+              method_names:
+                items:
+                  type: string
+                type: array
+              receiver_id:
                 type: string
             required:
-            - msg
+            - receiver_id
+            - method_names
             type: object
         required:
-        - LinkError
-        type: object
-      - additionalProperties: false
-        description: Import/export resolve error
-        properties:
-          MethodResolveError:
-            $ref: '#/components/schemas/MethodResolveError'
-        required:
-        - MethodResolveError
-        type: object
-      - additionalProperties: false
-        description: 'A trap happened during execution of a binary
-
-
-          Note: this is only to deserialize old data, use execution error for new data'
-        properties:
-          WasmTrap:
-            $ref: '#/components/schemas/WasmTrap'
-        required:
-        - WasmTrap
-        type: object
-      - additionalProperties: false
-        description: 'Note: this is only to deserialize old data, use execution error for new data'
-        properties:
-          HostError:
-            $ref: '#/components/schemas/HostError'
-        required:
-        - HostError
+        - FunctionCall
         type: object
       - additionalProperties: false
         properties:
-          ExecutionError:
-            type: string
+          GasKeyFunctionCall:
+            properties:
+              allowance:
+                anyOf:
+                - $ref: '#/components/schemas/NearToken'
+                - enum:
+                  - null
+              balance:
+                $ref: '#/components/schemas/NearToken'
+              method_names:
+                items:
+                  type: string
+                type: array
+              num_nonces:
+                format: uint16
+                maximum: 65535
+                minimum: 0
+                type: integer
+              receiver_id:
+                type: string
+            required:
+            - balance
+            - num_nonces
+            - receiver_id
+            - method_names
+            type: object
         required:
-        - ExecutionError
+        - GasKeyFunctionCall
         type: object
-    AccessKeyView:
-      description: Describes access key permission scope and nonce.
+      - additionalProperties: false
+        properties:
+          GasKeyFullAccess:
+            properties:
+              balance:
+                $ref: '#/components/schemas/NearToken'
+              num_nonces:
+                format: uint16
+                maximum: 65535
+                minimum: 0
+                type: integer
+            required:
+            - balance
+            - num_nonces
+            type: object
+        required:
+        - GasKeyFullAccess
+        type: object
+    AccessKeyList:
+      description: Lists access keys
       properties:
-        nonce:
-          format: uint64
-          minimum: 0
-          type: integer
-        permission:
-          $ref: '#/components/schemas/AccessKeyPermissionView'
+        keys:
+          items:
+            $ref: '#/components/schemas/AccessKeyInfoView'
+          type: array
       required:
-      - nonce
-      - permission
-      type: object
-    NearToken:
-      type: string
-    ContractCodeView:
-      description: A view of the contract code.
-      properties:
-        code_base64:
-          type: string
-        hash:
-          $ref: '#/components/schemas/CryptoHash'
-      required:
-      - code_base64
-      - hash
+      - keys
       type: object
     RpcQueryError:
       oneOf:
@@ -449,6 +442,22 @@ components:
         - name
         - info
         type: object
+    StoreKey:
+      description: 'This type is used to mark keys (arrays of bytes) that are queried from store.
+
+
+        NOTE: Currently, this type is only used in the view_client and RPC to be able to transparently
+
+        pretty-serialize the bytes arrays as base64-encoded strings (see `serialize.rs`).'
+      format: bytes
+      type: string
+    BlockId:
+      anyOf:
+      - format: uint64
+        minimum: 0
+        title: block_height
+        type: integer
+      - $ref: '#/components/schemas/CryptoHash'
     Finality:
       description: Different types of finality.
       enum:
@@ -456,6 +465,76 @@ components:
       - near-final
       - final
       type: string
+    CryptoHash:
+      type: string
+    MethodResolveError:
+      enum:
+      - MethodEmptyName
+      - MethodNotFound
+      - MethodInvalidSignature
+      type: string
+    GasKeyNoncesView:
+      description: Gas key nonces view returned by the `view_gas_key_nonces` RPC query.
+      properties:
+        nonces:
+          items:
+            format: uint64
+            minimum: 0
+            type: integer
+          type: array
+      required:
+      - nonces
+      type: object
+    AccountId:
+      $schema: https://json-schema.org/draft/2020-12/schema
+      description: 'NEAR Account Identifier.
+
+
+        This is a unique, syntactically valid, human-readable account identifier on the NEAR network.
+
+
+        [See the crate-level docs for information about validation.](index.html#account-id-rules)
+
+
+        Also see [Error kind precedence](AccountId#error-kind-precedence).
+
+
+        ## Examples
+
+
+        ```
+
+        use near_account_id::AccountId;
+
+
+        let alice: AccountId = "alice.near".parse().unwrap();
+
+
+        assert!("ƒelicia.near".parse::<AccountId>().is_err()); // (ƒ is not f)
+
+        ```'
+      title: AccountId
+      type: string
+    RpcQueryResponse:
+      anyOf:
+      - $ref: '#/components/schemas/AccountView'
+      - $ref: '#/components/schemas/ContractCodeView'
+      - $ref: '#/components/schemas/ViewStateResult'
+      - $ref: '#/components/schemas/CallResult'
+      - $ref: '#/components/schemas/AccessKeyView'
+      - $ref: '#/components/schemas/AccessKeyList'
+      - $ref: '#/components/schemas/GasKeyNoncesView'
+      properties:
+        block_hash:
+          $ref: '#/components/schemas/CryptoHash'
+        block_height:
+          format: uint64
+          minimum: 0
+          type: integer
+      required:
+      - block_height
+      - block_hash
+      type: object
     RpcRequestValidationErrorKind:
       oneOf:
       - properties:
@@ -490,6 +569,46 @@ components:
         - name
         - info
         type: object
+    SyncCheckpoint:
+      enum:
+      - genesis
+      - earliest_available
+      type: string
+    AccountView:
+      description: A view of the account
+      properties:
+        amount:
+          $ref: '#/components/schemas/NearToken'
+        code_hash:
+          $ref: '#/components/schemas/CryptoHash'
+        global_contract_account_id:
+          anyOf:
+          - $ref: '#/components/schemas/AccountId'
+          - enum:
+            - null
+        global_contract_hash:
+          anyOf:
+          - $ref: '#/components/schemas/CryptoHash'
+          - enum:
+            - null
+        locked:
+          $ref: '#/components/schemas/NearToken'
+        storage_paid_at:
+          default: 0
+          description: 'TODO(2271): deprecated.'
+          format: uint64
+          minimum: 0
+          type: integer
+        storage_usage:
+          format: uint64
+          minimum: 0
+          type: integer
+      required:
+      - amount
+      - locked
+      - code_hash
+      - storage_usage
+      type: object
     RpcQueryRequest:
       oneOf:
       - allOf:
@@ -1091,6 +1210,285 @@ components:
         title: view_global_contract_code_by_account_id_by_sync_checkpoint
       title: RpcQueryRequest
       type: object
+    NearToken:
+      type: string
+    ViewStateResult:
+      description: Resulting state values for a view state query request
+      properties:
+        last_key:
+          anyOf:
+          - $ref: '#/components/schemas/StoreKey'
+          - enum:
+            - null
+        proof:
+          items:
+            type: string
+          type: array
+        values:
+          items:
+            $ref: '#/components/schemas/StateItem'
+          type: array
+      required:
+      - values
+      type: object
+    StoreValue:
+      description: 'This type is used to mark values returned from store (arrays of bytes).
+
+
+        NOTE: Currently, this type is only used in the view_client and RPC to be able to transparently
+
+        pretty-serialize the bytes arrays as base64-encoded strings (see `serialize.rs`).'
+      format: bytes
+      type: string
+    AccessKeyInfoView:
+      description: 'Describes information about an access key including its on-trie
+
+        identifier. For ed25519/secp256k1 access keys the `public_key` field
+
+        is the full public key (string form unchanged from before); for
+
+        ML-DSA-65 access keys it is a `ml-dsa-65-hash:...` SHA3-256 digest
+
+        (the full pubkey is not stored on-chain).'
+      properties:
+        access_key:
+          $ref: '#/components/schemas/AccessKeyView'
+        public_key:
+          $ref: '#/components/schemas/PublicKeyHandle'
+      required:
+      - public_key
+      - access_key
+      type: object
+    WasmTrap:
+      description: A kind of a trap happened during execution of a binary
+      oneOf:
+      - description: An `unreachable` opcode was executed.
+        enum:
+        - Unreachable
+        type: string
+      - description: Call indirect incorrect signature trap.
+        enum:
+        - IncorrectCallIndirectSignature
+        type: string
+      - description: Memory out of bounds trap.
+        enum:
+        - MemoryOutOfBounds
+        type: string
+      - description: Call indirect out of bounds trap.
+        enum:
+        - CallIndirectOOB
+        type: string
+      - description: An arithmetic exception, e.g. divided by zero.
+        enum:
+        - IllegalArithmetic
+        type: string
+      - description: Misaligned atomic access trap.
+        enum:
+        - MisalignedAtomicAccess
+        type: string
+      - description: Indirect call to null.
+        enum:
+        - IndirectCallToNull
+        type: string
+      - description: Stack overflow.
+        enum:
+        - StackOverflow
+        type: string
+      - description: Generic trap.
+        enum:
+        - GenericTrap
+        type: string
+    PublicKey:
+      type: string
+    FunctionCallError:
+      description: 'Serializable version of `near-vm-runner::FunctionCallError`.
+
+
+        Must never reorder/remove elements, can only add new variants at the end (but do that very
+
+        carefully). It describes stable serialization format, and only used by serialization logic.'
+      oneOf:
+      - enum:
+        - WasmUnknownError
+        - _EVMError
+        type: string
+      - additionalProperties: false
+        description: Wasm compilation error
+        properties:
+          CompilationError:
+            $ref: '#/components/schemas/CompilationError'
+        required:
+        - CompilationError
+        type: object
+      - additionalProperties: false
+        description: 'Wasm binary env link error
+
+
+          Note: this is only to deserialize old data, use execution error for new data'
+        properties:
+          LinkError:
+            properties:
+              msg:
+                type: string
+            required:
+            - msg
+            type: object
+        required:
+        - LinkError
+        type: object
+      - additionalProperties: false
+        description: Import/export resolve error
+        properties:
+          MethodResolveError:
+            $ref: '#/components/schemas/MethodResolveError'
+        required:
+        - MethodResolveError
+        type: object
+      - additionalProperties: false
+        description: 'A trap happened during execution of a binary
+
+
+          Note: this is only to deserialize old data, use execution error for new data'
+        properties:
+          WasmTrap:
+            $ref: '#/components/schemas/WasmTrap'
+        required:
+        - WasmTrap
+        type: object
+      - additionalProperties: false
+        description: 'Note: this is only to deserialize old data, use execution error for new data'
+        properties:
+          HostError:
+            $ref: '#/components/schemas/HostError'
+        required:
+        - HostError
+        type: object
+      - additionalProperties: false
+        properties:
+          ExecutionError:
+            type: string
+        required:
+        - ExecutionError
+        type: object
+    InternalError:
+      oneOf:
+      - properties:
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
+        required:
+        - name
+        - info
+        type: object
+    ContractCodeView:
+      description: A view of the contract code.
+      properties:
+        code_base64:
+          type: string
+        hash:
+          $ref: '#/components/schemas/CryptoHash'
+      required:
+      - code_base64
+      - hash
+      type: object
+    StateItem:
+      description: Item of the state, key and value are serialized in base64 and proof for inclusion of given state item.
+      properties:
+        key:
+          $ref: '#/components/schemas/StoreKey'
+        value:
+          $ref: '#/components/schemas/StoreValue'
+      required:
+      - key
+      - value
+      type: object
+    FunctionArgs:
+      description: 'This type is used to mark function arguments.
+
+
+        NOTE: The main reason for this to exist (except the type-safety) is that the value is
+
+        transparently serialized and deserialized as a base64-encoded string when serde is used
+
+        (serde_json).'
+      format: bytes
+      type: string
+    BlockReference:
+      oneOf:
+      - additionalProperties: false
+        properties:
+          block_id:
+            $ref: '#/components/schemas/BlockId'
+        required:
+        - block_id
+        type: object
+      - additionalProperties: false
+        properties:
+          finality:
+            $ref: '#/components/schemas/Finality'
+        required:
+        - finality
+        type: object
+      - additionalProperties: false
+        properties:
+          sync_checkpoint:
+            $ref: '#/components/schemas/SyncCheckpoint'
+        required:
+        - sync_checkpoint
+        type: object
+    JsonRpcRequest_for_query:
+      properties:
+        id:
+          type: string
+        jsonrpc:
+          type: string
+        method:
+          enum:
+          - query
+          type: string
+        params:
+          $ref: '#/components/schemas/RpcQueryRequest'
+      required:
+      - jsonrpc
+      - id
+      - params
+      - method
+      title: JsonRpcRequest_for_query
+      type: object
+    JsonRpcResponse_for_RpcQueryResponse_and_RpcQueryError:
+      oneOf:
+      - properties:
+          result:
+            $ref: '#/components/schemas/RpcQueryResponse'
+        required:
+        - result
+        type: object
+      - properties:
+          error:
+            $ref: '#/components/schemas/ErrorWrapper_for_RpcQueryError'
+        required:
+        - error
+        type: object
+      properties:
+        id:
+          type: string
+        jsonrpc:
+          type: string
+      required:
+      - jsonrpc
+      - id
+      title: JsonRpcResponse_for_RpcQueryResponse_and_RpcQueryError
+      type: object
+    PublicKeyHandle:
+      type: string
     PrepareError:
       description: Error that can occur while preparing or executing Wasm smart-contract.
       oneOf:
@@ -1183,356 +1581,6 @@ components:
         enum:
         - OperandStackTooLarge
         type: string
-    BlockReference:
-      oneOf:
-      - additionalProperties: false
-        properties:
-          block_id:
-            $ref: '#/components/schemas/BlockId'
-        required:
-        - block_id
-        type: object
-      - additionalProperties: false
-        properties:
-          finality:
-            $ref: '#/components/schemas/Finality'
-        required:
-        - finality
-        type: object
-      - additionalProperties: false
-        properties:
-          sync_checkpoint:
-            $ref: '#/components/schemas/SyncCheckpoint'
-        required:
-        - sync_checkpoint
-        type: object
-    InternalError:
-      oneOf:
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
-          name:
-            enum:
-            - INTERNAL_ERROR
-            type: string
-        required:
-        - name
-        - info
-        type: object
-    WasmTrap:
-      description: A kind of a trap happened during execution of a binary
-      oneOf:
-      - description: An `unreachable` opcode was executed.
-        enum:
-        - Unreachable
-        type: string
-      - description: Call indirect incorrect signature trap.
-        enum:
-        - IncorrectCallIndirectSignature
-        type: string
-      - description: Memory out of bounds trap.
-        enum:
-        - MemoryOutOfBounds
-        type: string
-      - description: Call indirect out of bounds trap.
-        enum:
-        - CallIndirectOOB
-        type: string
-      - description: An arithmetic exception, e.g. divided by zero.
-        enum:
-        - IllegalArithmetic
-        type: string
-      - description: Misaligned atomic access trap.
-        enum:
-        - MisalignedAtomicAccess
-        type: string
-      - description: Indirect call to null.
-        enum:
-        - IndirectCallToNull
-        type: string
-      - description: Stack overflow.
-        enum:
-        - StackOverflow
-        type: string
-      - description: Generic trap.
-        enum:
-        - GenericTrap
-        type: string
-    CompilationError:
-      oneOf:
-      - additionalProperties: false
-        properties:
-          CodeDoesNotExist:
-            properties:
-              account_id:
-                $ref: '#/components/schemas/AccountId'
-            required:
-            - account_id
-            type: object
-        required:
-        - CodeDoesNotExist
-        type: object
-      - additionalProperties: false
-        properties:
-          PrepareError:
-            $ref: '#/components/schemas/PrepareError'
-        required:
-        - PrepareError
-        type: object
-      - additionalProperties: false
-        description: 'This is for defense in depth.
-
-          We expect our runtime-independent preparation code to fully catch all invalid wasms,
-
-          but, if it ever misses something we’ll emit this error'
-        properties:
-          WasmerCompileError:
-            properties:
-              msg:
-                type: string
-            required:
-            - msg
-            type: object
-        required:
-        - WasmerCompileError
-        type: object
-    SyncCheckpoint:
-      enum:
-      - genesis
-      - earliest_available
-      type: string
-    AccountView:
-      description: A view of the account
-      properties:
-        amount:
-          $ref: '#/components/schemas/NearToken'
-        code_hash:
-          $ref: '#/components/schemas/CryptoHash'
-        global_contract_account_id:
-          anyOf:
-          - $ref: '#/components/schemas/AccountId'
-          - enum:
-            - null
-        global_contract_hash:
-          anyOf:
-          - $ref: '#/components/schemas/CryptoHash'
-          - enum:
-            - null
-        locked:
-          $ref: '#/components/schemas/NearToken'
-        storage_paid_at:
-          default: 0
-          description: 'TODO(2271): deprecated.'
-          format: uint64
-          minimum: 0
-          type: integer
-        storage_usage:
-          format: uint64
-          minimum: 0
-          type: integer
-      required:
-      - amount
-      - locked
-      - code_hash
-      - storage_usage
-      type: object
-    FunctionArgs:
-      description: 'This type is used to mark function arguments.
-
-
-        NOTE: The main reason for this to exist (except the type-safety) is that the value is
-
-        transparently serialized and deserialized as a base64-encoded string when serde is used
-
-        (serde_json).'
-      format: bytes
-      type: string
-    CryptoHash:
-      type: string
-    StateItem:
-      description: Item of the state, key and value are serialized in base64 and proof for inclusion of given state item.
-      properties:
-        key:
-          $ref: '#/components/schemas/StoreKey'
-        value:
-          $ref: '#/components/schemas/StoreValue'
-      required:
-      - key
-      - value
-      type: object
-    JsonRpcRequest_for_query:
-      properties:
-        id:
-          type: string
-        jsonrpc:
-          type: string
-        method:
-          enum:
-          - query
-          type: string
-        params:
-          $ref: '#/components/schemas/RpcQueryRequest'
-      required:
-      - jsonrpc
-      - id
-      - params
-      - method
-      title: JsonRpcRequest_for_query
-      type: object
-    AccountId:
-      $schema: https://json-schema.org/draft/2020-12/schema
-      description: 'NEAR Account Identifier.
-
-
-        This is a unique, syntactically valid, human-readable account identifier on the NEAR network.
-
-
-        [See the crate-level docs for information about validation.](index.html#account-id-rules)
-
-
-        Also see [Error kind precedence](AccountId#error-kind-precedence).
-
-
-        ## Examples
-
-
-        ```
-
-        use near_account_id::AccountId;
-
-
-        let alice: AccountId = "alice.near".parse().unwrap();
-
-
-        assert!("ƒelicia.near".parse::<AccountId>().is_err()); // (ƒ is not f)
-
-        ```'
-      title: AccountId
-      type: string
-    AccessKeyPermissionView:
-      description: Describes the permission scope for an access key. Whether it is a function call or a full access key.
-      oneOf:
-      - enum:
-        - FullAccess
-        type: string
-      - additionalProperties: false
-        properties:
-          FunctionCall:
-            properties:
-              allowance:
-                anyOf:
-                - $ref: '#/components/schemas/NearToken'
-                - enum:
-                  - null
-              method_names:
-                items:
-                  type: string
-                type: array
-              receiver_id:
-                type: string
-            required:
-            - receiver_id
-            - method_names
-            type: object
-        required:
-        - FunctionCall
-        type: object
-      - additionalProperties: false
-        properties:
-          GasKeyFunctionCall:
-            properties:
-              allowance:
-                anyOf:
-                - $ref: '#/components/schemas/NearToken'
-                - enum:
-                  - null
-              balance:
-                $ref: '#/components/schemas/NearToken'
-              method_names:
-                items:
-                  type: string
-                type: array
-              num_nonces:
-                format: uint16
-                maximum: 65535
-                minimum: 0
-                type: integer
-              receiver_id:
-                type: string
-            required:
-            - balance
-            - num_nonces
-            - receiver_id
-            - method_names
-            type: object
-        required:
-        - GasKeyFunctionCall
-        type: object
-      - additionalProperties: false
-        properties:
-          GasKeyFullAccess:
-            properties:
-              balance:
-                $ref: '#/components/schemas/NearToken'
-              num_nonces:
-                format: uint16
-                maximum: 65535
-                minimum: 0
-                type: integer
-            required:
-            - balance
-            - num_nonces
-            type: object
-        required:
-        - GasKeyFullAccess
-        type: object
-    ShardId:
-      description: 'The shard identifier. It may be an arbitrary number - it does not need to be
-
-        a number in the range 0..NUM_SHARDS. The shard ids do not need to be
-
-        sequential or contiguous.
-
-
-        The shard id is wrapped in a new type to prevent the old pattern of using
-
-        indices in range 0..NUM_SHARDS and casting to ShardId. Once the transition
-
-        if fully complete it potentially may be simplified to a regular type alias.'
-      format: uint64
-      minimum: 0
-      type: integer
-    BlockId:
-      anyOf:
-      - format: uint64
-        minimum: 0
-        title: block_height
-        type: integer
-      - $ref: '#/components/schemas/CryptoHash'
-    AccessKeyInfoView:
-      description: 'Describes information about an access key including its on-trie
-
-        identifier. For ed25519/secp256k1 access keys the `public_key` field
-
-        is the full public key (string form unchanged from before); for
-
-        ML-DSA-65 access keys it is a `ml-dsa-65-hash:...` SHA3-256 digest
-
-        (the full pubkey is not stored on-chain).'
-      properties:
-        access_key:
-          $ref: '#/components/schemas/AccessKeyView'
-        public_key:
-          $ref: '#/components/schemas/PublicKeyHandle'
-      required:
-      - public_key
-      - access_key
-      type: object
     HostError:
       oneOf:
       - description: String encoding is bad UTF-16 sequence
@@ -1931,28 +1979,44 @@ components:
         required:
         - P256VerifyInvalidInput
         type: object
-    PublicKey:
-      type: string
-    RpcQueryResponse:
-      anyOf:
-      - $ref: '#/components/schemas/AccountView'
-      - $ref: '#/components/schemas/ContractCodeView'
-      - $ref: '#/components/schemas/ViewStateResult'
-      - $ref: '#/components/schemas/CallResult'
-      - $ref: '#/components/schemas/AccessKeyView'
-      - $ref: '#/components/schemas/AccessKeyList'
-      - $ref: '#/components/schemas/GasKeyNoncesView'
-      properties:
-        block_hash:
-          $ref: '#/components/schemas/CryptoHash'
-        block_height:
-          format: uint64
-          minimum: 0
-          type: integer
-      required:
-      - block_height
-      - block_hash
-      type: object
+    CompilationError:
+      oneOf:
+      - additionalProperties: false
+        properties:
+          CodeDoesNotExist:
+            properties:
+              account_id:
+                $ref: '#/components/schemas/AccountId'
+            required:
+            - account_id
+            type: object
+        required:
+        - CodeDoesNotExist
+        type: object
+      - additionalProperties: false
+        properties:
+          PrepareError:
+            $ref: '#/components/schemas/PrepareError'
+        required:
+        - PrepareError
+        type: object
+      - additionalProperties: false
+        description: 'This is for defense in depth.
+
+          We expect our runtime-independent preparation code to fully catch all invalid wasms,
+
+          but, if it ever misses something we’ll emit this error'
+        properties:
+          WasmerCompileError:
+            properties:
+              msg:
+                type: string
+            required:
+            - msg
+            type: object
+        required:
+        - WasmerCompileError
+        type: object
     CallResult:
       description: A result returned by contract method
       properties:
@@ -1971,29 +2035,18 @@ components:
       - result
       - logs
       type: object
-    JsonRpcResponse_for_RpcQueryResponse_and_RpcQueryError:
-      oneOf:
-      - properties:
-          result:
-            $ref: '#/components/schemas/RpcQueryResponse'
-        required:
-        - result
-        type: object
-      - properties:
-          error:
-            $ref: '#/components/schemas/ErrorWrapper_for_RpcQueryError'
-        required:
-        - error
-        type: object
+    AccessKeyView:
+      description: Describes access key permission scope and nonce.
       properties:
-        id:
-          type: string
-        jsonrpc:
-          type: string
+        nonce:
+          format: uint64
+          minimum: 0
+          type: integer
+        permission:
+          $ref: '#/components/schemas/AccessKeyPermissionView'
       required:
-      - jsonrpc
-      - id
-      title: JsonRpcResponse_for_RpcQueryResponse_and_RpcQueryError
+      - nonce
+      - permission
       type: object
     ErrorWrapper_for_RpcQueryError:
       oneOf:
@@ -2030,56 +2083,3 @@ components:
         - name
         - cause
         type: object
-    GlobalContractIdentifier:
-      oneOf:
-      - additionalProperties: false
-        properties:
-          hash:
-            $ref: '#/components/schemas/CryptoHash'
-        required:
-        - hash
-        type: object
-      - additionalProperties: false
-        properties:
-          account_id:
-            $ref: '#/components/schemas/AccountId'
-        required:
-        - account_id
-        type: object
-    MethodResolveError:
-      enum:
-      - MethodEmptyName
-      - MethodNotFound
-      - MethodInvalidSignature
-      type: string
-    PublicKeyHandle:
-      type: string
-    AccessKeyList:
-      description: Lists access keys
-      properties:
-        keys:
-          items:
-            $ref: '#/components/schemas/AccessKeyInfoView'
-          type: array
-      required:
-      - keys
-      type: object
-    ViewStateResult:
-      description: Resulting state values for a view state query request
-      properties:
-        last_key:
-          anyOf:
-          - $ref: '#/components/schemas/StoreKey'
-          - enum:
-            - null
-        proof:
-          items:
-            type: string
-          type: array
-        values:
-          items:
-            $ref: '#/components/schemas/StateItem'
-          type: array
-      required:
-      - values
-      type: object

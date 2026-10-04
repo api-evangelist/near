@@ -52,6 +52,80 @@ components:
       - id
       title: JsonRpcResponse_for_RpcSplitStorageInfoResponse_and_RpcSplitStorageInfoError
       type: object
+    JsonRpcRequest_for_EXPERIMENTAL_split_storage_info:
+      properties:
+        id:
+          type: string
+        jsonrpc:
+          type: string
+        method:
+          enum:
+          - EXPERIMENTAL_split_storage_info
+          type: string
+        params:
+          $ref: '#/components/schemas/RpcSplitStorageInfoRequest'
+      required:
+      - jsonrpc
+      - id
+      - params
+      - method
+      title: JsonRpcRequest_for_EXPERIMENTAL_split_storage_info
+      type: object
+    RpcRequestValidationErrorKind:
+      oneOf:
+      - properties:
+          info:
+            properties:
+              method_name:
+                type: string
+            required:
+            - method_name
+            type: object
+          name:
+            enum:
+            - METHOD_NOT_FOUND
+            type: string
+        required:
+        - name
+        - info
+        type: object
+      - properties:
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - PARSE_ERROR
+            type: string
+        required:
+        - name
+        - info
+        type: object
+    RpcSplitStorageInfoRequest:
+      title: RpcSplitStorageInfoRequest
+      type: object
+    InternalError:
+      oneOf:
+      - properties:
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
+        required:
+        - name
+        - info
+        type: object
     RpcSplitStorageInfoResponse:
       description: Contains the split storage information.
       properties:
@@ -77,46 +151,6 @@ components:
           type:
           - string
           - 'null'
-      type: object
-    InternalError:
-      oneOf:
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
-          name:
-            enum:
-            - INTERNAL_ERROR
-            type: string
-        required:
-        - name
-        - info
-        type: object
-    JsonRpcRequest_for_EXPERIMENTAL_split_storage_info:
-      properties:
-        id:
-          type: string
-        jsonrpc:
-          type: string
-        method:
-          enum:
-          - EXPERIMENTAL_split_storage_info
-          type: string
-        params:
-          $ref: '#/components/schemas/RpcSplitStorageInfoRequest'
-      required:
-      - jsonrpc
-      - id
-      - params
-      - method
-      title: JsonRpcRequest_for_EXPERIMENTAL_split_storage_info
-      type: object
-    RpcSplitStorageInfoRequest:
-      title: RpcSplitStorageInfoRequest
       type: object
     ErrorWrapper_for_RpcSplitStorageInfoError:
       oneOf:
@@ -152,40 +186,6 @@ components:
         required:
         - name
         - cause
-        type: object
-    RpcRequestValidationErrorKind:
-      oneOf:
-      - properties:
-          info:
-            properties:
-              method_name:
-                type: string
-            required:
-            - method_name
-            type: object
-          name:
-            enum:
-            - METHOD_NOT_FOUND
-            type: string
-        required:
-        - name
-        - info
-        type: object
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
-          name:
-            enum:
-            - PARSE_ERROR
-            type: string
-        required:
-        - name
-        - info
         type: object
     RpcSplitStorageInfoError:
       oneOf:

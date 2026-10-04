@@ -28,6 +28,86 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    ShardId:
+      description: 'The shard identifier. It may be an arbitrary number - it does not need to be
+
+        a number in the range 0..NUM_SHARDS. The shard ids do not need to be
+
+        sequential or contiguous.
+
+
+        The shard id is wrapped in a new type to prevent the old pattern of using
+
+        indices in range 0..NUM_SHARDS and casting to ShardId. Once the transition
+
+        if fully complete it potentially may be simplified to a regular type alias.'
+      format: uint64
+      minimum: 0
+      type: integer
+    StateChangeKindView:
+      description: 'It is a [serializable view] of [`StateChangeKind`].
+
+
+        [serializable view]: ./index.html
+
+        [`StateChangeKind`]: ../types/struct.StateChangeKind.html'
+      oneOf:
+      - properties:
+          account_id:
+            $ref: '#/components/schemas/AccountId'
+          type:
+            enum:
+            - account_touched
+            type: string
+        required:
+        - type
+        - account_id
+        type: object
+      - properties:
+          account_id:
+            $ref: '#/components/schemas/AccountId'
+          type:
+            enum:
+            - access_key_touched
+            type: string
+        required:
+        - type
+        - account_id
+        type: object
+      - properties:
+          account_id:
+            $ref: '#/components/schemas/AccountId'
+          type:
+            enum:
+            - data_touched
+            type: string
+        required:
+        - type
+        - account_id
+        type: object
+      - properties:
+          account_id:
+            $ref: '#/components/schemas/AccountId'
+          type:
+            enum:
+            - contract_code_touched
+            type: string
+        required:
+        - type
+        - account_id
+        type: object
+    BlockId:
+      anyOf:
+      - format: uint64
+        minimum: 0
+        title: block_height
+        type: integer
+      - $ref: '#/components/schemas/CryptoHash'
+    SyncCheckpoint:
+      enum:
+      - genesis
+      - earliest_available
+      type: string
     JsonRpcResponse_for_RpcStateChangesInBlockByTypeResponse_and_RpcStateChangesError:
       oneOf:
       - properties:
@@ -52,18 +132,47 @@ components:
       - id
       title: JsonRpcResponse_for_RpcStateChangesInBlockByTypeResponse_and_RpcStateChangesError
       type: object
-    RpcStateChangesInBlockByTypeResponse:
-      properties:
-        block_hash:
-          $ref: '#/components/schemas/CryptoHash'
-        changes:
-          items:
-            $ref: '#/components/schemas/StateChangeKindView'
-          type: array
-      required:
-      - block_hash
-      - changes
-      type: object
+    RpcRequestValidationErrorKind:
+      oneOf:
+      - properties:
+          info:
+            properties:
+              method_name:
+                type: string
+            required:
+            - method_name
+            type: object
+          name:
+            enum:
+            - METHOD_NOT_FOUND
+            type: string
+        required:
+        - name
+        - info
+        type: object
+      - properties:
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - PARSE_ERROR
+            type: string
+        required:
+        - name
+        - info
+        type: object
+    Finality:
+      description: Different types of finality.
+      enum:
+      - optimistic
+      - near-final
+      - final
+      type: string
     RpcStateChangesInBlockRequest:
       oneOf:
       - properties:
@@ -86,6 +195,27 @@ components:
         type: object
       title: RpcStateChangesInBlockRequest
       type: object
+    CryptoHash:
+      type: string
+    JsonRpcRequest_for_EXPERIMENTAL_changes_in_block:
+      properties:
+        id:
+          type: string
+        jsonrpc:
+          type: string
+        method:
+          enum:
+          - EXPERIMENTAL_changes_in_block
+          type: string
+        params:
+          $ref: '#/components/schemas/RpcStateChangesInBlockRequest'
+      required:
+      - jsonrpc
+      - id
+      - params
+      - method
+      title: JsonRpcRequest_for_EXPERIMENTAL_changes_in_block
+      type: object
     InternalError:
       oneOf:
       - properties:
@@ -104,6 +234,53 @@ components:
         - name
         - info
         type: object
+    ErrorWrapper_for_RpcStateChangesError:
+      oneOf:
+      - properties:
+          cause:
+            $ref: '#/components/schemas/RpcRequestValidationErrorKind'
+          name:
+            enum:
+            - REQUEST_VALIDATION_ERROR
+            type: string
+        required:
+        - name
+        - cause
+        type: object
+      - properties:
+          cause:
+            $ref: '#/components/schemas/RpcStateChangesError'
+          name:
+            enum:
+            - HANDLER_ERROR
+            type: string
+        required:
+        - name
+        - cause
+        type: object
+      - properties:
+          cause:
+            $ref: '#/components/schemas/InternalError'
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
+        required:
+        - name
+        - cause
+        type: object
+    RpcStateChangesInBlockByTypeResponse:
+      properties:
+        block_hash:
+          $ref: '#/components/schemas/CryptoHash'
+        changes:
+          items:
+            $ref: '#/components/schemas/StateChangeKindView'
+          type: array
+      required:
+      - block_hash
+      - changes
+      type: object
     AccountId:
       $schema: https://json-schema.org/draft/2020-12/schema
       description: 'NEAR Account Identifier.
@@ -134,22 +311,6 @@ components:
         ```'
       title: AccountId
       type: string
-    ShardId:
-      description: 'The shard identifier. It may be an arbitrary number - it does not need to be
-
-        a number in the range 0..NUM_SHARDS. The shard ids do not need to be
-
-        sequential or contiguous.
-
-
-        The shard id is wrapped in a new type to prevent the old pattern of using
-
-        indices in range 0..NUM_SHARDS and casting to ShardId. Once the transition
-
-        if fully complete it potentially may be simplified to a regular type alias.'
-      format: uint64
-      minimum: 0
-      type: integer
     RpcStateChangesError:
       oneOf:
       - properties:
@@ -202,165 +363,4 @@ components:
         required:
         - name
         - info
-        type: object
-    SyncCheckpoint:
-      enum:
-      - genesis
-      - earliest_available
-      type: string
-    BlockId:
-      anyOf:
-      - format: uint64
-        minimum: 0
-        title: block_height
-        type: integer
-      - $ref: '#/components/schemas/CryptoHash'
-    Finality:
-      description: Different types of finality.
-      enum:
-      - optimistic
-      - near-final
-      - final
-      type: string
-    JsonRpcRequest_for_EXPERIMENTAL_changes_in_block:
-      properties:
-        id:
-          type: string
-        jsonrpc:
-          type: string
-        method:
-          enum:
-          - EXPERIMENTAL_changes_in_block
-          type: string
-        params:
-          $ref: '#/components/schemas/RpcStateChangesInBlockRequest'
-      required:
-      - jsonrpc
-      - id
-      - params
-      - method
-      title: JsonRpcRequest_for_EXPERIMENTAL_changes_in_block
-      type: object
-    ErrorWrapper_for_RpcStateChangesError:
-      oneOf:
-      - properties:
-          cause:
-            $ref: '#/components/schemas/RpcRequestValidationErrorKind'
-          name:
-            enum:
-            - REQUEST_VALIDATION_ERROR
-            type: string
-        required:
-        - name
-        - cause
-        type: object
-      - properties:
-          cause:
-            $ref: '#/components/schemas/RpcStateChangesError'
-          name:
-            enum:
-            - HANDLER_ERROR
-            type: string
-        required:
-        - name
-        - cause
-        type: object
-      - properties:
-          cause:
-            $ref: '#/components/schemas/InternalError'
-          name:
-            enum:
-            - INTERNAL_ERROR
-            type: string
-        required:
-        - name
-        - cause
-        type: object
-    CryptoHash:
-      type: string
-    RpcRequestValidationErrorKind:
-      oneOf:
-      - properties:
-          info:
-            properties:
-              method_name:
-                type: string
-            required:
-            - method_name
-            type: object
-          name:
-            enum:
-            - METHOD_NOT_FOUND
-            type: string
-        required:
-        - name
-        - info
-        type: object
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
-          name:
-            enum:
-            - PARSE_ERROR
-            type: string
-        required:
-        - name
-        - info
-        type: object
-    StateChangeKindView:
-      description: 'It is a [serializable view] of [`StateChangeKind`].
-
-
-        [serializable view]: ./index.html
-
-        [`StateChangeKind`]: ../types/struct.StateChangeKind.html'
-      oneOf:
-      - properties:
-          account_id:
-            $ref: '#/components/schemas/AccountId'
-          type:
-            enum:
-            - account_touched
-            type: string
-        required:
-        - type
-        - account_id
-        type: object
-      - properties:
-          account_id:
-            $ref: '#/components/schemas/AccountId'
-          type:
-            enum:
-            - access_key_touched
-            type: string
-        required:
-        - type
-        - account_id
-        type: object
-      - properties:
-          account_id:
-            $ref: '#/components/schemas/AccountId'
-          type:
-            enum:
-            - data_touched
-            type: string
-        required:
-        - type
-        - account_id
-        type: object
-      - properties:
-          account_id:
-            $ref: '#/components/schemas/AccountId'
-          type:
-            enum:
-            - contract_code_touched
-            type: string
-        required:
-        - type
-        - account_id
         type: object

@@ -44,30 +44,6 @@ components:
       required:
       - id
       type: object
-    JsonRpcResponse_for_RpcNetworkInfoResponse_and_RpcNetworkInfoError:
-      oneOf:
-      - properties:
-          result:
-            $ref: '#/components/schemas/RpcNetworkInfoResponse'
-        required:
-        - result
-        type: object
-      - properties:
-          error:
-            $ref: '#/components/schemas/ErrorWrapper_for_RpcNetworkInfoError'
-        required:
-        - error
-        type: object
-      properties:
-        id:
-          type: string
-        jsonrpc:
-          type: string
-      required:
-      - jsonrpc
-      - id
-      title: JsonRpcResponse_for_RpcNetworkInfoResponse_and_RpcNetworkInfoError
-      type: object
     ErrorWrapper_for_RpcNetworkInfoError:
       oneOf:
       - properties:
@@ -102,58 +78,6 @@ components:
         required:
         - name
         - cause
-        type: object
-    PeerId:
-      allOf:
-      - $ref: '#/components/schemas/PublicKey'
-      description: Peer id is the public key.
-    AccountId:
-      $schema: https://json-schema.org/draft/2020-12/schema
-      description: 'NEAR Account Identifier.
-
-
-        This is a unique, syntactically valid, human-readable account identifier on the NEAR network.
-
-
-        [See the crate-level docs for information about validation.](index.html#account-id-rules)
-
-
-        Also see [Error kind precedence](AccountId#error-kind-precedence).
-
-
-        ## Examples
-
-
-        ```
-
-        use near_account_id::AccountId;
-
-
-        let alice: AccountId = "alice.near".parse().unwrap();
-
-
-        assert!("ƒelicia.near".parse::<AccountId>().is_err()); // (ƒ is not f)
-
-        ```'
-      title: AccountId
-      type: string
-    InternalError:
-      oneOf:
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
-          name:
-            enum:
-            - INTERNAL_ERROR
-            type: string
-        required:
-        - name
-        - info
         type: object
     RpcNetworkInfoResponse:
       properties:
@@ -190,44 +114,8 @@ components:
       - received_bytes_per_sec
       - known_producers
       type: object
-    RpcNetworkInfoRequest:
-      enum:
-      - null
-      title: RpcNetworkInfoRequest
     PublicKey:
       type: string
-    RpcKnownProducer:
-      properties:
-        account_id:
-          $ref: '#/components/schemas/AccountId'
-        addr:
-          type:
-          - string
-          - 'null'
-        peer_id:
-          $ref: '#/components/schemas/PeerId'
-      required:
-      - account_id
-      - peer_id
-      type: object
-    RpcNetworkInfoError:
-      oneOf:
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
-          name:
-            enum:
-            - INTERNAL_ERROR
-            type: string
-        required:
-        - name
-        - info
-        type: object
     RpcRequestValidationErrorKind:
       oneOf:
       - properties:
@@ -262,6 +150,82 @@ components:
         - name
         - info
         type: object
+    AccountId:
+      $schema: https://json-schema.org/draft/2020-12/schema
+      description: 'NEAR Account Identifier.
+
+
+        This is a unique, syntactically valid, human-readable account identifier on the NEAR network.
+
+
+        [See the crate-level docs for information about validation.](index.html#account-id-rules)
+
+
+        Also see [Error kind precedence](AccountId#error-kind-precedence).
+
+
+        ## Examples
+
+
+        ```
+
+        use near_account_id::AccountId;
+
+
+        let alice: AccountId = "alice.near".parse().unwrap();
+
+
+        assert!("ƒelicia.near".parse::<AccountId>().is_err()); // (ƒ is not f)
+
+        ```'
+      title: AccountId
+      type: string
+    JsonRpcResponse_for_RpcNetworkInfoResponse_and_RpcNetworkInfoError:
+      oneOf:
+      - properties:
+          result:
+            $ref: '#/components/schemas/RpcNetworkInfoResponse'
+        required:
+        - result
+        type: object
+      - properties:
+          error:
+            $ref: '#/components/schemas/ErrorWrapper_for_RpcNetworkInfoError'
+        required:
+        - error
+        type: object
+      properties:
+        id:
+          type: string
+        jsonrpc:
+          type: string
+      required:
+      - jsonrpc
+      - id
+      title: JsonRpcResponse_for_RpcNetworkInfoResponse_and_RpcNetworkInfoError
+      type: object
+    PeerId:
+      allOf:
+      - $ref: '#/components/schemas/PublicKey'
+      description: Peer id is the public key.
+    InternalError:
+      oneOf:
+      - properties:
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
+        required:
+        - name
+        - info
+        type: object
     JsonRpcRequest_for_network_info:
       properties:
         id:
@@ -281,3 +245,39 @@ components:
       - method
       title: JsonRpcRequest_for_network_info
       type: object
+    RpcKnownProducer:
+      properties:
+        account_id:
+          $ref: '#/components/schemas/AccountId'
+        addr:
+          type:
+          - string
+          - 'null'
+        peer_id:
+          $ref: '#/components/schemas/PeerId'
+      required:
+      - account_id
+      - peer_id
+      type: object
+    RpcNetworkInfoRequest:
+      enum:
+      - null
+      title: RpcNetworkInfoRequest
+    RpcNetworkInfoError:
+      oneOf:
+      - properties:
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
+        required:
+        - name
+        - info
+        type: object

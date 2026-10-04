@@ -106,19 +106,6 @@ paths:
       x-fastnear-title: FastNEAR API - V1 Account NFT
 components:
   schemas:
-    V1NftResponse:
-      additionalProperties: false
-      properties:
-        account_id:
-          type: string
-        tokens:
-          items:
-            $ref: '#/components/schemas/NftRow'
-          type: array
-      required:
-      - account_id
-      - tokens
-      type: object
     V0ContractsResponse:
       additionalProperties: false
       properties:
@@ -131,6 +118,19 @@ components:
       required:
       - account_id
       - contract_ids
+      type: object
+    V1NftResponse:
+      additionalProperties: false
+      properties:
+        account_id:
+          type: string
+        tokens:
+          items:
+            $ref: '#/components/schemas/NftRow'
+          type: array
+      required:
+      - account_id
+      - tokens
       type: object
     NftRow:
       additionalProperties: false

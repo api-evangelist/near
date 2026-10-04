@@ -47,16 +47,24 @@ components:
       - method
       title: JsonRpcRequest_for_health
       type: object
-    EpochId:
-      allOf:
-      - $ref: '#/components/schemas/CryptoHash'
-      description: 'Epoch identifier -- wrapped hash, to make it easier to distinguish.
-
-        EpochId of epoch T is the hash of last block in T-2
-
-        EpochId of first two epochs is 0'
-    InternalError:
+    RpcRequestValidationErrorKind:
       oneOf:
+      - properties:
+          info:
+            properties:
+              method_name:
+                type: string
+            required:
+            - method_name
+            type: object
+          name:
+            enum:
+            - METHOD_NOT_FOUND
+            type: string
+        required:
+        - name
+        - info
+        type: object
       - properties:
           info:
             properties:
@@ -67,12 +75,23 @@ components:
             type: object
           name:
             enum:
-            - INTERNAL_ERROR
+            - PARSE_ERROR
             type: string
         required:
         - name
         - info
         type: object
+    EpochId:
+      allOf:
+      - $ref: '#/components/schemas/CryptoHash'
+      description: 'Epoch identifier -- wrapped hash, to make it easier to distinguish.
+
+        EpochId of epoch T is the hash of last block in T-2
+
+        EpochId of first two epochs is 0'
+    RpcHealthResponse:
+      enum:
+      - null
     JsonRpcResponse_for_Nullable_RpcHealthResponse_and_RpcStatusError:
       oneOf:
       - properties:
@@ -100,10 +119,65 @@ components:
       - id
       title: JsonRpcResponse_for_Nullable_RpcHealthResponse_and_RpcStatusError
       type: object
+    CryptoHash:
+      type: string
+    InternalError:
+      oneOf:
+      - properties:
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
+        required:
+        - name
+        - info
+        type: object
     RpcHealthRequest:
       enum:
       - null
       title: RpcHealthRequest
+    ErrorWrapper_for_RpcStatusError:
+      oneOf:
+      - properties:
+          cause:
+            $ref: '#/components/schemas/RpcRequestValidationErrorKind'
+          name:
+            enum:
+            - REQUEST_VALIDATION_ERROR
+            type: string
+        required:
+        - name
+        - cause
+        type: object
+      - properties:
+          cause:
+            $ref: '#/components/schemas/RpcStatusError'
+          name:
+            enum:
+            - HANDLER_ERROR
+            type: string
+        required:
+        - name
+        - cause
+        type: object
+      - properties:
+          cause:
+            $ref: '#/components/schemas/InternalError'
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
+        required:
+        - name
+        - cause
+        type: object
     RpcStatusError:
       oneOf:
       - properties:
@@ -168,77 +242,3 @@ components:
         - name
         - info
         type: object
-    ErrorWrapper_for_RpcStatusError:
-      oneOf:
-      - properties:
-          cause:
-            $ref: '#/components/schemas/RpcRequestValidationErrorKind'
-          name:
-            enum:
-            - REQUEST_VALIDATION_ERROR
-            type: string
-        required:
-        - name
-        - cause
-        type: object
-      - properties:
-          cause:
-            $ref: '#/components/schemas/RpcStatusError'
-          name:
-            enum:
-            - HANDLER_ERROR
-            type: string
-        required:
-        - name
-        - cause
-        type: object
-      - properties:
-          cause:
-            $ref: '#/components/schemas/InternalError'
-          name:
-            enum:
-            - INTERNAL_ERROR
-            type: string
-        required:
-        - name
-        - cause
-        type: object
-    CryptoHash:
-      type: string
-    RpcRequestValidationErrorKind:
-      oneOf:
-      - properties:
-          info:
-            properties:
-              method_name:
-                type: string
-            required:
-            - method_name
-            type: object
-          name:
-            enum:
-            - METHOD_NOT_FOUND
-            type: string
-        required:
-        - name
-        - info
-        type: object
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
-          name:
-            enum:
-            - PARSE_ERROR
-            type: string
-        required:
-        - name
-        - info
-        type: object
-    RpcHealthResponse:
-      enum:
-      - null

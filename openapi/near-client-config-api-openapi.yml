@@ -28,10 +28,144 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    RpcClientConfigRequest:
-      enum:
-      - null
-      title: RpcClientConfigRequest
+    SyncConcurrency:
+      properties:
+        apply:
+          description: 'Maximum number of "apply parts" tasks that can be performed in parallel.
+
+            This is a very disk-heavy task and therefore we set this to a low limit,
+
+            or else the rocksdb contention makes the whole server freeze up.'
+          format: uint8
+          maximum: 255
+          minimum: 0
+          type: integer
+        apply_during_catchup:
+          description: 'Maximum number of "apply parts" tasks that can be performed in parallel
+
+            during catchup. We set this to a very low value to avoid overloading the
+
+            node while it is still performing normal tasks.'
+          format: uint8
+          maximum: 255
+          minimum: 0
+          type: integer
+        peer_downloads:
+          description: Maximum number of outstanding requests for decentralized state sync.
+          format: uint8
+          maximum: 255
+          minimum: 0
+          type: integer
+        per_shard:
+          description: 'The maximum parallelism to use per shard. This is mostly for fairness, because
+
+            the actual rate limiting is done by the TaskTrackers, but this is useful for
+
+            balancing the shards a little.'
+          format: uint8
+          maximum: 255
+          minimum: 0
+          type: integer
+      type: object
+    ShardId:
+      description: 'The shard identifier. It may be an arbitrary number - it does not need to be
+
+        a number in the range 0..NUM_SHARDS. The shard ids do not need to be
+
+        sequential or contiguous.
+
+
+        The shard id is wrapped in a new type to prevent the old pattern of using
+
+        indices in range 0..NUM_SHARDS and casting to ShardId. Once the transition
+
+        if fully complete it potentially may be simplified to a regular type alias.'
+      format: uint64
+      minimum: 0
+      type: integer
+    SyncConfig:
+      description: Configures how to fetch state parts during state sync.
+      oneOf:
+      - description: Syncs state from the peers without reading anything from external storage.
+        enum:
+        - Peers
+        type: string
+      - additionalProperties: false
+        description: 'Expects parts to be available in external storage.
+
+
+          Usually as a fallback after some number of attempts to use peers.'
+        properties:
+          ExternalStorage:
+            $ref: '#/components/schemas/ExternalStorageConfig'
+        required:
+        - ExternalStorage
+        type: object
+    ErrorWrapper_for_RpcClientConfigError:
+      oneOf:
+      - properties:
+          cause:
+            $ref: '#/components/schemas/RpcRequestValidationErrorKind'
+          name:
+            enum:
+            - REQUEST_VALIDATION_ERROR
+            type: string
+        required:
+        - name
+        - cause
+        type: object
+      - properties:
+          cause:
+            $ref: '#/components/schemas/RpcClientConfigError'
+          name:
+            enum:
+            - HANDLER_ERROR
+            type: string
+        required:
+        - name
+        - cause
+        type: object
+      - properties:
+          cause:
+            $ref: '#/components/schemas/InternalError'
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
+        required:
+        - name
+        - cause
+        type: object
+    AccountId:
+      $schema: https://json-schema.org/draft/2020-12/schema
+      description: 'NEAR Account Identifier.
+
+
+        This is a unique, syntactically valid, human-readable account identifier on the NEAR network.
+
+
+        [See the crate-level docs for information about validation.](index.html#account-id-rules)
+
+
+        Also see [Error kind precedence](AccountId#error-kind-precedence).
+
+
+        ## Examples
+
+
+        ```
+
+        use near_account_id::AccountId;
+
+
+        let alice: AccountId = "alice.near".parse().unwrap();
+
+
+        assert!("ƒelicia.near".parse::<AccountId>().is_err()); // (ƒ is not f)
+
+        ```'
+      title: AccountId
+      type: string
     ExternalStorageLocation:
       description: Supported external storage backends and their minimal config.
       oneOf:
@@ -78,82 +212,74 @@ components:
         required:
         - GCS
         type: object
-    DurationAsStdSchemaProvider:
+    ChunkDistributionNetworkConfig:
+      description: 'Config for the Chunk Distribution Network feature.
+
+        This allows nodes to push and pull chunks from a central stream.
+
+        The two benefits of this approach are: (1) less request/response traffic
+
+        on the peer-to-peer network and (2) lower latency for RPC nodes indexing the chain.'
       properties:
-        nanos:
-          format: int32
-          type: integer
-        secs:
-          format: int64
-          type: integer
-      required:
-      - secs
-      - nanos
+        enabled:
+          type: boolean
+        uris:
+          $ref: '#/components/schemas/ChunkDistributionUris'
       type: object
-    ChunkDistributionUris:
-      description: URIs for the Chunk Distribution Network feature.
+    DumpConfig:
+      description: Configures how to dump state to external storage.
       properties:
-        get:
-          description: URI for pulling chunks from the stream.
-          type: string
-        set:
-          description: URI for publishing chunks to the stream.
-          type: string
+        credentials_file:
+          description: Location of a json file with credentials allowing access to the bucket.
+          type:
+          - string
+          - 'null'
+        iteration_delay:
+          anyOf:
+          - $ref: '#/components/schemas/DurationAsStdSchemaProvider'
+          - enum:
+            - null
+          description: 'How often to check if a new epoch has started.
+
+            Feel free to set to `None`, defaults are sensible.'
+        location:
+          allOf:
+          - $ref: '#/components/schemas/ExternalStorageLocation'
+          description: Specifies where to write the obtained state parts.
+        restart_dump_for_shards:
+          description: 'Use in case a node that dumps state to the external storage
+
+            gets in trouble.'
+          items:
+            $ref: '#/components/schemas/ShardId'
+          type:
+          - array
+          - 'null'
       type: object
-    JsonRpcRequest_for_client_config:
+    JsonRpcResponse_for_RpcClientConfigResponse_and_RpcClientConfigError:
+      oneOf:
+      - properties:
+          result:
+            $ref: '#/components/schemas/RpcClientConfigResponse'
+        required:
+        - result
+        type: object
+      - properties:
+          error:
+            $ref: '#/components/schemas/ErrorWrapper_for_RpcClientConfigError'
+        required:
+        - error
+        type: object
       properties:
         id:
           type: string
         jsonrpc:
           type: string
-        method:
-          enum:
-          - client_config
-          type: string
-        params:
-          $ref: '#/components/schemas/RpcClientConfigRequest'
       required:
       - jsonrpc
       - id
-      - params
-      - method
-      title: JsonRpcRequest_for_client_config
+      title: JsonRpcResponse_for_RpcClientConfigResponse_and_RpcClientConfigError
       type: object
-    ErrorWrapper_for_RpcClientConfigError:
-      oneOf:
-      - properties:
-          cause:
-            $ref: '#/components/schemas/RpcRequestValidationErrorKind'
-          name:
-            enum:
-            - REQUEST_VALIDATION_ERROR
-            type: string
-        required:
-        - name
-        - cause
-        type: object
-      - properties:
-          cause:
-            $ref: '#/components/schemas/RpcClientConfigError'
-          name:
-            enum:
-            - HANDLER_ERROR
-            type: string
-        required:
-        - name
-        - cause
-        type: object
-      - properties:
-          cause:
-            $ref: '#/components/schemas/InternalError'
-          name:
-            enum:
-            - INTERNAL_ERROR
-            type: string
-        required:
-        - name
-        - cause
-        type: object
     RpcRequestValidationErrorKind:
       oneOf:
       - properties:
@@ -188,100 +314,60 @@ components:
         - name
         - info
         type: object
+    JsonRpcRequest_for_client_config:
+      properties:
+        id:
+          type: string
+        jsonrpc:
+          type: string
+        method:
+          enum:
+          - client_config
+          type: string
+        params:
+          $ref: '#/components/schemas/RpcClientConfigRequest'
+      required:
+      - jsonrpc
+      - id
+      - params
+      - method
+      title: JsonRpcRequest_for_client_config
+      type: object
+    ShardUId:
+      description: '`ShardUId` is a unique representation for shards from different shard layouts.
+
+
+        Comparing to `ShardId`, which is just an ordinal number ranging from 0 to NUM_SHARDS-1,
+
+        `ShardUId` provides a way to unique identify shards when shard layouts may change across epochs.
+
+        This is important because we store states indexed by shards in our database, so we need a
+
+        way to unique identify shard even when shards change across epochs.
+
+        Another difference between `ShardUId` and `ShardId` is that `ShardUId` should only exist in
+
+        a node''s internal state while `ShardId` can be exposed to outside APIs and used in protocol
+
+        level information (for example, `ShardChunkHeader` contains `ShardId` instead of `ShardUId`)'
+      properties:
+        shard_id:
+          format: uint32
+          minimum: 0
+          type: integer
+        version:
+          format: uint32
+          minimum: 0
+          type: integer
+      required:
+      - version
+      - shard_id
+      type: object
     LogSummaryStyle:
       enum:
       - plain
       - colored
       type: string
-    MutableConfigValue:
-      type: string
-    InternalError:
-      oneOf:
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
-          name:
-            enum:
-            - INTERNAL_ERROR
-            type: string
-        required:
-        - name
-        - info
-        type: object
-    StateSyncConfig:
-      properties:
-        concurrency:
-          $ref: '#/components/schemas/SyncConcurrency'
-        dump:
-          anyOf:
-          - $ref: '#/components/schemas/DumpConfig'
-          - enum:
-            - null
-          description: '`none` value disables state dump to external storage.'
-        parts_compression_lvl:
-          default: 1
-          description: Zstd compression level for state parts.
-          format: int32
-          type: integer
-        sync:
-          $ref: '#/components/schemas/SyncConfig'
-      type: object
-    ChunkDistributionNetworkConfig:
-      description: 'Config for the Chunk Distribution Network feature.
-
-        This allows nodes to push and pull chunks from a central stream.
-
-        The two benefits of this approach are: (1) less request/response traffic
-
-        on the peer-to-peer network and (2) lower latency for RPC nodes indexing the chain.'
-      properties:
-        enabled:
-          type: boolean
-        uris:
-          $ref: '#/components/schemas/ChunkDistributionUris'
-      type: object
-    NearGas:
-      format: uint64
-      minimum: 0
-      type: integer
-    ExternalStorageConfig:
-      properties:
-        external_storage_fallback_threshold:
-          default: 3
-          description: 'The number of attempts the node will make to obtain a part from peers in
-
-            the network before it fetches from external storage.'
-          format: uint64
-          minimum: 0
-          type: integer
-        location:
-          allOf:
-          - $ref: '#/components/schemas/ExternalStorageLocation'
-          description: Location of state parts.
-        num_concurrent_requests:
-          default: 25
-          description: 'When fetching state parts from external storage, throttle fetch requests
-
-            to this many concurrent requests.'
-          format: uint8
-          maximum: 255
-          minimum: 0
-          type: integer
-        num_concurrent_requests_during_catchup:
-          default: 5
-          description: 'During catchup, the node will use a different number of concurrent requests
-
-            to reduce the performance impact of state sync.'
-          format: uint8
-          maximum: 255
-          minimum: 0
-          type: integer
-      type: object
     RpcClientConfigResponse:
       description: ClientConfig where some fields can be updated at runtime.
       properties:
@@ -759,59 +845,44 @@ components:
           minimum: 0
           type: integer
       type: object
-    JsonRpcResponse_for_RpcClientConfigResponse_and_RpcClientConfigError:
-      oneOf:
-      - properties:
-          result:
-            $ref: '#/components/schemas/RpcClientConfigResponse'
-        required:
-        - result
-        type: object
-      - properties:
-          error:
-            $ref: '#/components/schemas/ErrorWrapper_for_RpcClientConfigError'
-        required:
-        - error
-        type: object
+    ProtocolVersionCheckConfig:
+      description: Configures whether the node checks the next or the next next epoch for network version compatibility.
+      enum:
+      - Next
+      - NextNext
+      type: string
+    ExternalStorageConfig:
       properties:
-        id:
-          type: string
-        jsonrpc:
-          type: string
-      required:
-      - jsonrpc
-      - id
-      title: JsonRpcResponse_for_RpcClientConfigResponse_and_RpcClientConfigError
-      type: object
-    ShardUId:
-      description: '`ShardUId` is a unique representation for shards from different shard layouts.
+        external_storage_fallback_threshold:
+          default: 3
+          description: 'The number of attempts the node will make to obtain a part from peers in
 
-
-        Comparing to `ShardId`, which is just an ordinal number ranging from 0 to NUM_SHARDS-1,
-
-        `ShardUId` provides a way to unique identify shards when shard layouts may change across epochs.
-
-        This is important because we store states indexed by shards in our database, so we need a
-
-        way to unique identify shard even when shards change across epochs.
-
-        Another difference between `ShardUId` and `ShardId` is that `ShardUId` should only exist in
-
-        a node''s internal state while `ShardId` can be exposed to outside APIs and used in protocol
-
-        level information (for example, `ShardChunkHeader` contains `ShardId` instead of `ShardUId`)'
-      properties:
-        shard_id:
-          format: uint32
+            the network before it fetches from external storage.'
+          format: uint64
           minimum: 0
           type: integer
-        version:
-          format: uint32
+        location:
+          allOf:
+          - $ref: '#/components/schemas/ExternalStorageLocation'
+          description: Location of state parts.
+        num_concurrent_requests:
+          default: 25
+          description: 'When fetching state parts from external storage, throttle fetch requests
+
+            to this many concurrent requests.'
+          format: uint8
+          maximum: 255
           minimum: 0
           type: integer
-      required:
-      - version
-      - shard_id
+        num_concurrent_requests_during_catchup:
+          default: 5
+          description: 'During catchup, the node will use a different number of concurrent requests
+
+            to reduce the performance impact of state sync.'
+          format: uint8
+          maximum: 255
+          minimum: 0
+          type: integer
       type: object
     TrackedShardsConfig:
       description: 'Describes the expected behavior of the node regarding shard tracking.
@@ -868,36 +939,55 @@ components:
         required:
         - Accounts
         type: object
-    AccountId:
-      $schema: https://json-schema.org/draft/2020-12/schema
-      description: 'NEAR Account Identifier.
-
-
-        This is a unique, syntactically valid, human-readable account identifier on the NEAR network.
-
-
-        [See the crate-level docs for information about validation.](index.html#account-id-rules)
-
-
-        Also see [Error kind precedence](AccountId#error-kind-precedence).
-
-
-        ## Examples
-
-
-        ```
-
-        use near_account_id::AccountId;
-
-
-        let alice: AccountId = "alice.near".parse().unwrap();
-
-
-        assert!("ƒelicia.near".parse::<AccountId>().is_err()); // (ƒ is not f)
-
-        ```'
-      title: AccountId
-      type: string
+    NearGas:
+      format: uint64
+      minimum: 0
+      type: integer
+    ChunkDistributionUris:
+      description: URIs for the Chunk Distribution Network feature.
+      properties:
+        get:
+          description: URI for pulling chunks from the stream.
+          type: string
+        set:
+          description: URI for publishing chunks to the stream.
+          type: string
+      type: object
+    InternalError:
+      oneOf:
+      - properties:
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
+        required:
+        - name
+        - info
+        type: object
+    Version:
+      description: Data structure for semver version and github tag or commit.
+      properties:
+        build:
+          type: string
+        commit:
+          type: string
+        rustc_version:
+          default: ''
+          type: string
+        version:
+          type: string
+      required:
+      - version
+      - build
+      - commit
+      type: object
     EpochSyncConfig:
       properties:
         epoch_sync_horizon_num_epochs:
@@ -916,52 +1006,6 @@ components:
           description: 'Timeout for epoch sync requests. The node will continue retrying indefinitely even
 
             if this timeout is exceeded.'
-      type: object
-    ShardId:
-      description: 'The shard identifier. It may be an arbitrary number - it does not need to be
-
-        a number in the range 0..NUM_SHARDS. The shard ids do not need to be
-
-        sequential or contiguous.
-
-
-        The shard id is wrapped in a new type to prevent the old pattern of using
-
-        indices in range 0..NUM_SHARDS and casting to ShardId. Once the transition
-
-        if fully complete it potentially may be simplified to a regular type alias.'
-      format: uint64
-      minimum: 0
-      type: integer
-    DumpConfig:
-      description: Configures how to dump state to external storage.
-      properties:
-        credentials_file:
-          description: Location of a json file with credentials allowing access to the bucket.
-          type:
-          - string
-          - 'null'
-        iteration_delay:
-          anyOf:
-          - $ref: '#/components/schemas/DurationAsStdSchemaProvider'
-          - enum:
-            - null
-          description: 'How often to check if a new epoch has started.
-
-            Feel free to set to `None`, defaults are sensible.'
-        location:
-          allOf:
-          - $ref: '#/components/schemas/ExternalStorageLocation'
-          description: Specifies where to write the obtained state parts.
-        restart_dump_for_shards:
-          description: 'Use in case a node that dumps state to the external storage
-
-            gets in trouble.'
-          items:
-            $ref: '#/components/schemas/ShardId'
-          type:
-          - array
-          - 'null'
       type: object
     CloudArchivalWriterConfig:
       description: 'Configuration for a cloud-based archival writer. If this config is present, the writer is enabled and
@@ -1008,80 +1052,12 @@ components:
         - name
         - info
         type: object
-    SyncConfig:
-      description: Configures how to fetch state parts during state sync.
-      oneOf:
-      - description: Syncs state from the peers without reading anything from external storage.
-        enum:
-        - Peers
-        type: string
-      - additionalProperties: false
-        description: 'Expects parts to be available in external storage.
-
-
-          Usually as a fallback after some number of attempts to use peers.'
-        properties:
-          ExternalStorage:
-            $ref: '#/components/schemas/ExternalStorageConfig'
-        required:
-        - ExternalStorage
-        type: object
-    SyncConcurrency:
-      properties:
-        apply:
-          description: 'Maximum number of "apply parts" tasks that can be performed in parallel.
-
-            This is a very disk-heavy task and therefore we set this to a low limit,
-
-            or else the rocksdb contention makes the whole server freeze up.'
-          format: uint8
-          maximum: 255
-          minimum: 0
-          type: integer
-        apply_during_catchup:
-          description: 'Maximum number of "apply parts" tasks that can be performed in parallel
-
-            during catchup. We set this to a very low value to avoid overloading the
-
-            node while it is still performing normal tasks.'
-          format: uint8
-          maximum: 255
-          minimum: 0
-          type: integer
-        peer_downloads:
-          description: Maximum number of outstanding requests for decentralized state sync.
-          format: uint8
-          maximum: 255
-          minimum: 0
-          type: integer
-        per_shard:
-          description: 'The maximum parallelism to use per shard. This is mostly for fairness, because
-
-            the actual rate limiting is done by the TaskTrackers, but this is useful for
-
-            balancing the shards a little.'
-          format: uint8
-          maximum: 255
-          minimum: 0
-          type: integer
-      type: object
-    Version:
-      description: Data structure for semver version and github tag or commit.
-      properties:
-        build:
-          type: string
-        commit:
-          type: string
-        rustc_version:
-          default: ''
-          type: string
-        version:
-          type: string
-      required:
-      - version
-      - build
-      - commit
-      type: object
+    MutableConfigValue:
+      type: string
+    RpcClientConfigRequest:
+      enum:
+      - null
+      title: RpcClientConfigRequest
     GCConfig:
       description: Configuration for garbage collection.
       properties:
@@ -1115,9 +1091,33 @@ components:
             secs: 0
           description: How often gc should be run
       type: object
-    ProtocolVersionCheckConfig:
-      description: Configures whether the node checks the next or the next next epoch for network version compatibility.
-      enum:
-      - Next
-      - NextNext
-      type: string
+    StateSyncConfig:
+      properties:
+        concurrency:
+          $ref: '#/components/schemas/SyncConcurrency'
+        dump:
+          anyOf:
+          - $ref: '#/components/schemas/DumpConfig'
+          - enum:
+            - null
+          description: '`none` value disables state dump to external storage.'
+        parts_compression_lvl:
+          default: 1
+          description: Zstd compression level for state parts.
+          format: int32
+          type: integer
+        sync:
+          $ref: '#/components/schemas/SyncConfig'
+      type: object
+    DurationAsStdSchemaProvider:
+      properties:
+        nanos:
+          format: int32
+          type: integer
+        secs:
+          format: int64
+          type: integer
+      required:
+      - secs
+      - nanos
+      type: object

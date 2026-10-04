@@ -28,6 +28,68 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    ErrorWrapper_for_RpcViewAccountError:
+      oneOf:
+      - properties:
+          cause:
+            $ref: '#/components/schemas/RpcRequestValidationErrorKind'
+          name:
+            enum:
+            - REQUEST_VALIDATION_ERROR
+            type: string
+        required:
+        - name
+        - cause
+        type: object
+      - properties:
+          cause:
+            $ref: '#/components/schemas/RpcViewAccountError'
+          name:
+            enum:
+            - HANDLER_ERROR
+            type: string
+        required:
+        - name
+        - cause
+        type: object
+      - properties:
+          cause:
+            $ref: '#/components/schemas/InternalError'
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
+        required:
+        - name
+        - cause
+        type: object
+    RpcViewAccountRequest:
+      oneOf:
+      - properties:
+          block_id:
+            $ref: '#/components/schemas/BlockId'
+        required:
+        - block_id
+        type: object
+      - properties:
+          finality:
+            $ref: '#/components/schemas/Finality'
+        required:
+        - finality
+        type: object
+      - properties:
+          sync_checkpoint:
+            $ref: '#/components/schemas/SyncCheckpoint'
+        required:
+        - sync_checkpoint
+        type: object
+      properties:
+        account_id:
+          $ref: '#/components/schemas/AccountId'
+      required:
+      - account_id
+      title: RpcViewAccountRequest
+      type: object
     BlockReference:
       oneOf:
       - additionalProperties: false
@@ -51,6 +113,83 @@ components:
         required:
         - sync_checkpoint
         type: object
+    BlockId:
+      anyOf:
+      - format: uint64
+        minimum: 0
+        title: block_height
+        type: integer
+      - $ref: '#/components/schemas/CryptoHash'
+    SyncCheckpoint:
+      enum:
+      - genesis
+      - earliest_available
+      type: string
+    RpcRequestValidationErrorKind:
+      oneOf:
+      - properties:
+          info:
+            properties:
+              method_name:
+                type: string
+            required:
+            - method_name
+            type: object
+          name:
+            enum:
+            - METHOD_NOT_FOUND
+            type: string
+        required:
+        - name
+        - info
+        type: object
+      - properties:
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - PARSE_ERROR
+            type: string
+        required:
+        - name
+        - info
+        type: object
+    Finality:
+      description: Different types of finality.
+      enum:
+      - optimistic
+      - near-final
+      - final
+      type: string
+    JsonRpcResponse_for_RpcViewAccountResponse_and_RpcViewAccountError:
+      oneOf:
+      - properties:
+          result:
+            $ref: '#/components/schemas/RpcViewAccountResponse'
+        required:
+        - result
+        type: object
+      - properties:
+          error:
+            $ref: '#/components/schemas/ErrorWrapper_for_RpcViewAccountError'
+        required:
+        - error
+        type: object
+      properties:
+        id:
+          type: string
+        jsonrpc:
+          type: string
+      required:
+      - jsonrpc
+      - id
+      title: JsonRpcResponse_for_RpcViewAccountResponse_and_RpcViewAccountError
+      type: object
     RpcViewAccountResponse:
       description: A view of the account
       properties:
@@ -94,6 +233,47 @@ components:
       - block_height
       - block_hash
       type: object
+    JsonRpcRequest_for_EXPERIMENTAL_view_account:
+      properties:
+        id:
+          type: string
+        jsonrpc:
+          type: string
+        method:
+          enum:
+          - EXPERIMENTAL_view_account
+          type: string
+        params:
+          $ref: '#/components/schemas/RpcViewAccountRequest'
+      required:
+      - jsonrpc
+      - id
+      - params
+      - method
+      title: JsonRpcRequest_for_EXPERIMENTAL_view_account
+      type: object
+    CryptoHash:
+      type: string
+    InternalError:
+      oneOf:
+      - properties:
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
+        required:
+        - name
+        - info
+        type: object
+    NearToken:
+      type: string
     AccountId:
       $schema: https://json-schema.org/draft/2020-12/schema
       description: 'NEAR Account Identifier.
@@ -123,43 +303,6 @@ components:
 
         ```'
       title: AccountId
-      type: string
-    InternalError:
-      oneOf:
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
-          name:
-            enum:
-            - INTERNAL_ERROR
-            type: string
-        required:
-        - name
-        - info
-        type: object
-    SyncCheckpoint:
-      enum:
-      - genesis
-      - earliest_available
-      type: string
-    BlockId:
-      anyOf:
-      - format: uint64
-        minimum: 0
-        title: block_height
-        type: integer
-      - $ref: '#/components/schemas/CryptoHash'
-    Finality:
-      description: Different types of finality.
-      enum:
-      - optimistic
-      - near-final
-      - final
       type: string
     RpcViewAccountError:
       oneOf:
@@ -242,147 +385,4 @@ components:
         required:
         - name
         - info
-        type: object
-    RpcViewAccountRequest:
-      oneOf:
-      - properties:
-          block_id:
-            $ref: '#/components/schemas/BlockId'
-        required:
-        - block_id
-        type: object
-      - properties:
-          finality:
-            $ref: '#/components/schemas/Finality'
-        required:
-        - finality
-        type: object
-      - properties:
-          sync_checkpoint:
-            $ref: '#/components/schemas/SyncCheckpoint'
-        required:
-        - sync_checkpoint
-        type: object
-      properties:
-        account_id:
-          $ref: '#/components/schemas/AccountId'
-      required:
-      - account_id
-      title: RpcViewAccountRequest
-      type: object
-    NearToken:
-      type: string
-    JsonRpcResponse_for_RpcViewAccountResponse_and_RpcViewAccountError:
-      oneOf:
-      - properties:
-          result:
-            $ref: '#/components/schemas/RpcViewAccountResponse'
-        required:
-        - result
-        type: object
-      - properties:
-          error:
-            $ref: '#/components/schemas/ErrorWrapper_for_RpcViewAccountError'
-        required:
-        - error
-        type: object
-      properties:
-        id:
-          type: string
-        jsonrpc:
-          type: string
-      required:
-      - jsonrpc
-      - id
-      title: JsonRpcResponse_for_RpcViewAccountResponse_and_RpcViewAccountError
-      type: object
-    CryptoHash:
-      type: string
-    RpcRequestValidationErrorKind:
-      oneOf:
-      - properties:
-          info:
-            properties:
-              method_name:
-                type: string
-            required:
-            - method_name
-            type: object
-          name:
-            enum:
-            - METHOD_NOT_FOUND
-            type: string
-        required:
-        - name
-        - info
-        type: object
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
-          name:
-            enum:
-            - PARSE_ERROR
-            type: string
-        required:
-        - name
-        - info
-        type: object
-    JsonRpcRequest_for_EXPERIMENTAL_view_account:
-      properties:
-        id:
-          type: string
-        jsonrpc:
-          type: string
-        method:
-          enum:
-          - EXPERIMENTAL_view_account
-          type: string
-        params:
-          $ref: '#/components/schemas/RpcViewAccountRequest'
-      required:
-      - jsonrpc
-      - id
-      - params
-      - method
-      title: JsonRpcRequest_for_EXPERIMENTAL_view_account
-      type: object
-    ErrorWrapper_for_RpcViewAccountError:
-      oneOf:
-      - properties:
-          cause:
-            $ref: '#/components/schemas/RpcRequestValidationErrorKind'
-          name:
-            enum:
-            - REQUEST_VALIDATION_ERROR
-            type: string
-        required:
-        - name
-        - cause
-        type: object
-      - properties:
-          cause:
-            $ref: '#/components/schemas/RpcViewAccountError'
-          name:
-            enum:
-            - HANDLER_ERROR
-            type: string
-        required:
-        - name
-        - cause
-        type: object
-      - properties:
-          cause:
-            $ref: '#/components/schemas/InternalError'
-          name:
-            enum:
-            - INTERNAL_ERROR
-            type: string
-        required:
-        - name
-        - cause
         type: object

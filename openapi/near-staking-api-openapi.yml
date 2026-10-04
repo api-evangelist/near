@@ -106,20 +106,18 @@ paths:
       x-fastnear-title: FastNEAR API - V1 Account Staking
 components:
   schemas:
-    PoolRow:
+    V1StakingResponse:
       additionalProperties: false
       properties:
-        last_update_block_height:
-          format: uint64
-          minimum: 0
-          type:
-          - integer
-          - 'null'
-        pool_id:
+        account_id:
           type: string
+        pools:
+          items:
+            $ref: '#/components/schemas/PoolRow'
+          type: array
       required:
-      - pool_id
-      - last_update_block_height
+      - account_id
+      - pools
       type: object
     V0StakingResponse:
       additionalProperties: false
@@ -134,16 +132,18 @@ components:
       - account_id
       - pools
       type: object
-    V1StakingResponse:
+    PoolRow:
       additionalProperties: false
       properties:
-        account_id:
+        last_update_block_height:
+          format: uint64
+          minimum: 0
+          type:
+          - integer
+          - 'null'
+        pool_id:
           type: string
-        pools:
-          items:
-            $ref: '#/components/schemas/PoolRow'
-          type: array
       required:
-      - account_id
-      - pools
+      - pool_id
+      - last_update_block_height
       type: object

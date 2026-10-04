@@ -28,50 +28,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    ChunkHash:
-      $ref: '#/components/schemas/CryptoHash'
-    InternalError:
-      oneOf:
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
-          name:
-            enum:
-            - INTERNAL_ERROR
-            type: string
-        required:
-        - name
-        - info
-        type: object
-    JsonRpcResponse_for_RpcCongestionLevelResponse_and_RpcChunkError:
-      oneOf:
-      - properties:
-          result:
-            $ref: '#/components/schemas/RpcCongestionLevelResponse'
-        required:
-        - result
-        type: object
-      - properties:
-          error:
-            $ref: '#/components/schemas/ErrorWrapper_for_RpcChunkError'
-        required:
-        - error
-        type: object
-      properties:
-        id:
-          type: string
-        jsonrpc:
-          type: string
-      required:
-      - jsonrpc
-      - id
-      title: JsonRpcResponse_for_RpcCongestionLevelResponse_and_RpcChunkError
-      type: object
     RpcCongestionLevelResponse:
       properties:
         congestion_level:
@@ -80,41 +36,6 @@ components:
       required:
       - congestion_level
       type: object
-    ErrorWrapper_for_RpcChunkError:
-      oneOf:
-      - properties:
-          cause:
-            $ref: '#/components/schemas/RpcRequestValidationErrorKind'
-          name:
-            enum:
-            - REQUEST_VALIDATION_ERROR
-            type: string
-        required:
-        - name
-        - cause
-        type: object
-      - properties:
-          cause:
-            $ref: '#/components/schemas/RpcChunkError'
-          name:
-            enum:
-            - HANDLER_ERROR
-            type: string
-        required:
-        - name
-        - cause
-        type: object
-      - properties:
-          cause:
-            $ref: '#/components/schemas/InternalError'
-          name:
-            enum:
-            - INTERNAL_ERROR
-            type: string
-        required:
-        - name
-        - cause
-        type: object
     ShardId:
       description: 'The shard identifier. It may be an arbitrary number - it does not need to be
 
@@ -131,13 +52,6 @@ components:
       format: uint64
       minimum: 0
       type: integer
-    BlockId:
-      anyOf:
-      - format: uint64
-        minimum: 0
-        title: block_height
-        type: integer
-      - $ref: '#/components/schemas/CryptoHash'
     RpcChunkError:
       oneOf:
       - properties:
@@ -199,8 +113,34 @@ components:
         - name
         - info
         type: object
-    CryptoHash:
-      type: string
+    RpcCongestionLevelRequest:
+      anyOf:
+      - properties:
+          block_id:
+            $ref: '#/components/schemas/BlockId'
+          shard_id:
+            $ref: '#/components/schemas/ShardId'
+        required:
+        - block_id
+        - shard_id
+        title: block_shard_id
+        type: object
+      - properties:
+          chunk_id:
+            $ref: '#/components/schemas/CryptoHash'
+        required:
+        - chunk_id
+        title: chunk_hash
+        type: object
+      title: RpcCongestionLevelRequest
+      type: object
+    BlockId:
+      anyOf:
+      - format: uint64
+        minimum: 0
+        title: block_height
+        type: integer
+      - $ref: '#/components/schemas/CryptoHash'
     RpcRequestValidationErrorKind:
       oneOf:
       - properties:
@@ -254,24 +194,84 @@ components:
       - method
       title: JsonRpcRequest_for_EXPERIMENTAL_congestion_level
       type: object
-    RpcCongestionLevelRequest:
-      anyOf:
+    JsonRpcResponse_for_RpcCongestionLevelResponse_and_RpcChunkError:
+      oneOf:
       - properties:
-          block_id:
-            $ref: '#/components/schemas/BlockId'
-          shard_id:
-            $ref: '#/components/schemas/ShardId'
+          result:
+            $ref: '#/components/schemas/RpcCongestionLevelResponse'
         required:
-        - block_id
-        - shard_id
-        title: block_shard_id
+        - result
         type: object
       - properties:
-          chunk_id:
-            $ref: '#/components/schemas/CryptoHash'
+          error:
+            $ref: '#/components/schemas/ErrorWrapper_for_RpcChunkError'
         required:
-        - chunk_id
-        title: chunk_hash
+        - error
         type: object
-      title: RpcCongestionLevelRequest
+      properties:
+        id:
+          type: string
+        jsonrpc:
+          type: string
+      required:
+      - jsonrpc
+      - id
+      title: JsonRpcResponse_for_RpcCongestionLevelResponse_and_RpcChunkError
       type: object
+    ErrorWrapper_for_RpcChunkError:
+      oneOf:
+      - properties:
+          cause:
+            $ref: '#/components/schemas/RpcRequestValidationErrorKind'
+          name:
+            enum:
+            - REQUEST_VALIDATION_ERROR
+            type: string
+        required:
+        - name
+        - cause
+        type: object
+      - properties:
+          cause:
+            $ref: '#/components/schemas/RpcChunkError'
+          name:
+            enum:
+            - HANDLER_ERROR
+            type: string
+        required:
+        - name
+        - cause
+        type: object
+      - properties:
+          cause:
+            $ref: '#/components/schemas/InternalError'
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
+        required:
+        - name
+        - cause
+        type: object
+    ChunkHash:
+      $ref: '#/components/schemas/CryptoHash'
+    CryptoHash:
+      type: string
+    InternalError:
+      oneOf:
+      - properties:
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
+        required:
+        - name
+        - info
+        type: object

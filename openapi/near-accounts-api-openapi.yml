@@ -79,20 +79,27 @@ components:
       - pool_id
       - last_update_block_height
       type: object
-    NftRow:
+    AccountStateResponse:
       additionalProperties: false
       properties:
-        contract_id:
-          type: string
-        last_update_block_height:
+        balance:
+          type:
+          - string
+          - 'null'
+        locked:
+          type:
+          - string
+          - 'null'
+        storage_bytes:
           format: uint64
           minimum: 0
           type:
           - integer
           - 'null'
       required:
-      - contract_id
-      - last_update_block_height
+      - balance
+      - locked
+      - storage_bytes
       type: object
     AccountFullResponse:
       additionalProperties: false
@@ -144,25 +151,18 @@ components:
       - last_update_block_height
       - balance
       type: object
-    AccountStateResponse:
+    NftRow:
       additionalProperties: false
       properties:
-        balance:
-          type:
-          - string
-          - 'null'
-        locked:
-          type:
-          - string
-          - 'null'
-        storage_bytes:
+        contract_id:
+          type: string
+        last_update_block_height:
           format: uint64
           minimum: 0
           type:
           - integer
           - 'null'
       required:
-      - balance
-      - locked
-      - storage_bytes
+      - contract_id
+      - last_update_block_height
       type: object

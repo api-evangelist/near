@@ -28,114 +28,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    ErrorWrapper_for_RpcLightClientNextBlockError:
-      oneOf:
-      - properties:
-          cause:
-            $ref: '#/components/schemas/RpcRequestValidationErrorKind'
-          name:
-            enum:
-            - REQUEST_VALIDATION_ERROR
-            type: string
-        required:
-        - name
-        - cause
-        type: object
-      - properties:
-          cause:
-            $ref: '#/components/schemas/RpcLightClientNextBlockError'
-          name:
-            enum:
-            - HANDLER_ERROR
-            type: string
-        required:
-        - name
-        - cause
-        type: object
-      - properties:
-          cause:
-            $ref: '#/components/schemas/InternalError'
-          name:
-            enum:
-            - INTERNAL_ERROR
-            type: string
-        required:
-        - name
-        - cause
-        type: object
-    RpcLightClientNextBlockResponse:
-      description: A state for the current head of a light client. More info [here](https://nomicon.io/ChainSpec/LightClient).
-      properties:
-        approvals_after_next:
-          items:
-            anyOf:
-            - $ref: '#/components/schemas/Signature'
-            - enum:
-              - null
-          type: array
-        inner_lite:
-          allOf:
-          - $ref: '#/components/schemas/BlockHeaderInnerLiteView'
-          description: "Inner part of the block header that gets hashed, split into two parts, one that is sent\n   to light clients, and the rest"
-        inner_rest_hash:
-          $ref: '#/components/schemas/CryptoHash'
-        next_block_inner_hash:
-          $ref: '#/components/schemas/CryptoHash'
-        next_bps:
-          items:
-            $ref: '#/components/schemas/ValidatorStakeView'
-          type:
-          - array
-          - 'null'
-        prev_block_hash:
-          $ref: '#/components/schemas/CryptoHash'
-      type: object
-    RpcLightClientNextBlockRequest:
-      properties:
-        last_block_hash:
-          $ref: '#/components/schemas/CryptoHash'
-      required:
-      - last_block_hash
-      title: RpcLightClientNextBlockRequest
-      type: object
-    EpochId:
-      allOf:
-      - $ref: '#/components/schemas/CryptoHash'
-      description: 'Epoch identifier -- wrapped hash, to make it easier to distinguish.
-
-        EpochId of epoch T is the hash of last block in T-2
-
-        EpochId of first two epochs is 0'
-    AccountId:
-      $schema: https://json-schema.org/draft/2020-12/schema
-      description: 'NEAR Account Identifier.
-
-
-        This is a unique, syntactically valid, human-readable account identifier on the NEAR network.
-
-
-        [See the crate-level docs for information about validation.](index.html#account-id-rules)
-
-
-        Also see [Error kind precedence](AccountId#error-kind-precedence).
-
-
-        ## Examples
-
-
-        ```
-
-        use near_account_id::AccountId;
-
-
-        let alice: AccountId = "alice.near".parse().unwrap();
-
-
-        assert!("ƒelicia.near".parse::<AccountId>().is_err()); // (ƒ is not f)
-
-        ```'
-      title: AccountId
-      type: string
     BlockHeaderInnerLiteView:
       description: A part of a state for the current head of a light client. More info [here](https://nomicon.io/ChainSpec/LightClient).
       properties:
@@ -181,100 +73,8 @@ components:
       - next_bp_hash
       - block_merkle_root
       type: object
-    InternalError:
-      oneOf:
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
-          name:
-            enum:
-            - INTERNAL_ERROR
-            type: string
-        required:
-        - name
-        - info
-        type: object
-    JsonRpcRequest_for_next_light_client_block:
-      properties:
-        id:
-          type: string
-        jsonrpc:
-          type: string
-        method:
-          enum:
-          - next_light_client_block
-          type: string
-        params:
-          $ref: '#/components/schemas/RpcLightClientNextBlockRequest'
-      required:
-      - jsonrpc
-      - id
-      - params
-      - method
-      title: JsonRpcRequest_for_next_light_client_block
-      type: object
-    JsonRpcResponse_for_RpcLightClientNextBlockResponse_and_RpcLightClientNextBlockError:
-      oneOf:
-      - properties:
-          result:
-            $ref: '#/components/schemas/RpcLightClientNextBlockResponse'
-        required:
-        - result
-        type: object
-      - properties:
-          error:
-            $ref: '#/components/schemas/ErrorWrapper_for_RpcLightClientNextBlockError'
-        required:
-        - error
-        type: object
-      properties:
-        id:
-          type: string
-        jsonrpc:
-          type: string
-      required:
-      - jsonrpc
-      - id
-      title: JsonRpcResponse_for_RpcLightClientNextBlockResponse_and_RpcLightClientNextBlockError
-      type: object
-    ValidatorStakeViewV1:
-      properties:
-        account_id:
-          $ref: '#/components/schemas/AccountId'
-        public_key:
-          $ref: '#/components/schemas/PublicKey'
-        stake:
-          $ref: '#/components/schemas/NearToken'
-      required:
-      - account_id
-      - public_key
-      - stake
-      type: object
-    NearToken:
-      type: string
-    Signature:
-      type: string
     PublicKey:
       type: string
-    CryptoHash:
-      type: string
-    ValidatorStakeView:
-      oneOf:
-      - allOf:
-        - $ref: '#/components/schemas/ValidatorStakeViewV1'
-        properties:
-          validator_stake_struct_version:
-            enum:
-            - V1
-            type: string
-        required:
-        - validator_stake_struct_version
-        type: object
     RpcRequestValidationErrorKind:
       oneOf:
       - properties:
@@ -309,6 +109,27 @@ components:
         - name
         - info
         type: object
+    ValidatorStakeViewV1:
+      properties:
+        account_id:
+          $ref: '#/components/schemas/AccountId'
+        public_key:
+          $ref: '#/components/schemas/PublicKey'
+        stake:
+          $ref: '#/components/schemas/NearToken'
+      required:
+      - account_id
+      - public_key
+      - stake
+      type: object
+    EpochId:
+      allOf:
+      - $ref: '#/components/schemas/CryptoHash'
+      description: 'Epoch identifier -- wrapped hash, to make it easier to distinguish.
+
+        EpochId of epoch T is the hash of last block in T-2
+
+        EpochId of first two epochs is 0'
     RpcLightClientNextBlockError:
       oneOf:
       - properties:
@@ -354,3 +175,182 @@ components:
         - name
         - info
         type: object
+    ValidatorStakeView:
+      oneOf:
+      - allOf:
+        - $ref: '#/components/schemas/ValidatorStakeViewV1'
+        properties:
+          validator_stake_struct_version:
+            enum:
+            - V1
+            type: string
+        required:
+        - validator_stake_struct_version
+        type: object
+    RpcLightClientNextBlockResponse:
+      description: A state for the current head of a light client. More info [here](https://nomicon.io/ChainSpec/LightClient).
+      properties:
+        approvals_after_next:
+          items:
+            anyOf:
+            - $ref: '#/components/schemas/Signature'
+            - enum:
+              - null
+          type: array
+        inner_lite:
+          allOf:
+          - $ref: '#/components/schemas/BlockHeaderInnerLiteView'
+          description: "Inner part of the block header that gets hashed, split into two parts, one that is sent\n   to light clients, and the rest"
+        inner_rest_hash:
+          $ref: '#/components/schemas/CryptoHash'
+        next_block_inner_hash:
+          $ref: '#/components/schemas/CryptoHash'
+        next_bps:
+          items:
+            $ref: '#/components/schemas/ValidatorStakeView'
+          type:
+          - array
+          - 'null'
+        prev_block_hash:
+          $ref: '#/components/schemas/CryptoHash'
+      type: object
+    JsonRpcRequest_for_next_light_client_block:
+      properties:
+        id:
+          type: string
+        jsonrpc:
+          type: string
+        method:
+          enum:
+          - next_light_client_block
+          type: string
+        params:
+          $ref: '#/components/schemas/RpcLightClientNextBlockRequest'
+      required:
+      - jsonrpc
+      - id
+      - params
+      - method
+      title: JsonRpcRequest_for_next_light_client_block
+      type: object
+    ErrorWrapper_for_RpcLightClientNextBlockError:
+      oneOf:
+      - properties:
+          cause:
+            $ref: '#/components/schemas/RpcRequestValidationErrorKind'
+          name:
+            enum:
+            - REQUEST_VALIDATION_ERROR
+            type: string
+        required:
+        - name
+        - cause
+        type: object
+      - properties:
+          cause:
+            $ref: '#/components/schemas/RpcLightClientNextBlockError'
+          name:
+            enum:
+            - HANDLER_ERROR
+            type: string
+        required:
+        - name
+        - cause
+        type: object
+      - properties:
+          cause:
+            $ref: '#/components/schemas/InternalError'
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
+        required:
+        - name
+        - cause
+        type: object
+    CryptoHash:
+      type: string
+    InternalError:
+      oneOf:
+      - properties:
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
+        required:
+        - name
+        - info
+        type: object
+    Signature:
+      type: string
+    JsonRpcResponse_for_RpcLightClientNextBlockResponse_and_RpcLightClientNextBlockError:
+      oneOf:
+      - properties:
+          result:
+            $ref: '#/components/schemas/RpcLightClientNextBlockResponse'
+        required:
+        - result
+        type: object
+      - properties:
+          error:
+            $ref: '#/components/schemas/ErrorWrapper_for_RpcLightClientNextBlockError'
+        required:
+        - error
+        type: object
+      properties:
+        id:
+          type: string
+        jsonrpc:
+          type: string
+      required:
+      - jsonrpc
+      - id
+      title: JsonRpcResponse_for_RpcLightClientNextBlockResponse_and_RpcLightClientNextBlockError
+      type: object
+    NearToken:
+      type: string
+    AccountId:
+      $schema: https://json-schema.org/draft/2020-12/schema
+      description: 'NEAR Account Identifier.
+
+
+        This is a unique, syntactically valid, human-readable account identifier on the NEAR network.
+
+
+        [See the crate-level docs for information about validation.](index.html#account-id-rules)
+
+
+        Also see [Error kind precedence](AccountId#error-kind-precedence).
+
+
+        ## Examples
+
+
+        ```
+
+        use near_account_id::AccountId;
+
+
+        let alice: AccountId = "alice.near".parse().unwrap();
+
+
+        assert!("ƒelicia.near".parse::<AccountId>().is_err()); // (ƒ is not f)
+
+        ```'
+      title: AccountId
+      type: string
+    RpcLightClientNextBlockRequest:
+      properties:
+        last_block_hash:
+          $ref: '#/components/schemas/CryptoHash'
+      required:
+      - last_block_hash
+      title: RpcLightClientNextBlockRequest
+      type: object

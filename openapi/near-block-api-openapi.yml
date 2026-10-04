@@ -28,6 +28,114 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    BandwidthRequestBitmap:
+      description: 'Bitmap which describes which values from the predefined list are being requested.
+
+        The nth bit is set to 1 when the nth value from the list is being requested.'
+      properties:
+        data:
+          items:
+            format: uint8
+            maximum: 255
+            minimum: 0
+            type: integer
+          maxItems: 5
+          minItems: 5
+          type: array
+      required:
+      - data
+      type: object
+    ShardId:
+      description: 'The shard identifier. It may be an arbitrary number - it does not need to be
+
+        a number in the range 0..NUM_SHARDS. The shard ids do not need to be
+
+        sequential or contiguous.
+
+
+        The shard id is wrapped in a new type to prevent the old pattern of using
+
+        indices in range 0..NUM_SHARDS and casting to ShardId. Once the transition
+
+        if fully complete it potentially may be simplified to a regular type alias.'
+      format: uint64
+      minimum: 0
+      type: integer
+    BlockId:
+      anyOf:
+      - format: uint64
+        minimum: 0
+        title: block_height
+        type: integer
+      - $ref: '#/components/schemas/CryptoHash'
+    ValidatorStakeView:
+      oneOf:
+      - allOf:
+        - $ref: '#/components/schemas/ValidatorStakeViewV1'
+        properties:
+          validator_stake_struct_version:
+            enum:
+            - V1
+            type: string
+        required:
+        - validator_stake_struct_version
+        type: object
+    Finality:
+      description: Different types of finality.
+      enum:
+      - optimistic
+      - near-final
+      - final
+      type: string
+    CryptoHash:
+      type: string
+    AccountId:
+      $schema: https://json-schema.org/draft/2020-12/schema
+      description: 'NEAR Account Identifier.
+
+
+        This is a unique, syntactically valid, human-readable account identifier on the NEAR network.
+
+
+        [See the crate-level docs for information about validation.](index.html#account-id-rules)
+
+
+        Also see [Error kind precedence](AccountId#error-kind-precedence).
+
+
+        ## Examples
+
+
+        ```
+
+        use near_account_id::AccountId;
+
+
+        let alice: AccountId = "alice.near".parse().unwrap();
+
+
+        assert!("ƒelicia.near".parse::<AccountId>().is_err()); // (ƒ is not f)
+
+        ```'
+      title: AccountId
+      type: string
+    RpcBlockResponse:
+      properties:
+        author:
+          allOf:
+          - $ref: '#/components/schemas/AccountId'
+          description: The AccountId of the author of the Block
+        chunks:
+          items:
+            $ref: '#/components/schemas/ChunkHeaderView'
+          type: array
+        header:
+          $ref: '#/components/schemas/BlockHeaderView'
+      required:
+      - author
+      - header
+      - chunks
+      type: object
     CongestionInfoView:
       description: Stores the congestion level of a shard. More info about congestion [here](https://near.github.io/nearcore/architecture/how/receipt-congestion.html?highlight=congestion#receipt-congestion)
       properties:
@@ -49,59 +157,6 @@ components:
       - buffered_receipts_gas
       - receipt_bytes
       - allowed_shard
-      type: object
-    BandwidthRequest:
-      description: '`BandwidthRequest` describes the size of receipts that a shard would like to send to another shard.
-
-        When a shard wants to send a lot of receipts to another shard, it needs to create a request and wait
-
-        for a bandwidth grant from the bandwidth scheduler.'
-      properties:
-        requested_values_bitmap:
-          allOf:
-          - $ref: '#/components/schemas/BandwidthRequestBitmap'
-          description: Bitmap which describes what values of bandwidth are requested.
-        to_shard:
-          description: Requesting bandwidth to this shard.
-          format: uint16
-          maximum: 65535
-          minimum: 0
-          type: integer
-      required:
-      - to_shard
-      - requested_values_bitmap
-      type: object
-    RpcBlockRequest:
-      oneOf:
-      - properties:
-          block_id:
-            $ref: '#/components/schemas/BlockId'
-        required:
-        - block_id
-        type: object
-      - properties:
-          finality:
-            $ref: '#/components/schemas/Finality'
-        required:
-        - finality
-        type: object
-      - properties:
-          sync_checkpoint:
-            $ref: '#/components/schemas/SyncCheckpoint'
-        required:
-        - sync_checkpoint
-        type: object
-      title: RpcBlockRequest
-      type: object
-    BandwidthRequestsV1:
-      description: Version 1 of [`BandwidthRequest`].
-      properties:
-        requests:
-          items:
-            $ref: '#/components/schemas/BandwidthRequest'
-          type: array
-      required:
-      - requests
       type: object
     TrieSplit:
       description: 'The result of splitting a memtrie into two possibly even parts, according to `memory_usage`
@@ -132,15 +187,132 @@ components:
       - left_memory
       - right_memory
       type: object
-    NearToken:
-      type: string
-    Finality:
-      description: Different types of finality.
-      enum:
-      - optimistic
-      - near-final
-      - final
-      type: string
+    BandwidthRequest:
+      description: '`BandwidthRequest` describes the size of receipts that a shard would like to send to another shard.
+
+        When a shard wants to send a lot of receipts to another shard, it needs to create a request and wait
+
+        for a bandwidth grant from the bandwidth scheduler.'
+      properties:
+        requested_values_bitmap:
+          allOf:
+          - $ref: '#/components/schemas/BandwidthRequestBitmap'
+          description: Bitmap which describes what values of bandwidth are requested.
+        to_shard:
+          description: Requesting bandwidth to this shard.
+          format: uint16
+          maximum: 65535
+          minimum: 0
+          type: integer
+      required:
+      - to_shard
+      - requested_values_bitmap
+      type: object
+    ChunkHeaderView:
+      description: Contains main info about the chunk.
+      properties:
+        balance_burnt:
+          $ref: '#/components/schemas/NearToken'
+        bandwidth_requests:
+          anyOf:
+          - $ref: '#/components/schemas/BandwidthRequests'
+          - enum:
+            - null
+        chunk_hash:
+          $ref: '#/components/schemas/CryptoHash'
+        congestion_info:
+          anyOf:
+          - $ref: '#/components/schemas/CongestionInfoView'
+          - enum:
+            - null
+        encoded_length:
+          format: uint64
+          minimum: 0
+          type: integer
+        encoded_merkle_root:
+          $ref: '#/components/schemas/CryptoHash'
+        gas_limit:
+          $ref: '#/components/schemas/NearGas'
+        gas_used:
+          $ref: '#/components/schemas/NearGas'
+        height_created:
+          format: uint64
+          minimum: 0
+          type: integer
+        height_included:
+          format: uint64
+          minimum: 0
+          type: integer
+        outcome_root:
+          $ref: '#/components/schemas/CryptoHash'
+        outgoing_receipts_root:
+          $ref: '#/components/schemas/CryptoHash'
+        prev_block_hash:
+          $ref: '#/components/schemas/CryptoHash'
+        prev_state_root:
+          $ref: '#/components/schemas/CryptoHash'
+        proposed_split:
+          anyOf:
+          - $ref: '#/components/schemas/TrieSplit'
+          - enum:
+            - null
+          description: 'Proposed trie split for dynamic resharding
+
+            `None`: field missing (`ShardChunkHeaderInnerV4` or earlier)
+
+            `Some(None)`: field present, but not set (`ChunkHeaderInnerV5` or later)
+
+            `Some(Some(split))`: field present and set'
+        rent_paid:
+          allOf:
+          - $ref: '#/components/schemas/NearToken'
+          default: '0'
+          description: 'TODO(2271): deprecated.'
+        shard_id:
+          $ref: '#/components/schemas/ShardId'
+        signature:
+          $ref: '#/components/schemas/Signature'
+        tx_root:
+          $ref: '#/components/schemas/CryptoHash'
+        validator_proposals:
+          items:
+            $ref: '#/components/schemas/ValidatorStakeView'
+          type: array
+        validator_reward:
+          allOf:
+          - $ref: '#/components/schemas/NearToken'
+          default: '0'
+          description: 'TODO(2271): deprecated.'
+      required:
+      - chunk_hash
+      - prev_block_hash
+      - outcome_root
+      - prev_state_root
+      - encoded_merkle_root
+      - encoded_length
+      - height_created
+      - height_included
+      - shard_id
+      - gas_used
+      - gas_limit
+      - balance_burnt
+      - outgoing_receipts_root
+      - tx_root
+      - validator_proposals
+      - signature
+      type: object
+    BandwidthRequests:
+      description: 'A list of shard''s bandwidth requests.
+
+        Describes how much the shard would like to send to other shards.'
+      oneOf:
+      - additionalProperties: false
+        properties:
+          V1:
+            $ref: '#/components/schemas/BandwidthRequestsV1'
+        required:
+        - V1
+        type: object
     RpcRequestValidationErrorKind:
       oneOf:
       - properties:
@@ -170,6 +342,89 @@ components:
           name:
             enum:
             - PARSE_ERROR
+            type: string
+        required:
+        - name
+        - info
+        type: object
+    ValidatorStakeViewV1:
+      properties:
+        account_id:
+          $ref: '#/components/schemas/AccountId'
+        public_key:
+          $ref: '#/components/schemas/PublicKey'
+        stake:
+          $ref: '#/components/schemas/NearToken'
+      required:
+      - account_id
+      - public_key
+      - stake
+      type: object
+    SyncCheckpoint:
+      enum:
+      - genesis
+      - earliest_available
+      type: string
+    Signature:
+      type: string
+    SlashedValidator:
+      properties:
+        account_id:
+          $ref: '#/components/schemas/AccountId'
+        is_double_sign:
+          type: boolean
+      required:
+      - account_id
+      - is_double_sign
+      type: object
+    NearToken:
+      type: string
+    BandwidthRequestsV1:
+      description: Version 1 of [`BandwidthRequest`].
+      properties:
+        requests:
+          items:
+            $ref: '#/components/schemas/BandwidthRequest'
+          type: array
+      required:
+      - requests
+      type: object
+    NearGas:
+      format: uint64
+      minimum: 0
+      type: integer
+    RpcBlockError:
+      oneOf:
+      - properties:
+          info:
+            type: object
+          name:
+            enum:
+            - UNKNOWN_BLOCK
+            type: string
+        required:
+        - name
+        - info
+        type: object
+      - properties:
+          name:
+            enum:
+            - NOT_SYNCED_YET
+            type: string
+        required:
+        - name
+        type: object
+      - properties:
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - INTERNAL_ERROR
             type: string
         required:
         - name
@@ -348,186 +603,8 @@ components:
       - signature
       - latest_protocol_version
       type: object
-    EpochId:
-      allOf:
-      - $ref: '#/components/schemas/CryptoHash'
-      description: 'Epoch identifier -- wrapped hash, to make it easier to distinguish.
-
-        EpochId of epoch T is the hash of last block in T-2
-
-        EpochId of first two epochs is 0'
-    InternalError:
-      oneOf:
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
-          name:
-            enum:
-            - INTERNAL_ERROR
-            type: string
-        required:
-        - name
-        - info
-        type: object
-    RpcBlockError:
-      oneOf:
-      - properties:
-          info:
-            type: object
-          name:
-            enum:
-            - UNKNOWN_BLOCK
-            type: string
-        required:
-        - name
-        - info
-        type: object
-      - properties:
-          name:
-            enum:
-            - NOT_SYNCED_YET
-            type: string
-        required:
-        - name
-        type: object
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
-          name:
-            enum:
-            - INTERNAL_ERROR
-            type: string
-        required:
-        - name
-        - info
-        type: object
-    SpiceChunkEndorsementStats:
-      description: 'Per-validator chunk endorsement stats accumulated over a spice epoch,
-
-        indexed by the current epoch''s validator id. Carried on the last block of
-
-        the epoch (see `BlockHeaderInnerRestV7`) and consumed by reward and kickout.'
-      properties:
-        expected:
-          format: uint32
-          minimum: 0
-          type: integer
-        produced:
-          format: uint32
-          minimum: 0
-          type: integer
-      required:
-      - produced
-      - expected
-      type: object
-    SlashedValidator:
-      properties:
-        account_id:
-          $ref: '#/components/schemas/AccountId'
-        is_double_sign:
-          type: boolean
-      required:
-      - account_id
-      - is_double_sign
-      type: object
-    NearGas:
-      format: uint64
-      minimum: 0
-      type: integer
-    SyncCheckpoint:
-      enum:
-      - genesis
-      - earliest_available
+    PublicKey:
       type: string
-    JsonRpcRequest_for_block:
-      properties:
-        id:
-          type: string
-        jsonrpc:
-          type: string
-        method:
-          enum:
-          - block
-          type: string
-        params:
-          $ref: '#/components/schemas/RpcBlockRequest'
-      required:
-      - jsonrpc
-      - id
-      - params
-      - method
-      title: JsonRpcRequest_for_block
-      type: object
-    CryptoHash:
-      type: string
-    BandwidthRequests:
-      description: 'A list of shard''s bandwidth requests.
-
-        Describes how much the shard would like to send to other shards.'
-      oneOf:
-      - additionalProperties: false
-        properties:
-          V1:
-            $ref: '#/components/schemas/BandwidthRequestsV1'
-        required:
-        - V1
-        type: object
-    AccountId:
-      $schema: https://json-schema.org/draft/2020-12/schema
-      description: 'NEAR Account Identifier.
-
-
-        This is a unique, syntactically valid, human-readable account identifier on the NEAR network.
-
-
-        [See the crate-level docs for information about validation.](index.html#account-id-rules)
-
-
-        Also see [Error kind precedence](AccountId#error-kind-precedence).
-
-
-        ## Examples
-
-
-        ```
-
-        use near_account_id::AccountId;
-
-
-        let alice: AccountId = "alice.near".parse().unwrap();
-
-
-        assert!("ƒelicia.near".parse::<AccountId>().is_err()); // (ƒ is not f)
-
-        ```'
-      title: AccountId
-      type: string
-    ShardId:
-      description: 'The shard identifier. It may be an arbitrary number - it does not need to be
-
-        a number in the range 0..NUM_SHARDS. The shard ids do not need to be
-
-        sequential or contiguous.
-
-
-        The shard id is wrapped in a new type to prevent the old pattern of using
-
-        indices in range 0..NUM_SHARDS and casting to ShardId. Once the transition
-
-        if fully complete it potentially may be simplified to a regular type alias.'
-      format: uint64
-      minimum: 0
-      type: integer
     JsonRpcResponse_for_RpcBlockResponse_and_RpcBlockError:
       oneOf:
       - properties:
@@ -552,17 +629,14 @@ components:
       - id
       title: JsonRpcResponse_for_RpcBlockResponse_and_RpcBlockError
       type: object
-    BlockId:
-      anyOf:
-      - format: uint64
-        minimum: 0
-        title: block_height
-        type: integer
+    EpochId:
+      allOf:
       - $ref: '#/components/schemas/CryptoHash'
-    Signature:
-      type: string
-    PublicKey:
-      type: string
+      description: 'Epoch identifier -- wrapped hash, to make it easier to distinguish.
+
+        EpochId of epoch T is the hash of last block in T-2
+
+        EpochId of first two epochs is 0'
     ErrorWrapper_for_RpcBlockError:
       oneOf:
       - properties:
@@ -598,155 +672,81 @@ components:
         - name
         - cause
         type: object
-    ChunkHeaderView:
-      description: Contains main info about the chunk.
-      properties:
-        balance_burnt:
-          $ref: '#/components/schemas/NearToken'
-        bandwidth_requests:
-          anyOf:
-          - $ref: '#/components/schemas/BandwidthRequests'
-          - enum:
-            - null
-        chunk_hash:
-          $ref: '#/components/schemas/CryptoHash'
-        congestion_info:
-          anyOf:
-          - $ref: '#/components/schemas/CongestionInfoView'
-          - enum:
-            - null
-        encoded_length:
-          format: uint64
-          minimum: 0
-          type: integer
-        encoded_merkle_root:
-          $ref: '#/components/schemas/CryptoHash'
-        gas_limit:
-          $ref: '#/components/schemas/NearGas'
-        gas_used:
-          $ref: '#/components/schemas/NearGas'
-        height_created:
-          format: uint64
-          minimum: 0
-          type: integer
-        height_included:
-          format: uint64
-          minimum: 0
-          type: integer
-        outcome_root:
-          $ref: '#/components/schemas/CryptoHash'
-        outgoing_receipts_root:
-          $ref: '#/components/schemas/CryptoHash'
-        prev_block_hash:
-          $ref: '#/components/schemas/CryptoHash'
-        prev_state_root:
-          $ref: '#/components/schemas/CryptoHash'
-        proposed_split:
-          anyOf:
-          - $ref: '#/components/schemas/TrieSplit'
-          - enum:
-            - null
-          description: 'Proposed trie split for dynamic resharding
-
-            `None`: field missing (`ShardChunkHeaderInnerV4` or earlier)
-
-            `Some(None)`: field present, but not set (`ChunkHeaderInnerV5` or later)
-
-            `Some(Some(split))`: field present and set'
-        rent_paid:
-          allOf:
-          - $ref: '#/components/schemas/NearToken'
-          default: '0'
-          description: 'TODO(2271): deprecated.'
-        shard_id:
-          $ref: '#/components/schemas/ShardId'
-        signature:
-          $ref: '#/components/schemas/Signature'
-        tx_root:
-          $ref: '#/components/schemas/CryptoHash'
-        validator_proposals:
-          items:
-            $ref: '#/components/schemas/ValidatorStakeView'
-          type: array
-        validator_reward:
-          allOf:
-          - $ref: '#/components/schemas/NearToken'
-          default: '0'
-          description: 'TODO(2271): deprecated.'
-      required:
-      - chunk_hash
-      - prev_block_hash
-      - outcome_root
-      - prev_state_root
-      - encoded_merkle_root
-      - encoded_length
-      - height_created
-      - height_included
-      - shard_id
-      - gas_used
-      - gas_limit
-      - balance_burnt
-      - outgoing_receipts_root
-      - tx_root
-      - validator_proposals
-      - signature
-      type: object
-    BandwidthRequestBitmap:
-      description: 'Bitmap which describes which values from the predefined list are being requested.
-
-        The nth bit is set to 1 when the nth value from the list is being requested.'
-      properties:
-        data:
-          items:
-            format: uint8
-            maximum: 255
-            minimum: 0
-            type: integer
-          maxItems: 5
-          minItems: 5
-          type: array
-      required:
-      - data
-      type: object
-    ValidatorStakeViewV1:
-      properties:
-        account_id:
-          $ref: '#/components/schemas/AccountId'
-        public_key:
-          $ref: '#/components/schemas/PublicKey'
-        stake:
-          $ref: '#/components/schemas/NearToken'
-      required:
-      - account_id
-      - public_key
-      - stake
-      type: object
-    RpcBlockResponse:
-      properties:
-        author:
-          allOf:
-          - $ref: '#/components/schemas/AccountId'
-          description: The AccountId of the author of the Block
-        chunks:
-          items:
-            $ref: '#/components/schemas/ChunkHeaderView'
-          type: array
-        header:
-          $ref: '#/components/schemas/BlockHeaderView'
-      required:
-      - author
-      - header
-      - chunks
-      type: object
-    ValidatorStakeView:
+    InternalError:
       oneOf:
-      - allOf:
-        - $ref: '#/components/schemas/ValidatorStakeViewV1'
-        properties:
-          validator_stake_struct_version:
+      - properties:
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
             enum:
-            - V1
+            - INTERNAL_ERROR
             type: string
         required:
-        - validator_stake_struct_version
+        - name
+        - info
         type: object
+    JsonRpcRequest_for_block:
+      properties:
+        id:
+          type: string
+        jsonrpc:
+          type: string
+        method:
+          enum:
+          - block
+          type: string
+        params:
+          $ref: '#/components/schemas/RpcBlockRequest'
+      required:
+      - jsonrpc
+      - id
+      - params
+      - method
+      title: JsonRpcRequest_for_block
+      type: object
+    RpcBlockRequest:
+      oneOf:
+      - properties:
+          block_id:
+            $ref: '#/components/schemas/BlockId'
+        required:
+        - block_id
+        type: object
+      - properties:
+          finality:
+            $ref: '#/components/schemas/Finality'
+        required:
+        - finality
+        type: object
+      - properties:
+          sync_checkpoint:
+            $ref: '#/components/schemas/SyncCheckpoint'
+        required:
+        - sync_checkpoint
+        type: object
+      title: RpcBlockRequest
+      type: object
+    SpiceChunkEndorsementStats:
+      description: 'Per-validator chunk endorsement stats accumulated over a spice epoch,
+
+        indexed by the current epoch''s validator id. Carried on the last block of
+
+        the epoch (see `BlockHeaderInnerRestV7`) and consumed by reward and kickout.'
+      properties:
+        expected:
+          format: uint32
+          minimum: 0
+          type: integer
+        produced:
+          format: uint32
+          minimum: 0
+          type: integer
+      required:
+      - produced
+      - expected
+      type: object
