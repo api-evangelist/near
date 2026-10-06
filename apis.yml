@@ -39,7 +39,7 @@ tags:
 - Crypto
 url: https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/apis.yml
 created: '2026-06-13'
-modified: '2026-09-16'
+modified: '2026-10-06'
 specificationVersion: '0.23'
 apis:
 - aid: near:near-accounts-api
@@ -1878,6 +1878,8 @@ maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 common:
+- url: https://www.near.org/blog
+  type: Blog
 - type: Website
   url: https://near.org
 - type: AgenticAccess
