@@ -52,6 +52,15 @@ components:
       - id
       title: JsonRpcResponse_for_RpcGasPriceResponse_and_RpcGasPriceError
       type: object
+    RpcGasPriceRequest:
+      properties:
+        block_id:
+          anyOf:
+          - $ref: '#/components/schemas/BlockId'
+          - enum:
+            - null
+      title: RpcGasPriceRequest
+      type: object
     RpcRequestValidationErrorKind:
       oneOf:
       - properties:
@@ -86,22 +95,8 @@ components:
         - name
         - info
         type: object
-    BlockId:
-      anyOf:
-      - format: uint64
-        minimum: 0
-        title: block_height
-        type: integer
-      - $ref: '#/components/schemas/CryptoHash'
-    RpcGasPriceRequest:
-      properties:
-        block_id:
-          anyOf:
-          - $ref: '#/components/schemas/BlockId'
-          - enum:
-            - null
-      title: RpcGasPriceRequest
-      type: object
+    NearToken:
+      type: string
     ErrorWrapper_for_RpcGasPriceError:
       oneOf:
       - properties:
@@ -137,6 +132,13 @@ components:
         - name
         - cause
         type: object
+    RpcGasPriceResponse:
+      properties:
+        gas_price:
+          $ref: '#/components/schemas/NearToken'
+      required:
+      - gas_price
+      type: object
     JsonRpcRequest_for_gas_price:
       properties:
         id:
@@ -156,6 +158,15 @@ components:
       - method
       title: JsonRpcRequest_for_gas_price
       type: object
+    BlockId:
+      anyOf:
+      - format: uint64
+        minimum: 0
+        title: block_height
+        type: integer
+      - $ref: '#/components/schemas/CryptoHash'
+    CryptoHash:
+      type: string
     InternalError:
       oneOf:
       - properties:
@@ -174,17 +185,6 @@ components:
         - name
         - info
         type: object
-    CryptoHash:
-      type: string
-    NearToken:
-      type: string
-    RpcGasPriceResponse:
-      properties:
-        gas_price:
-          $ref: '#/components/schemas/NearToken'
-      required:
-      - gas_price
-      type: object
     RpcGasPriceError:
       oneOf:
       - properties:

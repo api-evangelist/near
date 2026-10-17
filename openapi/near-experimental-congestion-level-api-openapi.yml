@@ -28,13 +28,66 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    RpcCongestionLevelResponse:
+    JsonRpcResponse_for_RpcCongestionLevelResponse_and_RpcChunkError:
+      oneOf:
+      - properties:
+          result:
+            $ref: '#/components/schemas/RpcCongestionLevelResponse'
+        required:
+        - result
+        type: object
+      - properties:
+          error:
+            $ref: '#/components/schemas/ErrorWrapper_for_RpcChunkError'
+        required:
+        - error
+        type: object
       properties:
-        congestion_level:
-          format: double
-          type: number
+        id:
+          type: string
+        jsonrpc:
+          type: string
       required:
-      - congestion_level
+      - jsonrpc
+      - id
+      title: JsonRpcResponse_for_RpcCongestionLevelResponse_and_RpcChunkError
+      type: object
+    InternalError:
+      oneOf:
+      - properties:
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
+        required:
+        - name
+        - info
+        type: object
+    JsonRpcRequest_for_EXPERIMENTAL_congestion_level:
+      properties:
+        id:
+          type: string
+        jsonrpc:
+          type: string
+        method:
+          enum:
+          - EXPERIMENTAL_congestion_level
+          type: string
+        params:
+          $ref: '#/components/schemas/RpcCongestionLevelRequest'
+      required:
+      - jsonrpc
+      - id
+      - params
+      - method
+      title: JsonRpcRequest_for_EXPERIMENTAL_congestion_level
       type: object
     ShardId:
       description: 'The shard identifier. It may be an arbitrary number - it does not need to be
@@ -52,6 +105,104 @@ components:
       format: uint64
       minimum: 0
       type: integer
+    RpcRequestValidationErrorKind:
+      oneOf:
+      - properties:
+          info:
+            properties:
+              method_name:
+                type: string
+            required:
+            - method_name
+            type: object
+          name:
+            enum:
+            - METHOD_NOT_FOUND
+            type: string
+        required:
+        - name
+        - info
+        type: object
+      - properties:
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - PARSE_ERROR
+            type: string
+        required:
+        - name
+        - info
+        type: object
+    RpcCongestionLevelResponse:
+      properties:
+        congestion_level:
+          format: double
+          type: number
+      required:
+      - congestion_level
+      type: object
+    RpcCongestionLevelRequest:
+      anyOf:
+      - properties:
+          block_id:
+            $ref: '#/components/schemas/BlockId'
+          shard_id:
+            $ref: '#/components/schemas/ShardId'
+        required:
+        - block_id
+        - shard_id
+        title: block_shard_id
+        type: object
+      - properties:
+          chunk_id:
+            $ref: '#/components/schemas/CryptoHash'
+        required:
+        - chunk_id
+        title: chunk_hash
+        type: object
+      title: RpcCongestionLevelRequest
+      type: object
+    ErrorWrapper_for_RpcChunkError:
+      oneOf:
+      - properties:
+          cause:
+            $ref: '#/components/schemas/RpcRequestValidationErrorKind'
+          name:
+            enum:
+            - REQUEST_VALIDATION_ERROR
+            type: string
+        required:
+        - name
+        - cause
+        type: object
+      - properties:
+          cause:
+            $ref: '#/components/schemas/RpcChunkError'
+          name:
+            enum:
+            - HANDLER_ERROR
+            type: string
+        required:
+        - name
+        - cause
+        type: object
+      - properties:
+          cause:
+            $ref: '#/components/schemas/InternalError'
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
+        required:
+        - name
+        - cause
+        type: object
     RpcChunkError:
       oneOf:
       - properties:
@@ -113,27 +264,8 @@ components:
         - name
         - info
         type: object
-    RpcCongestionLevelRequest:
-      anyOf:
-      - properties:
-          block_id:
-            $ref: '#/components/schemas/BlockId'
-          shard_id:
-            $ref: '#/components/schemas/ShardId'
-        required:
-        - block_id
-        - shard_id
-        title: block_shard_id
-        type: object
-      - properties:
-          chunk_id:
-            $ref: '#/components/schemas/CryptoHash'
-        required:
-        - chunk_id
-        title: chunk_hash
-        type: object
-      title: RpcCongestionLevelRequest
-      type: object
+    CryptoHash:
+      type: string
     BlockId:
       anyOf:
       - format: uint64
@@ -141,137 +273,5 @@ components:
         title: block_height
         type: integer
       - $ref: '#/components/schemas/CryptoHash'
-    RpcRequestValidationErrorKind:
-      oneOf:
-      - properties:
-          info:
-            properties:
-              method_name:
-                type: string
-            required:
-            - method_name
-            type: object
-          name:
-            enum:
-            - METHOD_NOT_FOUND
-            type: string
-        required:
-        - name
-        - info
-        type: object
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
-          name:
-            enum:
-            - PARSE_ERROR
-            type: string
-        required:
-        - name
-        - info
-        type: object
-    JsonRpcRequest_for_EXPERIMENTAL_congestion_level:
-      properties:
-        id:
-          type: string
-        jsonrpc:
-          type: string
-        method:
-          enum:
-          - EXPERIMENTAL_congestion_level
-          type: string
-        params:
-          $ref: '#/components/schemas/RpcCongestionLevelRequest'
-      required:
-      - jsonrpc
-      - id
-      - params
-      - method
-      title: JsonRpcRequest_for_EXPERIMENTAL_congestion_level
-      type: object
-    JsonRpcResponse_for_RpcCongestionLevelResponse_and_RpcChunkError:
-      oneOf:
-      - properties:
-          result:
-            $ref: '#/components/schemas/RpcCongestionLevelResponse'
-        required:
-        - result
-        type: object
-      - properties:
-          error:
-            $ref: '#/components/schemas/ErrorWrapper_for_RpcChunkError'
-        required:
-        - error
-        type: object
-      properties:
-        id:
-          type: string
-        jsonrpc:
-          type: string
-      required:
-      - jsonrpc
-      - id
-      title: JsonRpcResponse_for_RpcCongestionLevelResponse_and_RpcChunkError
-      type: object
-    ErrorWrapper_for_RpcChunkError:
-      oneOf:
-      - properties:
-          cause:
-            $ref: '#/components/schemas/RpcRequestValidationErrorKind'
-          name:
-            enum:
-            - REQUEST_VALIDATION_ERROR
-            type: string
-        required:
-        - name
-        - cause
-        type: object
-      - properties:
-          cause:
-            $ref: '#/components/schemas/RpcChunkError'
-          name:
-            enum:
-            - HANDLER_ERROR
-            type: string
-        required:
-        - name
-        - cause
-        type: object
-      - properties:
-          cause:
-            $ref: '#/components/schemas/InternalError'
-          name:
-            enum:
-            - INTERNAL_ERROR
-            type: string
-        required:
-        - name
-        - cause
-        type: object
     ChunkHash:
       $ref: '#/components/schemas/CryptoHash'
-    CryptoHash:
-      type: string
-    InternalError:
-      oneOf:
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
-          name:
-            enum:
-            - INTERNAL_ERROR
-            type: string
-        required:
-        - name
-        - info
-        type: object

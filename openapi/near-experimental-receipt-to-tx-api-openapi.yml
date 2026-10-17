@@ -28,22 +28,16 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    ShardId:
-      description: 'The shard identifier. It may be an arbitrary number - it does not need to be
-
-        a number in the range 0..NUM_SHARDS. The shard ids do not need to be
-
-        sequential or contiguous.
-
-
-        The shard id is wrapped in a new type to prevent the old pattern of using
-
-        indices in range 0..NUM_SHARDS and casting to ShardId. Once the transition
-
-        if fully complete it potentially may be simplified to a regular type alias.'
-      format: uint64
-      minimum: 0
-      type: integer
+    RpcReceiptToTxResponse:
+      properties:
+        sender_account_id:
+          $ref: '#/components/schemas/AccountId'
+        transaction_hash:
+          $ref: '#/components/schemas/CryptoHash'
+      required:
+      - transaction_hash
+      - sender_account_id
+      type: object
     RpcReceiptToTxError:
       oneOf:
       - properties:
@@ -185,6 +179,65 @@ components:
         - name
         - info
         type: object
+    JsonRpcResponse_for_RpcReceiptToTxResponse_and_RpcReceiptToTxError:
+      oneOf:
+      - properties:
+          result:
+            $ref: '#/components/schemas/RpcReceiptToTxResponse'
+        required:
+        - result
+        type: object
+      - properties:
+          error:
+            $ref: '#/components/schemas/ErrorWrapper_for_RpcReceiptToTxError'
+        required:
+        - error
+        type: object
+      properties:
+        id:
+          type: string
+        jsonrpc:
+          type: string
+      required:
+      - jsonrpc
+      - id
+      title: JsonRpcResponse_for_RpcReceiptToTxResponse_and_RpcReceiptToTxError
+      type: object
+    JsonRpcRequest_for_EXPERIMENTAL_receipt_to_tx:
+      properties:
+        id:
+          type: string
+        jsonrpc:
+          type: string
+        method:
+          enum:
+          - EXPERIMENTAL_receipt_to_tx
+          type: string
+        params:
+          $ref: '#/components/schemas/RpcReceiptToTxRequest'
+      required:
+      - jsonrpc
+      - id
+      - params
+      - method
+      title: JsonRpcRequest_for_EXPERIMENTAL_receipt_to_tx
+      type: object
+    ShardId:
+      description: 'The shard identifier. It may be an arbitrary number - it does not need to be
+
+        a number in the range 0..NUM_SHARDS. The shard ids do not need to be
+
+        sequential or contiguous.
+
+
+        The shard id is wrapped in a new type to prevent the old pattern of using
+
+        indices in range 0..NUM_SHARDS and casting to ShardId. Once the transition
+
+        if fully complete it potentially may be simplified to a regular type alias.'
+      format: uint64
+      minimum: 0
+      type: integer
     RpcRequestValidationErrorKind:
       oneOf:
       - properties:
@@ -298,43 +351,6 @@ components:
         type: object
     CryptoHash:
       type: string
-    InternalError:
-      oneOf:
-      - properties:
-          info:
-            properties:
-              error_message:
-                type: string
-            required:
-            - error_message
-            type: object
-          name:
-            enum:
-            - INTERNAL_ERROR
-            type: string
-        required:
-        - name
-        - info
-        type: object
-    JsonRpcRequest_for_EXPERIMENTAL_receipt_to_tx:
-      properties:
-        id:
-          type: string
-        jsonrpc:
-          type: string
-        method:
-          enum:
-          - EXPERIMENTAL_receipt_to_tx
-          type: string
-        params:
-          $ref: '#/components/schemas/RpcReceiptToTxRequest'
-      required:
-      - jsonrpc
-      - id
-      - params
-      - method
-      title: JsonRpcRequest_for_EXPERIMENTAL_receipt_to_tx
-      type: object
     AccountId:
       $schema: https://json-schema.org/draft/2020-12/schema
       description: 'NEAR Account Identifier.
@@ -365,37 +381,21 @@ components:
         ```'
       title: AccountId
       type: string
-    RpcReceiptToTxResponse:
-      properties:
-        sender_account_id:
-          $ref: '#/components/schemas/AccountId'
-        transaction_hash:
-          $ref: '#/components/schemas/CryptoHash'
-      required:
-      - transaction_hash
-      - sender_account_id
-      type: object
-    JsonRpcResponse_for_RpcReceiptToTxResponse_and_RpcReceiptToTxError:
+    InternalError:
       oneOf:
       - properties:
-          result:
-            $ref: '#/components/schemas/RpcReceiptToTxResponse'
+          info:
+            properties:
+              error_message:
+                type: string
+            required:
+            - error_message
+            type: object
+          name:
+            enum:
+            - INTERNAL_ERROR
+            type: string
         required:
-        - result
+        - name
+        - info
         type: object
-      - properties:
-          error:
-            $ref: '#/components/schemas/ErrorWrapper_for_RpcReceiptToTxError'
-        required:
-        - error
-        type: object
-      properties:
-        id:
-          type: string
-        jsonrpc:
-          type: string
-      required:
-      - jsonrpc
-      - id
-      title: JsonRpcResponse_for_RpcReceiptToTxResponse_and_RpcReceiptToTxError
-      type: object

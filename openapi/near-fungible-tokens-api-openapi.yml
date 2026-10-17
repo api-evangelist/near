@@ -155,18 +155,18 @@ paths:
       x-fastnear-title: FastNEAR API - V1 FT Top Holders
 components:
   schemas:
-    V0ContractsResponse:
+    V1FtResponse:
       additionalProperties: false
       properties:
         account_id:
           type: string
-        contract_ids:
+        tokens:
           items:
-            type: string
+            $ref: '#/components/schemas/TokenRow'
           type: array
       required:
       - account_id
-      - contract_ids
+      - tokens
       type: object
     AccountBalanceRow:
       additionalProperties: false
@@ -180,19 +180,6 @@ components:
       required:
       - account_id
       - balance
-      type: object
-    V1FtResponse:
-      additionalProperties: false
-      properties:
-        account_id:
-          type: string
-        tokens:
-          items:
-            $ref: '#/components/schemas/TokenRow'
-          type: array
-      required:
-      - account_id
-      - tokens
       type: object
     TokenRow:
       additionalProperties: false
@@ -213,6 +200,19 @@ components:
       - contract_id
       - last_update_block_height
       - balance
+      type: object
+    V0ContractsResponse:
+      additionalProperties: false
+      properties:
+        account_id:
+          type: string
+        contract_ids:
+          items:
+            type: string
+          type: array
+      required:
+      - account_id
+      - contract_ids
       type: object
     TokenAccountsResponse:
       additionalProperties: false
