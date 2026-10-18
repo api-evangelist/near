@@ -36,6 +36,14 @@ tags:
 - NFT
 - Tokens
 - Staking
+- Cryptocurrency
+tags_raw:
+- Blockchain
+- Web3
+- NEAR
+- NFT
+- Tokens
+- Staking
 - Crypto
 url: https://raw.githubusercontent.com/api-evangelist/near/refs/heads/main/apis.yml
 created: '2026-06-13'
@@ -1600,9 +1608,10 @@ apis:
   humanURL: https://docs.near.org/api/rpc/introduction
   baseURL: https://rpc.mainnet.near.org
   tags:
-  - Non-Fungible Tokens
+  - NFT
   tags_raw:
   - non-fungible-tokens
+  - Non-Fungible Tokens
   properties:
   - type: OpenAPI
     url: openapi/near-non-fungible-tokens-api-openapi.yml
