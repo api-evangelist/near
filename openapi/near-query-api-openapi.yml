@@ -2083,3 +2083,9 @@ components:
         title: block_height
         type: integer
       - $ref: '#/components/schemas/CryptoHash'
+x-provenance:
+  method: harvested
+  publisher: NEAR Protocol
+  source: https://rpc.mainnet.near.org/openapi.json
+  note: split by refine-openapis from the provider's own published document, verified by fetch (openapi/_original/*.fetch.json);
+    stamped by stamp-openapi-provenance.py (roadmap#793)
