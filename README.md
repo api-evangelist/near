@@ -66,41 +66,201 @@
 
 NEAR Protocol provides blockchain infrastructure with JSON-RPC 2.0 and REST APIs for querying accounts, transactions, tokens, NFTs, and staking data on the NEAR network. Developers can interact with the NEAR blockchain through the official RPC endpoints, the FASTNEAR indexed REST API, and the NearBlocks explorer API.
 
-## APIs
+**Areas:** Blockchain · Web3 · NEAR · NFT · Tokens · Staking · Cryptocurrency
 
-### NEAR RPC API
+## NEAR Protocol on APIs.io
 
-JSON-RPC 2.0 API for programmatic access to the NEAR blockchain. All requests are POST to a provider endpoint with the method name in the URL path.
+Everything profiled for NEAR Protocol is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/near/](https://apis.io/providers/near/)** — or go straight to one of the APIs or properties below.
 
-- **Base URL (Mainnet):** `https://rpc.mainnet.near.org`
-- **Docs:** https://docs.near.org/api/rpc/introduction
-- **Auth:** None (public endpoint, rate-limited)
+### APIs (60)
 
-**Methods include:** `send_tx`, `tx`, `block`, `chunk`, `query` (view_account, view_code, view_state, call_function), `status`, `health`, `network_info`, `validators`, `gas_price`, `light_client_proof`
+- [NEAR Protocol Accounts API](https://apis.io/apis/near/near-accounts-api/) — The accounts API from NEAR Protocol — 1 operation(s) for accounts.
+- [NEAR Protocol Block API](https://apis.io/apis/near/near-block-api/) — The Block API from NEAR Protocol — 1 operation(s) for block.
+- [NEAR Protocol Block Effects API](https://apis.io/apis/near/near-block-effects-api/) — The Block Effects API from NEAR Protocol — 1 operation(s) for block effects.
+- [NEAR Protocol Broadcast Tx Async API](https://apis.io/apis/near/near-broadcast-tx-async-api/) — The Broadcast Tx Async API from NEAR Protocol — 1 operation(s) for broadcast tx async.
+- [NEAR Protocol Broadcast Tx Commit API](https://apis.io/apis/near/near-broadcast-tx-commit-api/) — The Broadcast Tx Commit API from NEAR Protocol — 1 operation(s) for broadcast tx commit.
+- [NEAR Protocol Changes API](https://apis.io/apis/near/near-changes-api/) — The Changes API from NEAR Protocol — 1 operation(s) for changes.
+- [NEAR Protocol Chunk API](https://apis.io/apis/near/near-chunk-api/) — The Chunk API from NEAR Protocol — 1 operation(s) for chunk.
+- [NEAR Protocol Client Config API](https://apis.io/apis/near/near-client-config-api/) — The Client Config API from NEAR Protocol — 1 operation(s) for client config.
+- [NEAR Protocol EXPERIMENTAL Call Function API](https://apis.io/apis/near/near-experimental-call-function-api/) — The EXPERIMENTAL Call Function API from NEAR Protocol — 1 operation(s) for experimental call function.
+- [NEAR Protocol EXPERIMENTAL Changes API](https://apis.io/apis/near/near-experimental-changes-api/) — The EXPERIMENTAL Changes API from NEAR Protocol — 1 operation(s) for experimental changes.
+- [NEAR Protocol EXPERIMENTAL Changes In Block API](https://apis.io/apis/near/near-experimental-changes-in-block-api/) — The EXPERIMENTAL Changes In Block API from NEAR Protocol — 1 operation(s) for experimental changes in block.
+- [NEAR Protocol EXPERIMENTAL Congestion Level API](https://apis.io/apis/near/near-experimental-congestion-level-api/) — The EXPERIMENTAL Congestion Level API from NEAR Protocol — 1 operation(s) for experimental congestion level.
+- [NEAR Protocol EXPERIMENTAL Genesis Config API](https://apis.io/apis/near/near-experimental-genesis-config-api/) — The EXPERIMENTAL Genesis Config API from NEAR Protocol — 1 operation(s) for experimental genesis config.
+- [NEAR Protocol EXPERIMENTAL Light Client Block Proof API](https://apis.io/apis/near/near-experimental-light-client-block-proof-api/) — The EXPERIMENTAL Light Client Block Proof API from NEAR Protocol — 1 operation(s) for experimental light client block proof.
+- [NEAR Protocol EXPERIMENTAL Light Client Proof API](https://apis.io/apis/near/near-experimental-light-client-proof-api/) — The EXPERIMENTAL Light Client Proof API from NEAR Protocol — 1 operation(s) for experimental light client proof.
+- [NEAR Protocol EXPERIMENTAL Maintenance Windows API](https://apis.io/apis/near/near-experimental-maintenance-windows-api/) — The EXPERIMENTAL Maintenance Windows API from NEAR Protocol — 1 operation(s) for experimental maintenance windows.
+- [NEAR Protocol EXPERIMENTAL Protocol Config API](https://apis.io/apis/near/near-experimental-protocol-config-api/) — The EXPERIMENTAL Protocol Config API from NEAR Protocol — 1 operation(s) for experimental protocol config.
+- [NEAR Protocol EXPERIMENTAL Receipt API](https://apis.io/apis/near/near-experimental-receipt-api/) — The EXPERIMENTAL Receipt API from NEAR Protocol — 1 operation(s) for experimental receipt.
+- [NEAR Protocol EXPERIMENTAL Receipt To Tx API](https://apis.io/apis/near/near-experimental-receipt-to-tx-api/) — The EXPERIMENTAL Receipt To Tx API from NEAR Protocol — 1 operation(s) for experimental receipt to tx.
+- [NEAR Protocol EXPERIMENTAL Split Storage Info API](https://apis.io/apis/near/near-experimental-split-storage-info-api/) — The EXPERIMENTAL Split Storage Info API from NEAR Protocol — 1 operation(s) for experimental split storage info.
+- [NEAR Protocol EXPERIMENTAL Tx Status API](https://apis.io/apis/near/near-experimental-tx-status-api/) — The EXPERIMENTAL Tx Status API from NEAR Protocol — 1 operation(s) for experimental tx status.
+- [NEAR Protocol EXPERIMENTAL Validators Ordered API](https://apis.io/apis/near/near-experimental-validators-ordered-api/) — The EXPERIMENTAL Validators Ordered API from NEAR Protocol — 1 operation(s) for experimental validators ordered.
+- [NEAR Protocol EXPERIMENTAL View Access Key API](https://apis.io/apis/near/near-experimental-view-access-key-api/) — The EXPERIMENTAL View Access Key API from NEAR Protocol — 1 operation(s) for experimental view access key.
+- [NEAR Protocol EXPERIMENTAL View Access Key List API](https://apis.io/apis/near/near-experimental-view-access-key-list-api/) — The EXPERIMENTAL View Access Key List API from NEAR Protocol — 1 operation(s) for experimental view access key list.
+- [NEAR Protocol EXPERIMENTAL View Account API](https://apis.io/apis/near/near-experimental-view-account-api/) — The EXPERIMENTAL View Account API from NEAR Protocol — 1 operation(s) for experimental view account.
+- [NEAR Protocol EXPERIMENTAL View Code API](https://apis.io/apis/near/near-experimental-view-code-api/) — The EXPERIMENTAL View Code API from NEAR Protocol — 1 operation(s) for experimental view code.
+- [NEAR Protocol EXPERIMENTAL View State API](https://apis.io/apis/near/near-experimental-view-state-api/) — The EXPERIMENTAL View State API from NEAR Protocol — 1 operation(s) for experimental view state.
+- [NEAR Protocol Fungible Tokens API](https://apis.io/apis/near/near-fungible-tokens-api/) — The fungible-tokens API from NEAR Protocol — 3 operation(s) for fungible-tokens.
+- [NEAR Protocol Gas Price API](https://apis.io/apis/near/near-gas-price-api/) — The Gas Price API from NEAR Protocol — 1 operation(s) for gas price.
+- [NEAR Protocol Genesis Config API](https://apis.io/apis/near/near-genesis-config-api/) — The Genesis Config API from NEAR Protocol — 1 operation(s) for genesis config.
+- [NEAR Protocol Health API](https://apis.io/apis/near/near-health-api/) — The Health API from NEAR Protocol — 1 operation(s) for health.
+- [NEAR Protocol Legacy / Access Keys API](https://apis.io/apis/near/near-legacy-access-keys-api/) — Deprecated.
+- [NEAR Protocol Legacy / Account API](https://apis.io/apis/near/near-legacy-account-api/) — Deprecated.
+- [NEAR Protocol Legacy / Blocks API](https://apis.io/apis/near/near-legacy-blocks-api/) — Deprecated.
+- [NEAR Protocol Legacy / Chain Abstraction API](https://apis.io/apis/near/near-legacy-chain-abstraction-api/) — Deprecated.
+- [NEAR Protocol Legacy / Charts API](https://apis.io/apis/near/near-legacy-charts-api/) — Deprecated.
+- [NEAR Protocol Legacy / DEX API](https://apis.io/apis/near/near-legacy-dex-api/) — Deprecated.
+- [NEAR Protocol Legacy / FTs API](https://apis.io/apis/near/near-legacy-fts-api/) — Deprecated.
+- [NEAR Protocol Legacy / Kitwallet API](https://apis.io/apis/near/near-legacy-kitwallet-api/) — Deprecated.
+- [NEAR Protocol Legacy / NFTs API](https://apis.io/apis/near/near-legacy-nfts-api/) — Deprecated.
+- [NEAR Protocol Legacy / Search API](https://apis.io/apis/near/near-legacy-search-api/) — Deprecated.
+- [NEAR Protocol Legacy / Stats API](https://apis.io/apis/near/near-legacy-stats-api/) — Deprecated.
+- [NEAR Protocol Legacy / Supply API](https://apis.io/apis/near/near-legacy-supply-api/) — Deprecated.
+- [NEAR Protocol Legacy / Txns API](https://apis.io/apis/near/near-legacy-txns-api/) — Deprecated.
+- [NEAR Protocol Legacy / V2 Account API](https://apis.io/apis/near/near-legacy-v2-account-api/) — Deprecated.
+- [NEAR Protocol Legacy / V2 Txns API](https://apis.io/apis/near/near-legacy-v2-txns-api/) — Deprecated.
+- [NEAR Protocol Legacy / Validators API](https://apis.io/apis/near/near-legacy-validators-api/) — Deprecated.
+- [NEAR Protocol Light Client Proof API](https://apis.io/apis/near/near-light-client-proof-api/) — The Light Client Proof API from NEAR Protocol — 1 operation(s) for light client proof.
+- [NEAR Protocol Maintenance Windows API](https://apis.io/apis/near/near-maintenance-windows-api/) — The Maintenance Windows API from NEAR Protocol — 1 operation(s) for maintenance windows.
+- [NEAR Protocol Network Info API](https://apis.io/apis/near/near-network-info-api/) — The Network Info API from NEAR Protocol — 1 operation(s) for network info.
+- [NEAR Protocol Next Light Client Block API](https://apis.io/apis/near/near-next-light-client-block-api/) — The Next Light Client Block API from NEAR Protocol — 1 operation(s) for next light client block.
+- [NEAR Protocol Non Fungible Tokens API](https://apis.io/apis/near/near-non-fungible-tokens-api/) — The non-fungible-tokens API from NEAR Protocol — 2 operation(s) for non-fungible-tokens.
+- [NEAR Protocol Public Key API](https://apis.io/apis/near/near-public-key-api/) — The public-key API from NEAR Protocol — 4 operation(s) for public-key.
+- [NEAR Protocol Query API](https://apis.io/apis/near/near-query-api/) — The Query API from NEAR Protocol — 1 operation(s) for query.
+- [NEAR Protocol Send Tx API](https://apis.io/apis/near/near-send-tx-api/) — The Send Tx API from NEAR Protocol — 1 operation(s) for send tx.
+- [NEAR Protocol Staking API](https://apis.io/apis/near/near-staking-api/) — The staking API from NEAR Protocol — 2 operation(s) for staking.
+- [NEAR Protocol Status API](https://apis.io/apis/near/near-status-api/) — The Status API from NEAR Protocol — 1 operation(s) for status.
+- [NEAR Protocol System API](https://apis.io/apis/near/near-system-api/) — The system API from NEAR Protocol — 2 operation(s) for system.
+- [NEAR Protocol Tx API](https://apis.io/apis/near/near-tx-api/) — The Tx API from NEAR Protocol — 1 operation(s) for tx.
+- [NEAR Protocol Validators API](https://apis.io/apis/near/near-validators-api/) — The Validators API from NEAR Protocol — 1 operation(s) for validators.
 
-### FASTNEAR Indexed REST API
+### Published properties
 
-Low-latency indexed REST API for account-centric reads including fungible tokens, NFTs, and staking.
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-- **Base URL (Mainnet):** `https://api.fastnear.com`
-- **Docs:** https://docs.fastnear.com/
-- **Auth:** API key via `Authorization: Bearer {key}` or `?apiKey=`
+#### Agentic access (1)
 
-**Endpoints include:** `/v1/account/{id}/full`, `/v1/account/{id}/ft`, `/v1/account/{id}/nft`, `/v1/account/{id}/staking`, `/v1/ft/{token_id}/top`
+Which operations an agent can call, which act, and which need a human in the loop.
 
-### NearBlocks Explorer API
+- [Near Agentic Access](https://apis.io/agentic-access/near/near-agentic-access/)
 
-REST API derived from the NearBlocks block explorer with tiered subscription plans.
+#### Collections (60)
 
-- **Base URL:** `https://api.nearblocks.io`
-- **Docs:** https://api.nearblocks.io/api-docs/
-- **Auth:** API key (dashboard)
-- **Plans:** Free ($0), Startup ($67.15/mo), Standard ($254.15/mo), Professional ($764.15/mo), Enterprise (custom)
+Postman and Open Collection request collections.
 
-## Links
+- [FastNEAR accounts API](https://apis.io/collections/near/open-near-accounts-api/)
+- [FastNEAR accounts Block API](https://apis.io/collections/near/open-near-block-api/)
+- [FastNEAR accounts Block Effects API](https://apis.io/collections/near/open-near-block-effects-api/)
+- [FastNEAR accounts Broadcast Tx Async API](https://apis.io/collections/near/open-near-broadcast-tx-async-api/)
+- [FastNEAR accounts Broadcast Tx Commit API](https://apis.io/collections/near/open-near-broadcast-tx-commit-api/)
+- [FastNEAR accounts Changes API](https://apis.io/collections/near/open-near-changes-api/)
+- [FastNEAR accounts Chunk API](https://apis.io/collections/near/open-near-chunk-api/)
+- [FastNEAR accounts Client Config API](https://apis.io/collections/near/open-near-client-config-api/)
+- [FastNEAR accounts EXPERIMENTAL Call Function API](https://apis.io/collections/near/open-near-experimental-call-function-api/)
+- [FastNEAR accounts EXPERIMENTAL Changes API](https://apis.io/collections/near/open-near-experimental-changes-api/)
+- [FastNEAR accounts EXPERIMENTAL Changes In Block API](https://apis.io/collections/near/open-near-experimental-changes-in-block-api/)
+- [FastNEAR accounts EXPERIMENTAL Congestion Level API](https://apis.io/collections/near/open-near-experimental-congestion-level-api/)
+- [FastNEAR accounts EXPERIMENTAL Genesis Config API](https://apis.io/collections/near/open-near-experimental-genesis-config-api/)
+- [FastNEAR accounts EXPERIMENTAL Light Client Block Proof API](https://apis.io/collections/near/open-near-experimental-light-client-block-proof-api/)
+- [FastNEAR accounts EXPERIMENTAL Light Client Proof API](https://apis.io/collections/near/open-near-experimental-light-client-proof-api/)
+- [FastNEAR accounts EXPERIMENTAL Maintenance Windows API](https://apis.io/collections/near/open-near-experimental-maintenance-windows-api/)
+- [FastNEAR accounts EXPERIMENTAL Protocol Config API](https://apis.io/collections/near/open-near-experimental-protocol-config-api/)
+- [FastNEAR accounts EXPERIMENTAL Receipt API](https://apis.io/collections/near/open-near-experimental-receipt-api/)
+- [FastNEAR accounts EXPERIMENTAL Receipt To Tx API](https://apis.io/collections/near/open-near-experimental-receipt-to-tx-api/)
+- [FastNEAR accounts EXPERIMENTAL Split Storage Info API](https://apis.io/collections/near/open-near-experimental-split-storage-info-api/)
+- [FastNEAR accounts EXPERIMENTAL Tx Status API](https://apis.io/collections/near/open-near-experimental-tx-status-api/)
+- [FastNEAR accounts EXPERIMENTAL Validators Ordered API](https://apis.io/collections/near/open-near-experimental-validators-ordered-api/)
+- [FastNEAR accounts EXPERIMENTAL View Access Key API](https://apis.io/collections/near/open-near-experimental-view-access-key-api/)
+- [FastNEAR accounts EXPERIMENTAL View Access Key List API](https://apis.io/collections/near/open-near-experimental-view-access-key-list-api/)
+- [FastNEAR accounts EXPERIMENTAL View Account API](https://apis.io/collections/near/open-near-experimental-view-account-api/)
+- …and 35 more published on APIs.io
 
-- Website: https://near.org
-- Developer Docs: https://docs.near.org
-- GitHub: https://github.com/near
-- NearBlocks: https://nearblocks.io
-- FASTNEAR: https://fastnear.com
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Near Authentication](https://apis.io/security/near/near-authentication/)
+- [Near Domain Security](https://apis.io/security/near/near-domain-security/)
+
+#### Plans and pricing (3)
+
+Published plans, tiers and prices.
+
+- [Fastnear Api](https://apis.io/plans/near/fastnear-api/)
+- [Near Rpc Api](https://apis.io/plans/near/near-rpc-api/)
+- [Nearblocks Api](https://apis.io/plans/near/nearblocks-api/)
+
+#### Rate limits (3)
+
+Published request limits.
+
+- [Fastnear Api](https://apis.io/rate-limits/near/fastnear-api/)
+- [Near Rpc Api](https://apis.io/rate-limits/near/near-rpc-api/)
+- [Nearblocks Api](https://apis.io/rate-limits/near/nearblocks-api/)
+
+#### FinOps (1)
+
+What the API costs to run, by operation.
+
+- [Nearblocks Api](https://apis.io/finops/near/nearblocks-api/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://near.org)
+- [Blog](https://www.near.org/blog)
+
+## API Evangelist rating
+
+**Kin Score 21.7** — emerging · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 71.4 |
+| Contract quality | 39.6 |
+| Contract governance | 0.0 |
+| Operational transparency | 0.0 |
+| Developer ergonomics | 23.8 |
+| Access clarity | 5.3 |
+
+**Agent readiness 22.3** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | — |
+| OpenAPI Examples | partial |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 11.8** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/near/](https://apis.io/providers/near/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for NEAR Protocol: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/near/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
